@@ -220,6 +220,23 @@ class PortalApiClient {
       } catch (e) {}
     }
 
+    // Helper to merge local admin modifications on top of any product list
+    const applyLocalEdits = (prods: Product[]): Product[] => {
+      if (localCustomProds.length === 0) return prods;
+      const localMap = new Map<string, Product>();
+      localCustomProds.forEach((lp) => {
+        if (lp.id) localMap.set(String(lp.id).toLowerCase(), lp);
+        if (lp.slug) localMap.set(lp.slug.toLowerCase(), lp);
+      });
+
+      return prods.map((p) => {
+        const idKey = String(p.id).toLowerCase();
+        const slugKey = p.slug?.toLowerCase();
+        const localOverride = localMap.get(idKey) || (slugKey ? localMap.get(slugKey) : undefined);
+        return localOverride ? { ...p, ...localOverride } : p;
+      });
+    };
+
     if (db) {
       try {
         const snap = await getDocs(collection(db, 'products'));
@@ -260,7 +277,7 @@ class PortalApiClient {
               (!lp.slug || !localDeletedSlugs.has(lp.slug.toLowerCase()))
           );
 
-          const combined = [...uncommittedLocal, ...dbProds].filter(
+          const combined = applyLocalEdits([...uncommittedLocal, ...dbProds]).filter(
             (p) =>
               !p.is_deleted &&
               p.status !== 'trash' &&
@@ -271,14 +288,16 @@ class PortalApiClient {
           const combinedIdSet = new Set(combined.map((p) => String(p.id)));
           const combinedSlugSet = new Set(combined.map((p) => p.slug?.toLowerCase()).filter(Boolean));
 
-          const missing = initialProducts.filter(
-            (p) =>
-              !combinedIdSet.has(String(p.id)) &&
-              (!p.slug || !combinedSlugSet.has(p.slug.toLowerCase())) &&
-              !dbIdSet.has(String(p.id)) &&
-              (!p.slug || !dbSlugSet.has(p.slug.toLowerCase())) &&
-              !localDeletedSlugs.has(String(p.id).toLowerCase()) &&
-              (!p.slug || !localDeletedSlugs.has(p.slug.toLowerCase()))
+          const missing = applyLocalEdits(
+            initialProducts.filter(
+              (p) =>
+                !combinedIdSet.has(String(p.id)) &&
+                (!p.slug || !combinedSlugSet.has(p.slug.toLowerCase())) &&
+                !dbIdSet.has(String(p.id)) &&
+                (!p.slug || !dbSlugSet.has(p.slug.toLowerCase())) &&
+                !localDeletedSlugs.has(String(p.id).toLowerCase()) &&
+                (!p.slug || !localDeletedSlugs.has(p.slug.toLowerCase()))
+            )
           );
           return [...combined, ...missing];
         } else {
@@ -286,20 +305,31 @@ class PortalApiClient {
           for (const prod of initialProducts) {
             await setDoc(doc(db, 'products', String(prod.id)), prod);
           }
-          return [...localCustomProds, ...initialProducts];
+          return applyLocalEdits([...localCustomProds, ...initialProducts]);
         }
       } catch (e) {
         console.warn('Firestore products fetch error:', e);
       }
     }
 
-    // Merge in-memory with any stored in localStorage
-    const idSet = new Set(initialProducts.map((p) => String(p.id)));
-    const missingLocal = localCustomProds.filter(
-      (lp) => !idSet.has(String(lp.id)) && !localDeletedSlugs.has(String(lp.id).toLowerCase())
+    // Merge in-memory with any stored in localStorage (local edits always win over initial defaults)
+    const baseMerged = applyLocalEdits(initialProducts);
+    const existingKeys = new Set<string>();
+    baseMerged.forEach((p) => {
+      existingKeys.add(String(p.id).toLowerCase());
+      if (p.slug) existingKeys.add(p.slug.toLowerCase());
+    });
+
+    const purelyNew = localCustomProds.filter(
+      (lp) =>
+        !existingKeys.has(String(lp.id).toLowerCase()) &&
+        (!lp.slug || !existingKeys.has(lp.slug.toLowerCase()))
     );
-    return [...missingLocal, ...initialProducts].filter(
+
+    return [...purelyNew, ...baseMerged].filter(
       (p) =>
+        !p.is_deleted &&
+        p.status !== 'trash' &&
         !localDeletedSlugs.has(String(p.id).toLowerCase()) &&
         (!p.slug || !localDeletedSlugs.has(p.slug.toLowerCase()))
     );
