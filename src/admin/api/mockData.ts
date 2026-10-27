@@ -10143,17 +10143,16 @@ export const initialConnectorStatus: ConnectorStatus = {
   changelog: 'Switched from legacy WordPress REST polling to real-time Firebase Cloud Firestore architecture. Zero WordPress hosting cost required.',
 };
 
-export const initialCashfreeConfig: PgBridgeConfig = {
+export const initialPayUConfig: PgBridgeConfig = {
   enabled: true,
-  app_id: '',
-  secret_key: '',
+  merchant_key: '',
+  merchant_salt: '',
   environment: 'PRODUCTION',
-  api_version: '2023-08-01',
-  return_url: 'https://vaultzet.shop/api/payment/cashfree/return',
-  webhook_secret: '',
+  return_url: 'https://vaultworld.shop/api/payment/payu/return',
 };
 
-export const initialPgBridge = initialCashfreeConfig;
+export const initialCashfreeConfig = initialPayUConfig;
+export const initialPgBridge = initialPayUConfig;
 
 export const initialDnpMeta: DnpMetaConfig = {
   enabled: true,

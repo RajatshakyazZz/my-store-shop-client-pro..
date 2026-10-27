@@ -85,7 +85,7 @@ function OrderSuccessContent() {
     let isCancelled = false;
     setStatus('verifying');
 
-    const verifyUrl = `/api/payment/cashfree/verify-order?order_id=${encodeURIComponent(targetId)}${rawToken ? `&token=${encodeURIComponent(rawToken)}` : ''}`;
+    const verifyUrl = `/api/payment/payu/verify-order?order_id=${encodeURIComponent(targetId)}${rawToken ? `&token=${encodeURIComponent(rawToken)}` : ''}`;
 
     fetch(verifyUrl)
       .then((res) => res.json())
@@ -120,7 +120,7 @@ function OrderSuccessContent() {
           // Strict server-side gatekeeper: ONLY fire browser event if backend confirms this order hasn't fired yet
           if (data.eligible_for_browser_event) {
             // 1. Immediately notify server to mark client fired, preventing any future fires across reloads/devices
-            fetch('/api/payment/cashfree/verify-order', {
+            fetch('/api/payment/payu/verify-order', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -260,7 +260,7 @@ function OrderSuccessContent() {
                 Verifying Payment &amp; Unlocking Files...
               </h1>
               <p className="text-sm text-[#5e6888] font-medium max-w-md mx-auto leading-relaxed">
-                We are securely confirming your transaction status with the Cashfree gateway.
+                We are securely confirming your transaction status with the PayU gateway.
                 Your Google Drive access links will appear immediately upon verification.
               </p>
             </div>
@@ -459,7 +459,7 @@ function OrderSuccessContent() {
                 <div className="p-3 rounded-xl bg-slate-50">
                   <span className="text-[11px] text-slate-400 font-bold block">Payment Gateway</span>
                   <strong className="text-xs font-bold text-slate-800">
-                    Cashfree Verified
+                    PayU Verified
                   </strong>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 col-span-2 sm:col-span-1">
@@ -590,7 +590,7 @@ function OrderSuccessContent() {
                 </h3>
                 <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100 flex items-center gap-1">
                   <Check className="w-3 h-3 stroke-[3]" />
-                  <span>Cashfree Verified</span>
+                  <span>PayU Verified</span>
                 </span>
               </div>
 
@@ -1367,7 +1367,7 @@ function OrderSuccessContent() {
                   <span className="text-xl">🔒</span>
                   <div>
                     <strong suppressHydrationWarning className="block text-xs font-black text-[#17214a]">256-Bit SSL</strong>
-                    <small className="block text-[11px] text-slate-400 font-semibold">Cashfree Verified</small>
+                    <small className="block text-[11px] text-slate-400 font-semibold">PayU Verified</small>
                   </div>
                 </div>
 

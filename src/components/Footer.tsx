@@ -67,7 +67,7 @@ export default function Footer() {
     },
     {
       title: 'Secure Checkout',
-      subtitle: 'Verified Cashfree Gateway',
+      subtitle: 'Verified PayU Gateway',
       icon: ShieldCheck,
       bg: 'bg-emerald-100/80 text-emerald-700',
     },

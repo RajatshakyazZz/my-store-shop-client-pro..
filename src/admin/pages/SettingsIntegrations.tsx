@@ -87,7 +87,11 @@ export default function SettingsIntegrations() {
     if (pgConfig) {
       setPgForm({
         ...pgConfig,
-        return_url: (pgConfig.return_url || 'https://vaultworld.shop/api/payment/cashfree/return')
+        merchant_key: pgConfig.merchant_key || pgConfig.app_id || '',
+        merchant_salt: pgConfig.merchant_salt || pgConfig.secret_key || '',
+        environment: pgConfig.environment === 'TEST' || pgConfig.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
+        return_url: (pgConfig.return_url || 'https://vaultworld.shop/api/payment/payu/return')
+          .replace('api/payment/cashfree/return', 'api/payment/payu/return')
           .replace('store.vaultzet.shop', 'vaultworld.shop')
           .replace('vaultzet.shop', 'vaultworld.shop'),
       });
@@ -116,19 +120,28 @@ export default function SettingsIntegrations() {
 
   // Mutations
   const updatePgMutation = useMutation({
-    mutationFn: (updated: PgBridgeConfig) => portalApi.updatePgBridgeConfig(updated),
+    mutationFn: (updated: PgBridgeConfig) => {
+      const payload: PgBridgeConfig = {
+        ...updated,
+        merchant_key: updated.merchant_key || updated.app_id || '',
+        merchant_salt: updated.merchant_salt || updated.secret_key || '',
+        app_id: updated.merchant_key || updated.app_id || '',
+        secret_key: updated.merchant_salt || updated.secret_key || '',
+      };
+      return portalApi.updatePgBridgeConfig(payload);
+    },
     onSuccess: () => {
       addToast({
         type: 'success',
-        title: 'Cashfree Gateway Saved',
-        message: 'Cashfree API credentials updated and synced with Storefront.',
+        title: 'PayU Gateway Saved',
+        message: 'PayU API credentials updated and synced with Storefront.',
       });
       queryClient.invalidateQueries({ queryKey: ['pg-bridge'] });
     },
     onError: (err: any) => {
       addToast({
         type: 'error',
-        title: 'Failed to update Cashfree Config',
+        title: 'Failed to update PayU Config',
         message: err.message,
       });
     },
@@ -253,34 +266,38 @@ export default function SettingsIntegrations() {
   });
 
   const handleTestCallback = () => {
-    if (!pgForm?.app_id || !pgForm?.secret_key) {
+    const key = pgForm?.merchant_key || pgForm?.app_id;
+    const salt = pgForm?.merchant_salt || pgForm?.secret_key;
+    if (!key || !salt) {
       addToast({
         type: 'warning',
         title: 'Missing Credentials',
-        message: 'Please enter your Cashfree App ID and Secret Key first.',
+        message: 'Please enter your PayU Merchant Key and Salt first.',
       });
       return;
     }
     addToast({
       type: 'info',
-      title: 'Cashfree Test Check',
-      message: `Environment: ${pgForm.environment || 'PRODUCTION'} | API Version: ${pgForm.api_version || '2023-08-01'}. Credentials ready for checkout.`,
+      title: 'PayU Test Check',
+      message: `Environment: ${pgForm.environment || 'PRODUCTION'}. Ready for checkout.`,
     });
   };
 
   const handleProcessorVerify = () => {
-    if (!pgForm?.app_id || !pgForm?.secret_key) {
+    const key = pgForm?.merchant_key || pgForm?.app_id;
+    const salt = pgForm?.merchant_salt || pgForm?.secret_key;
+    if (!key || !salt) {
       addToast({
         type: 'warning',
         title: 'Credentials Required',
-        message: 'Please fill in App ID and Secret Key before verifying.',
+        message: 'Please fill in PayU Merchant Key and Salt before verifying.',
       });
       return;
     }
     addToast({
       type: 'success',
-      title: 'Cashfree Verification Ready',
-      message: 'Cashfree credentials formatted and validated. Ready to process live customer orders.',
+      title: 'PayU Verification Ready',
+      message: 'PayU credentials formatted and validated. Ready to process live customer orders.',
     });
   };
 
@@ -310,7 +327,7 @@ export default function SettingsIntegrations() {
       {/* Tabs - Touch-scrollable & edge-to-edge on mobile */}
       <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto admin-touch-scroll admin-no-scrollbar -mx-3.5 px-3.5 sm:mx-0 sm:px-0">
         {[
-          { id: 'pg', label: 'Cashfree Gateway', icon: CreditCard, color: 'text-purple-400' },
+          { id: 'pg', label: 'PayU Gateway', icon: CreditCard, color: 'text-purple-400' },
           { id: 'telegram', label: 'Telegram Alerts & Bot', icon: Send, color: 'text-sky-400' },
           { id: 'meta', label: 'DNP Meta CAPI', icon: Radio, color: 'text-blue-400' },
           { id: 'analytics', label: 'MMC Analytics', icon: Users, color: 'text-emerald-400' },
@@ -336,7 +353,7 @@ export default function SettingsIntegrations() {
         })}
       </div>
 
-      {/* TAB 1: CASHFREE PAYMENT GATEWAY */}
+      {/* TAB 1: PAYU PAYMENT GATEWAY */}
       {activeTab === 'pg' && pgForm && (
         <div className="space-y-6">
           <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-6">
@@ -345,7 +362,7 @@ export default function SettingsIntegrations() {
                 <div className="flex items-center gap-2">
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
                     <CreditCard className="w-5 h-5 text-purple-400" />
-                    Cashfree Payment Gateway
+                    PayU Payment Gateway (India)
                   </h3>
                   <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
                     pgForm.enabled
@@ -359,23 +376,23 @@ export default function SettingsIntegrations() {
                       ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
                       : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
                   }`}>
-                    {pgForm.environment === 'PRODUCTION' ? 'Live Production' : 'Sandbox Test'}
+                    {pgForm.environment === 'PRODUCTION' ? 'Live Production' : 'Test Mode'}
                   </span>
                 </div>
                 <p className="text-xs text-slate-400 mt-1">
-                  Primary payment engine powering UPI (PhonePe, GPay, Paytm, CRED), Cards & NetBanking on VaultWorld Store.
+                  Primary payment engine powering UPI (PhonePe, GPay, Paytm, CRED), Cards & NetBanking on VaultWorld Store via PayU India.
                 </p>
               </div>
 
               <div className="flex items-center gap-3 shrink-0">
                 <a
-                  href="https://merchant.cashfree.com/merchants/login"
+                  href="https://dashboard.payu.in"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 border border-slate-700 transition-all flex items-center gap-1.5"
                 >
                   <ExternalLink className="w-3.5 h-3.5 text-purple-400" />
-                  <span>Merchant Portal</span>
+                  <span>PayU Dashboard</span>
                 </a>
                 <button
                   type="button"
@@ -391,9 +408,9 @@ export default function SettingsIntegrations() {
             {/* Gateway Status Switch */}
             <div className="flex items-center justify-between p-4 rounded-xl bg-slate-950/80 border border-slate-800/80">
               <div className="space-y-0.5">
-                <div className="text-xs font-bold text-white">Enable Cashfree on Storefront</div>
+                <div className="text-xs font-bold text-white">Enable PayU on Storefront</div>
                 <div className="text-[11px] text-slate-400">
-                  When active, customers will checkout via Cashfree Gateway.
+                  When active, customers will checkout securely via PayU India Payment Gateway.
                 </div>
               </div>
               <button
@@ -421,8 +438,8 @@ export default function SettingsIntegrations() {
                   onChange={(e) => setPgForm({ ...pgForm, environment: e.target.value as any })}
                   className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-medium"
                 >
-                  <option value="PRODUCTION">PRODUCTION (Real live payments - api.cashfree.com)</option>
-                  <option value="SANDBOX">SANDBOX (Test mode - sandbox.cashfree.com)</option>
+                  <option value="PRODUCTION">PRODUCTION (Real live payments - secure.payu.in)</option>
+                  <option value="TEST">TEST (Sandbox Test mode - test.payu.in)</option>
                 </select>
                 <p className="text-[10px] text-slate-500 mt-1">Select PRODUCTION when receiving real customer payments.</p>
               </div>
@@ -430,23 +447,23 @@ export default function SettingsIntegrations() {
               <div>
                 <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
                   <Key className="w-3.5 h-3.5 text-purple-400" />
-                  <span>Cashfree App ID (Client ID)</span>
+                  <span>PayU Merchant Key *</span>
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. CF123456... or your App ID"
-                  value={pgForm.app_id || ''}
-                  onChange={(e) => setPgForm({ ...pgForm, app_id: e.target.value })}
+                  placeholder="e.g. 7rnFly or your PayU Merchant Key"
+                  value={pgForm.merchant_key || pgForm.app_id || ''}
+                  onChange={(e) => setPgForm({ ...pgForm, merchant_key: e.target.value, app_id: e.target.value })}
                   className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
                 />
-                <p className="text-[10px] text-slate-500 mt-1">Found in Cashfree Dashboard &gt; Developers &gt; API Keys.</p>
+                <p className="text-[10px] text-slate-500 mt-1">Found in PayU Dashboard &gt; Integration Details / API Keys.</p>
               </div>
 
               <div className="md:col-span-2">
                 <label className="text-xs font-bold text-slate-300 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <Lock className="w-3.5 h-3.5 text-purple-400" />
-                    <span>Cashfree Secret Key</span>
+                    <span>PayU Merchant Salt *</span>
                   </span>
                   <button
                     type="button"
@@ -454,52 +471,30 @@ export default function SettingsIntegrations() {
                     className="text-[11px] text-purple-400 hover:text-purple-300 flex items-center gap-1 font-semibold"
                   >
                     {showSecret ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                    <span>{showSecret ? 'Hide Secret' : 'Show Secret'}</span>
+                    <span>{showSecret ? 'Hide Salt' : 'Show Salt'}</span>
                   </button>
                 </label>
                 <div className="relative mt-1.5">
                   <input
                     type={showSecret ? 'text' : 'password'}
-                    placeholder="e.g. cfsk_ma_live_... or your Secret Key"
-                    value={pgForm.secret_key || ''}
-                    onChange={(e) => setPgForm({ ...pgForm, secret_key: e.target.value })}
+                    placeholder="e.g. pj1nGpHgw... or your PayU Salt"
+                    value={pgForm.merchant_salt || pgForm.secret_key || ''}
+                    onChange={(e) => setPgForm({ ...pgForm, merchant_salt: e.target.value, secret_key: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono pr-10"
                   />
                 </div>
-                <p className="text-[10px] text-slate-500 mt-1">Never share your Secret Key. Stored securely and only accessed for order generation.</p>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-slate-300">API Version</label>
-                <input
-                  type="text"
-                  value={pgForm.api_version || '2023-08-01'}
-                  onChange={(e) => setPgForm({ ...pgForm, api_version: e.target.value })}
-                  className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
-                />
-                <p className="text-[10px] text-slate-500 mt-1">Default Cashfree PG standard version: 2023-08-01</p>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-slate-300">Customer Return / Redirect URL</label>
-                <input
-                  type="text"
-                  value={pgForm.return_url || 'https://vaultzet.shop/api/payment/cashfree/return'}
-                  onChange={(e) => setPgForm({ ...pgForm, return_url: e.target.value })}
-                  className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
-                />
-                <p className="text-[10px] text-slate-500 mt-1">URL where buyer returns after completing Cashfree checkout.</p>
+                <p className="text-[10px] text-slate-500 mt-1">Never share your Merchant Salt. Stored securely and used for SHA-512 signature hashing.</p>
               </div>
 
               <div className="md:col-span-2">
-                <label className="text-xs font-bold text-slate-300">Webhook Secret (Optional)</label>
+                <label className="text-xs font-bold text-slate-300">Customer Return / Redirect URL</label>
                 <input
-                  type="password"
-                  placeholder="Optional Cashfree webhook signature secret"
-                  value={pgForm.webhook_secret || ''}
-                  onChange={(e) => setPgForm({ ...pgForm, webhook_secret: e.target.value })}
+                  type="text"
+                  value={pgForm.return_url || 'https://vaultworld.shop/api/payment/payu/return'}
+                  onChange={(e) => setPgForm({ ...pgForm, return_url: e.target.value })}
                   className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
                 />
+                <p className="text-[10px] text-slate-500 mt-1">URL where buyer returns after completing PayU payment.</p>
               </div>
             </div>
 
@@ -507,7 +502,7 @@ export default function SettingsIntegrations() {
             <div className="p-4 rounded-xl bg-purple-950/20 border border-purple-800/30">
               <div className="text-xs font-bold text-purple-300 flex items-center gap-1.5 mb-2">
                 <Sparkles className="w-4 h-4 text-purple-400" />
-                <span>Supported Customer Payment Methods via Cashfree</span>
+                <span>Supported Customer Payment Methods via PayU India</span>
               </div>
               <div className="flex flex-wrap gap-2 text-[11px] text-slate-300">
                 <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 flex items-center gap-1 font-medium">
@@ -539,7 +534,7 @@ export default function SettingsIntegrations() {
                 className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold shadow-md shadow-purple-600/20 transition-all disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
-                <span>{updatePgMutation.isPending ? 'Saving...' : 'Save Cashfree Gateway Config'}</span>
+                <span>{updatePgMutation.isPending ? 'Saving...' : 'Save PayU Gateway Config'}</span>
               </button>
             </div>
           </div>

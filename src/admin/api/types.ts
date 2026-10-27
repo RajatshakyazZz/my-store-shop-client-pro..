@@ -374,18 +374,22 @@ export interface ConnectorStatus {
 // ==========================================
 // 16. SETTINGS & INTEGRATIONS PANELS
 // ==========================================
-export interface CashfreeConfig {
+export interface PayUConfig {
   enabled: boolean;
-  app_id: string;
-  secret_key: string;
-  environment: 'PRODUCTION' | 'SANDBOX';
-  api_version: string;
+  merchant_key: string;
+  merchant_salt: string;
+  environment: 'PRODUCTION' | 'TEST' | 'SANDBOX';
   return_url: string;
-  webhook_secret?: string;
   last_test_status?: string;
+  // Legacy aliases
+  app_id?: string;
+  secret_key?: string;
+  api_version?: string;
+  webhook_secret?: string;
 }
 
-export type PgBridgeConfig = CashfreeConfig;
+export type CashfreeConfig = PayUConfig;
+export type PgBridgeConfig = PayUConfig;
 
 export interface DnpMetaConfig {
   enabled: boolean;

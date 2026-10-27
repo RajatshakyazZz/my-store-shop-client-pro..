@@ -129,8 +129,6 @@ async function handleVerify(
     token?: string;
   }
 ) {
-  const verification = await verifyCashfreePgOrder(orderId);
-
   let storedOrder: any = null;
   if (db) {
     try {
@@ -140,6 +138,17 @@ async function handleVerify(
       }
     } catch (e) {
       console.warn('Error reading stored order doc:', e);
+    }
+  }
+
+  let verification: any = { paid: false, order_status: 'PENDING', order_amount: storedOrder?.totalAmount || 0 };
+  if (storedOrder?.status === 'completed' || storedOrder?.payu_verified === true) {
+    verification = { paid: true, order_status: 'PAID', order_amount: storedOrder?.totalAmount || 0 };
+  } else {
+    try {
+      verification = await verifyCashfreePgOrder(orderId);
+    } catch {
+      verification = { paid: false, order_status: storedOrder?.status || 'PENDING', order_amount: storedOrder?.totalAmount || 0 };
     }
   }
 

@@ -2108,49 +2108,73 @@ class PortalApiClient {
   }
 
   // ==========================================
-  // 16. SETTINGS & INTEGRATIONS
+  // 16. SETTINGS & INTEGRATIONS (PayU Gateway)
   // ==========================================
-  async getCashfreeConfig(): Promise<PgBridgeConfig> {
+  async getPayUConfig(): Promise<PgBridgeConfig> {
     if (db) {
       try {
-        const snap = await getDoc(doc(db, 'store_settings', 'cashfree'));
+        const snap = await getDoc(doc(db, 'store_settings', 'payu'));
         if (snap.exists()) {
           const data = snap.data() as PgBridgeConfig;
-          this.saveSettingLocally('cashfree', data);
+          this.saveSettingLocally('payu', data);
           return data;
         }
+        // Fallback to legacy cashfree doc if payu doc doesn't exist yet
+        const cfSnap = await getDoc(doc(db, 'store_settings', 'cashfree'));
+        if (cfSnap.exists()) {
+          const cfData = cfSnap.data() as PgBridgeConfig;
+          const mapped: PgBridgeConfig = {
+            enabled: typeof cfData.enabled === 'boolean' ? cfData.enabled : true,
+            merchant_key: cfData.merchant_key || cfData.app_id || '',
+            merchant_salt: cfData.merchant_salt || cfData.secret_key || '',
+            environment: cfData.environment === 'TEST' || cfData.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
+            return_url: cfData.return_url || 'https://vaultworld.shop/api/payment/payu/return',
+          };
+          this.saveSettingLocally('payu', mapped);
+          return mapped;
+        }
       } catch (e) {
-        console.warn('Firestore cashfree config fetch error, using local cache:', e);
+        console.warn('Firestore payu config fetch error, using local cache:', e);
       }
     }
-    return this.getSavedSetting('cashfree', initialPgBridge);
+    return this.getSavedSetting('payu', initialPgBridge);
   }
 
-  async updateCashfreeConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
+  async updatePayUConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
     const clean = sanitizePayload(config);
+    this.saveSettingLocally('payu', clean);
     this.saveSettingLocally('cashfree', clean);
     if (db) {
       try {
+        await setDoc(doc(db, 'store_settings', 'payu'), clean, { merge: true });
         await setDoc(doc(db, 'store_settings', 'cashfree'), clean, { merge: true });
       } catch (e) {
-        console.warn('Firestore cashfree config update error:', e);
+        console.warn('Firestore payu config update error:', e);
       }
     }
     await logAdminAction({
-      adminEmail: 'admin@vaultzet.com',
-      action: 'UPDATE_CASHFREE_CONFIG',
+      adminEmail: 'admin@vaultworld.shop',
+      action: 'UPDATE_PAYU_CONFIG',
       module: 'Payments',
-      details: `Updated Cashfree Gateway credentials (Env: ${clean.environment || 'PRODUCTION'})`,
+      details: `Updated PayU Gateway credentials (Env: ${clean.environment || 'PRODUCTION'})`,
     });
     return clean;
   }
 
+  async getCashfreeConfig(): Promise<PgBridgeConfig> {
+    return this.getPayUConfig();
+  }
+
+  async updateCashfreeConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
+    return this.updatePayUConfig(config);
+  }
+
   async getPgBridgeConfig(): Promise<PgBridgeConfig> {
-    return this.getCashfreeConfig();
+    return this.getPayUConfig();
   }
 
   async updatePgBridgeConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
-    return this.updateCashfreeConfig(config);
+    return this.updatePayUConfig(config);
   }
 
   async getDnpMetaConfig(): Promise<DnpMetaConfig> {

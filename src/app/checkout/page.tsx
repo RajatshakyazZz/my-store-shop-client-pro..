@@ -30,11 +30,6 @@ import { resolveBundleSlug } from '@/lib/bundleResolver';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
 import FreeBundleOfferBanner from '@/components/FreeBundleOfferBanner';
 
-declare global {
-  interface Window {
-    Cashfree?: any;
-  }
-}
 
 function CheckoutContent() {
   const router = useRouter();
@@ -552,7 +547,7 @@ function CheckoutContent() {
 
     // Track GA4 add_payment_info
     track('add_payment_info', {
-      payment_type: 'Cashfree UPI / Netbanking / Cards',
+      payment_type: 'PayU India UPI / Netbanking / Cards',
       currency: 'INR',
       value: checkoutTotal,
       items: allCheckoutItems.map((i, idx) => ({
@@ -593,8 +588,8 @@ function CheckoutContent() {
     };
 
     try {
-      // 1. Create Cashfree Order on server
-      const res = await fetch('/api/payment/cashfree/create-order', {
+      // 1. Create PayU Order on server
+      const res = await fetch('/api/payment/payu/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderPayload),
@@ -602,10 +597,10 @@ function CheckoutContent() {
 
       const data = await res.json();
 
-      if (!res.ok || !data.success || !data.payment_session_id) {
+      if (!res.ok || !data.success || !data.action || !data.params) {
         throw new Error(
           data.error ||
-            'Could not initialize Cashfree payment. Please verify Cashfree API keys in the Admin Portal.'
+            'Could not initialize PayU payment. Please verify PayU API credentials in the Admin Portal.'
         );
       }
 
@@ -613,61 +608,28 @@ function CheckoutContent() {
       localStorage.setItem('vaultzet_latest_order', JSON.stringify({
         ...orderPayload,
         orderId: orderNumber,
-        paymentSessionId: data.payment_session_id,
         orderToken: data.order_token,
         status: 'pending',
       }));
 
-      // 2. Open Cashfree v3 Checkout
-      let cashfreeInstance: any = null;
-      if (typeof window !== 'undefined') {
-        if (window.Cashfree) {
-          cashfreeInstance = window.Cashfree({
-            mode: data.environment === 'SANDBOX' ? 'sandbox' : 'production',
-          });
-        } else {
-          // If SDK script is still in transit, wait up to 1.5s
-          for (let i = 0; i < 15; i++) {
-            await new Promise((r) => setTimeout(r, 100));
-            if (window.Cashfree) {
-              cashfreeInstance = window.Cashfree({
-                mode: data.environment === 'SANDBOX' ? 'sandbox' : 'production',
-              });
-              break;
-            }
-          }
-        }
-      }
+      // 2. Auto-submit form to PayU India Hosted Checkout (UPI, GPay, PhonePe, Paytm, Cards, NetBanking)
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = data.action;
+      form.style.display = 'none';
 
-      if (cashfreeInstance) {
-        const result = await cashfreeInstance.checkout({
-          paymentSessionId: data.payment_session_id,
-          redirectTarget: '_self',
-        });
+      Object.entries(data.params).forEach(([key, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = String(value);
+        form.appendChild(input);
+      });
 
-        if (result?.error) {
-          fetch('/api/telegram/notify', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              type: 'payment_abandoned',
-              orderNumber,
-              customer: orderPayload.customer,
-              items: orderPayload.items,
-              orderBump: orderPayload.orderBump,
-              totalAmount: orderPayload.totalAmount,
-              reason: result.error.message || 'Customer closed payment modal before completing payment',
-            }),
-          }).catch(() => {});
-          setIsProcessing(false);
-          setErrorMessage(result.error.message || 'Payment was cancelled. You can retry anytime.');
-        }
-      } else {
-        // Direct hosted fallback if SDK is blocked by client adblocker
-        window.location.href = `https://payments.cashfree.com/order/#${encodeURIComponent(data.payment_session_id)}`;
-      }
+      document.body.appendChild(form);
+      form.submit();
     } catch (err: any) {
-      console.error('Cashfree order error:', err);
+      console.error('PayU order error:', err);
       setIsProcessing(false);
       setErrorMessage(
         err.message || 'Payment initiation failed. Please check your connection and try again.'
@@ -684,7 +646,7 @@ function CheckoutContent() {
         </div>
         <h2 className="text-xl font-black text-slate-950">Loading Your Checkout...</h2>
         <p className="text-xs text-slate-500 max-w-sm">
-          Preparing bundle details and secure Cashfree payment gateway.
+          Preparing bundle details and secure PayU payment gateway.
         </p>
       </div>
     );
@@ -748,10 +710,10 @@ function CheckoutContent() {
                   <span className="text-[11px] font-bold text-slate-500">Authorized Partner Checkout</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
-                  Secure Cashfree Checkout
+                  Secure PayU Checkout
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-                  Fill your details below, pay securely via Cashfree, and get instant Google Drive access.
+                  Fill your details below, pay securely via PayU, and get instant Google Drive access.
                 </p>
               </div>
               <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/80 self-start sm:self-center shrink-0">
@@ -766,7 +728,7 @@ function CheckoutContent() {
                   {isBuyNowMode ? 'Instant Buy Now Checkout' : 'Express Checkout'}
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-                  Zero hassle: Fill your details, pay securely via Cashfree, and get instant Google Drive access.
+                  Zero hassle: Fill your details, pay securely via PayU, and get instant Google Drive access.
                 </p>
               </div>
               <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/80">
@@ -788,9 +750,9 @@ function CheckoutContent() {
                   <span className="font-bold">Checkout Issue: </span>
                   {errorMessage}
                 </div>
-                {errorMessage.includes('Cashfree') && (
+                {(errorMessage.includes('PayU') || errorMessage.includes('Merchant')) && (
                   <p className="text-[11px] text-rose-700 font-normal mt-1 leading-relaxed">
-                    Note: Agar aapne Vercel me environment variables add kar diye hain, toh Vercel dashboard me <strong>Deployments &gt; Redeploy</strong> karna zaroori hota hai taaki nayi keys live ho sakein.
+                    Note: Agar aapne Admin Portal ya Vercel me PayU keys update ki hain, toh Vercel dashboard me <strong>Deployments &gt; Redeploy</strong> karein ya Admin Portal (Settings &gt; Integrations &gt; PayU Gateway) me Merchant Key &amp; Salt save karein.
                   </p>
                 )}
               </div>
@@ -966,12 +928,12 @@ function CheckoutContent() {
                       {isProcessing ? (
                         <span className="flex items-center gap-2">
                           <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>Connecting Cashfree Gateway...</span>
+                          <span>Connecting PayU Gateway...</span>
                         </span>
                       ) : (
                         <>
                           <Lock className="w-4 h-4 text-slate-950" />
-                          <span>Pay ₹{checkoutTotal}.00 via Cashfree (Instant Access)</span>
+                          <span>Pay ₹{checkoutTotal}.00 via PayU (Instant Access)</span>
                         </>
                       )}
                     </button>
@@ -1043,7 +1005,7 @@ function CheckoutContent() {
                 </div>
               )}
 
-              {/* 3. Cashfree Payment Gateway Card */}
+              {/* 3. PayU Payment Gateway Card */}
               <div className="rounded-3xl p-6 bg-white border border-slate-200/90 shadow-sm space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">
@@ -1055,16 +1017,16 @@ function CheckoutContent() {
                     </h2>
                   </div>
                   <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5" /> Cashfree Verified
+                    <ShieldCheck className="w-3.5 h-3.5" /> PayU Verified
                   </span>
                 </div>
 
-                {/* Branded Cashfree Details Card */}
+                {/* Branded PayU Details Card */}
                 <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-amber-500/20 text-white space-y-3.5 shadow-md">
                   <div className="flex items-center justify-between">
                     <div className="font-bold text-xs text-amber-400 flex items-center gap-1.5">
                       <CreditCard className="w-4 h-4 text-amber-400" />
-                      <span>Cashfree Payment Gateway</span>
+                      <span>PayU Payment Gateway (India)</span>
                     </div>
                     <span className="text-[10px] font-bold text-slate-400">
                       RBI Regulated • Zero Extra Fee
@@ -1072,7 +1034,7 @@ function CheckoutContent() {
                   </div>
 
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Pay securely with any payment option of your choice. A fast, encrypted Cashfree checkout will open to complete payment.
+                    Pay securely with any payment option of your choice. A fast, encrypted PayU checkout will open to complete payment via UPI, Cards, or NetBanking.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
@@ -1387,12 +1349,12 @@ function CheckoutContent() {
                     {isProcessing ? (
                       <span className="flex items-center gap-2">
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Connecting Cashfree Gateway...
+                        Connecting PayU Gateway...
                       </span>
                     ) : (
                       <>
                         <Lock className="w-4 h-4 text-slate-950" />
-                        <span>Pay ₹{checkoutTotal}.00 via Cashfree (Instant Access)</span>
+                        <span>Pay ₹{checkoutTotal}.00 via PayU (Instant Access)</span>
                       </>
                     )}
                   </button>
@@ -1402,7 +1364,7 @@ function CheckoutContent() {
                       <ShieldCheck className="w-4 h-4 text-emerald-600" />
                       Instant Google Drive Link Delivery
                     </p>
-                    <p>Protected by 256-bit SSL encryption & Cashfree Security</p>
+                    <p>Protected by 256-bit SSL encryption & PayU India Security</p>
                   </div>
                 </div>
               </div>
@@ -1465,12 +1427,12 @@ function CheckoutContent() {
                   {isProcessing ? (
                     <span className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Connecting Cashfree Gateway...
+                      Connecting PayU Gateway...
                     </span>
                   ) : (
                     <>
                       <Lock className="w-4 h-4 text-slate-950" />
-                      <span>Pay ₹{checkoutTotal}.00 via Cashfree (Instant Access)</span>
+                      <span>Pay ₹{checkoutTotal}.00 via PayU (Instant Access)</span>
                     </>
                   )}
                 </button>
@@ -1492,17 +1454,9 @@ function CheckoutContent() {
 export default function CheckoutPage() {
   return (
     <>
-      {/* Official Cashfree v3 Web SDK loaded with high priority + preconnect for instant checkout modal */}
-      <link rel="preconnect" href="https://sdk.cashfree.com" />
-      <link rel="dns-prefetch" href="https://sdk.cashfree.com" />
-      <link rel="preconnect" href="https://api.cashfree.com" />
-      <link rel="dns-prefetch" href="https://api.cashfree.com" />
-      <link rel="preconnect" href="https://payments.cashfree.com" />
-      <link rel="dns-prefetch" href="https://payments.cashfree.com" />
-      <Script
-        src="https://sdk.cashfree.com/js/v3/cashfree.js"
-        strategy="afterInteractive"
-      />
+      {/* PayU India Secure Hosted Checkout - high priority preconnect */}
+      <link rel="preconnect" href="https://secure.payu.in" />
+      <link rel="dns-prefetch" href="https://secure.payu.in" />
       <Suspense
         fallback={
           <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center space-y-4 bg-[#faf9f6]">
@@ -1511,7 +1465,7 @@ export default function CheckoutPage() {
             </div>
             <h2 className="text-xl font-black text-slate-950">Loading Checkout...</h2>
             <p className="text-xs text-slate-500 max-w-sm">
-              Preparing bundle details and secure Cashfree payment gateway.
+              Preparing bundle details and secure PayU payment gateway.
             </p>
           </div>
         }
