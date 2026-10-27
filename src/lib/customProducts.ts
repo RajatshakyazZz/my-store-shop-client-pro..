@@ -131,7 +131,13 @@ export function mapFirestoreDocToBundleProduct(data: any): BundleProduct {
       : defaultFaqs;
 
   const baseFiles = baseProd?.files || [];
-  const files = Array.isArray(data.files) && data.files.length > 0 ? data.files : baseFiles;
+  const rawFiles = Array.isArray(data.files) && data.files.length > 0 ? data.files : baseFiles;
+  // Security: Never leak real Google Drive URLs in public store client data
+  const files = rawFiles.map((f: any) => ({
+    id: f?.id || 'file-1',
+    name: f?.name || `${name} Access`,
+    file_url: '', // Explicitly wiped for public frontend security
+  }));
 
   return {
     id: String(data.id || baseProd?.id || slug),
