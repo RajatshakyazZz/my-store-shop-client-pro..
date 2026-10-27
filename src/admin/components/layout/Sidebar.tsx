@@ -71,9 +71,6 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
     {
       group: 'SYSTEM & INTEGRATIONS',
       items: [
-        { name: 'Webhooks & Logs', href: '/webhooks', icon: Webhook },
-        { name: 'Plugins Manager', href: '/plugins', icon: Plug },
-        { name: 'Themes Manager', href: '/themes', icon: Paintbrush },
         { name: 'Portal Connector', href: '/connector', icon: RefreshCw },
         { name: 'Settings & Bridges', href: '/settings', icon: Settings },
       ],

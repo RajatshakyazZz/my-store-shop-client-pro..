@@ -23,9 +23,6 @@ import SiteMode from './pages/SiteMode';
 import StoreSetup from './pages/StoreSetup';
 import MetaPixel from './pages/MetaPixel';
 import WhatsappButton from './pages/WhatsappButton';
-import Webhooks from './pages/Webhooks';
-import Plugins from './pages/Plugins';
-import Themes from './pages/Themes';
 import Connector from './pages/Connector';
 import SettingsIntegrations from './pages/SettingsIntegrations';
 import AuditLogs from './pages/AuditLogs';
@@ -68,9 +65,6 @@ export default function AdminApp() {
                     <Route path="store-setup" element={<StoreSetup />} />
                     <Route path="meta-pixel" element={<MetaPixel />} />
                     <Route path="whatsapp-button" element={<WhatsappButton />} />
-                    <Route path="webhooks" element={<Webhooks />} />
-                    <Route path="plugins" element={<Plugins />} />
-                    <Route path="themes" element={<Themes />} />
                     <Route path="connector" element={<Connector />} />
                     <Route path="settings" element={<SettingsIntegrations />} />
                   </Route>

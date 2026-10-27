@@ -14,7 +14,7 @@ interface AdminThemeContextType {
 const AdminThemeContext = createContext<AdminThemeContextType | undefined>(undefined);
 
 export function AdminThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<AdminTheme>('light');
+  const [theme, setThemeState] = useState<AdminTheme>('dark');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -23,8 +23,8 @@ export function AdminThemeProvider({ children }: { children: React.ReactNode }) 
       if (saved === 'light' || saved === 'dark') {
         setThemeState(saved);
       } else {
-        // Default to light theme as requested
-        setThemeState('light');
+        // Default to dark theme as requested
+        setThemeState('dark');
       }
     } catch {}
     setMounted(true);
