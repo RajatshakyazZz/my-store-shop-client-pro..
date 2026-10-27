@@ -25,6 +25,7 @@ import { ContentItem, ReelItem, Product } from '../api/types';
 import { formatDate } from '../lib/utils';
 import { useToast } from '../context/ToastContext';
 import DataTable, { Column } from '../components/common/DataTable';
+import ImageUploadField from '../components/common/ImageUploadField';
 
 export default function Content() {
   const queryClient = useQueryClient();
@@ -720,34 +721,14 @@ export default function Content() {
                 </div>
               )}
 
-              {/* 4. Thumbnail / Poster Image URL */}
-              <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                  Poster / Thumbnail Image URL
-                </label>
-                <div className="flex items-center gap-3">
-                  <div className="flex-1 flex items-center rounded-xl bg-slate-950 border border-slate-800 focus-within:border-purple-500 px-3 py-2.5">
-                    <ImageIcon className="w-4 h-4 text-purple-400 mr-2 shrink-0" />
-                    <input
-                      type="url"
-                      placeholder="Auto-detected from YouTube or custom image URL"
-                      value={reelForm.poster}
-                      onChange={(e) => setReelForm((prev) => ({ ...prev, poster: e.target.value }))}
-                      className="w-full bg-transparent text-xs text-white placeholder-slate-600 focus:outline-none"
-                    />
-                  </div>
-                  {reelForm.poster && (
-                    <img
-                      src={reelForm.poster}
-                      alt="Thumbnail Preview"
-                      className="w-11 h-11 rounded-xl object-cover border border-slate-700 shrink-0"
-                      onError={(e) => {
-                        (e.target as HTMLElement).style.display = 'none';
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
+              {/* 4. Thumbnail / Poster Image URL with ImgBB Gallery Upload */}
+              <ImageUploadField
+                label="Poster / Thumbnail Image"
+                value={reelForm.poster}
+                onChange={(url) => setReelForm((prev) => ({ ...prev, poster: url }))}
+                placeholder="Auto-detected from YouTube or custom image URL"
+                helperText="Upload custom reel cover poster from device gallery (.PNG, .JPG, .JPEG) or let it auto-detect from YouTube."
+              />
 
               {/* 5. Category & Linked Bundle */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
