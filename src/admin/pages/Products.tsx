@@ -32,6 +32,8 @@ import { Product, CategoryItem } from '../api/types';
 import { formatCurrency } from '../lib/utils';
 import { useToast } from '../context/ToastContext';
 import DataTable, { Column } from '../components/common/DataTable';
+import ImageUploadField from '../components/common/ImageUploadField';
+import GalleryImageManager from '../components/common/GalleryImageManager';
 
 export default function Products() {
   const queryClient = useQueryClient();
@@ -1526,36 +1528,15 @@ export default function Products() {
 
               {/* TAB B: MEDIA & PREVIEW VIDEO */}
               {editTab === 'media' && (
-                <div className="space-y-4">
-                  {/* Featured Image */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                      Cover Thumbnail Image URL *
-                    </label>
-                    <div className="flex items-center gap-3">
-                      <div className="flex-1 flex items-center rounded-xl bg-slate-950 border border-slate-800 focus-within:border-purple-500 px-3 py-2.5">
-                        <ImageIcon className="w-4 h-4 text-purple-400 mr-2 shrink-0" />
-                        <input
-                          type="url"
-                          required
-                          value={editForm.featured_image}
-                          onChange={(e) => setEditForm((prev) => ({ ...prev, featured_image: e.target.value }))}
-                          placeholder="https://images.unsplash.com/... or https://..."
-                          className="w-full bg-transparent text-xs text-white placeholder-slate-600 focus:outline-none"
-                        />
-                      </div>
-                      {editForm.featured_image && (
-                        <img
-                          src={editForm.featured_image}
-                          alt="Cover Preview"
-                          className="w-12 h-12 rounded-xl object-cover border border-slate-700 shrink-0"
-                          onError={(e) => {
-                            (e.target as HTMLElement).style.display = 'none';
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
+                <div className="space-y-5">
+                  {/* Cover Thumbnail Image with ImgBB Gallery Upload */}
+                  <ImageUploadField
+                    label="Cover Thumbnail Image"
+                    required
+                    value={editForm.featured_image}
+                    onChange={(url) => setEditForm((prev) => ({ ...prev, featured_image: url }))}
+                    helperText="Plays as the main bundle display card across the storefront catalog and product pages."
+                  />
 
                   {/* Preview Video URL */}
                   <div>
@@ -1575,20 +1556,13 @@ export default function Products() {
                     </div>
                   </div>
 
-                  {/* Gallery Images (One per line) */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center justify-between">
-                      <span>Gallery Images (One URL per line)</span>
-                      <span className="text-[10px] text-slate-500">Additional preview screenshots</span>
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={editForm.gallery_images_text}
-                      onChange={(e) => setEditForm((prev) => ({ ...prev, gallery_images_text: e.target.value }))}
-                      placeholder="https://images.unsplash.com/...&#10;https://images.unsplash.com/..."
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-purple-500 text-xs font-mono text-slate-200 focus:outline-none"
-                    />
-                  </div>
+                  {/* Gallery Images with ImgBB Upload & Visual Management */}
+                  <GalleryImageManager
+                    value={editForm.gallery_images_text}
+                    onChange={(text) => setEditForm((prev) => ({ ...prev, gallery_images_text: text }))}
+                    label="Gallery Images"
+                    helperText="Upload screenshots or previews directly from device gallery. Hosted on ImgBB CDN."
+                  />
                 </div>
               )}
 
@@ -2322,35 +2296,15 @@ export default function Products() {
 
               {/* TAB 2: MEDIA & PREVIEW VIDEO */}
               {addTab === 'media' && (
-                <div className="space-y-4">
-                  {/* Featured Image */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                      Cover Thumbnail Image URL *
-                    </label>
-                    <div className="flex items-center gap-3">
-                      <div className="flex-1 flex items-center rounded-xl bg-slate-950 border border-slate-800 focus-within:border-purple-500 px-3 py-2.5">
-                        <ImageIcon className="w-4 h-4 text-purple-400 mr-2 shrink-0" />
-                        <input
-                          type="url"
-                          value={createForm.featured_image}
-                          onChange={(e) => setCreateForm((prev) => ({ ...prev, featured_image: e.target.value }))}
-                          placeholder="https://images.unsplash.com/... or https://..."
-                          className="w-full bg-transparent text-xs text-white placeholder-slate-600 focus:outline-none"
-                        />
-                      </div>
-                      {createForm.featured_image && (
-                        <img
-                          src={createForm.featured_image}
-                          alt="Cover Preview"
-                          className="w-12 h-12 rounded-xl object-cover border border-slate-700 shrink-0"
-                          onError={(e) => {
-                            (e.target as HTMLElement).style.display = 'none';
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
+                <div className="space-y-5">
+                  {/* Cover Thumbnail Image with ImgBB Gallery Upload */}
+                  <ImageUploadField
+                    label="Cover Thumbnail Image"
+                    required
+                    value={createForm.featured_image}
+                    onChange={(url) => setCreateForm((prev) => ({ ...prev, featured_image: url }))}
+                    helperText="Plays as the main bundle display card across the storefront catalog and product pages."
+                  />
 
                   {/* Preview Video URL */}
                   <div>
@@ -2370,20 +2324,13 @@ export default function Products() {
                     </div>
                   </div>
 
-                  {/* Gallery Images (One per line) */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center justify-between">
-                      <span>Gallery Images (One URL per line)</span>
-                      <span className="text-[10px] text-slate-500">Additional preview screenshots</span>
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={createForm.gallery_images_text}
-                      onChange={(e) => setCreateForm((prev) => ({ ...prev, gallery_images_text: e.target.value }))}
-                      placeholder="https://images.unsplash.com/...&#10;https://images.unsplash.com/..."
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-purple-500 text-xs font-mono text-slate-200 focus:outline-none"
-                    />
-                  </div>
+                  {/* Gallery Images with ImgBB Upload & Visual Management */}
+                  <GalleryImageManager
+                    value={createForm.gallery_images_text}
+                    onChange={(text) => setCreateForm((prev) => ({ ...prev, gallery_images_text: text }))}
+                    label="Gallery Images"
+                    helperText="Upload screenshots or previews directly from device gallery. Hosted on ImgBB CDN."
+                  />
                 </div>
               )}
 

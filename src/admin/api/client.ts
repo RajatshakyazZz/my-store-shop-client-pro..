@@ -1483,8 +1483,64 @@ class PortalApiClient {
     return true;
   }
 
+  async uploadImage(file: File): Promise<{
+    url: string;
+    display_url?: string;
+    thumb_url?: string | null;
+    title?: string;
+    size?: number;
+  }> {
+    const validExtensions = ['.png', '.jpg', '.jpeg'];
+    const fileName = file.name ? file.name.toLowerCase() : '';
+    const hasValidExt = validExtensions.some((ext) => fileName.endsWith(ext));
+    const validMimes = ['image/png', 'image/jpeg', 'image/pjpeg', 'image/jpg'];
+    const hasValidMime = validMimes.includes(file.type.toLowerCase());
+
+    if (!hasValidExt || !hasValidMime) {
+      throw new Error('Only .PNG, .JPG, and .JPEG image files are allowed.');
+    }
+
+    if (file.size > 32 * 1024 * 1024) {
+      throw new Error('Image size exceeds 32 MB limit.');
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const response = await fetch('/api/admin/upload-image', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || `Upload failed with status ${response.status}`);
+    }
+
+    return {
+      url: data.url,
+      display_url: data.display_url,
+      thumb_url: data.thumb_url,
+      title: data.title,
+      size: data.size,
+    };
+  }
+
   async uploadMedia(file: File): Promise<{ url: string; id: string }> {
-    // Generate object URL or clean simulated asset upload
+    if (file.type.startsWith('image/')) {
+      try {
+        const uploaded = await this.uploadImage(file);
+        return {
+          url: uploaded.url,
+          id: `imgbb-${Date.now()}`,
+        };
+      } catch (err: any) {
+        console.warn('ImgBB upload error, falling back to local preview:', err);
+      }
+    }
+
+    // Fallback for non-image or development offline testing
     const objectUrl = URL.createObjectURL(file);
     return {
       url: objectUrl,
