@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import '../admin/index.css';
 
 :root {
   --rb-bg: #f8fafc;

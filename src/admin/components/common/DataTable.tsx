@@ -88,8 +88,8 @@ export default function DataTable<T extends Record<string, any>>({
         ) : paginatedData.length === 0 ? (
           <EmptyState title={emptyTitle} description={emptyDescription} />
         ) : (
-          <div className="overflow-x-auto -mx-0.5 sm:mx-0">
-            <table className="w-full text-left border-collapse min-w-[600px] sm:min-w-0">
+          <div className="overflow-x-auto admin-touch-scroll -mx-0.5 sm:mx-0">
+            <table className="w-full text-left border-collapse min-w-[560px] sm:min-w-0">
               <thead>
                 <tr className="border-b border-slate-800 bg-slate-950/40">
                   {columns.map((col, idx) => (

@@ -365,8 +365,8 @@ export default function Resellers() {
         </div>
       </div>
 
-      {/* Tabs Navigation */}
-      <div className="flex items-center gap-2 border-b border-slate-800 overflow-x-auto pb-1">
+      {/* Tabs Navigation - Mobile Touch Optimized */}
+      <div className="flex items-center gap-2 border-b border-slate-800 overflow-x-auto pb-2 admin-touch-scroll admin-no-scrollbar -mx-3.5 px-3.5 sm:mx-0 sm:px-0">
         <button
           onClick={() => setActiveTab('withdrawals')}
           className={`px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition whitespace-nowrap ${

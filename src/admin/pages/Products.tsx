@@ -902,8 +902,8 @@ export default function Products() {
       {/* ========================================================= */}
       {activeTab === 'all' && (
         <div className="space-y-4">
-          {/* Category Filter Pills Toolbar */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+          {/* Category Filter Pills Toolbar - Mobile Smooth Scroll */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 admin-touch-scroll admin-no-scrollbar -mx-3.5 px-3.5 sm:mx-0 sm:px-0">
             <button
               onClick={() => setSelectedCategoryFilter('all')}
               className={`px-3 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${

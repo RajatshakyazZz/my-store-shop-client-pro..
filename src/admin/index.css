@@ -1,8 +1,315 @@
-/* Admin Portal Specific Styles */
+/* =========================================================================
+   VaultWorld Admin Portal - Complete Theme Engine & Mobile Optimization
+   Supports Light & Dark Modes + Smooth Touch-Optimized Mobile Experience
+   ========================================================================= */
+
+/* Prevent iOS Safari 16px input zoom */
 @media (max-width: 639px) {
   .admin-root input,
   .admin-root select,
   .admin-root textarea {
     font-size: 16px !important;
+  }
+}
+
+/* Smooth touch scrolling & scrollbar utilities */
+.admin-root {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.admin-touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.admin-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.admin-no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* =========================================================================
+   LIGHT THEME OVERRIDES (.admin-theme-light)
+   ========================================================================= */
+.admin-theme-light {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Backgrounds */
+.admin-theme-light .bg-slate-950,
+.admin-theme-light .bg-slate-950\/95,
+.admin-theme-light .bg-slate-950\/90,
+.admin-theme-light .bg-slate-950\/80 {
+  background-color: #ffffff !important;
+}
+
+.admin-theme-light .bg-slate-900,
+.admin-theme-light .bg-slate-900\/80,
+.admin-theme-light .bg-slate-900\/60,
+.admin-theme-light .bg-slate-900\/50,
+.admin-theme-light .bg-slate-900\/40,
+.admin-theme-light .bg-slate-950\/40,
+.admin-theme-light .bg-slate-950\/50 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04) !important;
+}
+
+.admin-theme-light .bg-slate-900\/90 {
+  background-color: #f8fafc !important;
+}
+
+.admin-theme-light .bg-slate-800,
+.admin-theme-light .bg-slate-800\/80,
+.admin-theme-light .bg-slate-800\/60,
+.admin-theme-light .bg-slate-800\/40 {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Topbar & Sticky Headers */
+.admin-theme-light header {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-bottom-color: #e2e8f0 !important;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Sidebar */
+.admin-theme-light aside {
+  background-color: #ffffff !important;
+  border-right-color: #e2e8f0 !important;
+  box-shadow: 1px 0 3px 0 rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Mobile Bottom Navigation Bar */
+.admin-theme-light nav[aria-label="Mobile quick navigation"] {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  border-top-color: #e2e8f0 !important;
+  box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.05) !important;
+}
+
+/* Main Container */
+.admin-theme-light main {
+  background-color: #f8fafc !important;
+}
+
+/* Text Colors */
+.admin-theme-light .text-white,
+.admin-theme-light .text-slate-100,
+.admin-theme-light .text-slate-200 {
+  color: #0f172a !important;
+}
+
+.admin-theme-light .text-slate-300,
+.admin-theme-light .text-slate-400 {
+  color: #475569 !important;
+}
+
+.admin-theme-light .text-slate-500 {
+  color: #64748b !important;
+}
+
+/* Borders */
+.admin-theme-light .border-slate-800,
+.admin-theme-light .border-slate-800\/80,
+.admin-theme-light .border-slate-800\/90,
+.admin-theme-light .border-slate-800\/60,
+.admin-theme-light .border-slate-700,
+.admin-theme-light .border-slate-700\/80,
+.admin-theme-light .border-slate-700\/50 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Form Controls: Input, Select, Textarea */
+.admin-theme-light input:not([type="checkbox"]):not([type="radio"]),
+.admin-theme-light select,
+.admin-theme-light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03) !important;
+}
+
+.admin-theme-light input:not([type="checkbox"]):not([type="radio"])::placeholder,
+.admin-theme-light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.admin-theme-light input:not([type="checkbox"]):not([type="radio"]):focus,
+.admin-theme-light select:focus,
+.admin-theme-light textarea:focus {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.25) !important;
+  background-color: #ffffff !important;
+}
+
+/* Form Labels & Section Titles */
+.admin-theme-light label {
+  color: #334155 !important;
+  font-weight: 700 !important;
+}
+
+/* Data Tables */
+.admin-theme-light table {
+  color: #0f172a !important;
+}
+
+.admin-theme-light thead tr,
+.admin-theme-light table tr.border-b {
+  border-bottom-color: #e2e8f0 !important;
+}
+
+.admin-theme-light thead tr {
+  background-color: #f8fafc !important;
+}
+
+.admin-theme-light th {
+  color: #475569 !important;
+}
+
+.admin-theme-light tbody tr:hover {
+  background-color: #f8fafc !important;
+}
+
+/* Navigation Links in Sidebar */
+.admin-theme-light aside a.text-slate-400 {
+  color: #64748b !important;
+}
+
+.admin-theme-light aside a.text-slate-400:hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+.admin-theme-light aside a.bg-purple-600\/15,
+.admin-theme-light aside a.text-purple-400 {
+  background-color: #fef3c7 !important;
+  color: #b45309 !important;
+  border-color: #fcd34d !important;
+}
+
+/* Navigation Badges */
+.admin-theme-light .bg-slate-800.text-purple-300 {
+  background-color: #fef3c7 !important;
+  color: #92400e !important;
+  border-color: #fde68a !important;
+}
+
+/* Stat Cards */
+.admin-theme-light .text-purple-400.bg-purple-500\/10 {
+  background-color: #fef3c7 !important;
+  color: #b45309 !important;
+  border-color: #fde68a !important;
+}
+
+.admin-theme-light .text-emerald-400.bg-emerald-500\/10 {
+  background-color: #ecfdf5 !important;
+  color: #047857 !important;
+  border-color: #a7f3d0 !important;
+}
+
+.admin-theme-light .text-amber-400.bg-amber-500\/10 {
+  background-color: #fffbeb !important;
+  color: #b45309 !important;
+  border-color: #fde68a !important;
+}
+
+.admin-theme-light .text-rose-400.bg-rose-500\/10 {
+  background-color: #fff1f2 !important;
+  color: #be123c !important;
+  border-color: #fecdd3 !important;
+}
+
+.admin-theme-light .text-blue-400.bg-blue-500\/10 {
+  background-color: #eff6ff !important;
+  color: #1d4ed8 !important;
+  border-color: #bfdbfe !important;
+}
+
+/* Health & Status Badges */
+.admin-theme-light .bg-emerald-950\/40,
+.admin-theme-light .bg-emerald-950\/50 {
+  background-color: #ecfdf5 !important;
+  color: #065f46 !important;
+  border-color: #6ee7b7 !important;
+}
+
+.admin-theme-light .bg-amber-950\/40,
+.admin-theme-light .bg-amber-950\/50 {
+  background-color: #fffbeb !important;
+  color: #92400e !important;
+  border-color: #fcd34d !important;
+}
+
+.admin-theme-light .bg-rose-950\/30,
+.admin-theme-light .bg-rose-950\/50,
+.admin-theme-light .bg-rose-950\/60 {
+  background-color: #fff1f2 !important;
+  color: #9f1239 !important;
+  border-color: #fca5a5 !important;
+}
+
+/* Button & Action Overrides */
+.admin-theme-light button.bg-slate-900,
+.admin-theme-light a.bg-slate-900 {
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+.admin-theme-light button.bg-slate-900:hover,
+.admin-theme-light a.bg-slate-900:hover {
+  background-color: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: #0f172a !important;
+}
+
+.admin-theme-light button.bg-slate-800,
+.admin-theme-light a.bg-slate-800 {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+.admin-theme-light button.bg-slate-800:hover,
+.admin-theme-light a.bg-slate-800:hover {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* Tabs & Filter Buttons */
+.admin-theme-light .bg-purple-600\/20,
+.admin-theme-light .text-purple-300 {
+  background-color: #fef3c7 !important;
+  color: #92400e !important;
+  border-color: #fcd34d !important;
+}
+
+/* Modals & Dialogs */
+.admin-theme-light .bg-slate-950.border-slate-800,
+.admin-theme-light .bg-slate-900.border-slate-800 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Mobile Touch Optimizations */
+@media (max-width: 768px) {
+  .admin-root {
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+
+  /* Make tab bars smoothly scrollable on mobile */
+  .admin-root .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Keep table views readable without squishing columns */
+  .admin-root table {
+    min-width: 620px;
   }
 }

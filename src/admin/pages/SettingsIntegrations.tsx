@@ -307,8 +307,8 @@ export default function SettingsIntegrations() {
         </p>
       </div>
 
-      {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto">
+      {/* Tabs - Touch-scrollable & edge-to-edge on mobile */}
+      <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto admin-touch-scroll admin-no-scrollbar -mx-3.5 px-3.5 sm:mx-0 sm:px-0">
         {[
           { id: 'pg', label: 'Cashfree Gateway', icon: CreditCard, color: 'text-purple-400' },
           { id: 'telegram', label: 'Telegram Alerts & Bot', icon: Send, color: 'text-sky-400' },
