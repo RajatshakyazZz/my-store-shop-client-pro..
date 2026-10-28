@@ -207,7 +207,28 @@ class PortalApiClient {
     let localDeletedSlugs = new Set<string>();
     if (typeof window !== 'undefined') {
       try {
-        localCustomProds = JSON.parse(localStorage.getItem('vaultzet_custom_products') || '[]');
+        const rawLocal = JSON.parse(localStorage.getItem('vaultzet_custom_products') || '[]');
+        if (Array.isArray(rawLocal)) {
+          localCustomProds = rawLocal.filter((p: any) => {
+            const title = String(p.name || p.title || '').trim();
+            const slug = String(p.slug || '').trim().toLowerCase();
+            return (
+              title &&
+              title !== 'Reels Bundle' &&
+              title !== 'New Reels Bundle' &&
+              title !== '[DELETED]' &&
+              !title.toLowerCase().startsWith('demo') &&
+              !title.toLowerCase().startsWith('test') &&
+              !slug.startsWith('test-') &&
+              !slug.startsWith('demo-')
+            );
+          });
+          if (localCustomProds.length !== rawLocal.length) {
+            try {
+              localStorage.setItem('vaultzet_custom_products', JSON.stringify(localCustomProds));
+            } catch {}
+          }
+        }
       } catch (e) {}
       try {
         const delRaw = localStorage.getItem('vaultzet_deleted_slugs');
@@ -357,10 +378,27 @@ class PortalApiClient {
               (!lp.slug || !localDeletedSlugs.has(lp.slug.toLowerCase()))
           );
 
+          const isDemoProd = (p: any) => {
+            const name = String(p.name || '').trim();
+            const slug = String(p.slug || '').trim().toLowerCase();
+            return (
+              !name ||
+              name === 'Reels Bundle' ||
+              name === 'New Reels Bundle' ||
+              name === '[DELETED]' ||
+              name.toLowerCase().startsWith('demo') ||
+              name.toLowerCase().startsWith('test') ||
+              slug === 'reels-bundle' ||
+              slug.startsWith('test-') ||
+              slug.startsWith('demo-')
+            );
+          };
+
           const combined = applyLocalEdits([...uncommittedLocal, ...dbProds]).filter(
             (p) =>
               !p.is_deleted &&
               p.status !== 'trash' &&
+              !isDemoProd(p) &&
               !localDeletedSlugs.has(String(p.id).toLowerCase()) &&
               (!p.slug || !localDeletedSlugs.has(p.slug.toLowerCase()))
           );

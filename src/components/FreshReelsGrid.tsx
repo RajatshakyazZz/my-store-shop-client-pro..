@@ -10,6 +10,7 @@ import {
   fetchCustomProducts,
   getAllCatalogBundles,
   getLocalCustomProductsSync,
+  isDemoOrInvalidBundle,
 } from '@/lib/customProducts';
 import { BundleProduct } from '@/types';
 
@@ -18,13 +19,13 @@ export default function FreshReelsGrid() {
   const [freshBundles, setFreshBundles] = useState<BundleProduct[]>(() => {
     const local = getLocalCustomProductsSync();
     const all = getAllCatalogBundles(local, BUNDLE_PRODUCTS);
-    return all.filter((b) => !b.isUpcoming).slice(0, 8);
+    return all.filter((b) => !b.isUpcoming && !isDemoOrInvalidBundle(b)).slice(0, 8);
   });
 
   useEffect(() => {
     fetchCustomProducts().then((res) => {
       const all = getAllCatalogBundles(res, BUNDLE_PRODUCTS);
-      setFreshBundles(all.filter((b) => !b.isUpcoming).slice(0, 8));
+      setFreshBundles(all.filter((b) => !b.isUpcoming && !isDemoOrInvalidBundle(b)).slice(0, 8));
     }).catch(() => {});
   }, []);
 

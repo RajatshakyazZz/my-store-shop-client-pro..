@@ -3,6 +3,54 @@ import { db } from '@/lib/firebase';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { BUNDLE_PRODUCTS } from '@/data/bundles';
 
+// Helper to reliably detect and filter out demo, placeholder, deleted, or dummy test bundles
+export function isDemoOrInvalidBundle(p: any): boolean {
+  if (!p) return true;
+  const title = String(p.title || p.name || '').trim();
+  const slug = String(p.slug || '').trim().toLowerCase();
+  const id = String(p.id || '').trim().toLowerCase();
+  const thumb = String(p.thumbnail || p.featured_image || p.image || '').trim();
+
+  // Explicit demo/test/placeholder/deleted titles
+  if (
+    !title ||
+    title === 'Reels Bundle' ||
+    title === 'New Reels Bundle' ||
+    title === 'New Product' ||
+    title === '[DELETED]' ||
+    title.toLowerCase().startsWith('demo') ||
+    title.toLowerCase().startsWith('test')
+  ) {
+    return true;
+  }
+
+  // Explicit demo/test slugs or IDs
+  if (
+    slug === 'reels-bundle' ||
+    slug === 'new-reels-bundle' ||
+    slug.startsWith('test-') ||
+    slug.startsWith('demo-') ||
+    id.startsWith('test-') ||
+    id.startsWith('demo-')
+  ) {
+    return true;
+  }
+
+  // Stock placeholder unsplash image with generic or missing title
+  if (
+    thumb.includes('photo-1618005182384-a83a8bd57fbe') &&
+    (title === 'Reels Bundle' || title === 'New Reels Bundle' || !title)
+  ) {
+    return true;
+  }
+
+  if (Boolean(p.is_deleted || p.isDeleted || p.status === 'trash' || p.status === 'draft')) {
+    return true;
+  }
+
+  return false;
+}
+
 export function mapFirestoreDocToBundleProduct(data: any): BundleProduct {
   if (!data) data = {};
   const rawName = data.name ? String(data.name).trim() : '';
@@ -210,9 +258,22 @@ export function getLocalCustomProductsSync(): BundleProduct[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed)) {
-      return parsed
+      // Auto-scrub demo/test items from localStorage so stale cached dummy data is eliminated
+      const sanitized = parsed.filter((item: any) => !isDemoOrInvalidBundle(item));
+      if (sanitized.length !== parsed.length) {
+        try {
+          localStorage.setItem('vaultzet_custom_products', JSON.stringify(sanitized));
+        } catch {}
+      }
+
+      return sanitized
         .map(mapFirestoreDocToBundleProduct)
-        .filter((p) => !deleted.has(p.slug.toLowerCase()) && !deleted.has(p.id.toLowerCase()));
+        .filter(
+          (p) =>
+            !isDemoOrInvalidBundle(p) &&
+            !deleted.has(p.slug.toLowerCase()) &&
+            !deleted.has(p.id.toLowerCase())
+        );
     }
   } catch {}
   return [];
@@ -242,7 +303,12 @@ export async function fetchCustomProducts(force = false): Promise<BundleProduct[
           return;
         }
         const slug = String(data.slug || d.id || '').toLowerCase();
-        const isDeleted = Boolean(data.is_deleted || data.status === 'trash' || data.status === 'draft');
+        const isDeleted = Boolean(
+          data.is_deleted ||
+            data.status === 'trash' ||
+            data.status === 'draft' ||
+            isDemoOrInvalidBundle(data)
+        );
 
         if (isDeleted) {
           deletedSet.add(d.id.toLowerCase());
@@ -251,6 +317,9 @@ export async function fetchCustomProducts(force = false): Promise<BundleProduct[
           if (slug) cachedDeletedSlugs.add(slug);
         } else {
           const bundle = mapFirestoreDocToBundleProduct({ id: d.id, ...data });
+          if (isDemoOrInvalidBundle(bundle)) {
+            return;
+          }
           const bundleSlug = bundle.slug.toLowerCase();
           const bundleId = bundle.id.toLowerCase();
           if (!deletedSet.has(bundleSlug) && !deletedSet.has(bundleId)) {
@@ -269,13 +338,20 @@ export async function fetchCustomProducts(force = false): Promise<BundleProduct[
 
   // Add deduplicated Firestore bundles to list
   slugMap.forEach((bundle) => {
-    list.push(bundle);
+    if (!isDemoOrInvalidBundle(bundle)) {
+      list.push(bundle);
+    }
   });
 
   // Merge any local products not yet in Firestore (and not deleted)
   for (const lp of localList) {
     const lpSlug = lp.slug.toLowerCase();
-    if (!slugMap.has(lpSlug) && !deletedSet.has(lpSlug) && !deletedSet.has(lp.id.toLowerCase())) {
+    if (
+      !isDemoOrInvalidBundle(lp) &&
+      !slugMap.has(lpSlug) &&
+      !deletedSet.has(lpSlug) &&
+      !deletedSet.has(lp.id.toLowerCase())
+    ) {
       list.push(lp);
       slugMap.set(lpSlug, lp);
     }
@@ -303,6 +379,7 @@ export function getAllCatalogBundles(
       Boolean(
         p &&
           typeof p.slug === 'string' &&
+          !isDemoOrInvalidBundle(p) &&
           !deletedSlugs.has(p.slug.toLowerCase()) &&
           !deletedSlugs.has(String(p.id || '').toLowerCase())
       )
@@ -432,7 +509,7 @@ export function getAllCatalogBundles(
     });
 
   // Brand-new products placed on top, existing products preserve curated order with updated prices
-  return [...brandNewCustom, ...updatedInitial];
+  return [...brandNewCustom, ...updatedInitial].filter((b) => !isDemoOrInvalidBundle(b));
 }
 
 const serverSingleProductCache = new Map<string, { product: BundleProduct | null; cachedAt: number }>();
