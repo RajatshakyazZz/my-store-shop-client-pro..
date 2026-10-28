@@ -54,6 +54,11 @@ let cachedPayUCreds: PayUCredentials | null = null;
 let payuCredsCachedAt = 0;
 const PAYU_CREDS_TTL = 30 * 1000; // 30 seconds cache (refreshes quickly when admin updates keys)
 
+export function clearPayUCredentialsCache(): void {
+  cachedPayUCreds = null;
+  payuCredsCachedAt = 0;
+}
+
 /**
  * Retrieve PayU credentials from Environment Variables or Firestore store_settings/payu
  */
@@ -102,13 +107,17 @@ export async function getPayUCredentials(forceRefresh = false): Promise<PayUCred
         const data = payuSnap.data();
         if (data.merchant_key && !merchantKey) merchantKey = String(data.merchant_key).trim();
         if (data.merchant_salt && !merchantSalt) merchantSalt = String(data.merchant_salt).trim();
+        if (data.app_id && !merchantKey && !data.app_id.startsWith('CF')) merchantKey = String(data.app_id).trim();
+        if (data.secret_key && !merchantSalt && !data.secret_key.startsWith('cfsk_')) merchantSalt = String(data.secret_key).trim();
         if (data.environment) {
           environment = data.environment === 'TEST' || data.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION';
         }
         if (typeof data.enabled === 'boolean') enabled = data.enabled;
         if (data.return_url) returnUrl = String(data.return_url).trim();
-      } else {
-        // Also check if admin saved keys into 'cashfree' doc as a bridge
+      }
+
+      // If credentials still missing, check store_settings/cashfree doc as bridge
+      if (!merchantKey || !merchantSalt) {
         const cfSnap = await getDoc(doc(db, 'store_settings', 'cashfree'));
         if (cfSnap.exists()) {
           const cfData = cfSnap.data();
@@ -120,6 +129,10 @@ export async function getPayUCredentials(forceRefresh = false): Promise<PayUCred
           if (cfData.secret_key && !merchantSalt && !cfData.secret_key.startsWith('cfsk_')) {
             merchantSalt = String(cfData.secret_key).trim();
           }
+          if (cfData.environment) {
+            environment = cfData.environment === 'TEST' || cfData.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION';
+          }
+          if (typeof cfData.enabled === 'boolean') enabled = cfData.enabled;
         }
       }
     } catch (err) {

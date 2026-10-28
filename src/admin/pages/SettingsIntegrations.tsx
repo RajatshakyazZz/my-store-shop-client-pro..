@@ -81,6 +81,7 @@ export default function SettingsIntegrations() {
   const [showSecret, setShowSecret] = useState(false);
   const [showTgToken, setShowTgToken] = useState(false);
   const [isTestingTg, setIsTestingTg] = useState(false);
+  const [isVerifyingPg, setIsVerifyingPg] = useState(false);
 
   // Sync state when data arrives
   React.useEffect(() => {
@@ -283,22 +284,42 @@ export default function SettingsIntegrations() {
     });
   };
 
-  const handleProcessorVerify = () => {
-    const key = pgForm?.merchant_key || pgForm?.app_id;
-    const salt = pgForm?.merchant_salt || pgForm?.secret_key;
+  const handleProcessorVerify = async () => {
+    const key = String(pgForm?.merchant_key || pgForm?.app_id || '').trim();
+    const salt = String(pgForm?.merchant_salt || pgForm?.secret_key || '').trim();
     if (!key || !salt) {
       addToast({
         type: 'warning',
         title: 'Credentials Required',
-        message: 'Please fill in PayU Merchant Key and Salt before verifying.',
+        message: 'Please fill in both PayU Merchant Key and Merchant Salt before verifying.',
       });
       return;
     }
-    addToast({
-      type: 'success',
-      title: 'PayU Verification Ready',
-      message: 'PayU credentials formatted and validated. Ready to process live customer orders.',
-    });
+
+    setIsVerifyingPg(true);
+    try {
+      await updatePgMutation.mutateAsync({
+        ...pgForm,
+        merchant_key: key,
+        merchant_salt: salt,
+        app_id: key,
+        secret_key: salt,
+      } as PgBridgeConfig);
+
+      addToast({
+        type: 'success',
+        title: 'PayU Status Verified & Synced! 🚀',
+        message: `Environment: ${pgForm?.environment || 'PRODUCTION'}. Credentials are saved in Firestore and ready for live checkout.`,
+      });
+    } catch (err: any) {
+      addToast({
+        type: 'error',
+        title: 'Verification Failed',
+        message: err.message || 'Could not verify PayU credentials.',
+      });
+    } finally {
+      setIsVerifyingPg(false);
+    }
   };
 
   const isLoadingAny = pgLoading || metaLoading || mmcLoading || seoLoading || cacheLoading;
@@ -397,10 +418,11 @@ export default function SettingsIntegrations() {
                 <button
                   type="button"
                   onClick={handleProcessorVerify}
-                  className="px-3 py-1.5 rounded-lg bg-purple-600/20 hover:bg-purple-600/30 text-xs font-bold text-purple-300 border border-purple-500/30 transition-all flex items-center gap-1.5"
+                  disabled={isVerifyingPg || updatePgMutation.isPending}
+                  className="px-3 py-1.5 rounded-lg bg-purple-600/20 hover:bg-purple-600/30 text-xs font-bold text-purple-300 border border-purple-500/30 transition-all flex items-center gap-1.5 disabled:opacity-50"
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Verify Status</span>
+                  <span>{isVerifyingPg ? 'Verifying...' : 'Verify Status'}</span>
                 </button>
               </div>
             </div>

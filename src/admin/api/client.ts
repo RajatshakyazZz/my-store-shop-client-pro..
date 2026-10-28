@@ -2111,13 +2111,54 @@ class PortalApiClient {
   // 16. SETTINGS & INTEGRATIONS (PayU Gateway)
   // ==========================================
   async getPayUConfig(): Promise<PgBridgeConfig> {
+    // 1. First attempt to fetch from server-side admin settings API
+    if (typeof window !== 'undefined') {
+      try {
+        const res = await fetch('/api/admin/settings/payu', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-store',
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.config) {
+            const mapped: PgBridgeConfig = {
+              enabled: typeof data.config.enabled === 'boolean' ? data.config.enabled : true,
+              merchant_key: data.config.merchant_key || '',
+              merchant_salt: data.config.merchant_salt || '',
+              app_id: data.config.merchant_key || '',
+              secret_key: data.config.merchant_salt || '',
+              environment: data.config.environment || 'PRODUCTION',
+              return_url: data.config.return_url || 'https://vaultworld.shop/api/payment/payu/return',
+            };
+            if (mapped.merchant_key || mapped.merchant_salt) {
+              this.saveSettingLocally('payu', mapped);
+              return mapped;
+            }
+          }
+        }
+      } catch (apiErr) {
+        console.warn('API /api/admin/settings/payu fetch error, falling back to Firestore/local:', apiErr);
+      }
+    }
+
+    // 2. Fallback to client Firestore store_settings/payu or store_settings/cashfree
     if (db) {
       try {
         const snap = await getDoc(doc(db, 'store_settings', 'payu'));
         if (snap.exists()) {
           const data = snap.data() as PgBridgeConfig;
-          this.saveSettingLocally('payu', data);
-          return data;
+          const mapped: PgBridgeConfig = {
+            enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
+            merchant_key: data.merchant_key || data.app_id || '',
+            merchant_salt: data.merchant_salt || data.secret_key || '',
+            app_id: data.merchant_key || data.app_id || '',
+            secret_key: data.merchant_salt || data.secret_key || '',
+            environment: data.environment === 'TEST' || data.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
+            return_url: data.return_url || 'https://vaultworld.shop/api/payment/payu/return',
+          };
+          this.saveSettingLocally('payu', mapped);
+          return mapped;
         }
         // Fallback to legacy cashfree doc if payu doc doesn't exist yet
         const cfSnap = await getDoc(doc(db, 'store_settings', 'cashfree'));
@@ -2127,6 +2168,8 @@ class PortalApiClient {
             enabled: typeof cfData.enabled === 'boolean' ? cfData.enabled : true,
             merchant_key: cfData.merchant_key || cfData.app_id || '',
             merchant_salt: cfData.merchant_salt || cfData.secret_key || '',
+            app_id: cfData.merchant_key || cfData.app_id || '',
+            secret_key: cfData.merchant_salt || cfData.secret_key || '',
             environment: cfData.environment === 'TEST' || cfData.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
             return_url: cfData.return_url || 'https://vaultworld.shop/api/payment/payu/return',
           };
@@ -2144,14 +2187,37 @@ class PortalApiClient {
     const clean = sanitizePayload(config);
     this.saveSettingLocally('payu', clean);
     this.saveSettingLocally('cashfree', clean);
+
+    // 1. Post to server-side admin settings API (persists to Firestore securely)
+    let apiSuccess = false;
+    if (typeof window !== 'undefined') {
+      try {
+        const res = await fetch('/api/admin/settings/payu', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(clean),
+        });
+        const data = await res.json();
+        if (data.success) {
+          apiSuccess = true;
+        } else {
+          console.warn('Server API error saving PayU config:', data.error);
+        }
+      } catch (apiErr) {
+        console.warn('Network error saving PayU config to API route:', apiErr);
+      }
+    }
+
+    // 2. Also save directly to client Firestore if available
     if (db) {
       try {
         await setDoc(doc(db, 'store_settings', 'payu'), clean, { merge: true });
         await setDoc(doc(db, 'store_settings', 'cashfree'), clean, { merge: true });
       } catch (e) {
-        console.warn('Firestore payu config update error:', e);
+        console.warn('Firestore direct client write error:', e);
       }
     }
+
     await logAdminAction({
       adminEmail: 'admin@vaultworld.shop',
       action: 'UPDATE_PAYU_CONFIG',
