@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Check, ArrowRight, ArrowUpRight, Play, RotateCw } from 'lucide-react';
+import { Check, ArrowRight, ArrowUpRight, Play } from 'lucide-react';
 import { ALL_ACCESS_PLANS } from '@/data/bundles';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
 
@@ -215,34 +215,21 @@ export default function MembershipPlans() {
                   </span>
                 )}
 
-                {currentPlan.features.map((item, index) => {
-                  const isImportRow = isReseller && index === 1;
-                  return (
+                {currentPlan.features.map((item, index) => (
+                  <div
+                    key={index}
+                    className="py-2.5 flex items-center gap-3 first:pt-1 last:pb-1"
+                  >
                     <div
-                      key={index}
-                      className="py-2.5 flex items-center gap-3 first:pt-1 last:pb-1"
+                      className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-amber-100 text-amber-800"
                     >
-                      <div
-                        className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-amber-100 text-amber-800"
-                      >
-                        {isImportRow ? (
-                          <RotateCw className="w-3 h-3 stroke-[2.75]" />
-                        ) : (
-                          <Check className="w-3 h-3 stroke-[3]" />
-                        )}
-                      </div>
-                      <span
-                        className={`text-xs sm:text-[13px] ${
-                          isImportRow
-                            ? 'font-extrabold text-amber-900'
-                            : 'font-bold text-slate-800'
-                        }`}
-                      >
-                        {item}
-                      </span>
+                      <Check className="w-3 h-3 stroke-[3]" />
                     </div>
-                  );
-                })}
+                    <span className="text-xs sm:text-[13px] font-bold text-slate-800">
+                      {item}
+                    </span>
+                  </div>
+                ))}
               </div>
 
             </div>

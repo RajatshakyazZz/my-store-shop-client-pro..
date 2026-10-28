@@ -1216,9 +1216,9 @@ function OrderSuccessContent() {
                           </span>
                           <span>Access to 129+ published reels bundles</span>
                         </li>
-                        <li className="flex items-center gap-2 text-[#ec2677] font-bold">
+                        <li className="flex items-center gap-2">
                           <span className="w-4 h-4 rounded-full bg-pink-100 text-[#ec2677] flex items-center justify-center text-[10px] font-black">
-                            ↻
+                            ✓
                           </span>
                           <span>Import all bundles in one click</span>
                         </li>
