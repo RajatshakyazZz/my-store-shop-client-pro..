@@ -2,6 +2,13 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+export interface SiteModeData {
+  mode: 'LIVE' | 'MAINTENANCE';
+  maintenance_message: string;
+  bypass_ips: string[];
+  last_updated?: string;
+}
+
 export interface StoreSettings {
   storeName: string;
   ownerName?: string;
@@ -16,7 +23,14 @@ export interface StoreSettings {
   whatsappButtonEnabled?: boolean;
   whatsappDefaultMessage?: string;
   whatsappPopupText?: string;
+  siteMode?: SiteModeData;
 }
+
+const DEFAULT_SITE_MODE: SiteModeData = {
+  mode: 'LIVE',
+  maintenance_message: 'Our store is undergoing scheduled performance upgrades. We will be back online shortly!',
+  bypass_ips: ['127.0.0.1'],
+};
 
 const DEFAULT_SETTINGS: StoreSettings = {
   storeName: 'VaultWorld Store',
@@ -30,6 +44,7 @@ const DEFAULT_SETTINGS: StoreSettings = {
   whatsappButtonEnabled: true,
   whatsappDefaultMessage: 'Hi VaultWorld Support! I need quick help regarding my VaultWorld Store order.',
   whatsappPopupText: 'Need help? Chat on WhatsApp',
+  siteMode: DEFAULT_SITE_MODE,
 };
 
 function sanitizeStoreName(name?: string, fallback = 'VaultWorld Store'): string {
@@ -93,14 +108,28 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
       const cached = localStorage.getItem('vaultzet_store_settings');
       const portalGen = localStorage.getItem('rb_portal_settings_general');
       const portalWa = localStorage.getItem('rb_portal_settings_whatsapp');
+      const portalSiteMode = localStorage.getItem('vaultworld_site_mode') || localStorage.getItem('vaultzet_setting_site_mode');
 
       let genData: any = null;
       let waData: any = null;
+      let siteModeData: SiteModeData | null = null;
       if (portalGen) {
         try { genData = JSON.parse(portalGen); } catch {}
       }
       if (portalWa) {
         try { waData = JSON.parse(portalWa); } catch {}
+      }
+      if (portalSiteMode) {
+        try {
+          const parsedSm = JSON.parse(portalSiteMode);
+          if (parsedSm && (parsedSm.mode === 'MAINTENANCE' || parsedSm.mode === 'LIVE')) {
+            siteModeData = {
+              mode: parsedSm.mode,
+              maintenance_message: parsedSm.maintenance_message || DEFAULT_SITE_MODE.maintenance_message,
+              bypass_ips: Array.isArray(parsedSm.bypass_ips) ? parsedSm.bypass_ips : DEFAULT_SITE_MODE.bypass_ips,
+            };
+          }
+        } catch {}
       }
 
       if (cached) {
@@ -128,9 +157,10 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
           whatsappButtonEnabled: waData?.enabled !== undefined ? waData.enabled : (parsed.whatsappButtonEnabled !== undefined ? parsed.whatsappButtonEnabled : true),
           whatsappDefaultMessage: waData?.default_message || parsed.whatsappDefaultMessage || DEFAULT_SETTINGS.whatsappDefaultMessage,
           whatsappPopupText: waData?.popup_text || parsed.whatsappPopupText || DEFAULT_SETTINGS.whatsappPopupText,
+          siteMode: siteModeData || parsed.siteMode || DEFAULT_SITE_MODE,
         };
         setSettings(cleaned);
-      } else if (genData || waData) {
+      } else if (genData || waData || siteModeData) {
         const resolvedPhone = sanitizePhone(
           genData?.support_whatsapp || genData?.support_phone || waData?.phone_number || '+91 8051017331'
         );
@@ -144,6 +174,7 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
           whatsappButtonEnabled: waData?.enabled !== undefined ? waData.enabled : true,
           whatsappDefaultMessage: waData?.default_message || prev.whatsappDefaultMessage,
           whatsappPopupText: waData?.popup_text || prev.whatsappPopupText,
+          siteMode: siteModeData || prev.siteMode || DEFAULT_SITE_MODE,
         }));
       }
     } catch {}
@@ -200,19 +231,36 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
       }
     };
 
+    const handleSiteModeUpdate = (e: any) => {
+      if (e.detail) {
+        const sm = e.detail;
+        setSettings((prev) => ({
+          ...prev,
+          siteMode: {
+            mode: sm.mode === 'MAINTENANCE' ? 'MAINTENANCE' : 'LIVE',
+            maintenance_message: sm.maintenance_message || DEFAULT_SITE_MODE.maintenance_message,
+            bypass_ips: Array.isArray(sm.bypass_ips) ? sm.bypass_ips : DEFAULT_SITE_MODE.bypass_ips,
+          },
+        }));
+      }
+    };
+
     window.addEventListener('vaultworld:whatsapp_updated', handleCustomWaUpdate);
     window.addEventListener('vaultworld:branding_updated', handleBrandingUpdate);
     window.addEventListener('vaultworld:store_setup_updated', handleStoreSetupUpdate);
+    window.addEventListener('vaultworld:site_mode_updated', handleSiteModeUpdate);
     return () => {
       window.removeEventListener('vaultworld:whatsapp_updated', handleCustomWaUpdate);
       window.removeEventListener('vaultworld:branding_updated', handleBrandingUpdate);
       window.removeEventListener('vaultworld:store_setup_updated', handleStoreSetupUpdate);
+      window.removeEventListener('vaultworld:site_mode_updated', handleSiteModeUpdate);
     };
   }, []);
 
   useEffect(() => {
     let isCancelled = false;
     let hasTriggered = false;
+    let unsubSiteMode: (() => void) | null = null;
 
     const startFirestoreSync = async () => {
       if (hasTriggered || isCancelled) return;
@@ -220,7 +268,7 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
       cleanupListeners();
 
       try {
-        const [{ db }, { doc, getDoc }] = await Promise.all([
+        const [{ db }, { doc, getDoc, onSnapshot }] = await Promise.all([
           import('@/lib/firebase'),
           import('firebase/firestore'),
         ]);
@@ -229,11 +277,49 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
           return;
         }
 
-        const [generalSnap, brandingSnap, whatsappSnap] = await Promise.all([
+        const [generalSnap, brandingSnap, whatsappSnap, siteModeSnap] = await Promise.all([
           getDoc(doc(db, 'store_settings', 'general')).catch(() => null),
           getDoc(doc(db, 'store_settings', 'branding')).catch(() => null),
           getDoc(doc(db, 'store_settings', 'whatsapp')).catch(() => null),
+          getDoc(doc(db, 'store_settings', 'site_mode')).catch(() => null),
         ]);
+
+        if (!isCancelled && siteModeSnap && siteModeSnap.exists()) {
+          const smData = siteModeSnap.data() as SiteModeData;
+          setSettings((prev) => ({
+            ...prev,
+            siteMode: {
+              mode: smData.mode === 'MAINTENANCE' ? 'MAINTENANCE' : 'LIVE',
+              maintenance_message: smData.maintenance_message || DEFAULT_SITE_MODE.maintenance_message,
+              bypass_ips: Array.isArray(smData.bypass_ips) ? smData.bypass_ips : DEFAULT_SITE_MODE.bypass_ips,
+            },
+          }));
+          try {
+            localStorage.setItem('vaultworld_site_mode', JSON.stringify(smData));
+            localStorage.setItem('vaultzet_setting_site_mode', JSON.stringify(smData));
+          } catch {}
+        }
+
+        // Real-time listener for site mode changes
+        try {
+          unsubSiteMode = onSnapshot(doc(db, 'store_settings', 'site_mode'), (snap) => {
+            if (!isCancelled && snap.exists()) {
+              const liveSm = snap.data() as SiteModeData;
+              setSettings((prev) => ({
+                ...prev,
+                siteMode: {
+                  mode: liveSm.mode === 'MAINTENANCE' ? 'MAINTENANCE' : 'LIVE',
+                  maintenance_message: liveSm.maintenance_message || DEFAULT_SITE_MODE.maintenance_message,
+                  bypass_ips: Array.isArray(liveSm.bypass_ips) ? liveSm.bypass_ips : DEFAULT_SITE_MODE.bypass_ips,
+                },
+              }));
+              try {
+                localStorage.setItem('vaultworld_site_mode', JSON.stringify(liveSm));
+                localStorage.setItem('vaultzet_setting_site_mode', JSON.stringify(liveSm));
+              } catch {}
+            }
+          });
+        } catch {}
 
         if (!isCancelled && generalSnap && generalSnap.exists()) {
           const data = generalSnap.data();
@@ -315,6 +401,11 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
 
     return () => {
       isCancelled = true;
+      if (unsubSiteMode) {
+        try {
+          unsubSiteMode();
+        } catch {}
+      }
       cleanupListeners();
     };
   }, []);

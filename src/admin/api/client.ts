@@ -1991,18 +1991,39 @@ class PortalApiClient {
         if (snap.exists()) {
           const data = snap.data() as SiteModeConfig;
           this.saveSettingLocally('site_mode', data);
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('vaultworld_site_mode', JSON.stringify(data));
+            } catch {}
+          }
           return data;
         }
       } catch (e) {
         console.warn('Firestore site_mode fetch error, using local cache:', e);
       }
     }
+
+    if (typeof window !== 'undefined') {
+      try {
+        const smLocal = localStorage.getItem('vaultworld_site_mode');
+        if (smLocal) {
+          return JSON.parse(smLocal);
+        }
+      } catch {}
+    }
+
     return this.getSavedSetting('site_mode', initialSiteMode);
   }
 
   async updateSiteMode(config: SiteModeConfig): Promise<SiteModeConfig> {
     const clean = sanitizePayload(config);
     this.saveSettingLocally('site_mode', clean);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('vaultworld_site_mode', JSON.stringify(clean));
+        window.dispatchEvent(new CustomEvent('vaultworld:site_mode_updated', { detail: clean }));
+      } catch {}
+    }
     if (db) {
       try {
         await setDoc(doc(db, 'store_settings', 'site_mode'), clean, { merge: true });
@@ -2010,6 +2031,15 @@ class PortalApiClient {
         console.warn('Firestore updateSiteMode error:', e);
       }
     }
+    // Also sync via API route as fallback
+    try {
+      fetch('/api/site-mode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(clean),
+      }).catch(() => {});
+    } catch {}
+
     await logAdminAction({
       adminEmail: 'admin@vaultzet.com',
       action: 'UPDATE_SITE_MODE',

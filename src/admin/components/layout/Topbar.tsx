@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import {
   ExternalLink,
   Key,
@@ -27,6 +28,13 @@ export default function Topbar({ onOpenMobileMenu }: TopbarProps) {
   const { status, openModal } = useBackendHealth();
   const { theme, toggleTheme, isLight } = useAdminTheme();
   const navigate = useNavigate();
+
+  const { data: siteMode } = useQuery({
+    queryKey: ['site-mode'],
+    queryFn: () => portalApi.getSiteMode(),
+    refetchInterval: 15000,
+  });
+  const isStoreLive = siteMode?.mode !== 'MAINTENANCE';
 
   const handleCopyKey = () => {
     if (apiKey) {
@@ -65,10 +73,15 @@ export default function Topbar({ onOpenMobileMenu }: TopbarProps) {
         {/* Site Mode Live Badge */}
         <Link
           to="/site-mode"
-          className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/50 border border-emerald-500/30 text-emerald-400 text-xs font-black uppercase tracking-wider hover:bg-emerald-900/40 transition-all shadow-sm shrink-0"
+          className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-black uppercase tracking-wider transition-all shadow-sm shrink-0 ${
+            isStoreLive
+              ? 'bg-emerald-950/50 border-emerald-500/30 text-emerald-400 hover:bg-emerald-900/40'
+              : 'bg-amber-950/70 border-amber-500/50 text-amber-300 animate-pulse hover:bg-amber-900/60 shadow-md shadow-amber-950/50'
+          }`}
+          title={isStoreLive ? 'Store is LIVE: Accepting visitors & orders' : 'Store is in MAINTENANCE MODE: Public traffic blocked'}
         >
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>STORE: LIVE</span>
+          <span className={`w-2 h-2 rounded-full ${isStoreLive ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400 animate-ping'}`} />
+          <span>{isStoreLive ? 'STORE: LIVE' : 'STORE: MAINTENANCE'}</span>
         </Link>
 
         {/* Backend Health Check Badge */}

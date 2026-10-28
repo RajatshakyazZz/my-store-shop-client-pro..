@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createPayUPaymentPayload } from '@/lib/payu';
 import { db } from '@/lib/firebase';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { sendAbandonedOrPendingTelegramAlert } from '@/lib/telegram';
 import { generateOrderToken } from '@/lib/orderToken';
 import { getResellerListingBySlug } from '@/lib/resellerService';
@@ -15,6 +15,26 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { orderNumber, customer, items, orderBump, totalAmount, resellerSlug, couponCode } = body;
+
+    // Maintenance mode enforcement
+    if (db) {
+      try {
+        const modeSnap = await getDoc(doc(db, 'store_settings', 'site_mode'));
+        if (modeSnap.exists() && modeSnap.data()?.mode === 'MAINTENANCE') {
+          return NextResponse.json(
+            {
+              success: false,
+              error:
+                modeSnap.data()?.maintenance_message ||
+                'Store is currently under scheduled maintenance. Orders are temporarily paused. Please check back shortly.',
+            },
+            { status: 503 }
+          );
+        }
+      } catch (err) {
+        console.warn('Site mode check error:', err);
+      }
+    }
 
     const cleanEmail = String(customer?.email || '').trim().toLowerCase();
     const cleanPhone = String(customer?.phone || '').replace(/\D/g, '');

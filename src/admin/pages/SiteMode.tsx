@@ -32,9 +32,10 @@ export default function SiteMode() {
     mutationFn: (updated: SiteModeConfig) => portalApi.setSiteMode(updated),
     onSuccess: (data) => {
       queryClient.setQueryData(['site-mode'], data);
+      queryClient.invalidateQueries({ queryKey: ['site-mode'] });
       setIsConfirmOpen(false);
       if (data.mode === 'MAINTENANCE') {
-        warning('Maintenance Mode Activated', 'Public access paused. Only whitelisted IPs can browse.');
+        warning('Maintenance Mode Activated', 'Public access paused. Customers now see the maintenance screen.');
       } else {
         success('Store is LIVE', 'VaultWorld Store is now open to all global visitors.');
       }
@@ -56,7 +57,7 @@ export default function SiteMode() {
     });
   };
 
-  const isLive = config?.mode === 'LIVE';
+  const isLive = (config?.mode ?? 'LIVE') === 'LIVE';
 
   return (
     <div className="space-y-6">
@@ -110,14 +111,21 @@ export default function SiteMode() {
 
           <button
             onClick={() => handleRequestToggle(isLive ? 'MAINTENANCE' : 'LIVE')}
-            className={`px-6 py-3 rounded-2xl font-extrabold text-xs transition-all shadow-lg flex items-center justify-center gap-2 ${
+            disabled={mutation.isPending}
+            className={`px-6 py-3 rounded-2xl font-extrabold text-xs transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 ${
               isLive
                 ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-amber-500/20'
                 : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-emerald-500/20'
             }`}
           >
-            <Power className="w-4 h-4" />
-            <span>{isLive ? 'Switch to MAINTENANCE Mode' : 'Switch to LIVE Mode'}</span>
+            <Power className={`w-4 h-4 ${mutation.isPending ? 'animate-spin' : ''}`} />
+            <span>
+              {mutation.isPending
+                ? 'Updating...'
+                : isLive
+                ? 'Switch to MAINTENANCE Mode'
+                : 'Switch to LIVE Mode'}
+            </span>
           </button>
         </div>
       </div>
@@ -150,20 +158,33 @@ export default function SiteMode() {
           />
         </div>
 
-        <button
-          onClick={() =>
-            mutation.mutate({
-              mode: config?.mode || 'LIVE',
-              maintenance_message: message,
-              bypass_ips: ips.split(',').map((s) => s.trim()).filter(Boolean),
-              last_updated: new Date().toISOString(),
-            })
-          }
-          className="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center gap-2 transition-all shadow-md shadow-purple-600/20"
-        >
-          <Save className="w-4 h-4" />
-          <span>Save Gate Configuration</span>
-        </button>
+        <div className="flex items-center justify-between gap-4 pt-2">
+          <button
+            onClick={() =>
+              mutation.mutate({
+                mode: config?.mode || 'LIVE',
+                maintenance_message: message,
+                bypass_ips: ips.split(',').map((s) => s.trim()).filter(Boolean),
+                last_updated: new Date().toISOString(),
+              })
+            }
+            disabled={mutation.isPending}
+            className="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center gap-2 transition-all shadow-md shadow-purple-600/20 disabled:opacity-60 cursor-pointer"
+          >
+            <Save className="w-4 h-4" />
+            <span>{mutation.isPending ? 'Saving...' : 'Save Gate Configuration'}</span>
+          </button>
+
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-bold text-slate-400 hover:text-white transition-colors flex items-center gap-1.5"
+          >
+            <span>Open Customer Storefront</span>
+            <span className="text-[10px]">↗</span>
+          </a>
+        </div>
       </div>
 
       {/* Confirmation Modal */}
@@ -180,23 +201,25 @@ export default function SiteMode() {
               </h3>
               <p className="text-xs text-slate-400 mt-1 leading-relaxed">
                 {pendingMode === 'MAINTENANCE'
-                  ? 'All non-whitelisted customers will see the maintenance message and will be prevented from placing orders.'
-                  : 'The store will immediately open to global public traffic.'}
+                  ? 'All public visitors will immediately see the maintenance upgrade gate and will be blocked from placing orders. You (as logged-in Admin) will still be able to preview the live store.'
+                  : 'The store will immediately open back up to global public traffic.'}
               </p>
             </div>
 
             <div className="flex items-center gap-3 pt-2">
               <button
                 onClick={() => setIsConfirmOpen(false)}
-                className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors"
+                disabled={mutation.isPending}
+                className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirmToggle}
-                className="flex-1 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-extrabold transition-all shadow-lg shadow-purple-600/20"
+                disabled={mutation.isPending}
+                className="flex-1 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-extrabold transition-all shadow-lg shadow-purple-600/20 disabled:opacity-60 cursor-pointer flex items-center justify-center gap-1.5"
               >
-                Yes, Proceed
+                {mutation.isPending ? 'Applying...' : 'Yes, Proceed'}
               </button>
             </div>
           </div>
