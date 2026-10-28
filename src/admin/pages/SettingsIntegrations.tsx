@@ -24,6 +24,7 @@ import {
   Send,
   Bell,
   RefreshCw,
+  Database,
 } from 'lucide-react';
 import { portalApi } from '../api/client';
 import { useToast } from '../context/ToastContext';
@@ -136,8 +137,8 @@ export default function SettingsIntegrations() {
     onSuccess: () => {
       addToast({
         type: 'success',
-        title: 'PayU Gateway Saved',
-        message: 'PayU API credentials updated and synced with Storefront.',
+        title: 'PayU Saved to Cloud Database 🚀',
+        message: 'PayU credentials saved to Firestore! Live across all mobile devices, laptops & storefront checkout.',
       });
       queryClient.invalidateQueries({ queryKey: ['pg-bridge'] });
     },
@@ -504,6 +505,15 @@ export default function SettingsIntegrations() {
                   }`}
                 />
               </button>
+            </div>
+
+            {/* Direct Cloud Database Synchronization Banner */}
+            <div className="p-3.5 rounded-xl bg-purple-950/20 border border-purple-500/30 flex items-start gap-3">
+              <Database className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+              <div className="text-xs text-slate-300 leading-relaxed">
+                <span className="font-bold text-white">Direct Cloud Database Sync: </span>
+                PayU Merchant Key & Salt database me save hote hain. Iske liye koi Vercel environment variables ya code rebuild ki zaroorat nahi hai. Ek baar save karne par Phone, Laptop aur Storefront Checkout par ye keys automatically live ho jayengi.
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

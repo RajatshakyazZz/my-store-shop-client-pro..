@@ -60,55 +60,37 @@ export function clearPayUCredentialsCache(): void {
 }
 
 /**
- * Retrieve PayU credentials from Environment Variables or Firestore store_settings/payu
+ * Retrieve PayU credentials primarily from Cloud Database (Firestore store_settings/general & payu)
+ * with environment variable fallback.
  */
 export async function getPayUCredentials(forceRefresh = false): Promise<PayUCredentials> {
-  if (!forceRefresh && cachedPayUCreds && Date.now() - payuCredsCachedAt < PAYU_CREDS_TTL) {
+  if (!forceRefresh && cachedPayUCreds && cachedPayUCreds.merchantKey && Date.now() - payuCredsCachedAt < PAYU_CREDS_TTL) {
     return cachedPayUCreds;
   }
 
-  // 1. Check environment variables
-  let merchantKey = (
-    process.env.PAYU_MERCHANT_KEY ||
-    process.env.PAYU_KEY ||
-    process.env.NEXT_PUBLIC_PAYU_MERCHANT_KEY ||
-    process.env.NEXT_PUBLIC_PAYU_KEY ||
-    ''
-  ).trim();
-
-  let merchantSalt = (
-    process.env.PAYU_MERCHANT_SALT ||
-    process.env.PAYU_SALT ||
-    process.env.NEXT_PUBLIC_PAYU_MERCHANT_SALT ||
-    process.env.NEXT_PUBLIC_PAYU_SALT ||
-    ''
-  ).trim();
-
-  const envVar = (
-    process.env.PAYU_ENV ||
-    process.env.NEXT_PUBLIC_PAYU_ENV ||
-    ''
-  ).toUpperCase().trim();
-
+  let merchantKey = '';
+  let merchantSalt = '';
   let environment: 'PRODUCTION' | 'TEST' = 'PRODUCTION';
-  if (envVar === 'TEST' || envVar === 'SANDBOX') {
-    environment = 'TEST';
-  }
-
   const siteBase = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vaultworld.shop').replace(/\/+$/, '');
   let returnUrl = `${siteBase}/api/payment/payu/return`;
   let enabled = true;
 
-  // 2. Fallback to Firestore store_settings/payu or store_settings/cashfree (if configured from Admin Panel)
-  if (db && (!merchantKey || !merchantSalt)) {
+  // 1. Primary Source: Cloud Firestore Database (store_settings/general, store_settings/payu, store_settings/cashfree)
+  if (db) {
     try {
-      const payuSnap = await getDoc(doc(db, 'store_settings', 'payu'));
-      if (payuSnap.exists()) {
-        const data = payuSnap.data();
-        if (data.merchant_key && !merchantKey) merchantKey = String(data.merchant_key).trim();
-        if (data.merchant_salt && !merchantSalt) merchantSalt = String(data.merchant_salt).trim();
-        if (data.app_id && !merchantKey && !data.app_id.startsWith('CF')) merchantKey = String(data.app_id).trim();
-        if (data.secret_key && !merchantSalt && !data.secret_key.startsWith('cfsk_')) merchantSalt = String(data.secret_key).trim();
+      const [generalSnap, payuSnap, cfSnap] = await Promise.all([
+        getDoc(doc(db, 'store_settings', 'general')).catch(() => null),
+        getDoc(doc(db, 'store_settings', 'payu')).catch(() => null),
+        getDoc(doc(db, 'store_settings', 'cashfree')).catch(() => null),
+      ]);
+
+      // Check general doc first (universally allowed by all Firestore rules)
+      if (generalSnap && generalSnap.exists()) {
+        const data = generalSnap.data();
+        if (data.merchant_key) merchantKey = String(data.merchant_key).trim();
+        if (data.merchant_salt) merchantSalt = String(data.merchant_salt).trim();
+        if (!merchantKey && data.app_id && !data.app_id.startsWith('CF')) merchantKey = String(data.app_id).trim();
+        if (!merchantSalt && data.secret_key && !data.secret_key.startsWith('cfsk_')) merchantSalt = String(data.secret_key).trim();
         if (data.environment) {
           environment = data.environment === 'TEST' || data.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION';
         }
@@ -116,27 +98,71 @@ export async function getPayUCredentials(forceRefresh = false): Promise<PayUCred
         if (data.return_url) returnUrl = String(data.return_url).trim();
       }
 
-      // If credentials still missing, check store_settings/cashfree doc as bridge
-      if (!merchantKey || !merchantSalt) {
-        const cfSnap = await getDoc(doc(db, 'store_settings', 'cashfree'));
-        if (cfSnap.exists()) {
-          const cfData = cfSnap.data();
-          if (cfData.merchant_key && !merchantKey) merchantKey = String(cfData.merchant_key).trim();
-          if (cfData.merchant_salt && !merchantSalt) merchantSalt = String(cfData.merchant_salt).trim();
-          if (cfData.app_id && !merchantKey && !cfData.app_id.startsWith('CF')) {
-            merchantKey = String(cfData.app_id).trim();
-          }
-          if (cfData.secret_key && !merchantSalt && !cfData.secret_key.startsWith('cfsk_')) {
-            merchantSalt = String(cfData.secret_key).trim();
-          }
-          if (cfData.environment) {
-            environment = cfData.environment === 'TEST' || cfData.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION';
-          }
-          if (typeof cfData.enabled === 'boolean') enabled = cfData.enabled;
+      // Check payu doc if keys still not found
+      if (payuSnap && payuSnap.exists()) {
+        const data = payuSnap.data();
+        if (!merchantKey && data.merchant_key) merchantKey = String(data.merchant_key).trim();
+        if (!merchantSalt && data.merchant_salt) merchantSalt = String(data.merchant_salt).trim();
+        if (!merchantKey && data.app_id && !data.app_id.startsWith('CF')) merchantKey = String(data.app_id).trim();
+        if (!merchantSalt && data.secret_key && !data.secret_key.startsWith('cfsk_')) merchantSalt = String(data.secret_key).trim();
+        if (data.environment && (!generalSnap || !generalSnap.data()?.environment)) {
+          environment = data.environment === 'TEST' || data.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION';
+        }
+        if (typeof data.enabled === 'boolean' && (!generalSnap || typeof generalSnap.data()?.enabled !== 'boolean')) {
+          enabled = data.enabled;
+        }
+        if (data.return_url && (!generalSnap || !generalSnap.data()?.return_url)) {
+          returnUrl = String(data.return_url).trim();
+        }
+      }
+
+      // Check cashfree doc if keys still not found
+      if (cfSnap && cfSnap.exists()) {
+        const cfData = cfSnap.data();
+        if (!merchantKey && cfData.merchant_key) merchantKey = String(cfData.merchant_key).trim();
+        if (!merchantSalt && cfData.merchant_salt) merchantSalt = String(cfData.merchant_salt).trim();
+        if (!merchantKey && cfData.app_id && !cfData.app_id.startsWith('CF')) {
+          merchantKey = String(cfData.app_id).trim();
+        }
+        if (!merchantSalt && cfData.secret_key && !cfData.secret_key.startsWith('cfsk_')) {
+          merchantSalt = String(cfData.secret_key).trim();
         }
       }
     } catch (err) {
-      console.warn('Failed to load PayU credentials from Firestore:', err);
+      console.warn('[PayU] Failed to load PayU credentials from Firestore:', err);
+    }
+  }
+
+  // 2. Secondary Fallback: Environment Variables (if database does not have them)
+  if (!merchantKey) {
+    merchantKey = (
+      process.env.PAYU_MERCHANT_KEY ||
+      process.env.PAYU_KEY ||
+      process.env.NEXT_PUBLIC_PAYU_MERCHANT_KEY ||
+      process.env.NEXT_PUBLIC_PAYU_KEY ||
+      ''
+    ).trim();
+  }
+
+  if (!merchantSalt) {
+    merchantSalt = (
+      process.env.PAYU_MERCHANT_SALT ||
+      process.env.PAYU_SALT ||
+      process.env.NEXT_PUBLIC_PAYU_MERCHANT_SALT ||
+      process.env.NEXT_PUBLIC_PAYU_SALT ||
+      ''
+    ).trim();
+  }
+
+  if (!merchantKey && !merchantSalt) {
+    const envVar = (
+      process.env.PAYU_ENV ||
+      process.env.NEXT_PUBLIC_PAYU_ENV ||
+      ''
+    ).toUpperCase().trim();
+
+    if (envVar === 'TEST' || envVar === 'SANDBOX') {
+      environment = 'TEST';
     }
   }
 

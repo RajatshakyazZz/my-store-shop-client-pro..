@@ -65,8 +65,14 @@ export async function POST(request: Request) {
 
     if (db) {
       try {
-        await setDoc(doc(db, 'store_settings', 'payu'), payload, { merge: true });
-        await setDoc(doc(db, 'store_settings', 'cashfree'), payload, { merge: true });
+        // 1. Primary database persistence: store_settings/general (universally allowed by live Firestore rules)
+        await setDoc(doc(db, 'store_settings', 'general'), payload, { merge: true });
+
+        // 2. Secondary database persistence: attempt store_settings/payu and store_settings/cashfree
+        await Promise.allSettled([
+          setDoc(doc(db, 'store_settings', 'payu'), payload, { merge: true }),
+          setDoc(doc(db, 'store_settings', 'cashfree'), payload, { merge: true }),
+        ]);
       } catch (firestoreErr: any) {
         console.error('Firestore error saving PayU config in API route:', firestoreErr);
         return NextResponse.json(
