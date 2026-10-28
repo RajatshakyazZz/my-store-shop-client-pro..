@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import {
+  TELEGRAM_ALERTS_ENABLED,
   TELEGRAM_BOT_TOKEN,
   OWNER_CHAT_ID,
   AUTHORIZED_TELEGRAM_ADMINS,
@@ -33,6 +34,9 @@ async function answerCallbackQuery(callbackQueryId: string, text?: string) {
  * Strictly authorized to configured Admin user IDs (7483268297, 5950203511, and 6206169480)
  */
 export async function POST(request: Request) {
+  if (!TELEGRAM_ALERTS_ENABLED) {
+    return NextResponse.json({ ok: true, disabled: true });
+  }
   try {
     // 0. Secret Token Validation (if configured in environment)
     const secretHeader = request.headers.get('x-telegram-bot-api-secret-token');
@@ -170,6 +174,13 @@ export async function POST(request: Request) {
  * Registers the Telegram Webhook & Bot Command Menu
  */
 export async function GET(request: Request) {
+  if (!TELEGRAM_ALERTS_ENABLED) {
+    return NextResponse.json({
+      success: false,
+      disabled: true,
+      message: 'Telegram alerts are temporarily disabled.',
+    });
+  }
   try {
     const host = request.headers.get('host') || (process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL).host : 'vaultworld.shop');
     const protocol = host.includes('localhost') ? 'http' : 'https';

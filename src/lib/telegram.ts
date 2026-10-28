@@ -5,6 +5,9 @@ import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { BUNDLE_PRODUCTS } from '@/data/bundles';
 
+// Master toggle: set to true when ready to re-enable Telegram alerts
+export const TELEGRAM_ALERTS_ENABLED = false;
+
 export const TELEGRAM_BOT_TOKEN =
   process.env.TELEGRAM_BOT_TOKEN || '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
 export const OWNER_CHAT_ID = process.env.TELEGRAM_OWNER_CHAT_ID || '7483268297';
@@ -74,6 +77,9 @@ export async function sendTelegramMessage(
   targetChatId?: string,
   replyMarkup?: any
 ): Promise<boolean> {
+  if (!TELEGRAM_ALERTS_ENABLED) {
+    return false;
+  }
   // Support both authorized admins: 5950203511 and 6206169480
   const targets = targetChatId ? [String(targetChatId)] : AUTHORIZED_TELEGRAM_ADMINS;
   const validTargets = targets.filter((id) => AUTHORIZED_TELEGRAM_ADMINS.includes(id));
@@ -130,6 +136,9 @@ export async function editTelegramMessage(
   htmlText: string,
   inlineButtons?: Array<Array<TelegramInlineButton>>
 ): Promise<boolean> {
+  if (!TELEGRAM_ALERTS_ENABLED) {
+    return false;
+  }
   if (!AUTHORIZED_TELEGRAM_ADMINS.includes(String(chatId))) {
     return false;
   }
@@ -178,7 +187,7 @@ export async function answerTelegramCallback(
   text?: string,
   showAlert: boolean = false
 ): Promise<boolean> {
-  if (!callbackQueryId) return false;
+  if (!TELEGRAM_ALERTS_ENABLED || !callbackQueryId) return false;
   try {
     const endpoint = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/answerCallbackQuery`;
     const res = await fetch(endpoint, {

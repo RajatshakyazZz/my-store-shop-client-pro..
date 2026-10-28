@@ -90,12 +90,12 @@ export function sanitizePayload<T>(input: T): T {
 }
 
 const initialTelegram: TelegramConfig = {
-  enabled: true,
+  enabled: false,
   bot_token: '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA',
   admin_chat_ids: '7483268297, 5950203511, 6206169480',
-  new_order_alert: true,
-  product_alert: true,
-  daily_summary_alert: true,
+  new_order_alert: false,
+  product_alert: false,
+  daily_summary_alert: false,
 };
 
 class PortalApiClient {
@@ -428,7 +428,7 @@ class PortalApiClient {
             (process.env as any).TELEGRAM_BOT_TOKEN)) ||
         '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
       let targetChatIds = ['7483268297', '5950203511', '6206169480'];
-      let alertEnabled = true;
+      let alertEnabled = false;
 
       try {
         const tg = await this.getTelegramConfig();
