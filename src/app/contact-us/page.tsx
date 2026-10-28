@@ -2,16 +2,13 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Mail, MessageSquare, Clock, FolderOpen, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Mail, Clock, FolderOpen, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useStoreSettings } from '@/context/StoreSettingsContext';
 
 export default function ContactUsPage() {
   const { settings } = useStoreSettings();
 
   const supportEmail = settings?.supportEmail || 'support.vaultworld.shop@gmail.com';
-  const supportPhone = settings?.supportPhone || settings?.supportWhatsapp || '+91 8051017331';
-  const rawDigits = supportPhone.replace(/\D/g, '');
-  const cleanPhone = rawDigits.length === 10 ? `91${rawDigits}` : rawDigits;
 
   return (
     <div className="py-12 sm:py-20 bg-slate-50 min-h-[85vh]">
@@ -30,7 +27,7 @@ export default function ContactUsPage() {
           </p>
         </div>
 
-        {/* 3 Contact Info Cards (Email, WhatsApp/Phone, Working Hours) */}
+        {/* 3 Contact Info Cards (Email, Instant Orders, Working Hours) */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {/* Email Us */}
           <a
@@ -40,36 +37,27 @@ export default function ContactUsPage() {
             <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200/60 flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
               <Mail className="w-6 h-6" />
             </div>
-            <h3 className="font-extrabold text-base text-slate-900">Email Us</h3>
+            <h3 className="font-extrabold text-base text-slate-900">Email Support</h3>
             <p className="text-xs font-semibold text-slate-600 break-all">
               {supportEmail}
             </p>
+            <p className="text-[11px] text-amber-600 font-bold pt-1">Direct Email Assistance</p>
           </a>
 
-          {/* WhatsApp Chat / Phone */}
-          <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-amber-400/50 transition-all text-center space-y-2.5 block group">
+          {/* Instant Order Access */}
+          <Link
+            href="/my-order"
+            className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-amber-400/50 transition-all text-center space-y-2.5 block group"
+          >
             <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200/60 flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
-              <MessageSquare className="w-6 h-6" />
+              <FolderOpen className="w-6 h-6" />
             </div>
-            <h3 className="font-extrabold text-base text-slate-900">Phone &amp; WhatsApp</h3>
-            <p className="text-sm font-black text-slate-900 font-mono tracking-tight">{supportPhone}</p>
-            <div className="flex items-center justify-center gap-2 pt-1.5">
-              <a
-                href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hi! I need help regarding ${settings.storeName || 'VaultWorld Store'}.`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-black transition-colors shadow-sm"
-              >
-                WhatsApp
-              </a>
-              <a
-                href={`tel:${supportPhone}`}
-                className="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-black transition-colors shadow-sm"
-              >
-                Call
-              </a>
-            </div>
-          </div>
+            <h3 className="font-extrabold text-base text-slate-900">Order Downloads</h3>
+            <p className="text-xs font-semibold text-slate-600">
+              Instant Google Drive Access
+            </p>
+            <p className="text-[11px] text-emerald-600 font-bold pt-1">Self-Service Portal</p>
+          </Link>
 
           {/* Working Hours */}
           <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm text-center space-y-2.5">
@@ -78,6 +66,7 @@ export default function ContactUsPage() {
             </div>
             <h3 className="font-extrabold text-base text-slate-900">Working Hours</h3>
             <p className="text-xs font-semibold text-slate-600">10:00 AM – 8:00 PM IST</p>
+            <p className="text-[11px] text-slate-400 font-medium pt-1">Monday to Sunday</p>
           </div>
         </div>
 
