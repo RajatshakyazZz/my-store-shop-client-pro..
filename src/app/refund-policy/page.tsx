@@ -1,4 +1,5 @@
 import React from 'react';
+import PolicyContactInfo from '@/components/PolicyContactInfo';
 
 export default function RefundPolicyPage() {
   return (
@@ -27,7 +28,9 @@ export default function RefundPolicyPage() {
 
           <h2 className="text-lg font-bold text-[#182247]">3. How to Request Assistance</h2>
           <p>
-            If you encounter any issues accessing your bundle, please email our support desk at <strong className="text-slate-800">support.vaultworld.shop@gmail.com</strong> or WhatsApp <strong className="text-slate-800">+91 8051017331</strong> with your Order ID.
+            If you encounter any issues accessing your bundle, please contact our support desk with your Order ID:
+            <br />
+            <PolicyContactInfo />
           </p>
         </div>
       </div>

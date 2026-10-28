@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
+import PolicyContactInfo from '@/components/PolicyContactInfo';
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
 
@@ -46,9 +47,7 @@ export default function PrivacyPolicyPage() {
           <p>
             If you have questions regarding this Privacy Policy, please contact us at:
             <br />
-            Email: <strong className="text-slate-800">support.vaultworld.shop@gmail.com</strong>
-            <br />
-            Phone: <strong className="text-slate-800">+91 8051017331</strong>
+            <PolicyContactInfo />
           </p>
         </div>
       </div>

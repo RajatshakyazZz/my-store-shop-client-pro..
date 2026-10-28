@@ -24,7 +24,7 @@ const DEFAULT_SETTINGS: StoreSettings = {
   tagline: 'Everything You Need, All in One Place.',
   supportEmail: 'support.vaultworld.shop@gmail.com',
   supportPhone: '+91 8051017331',
-  supportWhatsapp: '+91 9142408286',
+  supportWhatsapp: '+91 8051017331',
   currency: 'INR',
   currencySymbol: '₹',
   whatsappButtonEnabled: true,
@@ -61,18 +61,17 @@ function sanitizeEmail(email?: string, fallback = 'support.vaultworld.shop@gmail
   if (
     /reelsbundles/i.test(email) ||
     /digonest/i.test(email) ||
-    /support@vaultzet\.(com|shop)/i.test(email) ||
     /rajattracozegaming/i.test(email)
   ) {
-    return 'support.vaultworld.shop@gmail.com';
+    return fallback;
   }
   return email.trim();
 }
 
-function sanitizePhone(phone?: string, fallback = '+91 9142408286'): string {
+function sanitizePhone(phone?: string, fallback = '+91 8051017331'): string {
   if (!phone || !phone.trim()) return fallback;
   if (/98765\s*43210/.test(phone)) {
-    return '+91 9142408286';
+    return fallback;
   }
   return phone.trim();
 }
@@ -92,47 +91,70 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
   useEffect(() => {
     try {
       const cached = localStorage.getItem('vaultzet_store_settings');
+      const portalGen = localStorage.getItem('rb_portal_settings_general');
       const portalWa = localStorage.getItem('rb_portal_settings_whatsapp');
+
+      let genData: any = null;
       let waData: any = null;
+      if (portalGen) {
+        try { genData = JSON.parse(portalGen); } catch {}
+      }
       if (portalWa) {
         try { waData = JSON.parse(portalWa); } catch {}
       }
 
       if (cached) {
         const parsed = JSON.parse(cached);
+        const resolvedPhone = sanitizePhone(
+          genData?.support_whatsapp ||
+          genData?.support_phone ||
+          waData?.phone_number ||
+          parsed.supportPhone ||
+          parsed.supportWhatsapp ||
+          '+91 8051017331'
+        );
+        const resolvedEmail = sanitizeEmail(genData?.contact_email || parsed.supportEmail);
+
         const cleaned = {
           ...DEFAULT_SETTINGS,
           ...parsed,
-          storeName: sanitizeStoreName(parsed.storeName),
+          storeName: sanitizeStoreName(genData?.store_name || parsed.storeName),
           tagline: sanitizeTagline(parsed.tagline),
           logoUrl: sanitizeLogoUrl(parsed.logoUrl),
-          supportEmail: sanitizeEmail(parsed.supportEmail),
-          supportWhatsapp: sanitizePhone(waData?.phone_number || parsed.supportWhatsapp || '+91 9142408286'),
+          supportEmail: resolvedEmail,
+          supportPhone: resolvedPhone,
+          supportWhatsapp: resolvedPhone,
           ownerName: '',
           whatsappButtonEnabled: waData?.enabled !== undefined ? waData.enabled : (parsed.whatsappButtonEnabled !== undefined ? parsed.whatsappButtonEnabled : true),
           whatsappDefaultMessage: waData?.default_message || parsed.whatsappDefaultMessage || DEFAULT_SETTINGS.whatsappDefaultMessage,
           whatsappPopupText: waData?.popup_text || parsed.whatsappPopupText || DEFAULT_SETTINGS.whatsappPopupText,
         };
         setSettings(cleaned);
-        try {
-          localStorage.setItem('vaultzet_store_settings', JSON.stringify(cleaned));
-        } catch {}
-      } else if (waData?.phone_number) {
+      } else if (genData || waData) {
+        const resolvedPhone = sanitizePhone(
+          genData?.support_whatsapp || genData?.support_phone || waData?.phone_number || '+91 8051017331'
+        );
+        const resolvedEmail = sanitizeEmail(genData?.contact_email);
         setSettings((prev) => ({
           ...prev,
-          supportWhatsapp: sanitizePhone(waData.phone_number),
-          whatsappButtonEnabled: waData.enabled !== undefined ? waData.enabled : true,
-          whatsappDefaultMessage: waData.default_message || prev.whatsappDefaultMessage,
-          whatsappPopupText: waData.popup_text || prev.whatsappPopupText,
+          storeName: sanitizeStoreName(genData?.store_name, prev.storeName),
+          supportEmail: resolvedEmail || prev.supportEmail,
+          supportPhone: resolvedPhone,
+          supportWhatsapp: resolvedPhone,
+          whatsappButtonEnabled: waData?.enabled !== undefined ? waData.enabled : true,
+          whatsappDefaultMessage: waData?.default_message || prev.whatsappDefaultMessage,
+          whatsappPopupText: waData?.popup_text || prev.whatsappPopupText,
         }));
       }
     } catch {}
 
     const handleCustomWaUpdate = (e: any) => {
       if (e.detail?.phone_number) {
+        const phone = sanitizePhone(e.detail.phone_number);
         setSettings((prev) => ({
           ...prev,
-          supportWhatsapp: sanitizePhone(e.detail.phone_number),
+          supportWhatsapp: phone,
+          supportPhone: phone,
           whatsappButtonEnabled: e.detail.enabled !== undefined ? e.detail.enabled : prev.whatsappButtonEnabled,
           whatsappDefaultMessage: e.detail.default_message || prev.whatsappDefaultMessage,
           whatsappPopupText: e.detail.popup_text || prev.whatsappPopupText,
@@ -148,15 +170,43 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
           tagline: sanitizeTagline(e.detail.tagline, prev.tagline),
           logoUrl: sanitizeLogoUrl(e.detail.logo_url, prev.logoUrl),
           primaryColor: e.detail.primary_color || prev.primaryColor,
+          supportEmail: e.detail.contact_email ? sanitizeEmail(e.detail.contact_email) : prev.supportEmail,
+          supportPhone: e.detail.support_phone || e.detail.support_whatsapp ? sanitizePhone(e.detail.support_phone || e.detail.support_whatsapp) : prev.supportPhone,
+          supportWhatsapp: e.detail.support_whatsapp || e.detail.support_phone ? sanitizePhone(e.detail.support_whatsapp || e.detail.support_phone) : prev.supportWhatsapp,
         }));
+      }
+    };
+
+    const handleStoreSetupUpdate = (e: any) => {
+      if (e.detail) {
+        const email = e.detail.contact_email ? sanitizeEmail(e.detail.contact_email) : undefined;
+        const phone = e.detail.support_phone || e.detail.support_whatsapp ? sanitizePhone(e.detail.support_phone || e.detail.support_whatsapp) : undefined;
+        const name = e.detail.store_name ? sanitizeStoreName(e.detail.store_name) : undefined;
+        setSettings((prev) => {
+          const updated = {
+            ...prev,
+            storeName: name || prev.storeName,
+            supportEmail: email || prev.supportEmail,
+            supportPhone: phone || prev.supportPhone,
+            supportWhatsapp: phone || prev.supportWhatsapp,
+            currency: e.detail.currency || prev.currency,
+            currencySymbol: e.detail.currency_symbol || prev.currencySymbol,
+          };
+          try {
+            localStorage.setItem('vaultzet_store_settings', JSON.stringify(updated));
+          } catch {}
+          return updated;
+        });
       }
     };
 
     window.addEventListener('vaultworld:whatsapp_updated', handleCustomWaUpdate);
     window.addEventListener('vaultworld:branding_updated', handleBrandingUpdate);
+    window.addEventListener('vaultworld:store_setup_updated', handleStoreSetupUpdate);
     return () => {
       window.removeEventListener('vaultworld:whatsapp_updated', handleCustomWaUpdate);
       window.removeEventListener('vaultworld:branding_updated', handleBrandingUpdate);
+      window.removeEventListener('vaultworld:store_setup_updated', handleStoreSetupUpdate);
     };
   }, []);
 
@@ -187,13 +237,16 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
 
         if (!isCancelled && generalSnap && generalSnap.exists()) {
           const data = generalSnap.data();
+          const email = data.contact_email ? sanitizeEmail(data.contact_email) : undefined;
+          const phone = data.support_phone || data.support_whatsapp ? sanitizePhone(data.support_phone || data.support_whatsapp) : undefined;
+
           setSettings((prev) => {
             const updated = {
               ...prev,
               storeName: sanitizeStoreName(data.store_name, prev.storeName),
-              supportEmail: sanitizeEmail(data.contact_email, prev.supportEmail),
-              supportPhone: data.support_phone || data.support_whatsapp || prev.supportPhone,
-              supportWhatsapp: sanitizePhone(data.support_whatsapp, prev.supportWhatsapp),
+              supportEmail: email || prev.supportEmail,
+              supportPhone: phone || prev.supportPhone,
+              supportWhatsapp: phone || prev.supportWhatsapp,
               currency: data.currency || prev.currency,
               currencySymbol: data.currency_symbol || prev.currencySymbol,
             };
@@ -213,6 +266,7 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
               tagline: sanitizeTagline(data.tagline, prev.tagline),
               logoUrl: sanitizeLogoUrl(data.logo_url, prev.logoUrl),
               primaryColor: data.primary_color || prev.primaryColor,
+              supportEmail: data.contact_email ? sanitizeEmail(data.contact_email) : prev.supportEmail,
             };
             try {
               localStorage.setItem('vaultzet_store_settings', JSON.stringify(updated));
@@ -226,7 +280,7 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
           setSettings((prev) => {
             const updated = {
               ...prev,
-              supportWhatsapp: sanitizePhone(data.phone_number, prev.supportWhatsapp),
+              supportWhatsapp: data.phone_number ? sanitizePhone(data.phone_number, prev.supportWhatsapp) : prev.supportWhatsapp,
               whatsappButtonEnabled: data.enabled !== undefined ? data.enabled : prev.whatsappButtonEnabled,
               whatsappDefaultMessage: data.default_message || prev.whatsappDefaultMessage,
               whatsappPopupText: data.popup_text || prev.whatsappPopupText,
@@ -246,6 +300,9 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
         }
       }
     };
+
+    // Run sync immediately on mount so visitors see live settings without needing interaction
+    startFirestoreSync();
 
     const events = ['scroll', 'pointerdown', 'touchstart', 'keydown'] as const;
     const cleanupListeners = () => {

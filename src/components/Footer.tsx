@@ -284,8 +284,11 @@ export default function Footer() {
               {settings.supportEmail || 'support.vaultworld.shop@gmail.com'}
             </a>
             <span className="text-slate-300">•</span>
-            <a href="tel:+918051017331" className="hover:text-amber-600 transition-colors font-mono font-bold text-slate-800">
-              📞 +91 8051017331
+            <a
+              href={`tel:${(settings.supportPhone || settings.supportWhatsapp || '+91 8051017331').replace(/\s+/g, '')}`}
+              className="hover:text-amber-600 transition-colors font-mono font-bold text-slate-800"
+            >
+              📞 {settings.supportPhone || settings.supportWhatsapp || '+91 8051017331'}
             </a>
           </div>
 

@@ -34,11 +34,16 @@ export default function StoreSetup() {
     mutationFn: (updated: StoreSetupConfig) => portalApi.updateStoreSetup(updated),
     onSuccess: (data) => {
       queryClient.setQueryData(['store-setup'], data);
+      queryClient.invalidateQueries({ queryKey: ['store-setup'] });
+      queryClient.invalidateQueries({ queryKey: ['branding-config'] });
+      queryClient.invalidateQueries({ queryKey: ['whatsapp-button'] });
       try {
         localStorage.setItem('rb_portal_settings_general', JSON.stringify(data));
         window.dispatchEvent(new CustomEvent('vaultworld:whatsapp_updated', { detail: { phone_number: data.support_whatsapp } }));
+        window.dispatchEvent(new CustomEvent('vaultworld:branding_updated', { detail: data }));
+        window.dispatchEvent(new CustomEvent('vaultworld:store_setup_updated', { detail: data }));
       } catch {}
-      success('Store Settings Saved', 'Checkout and order fulfillment rules updated.');
+      success('Store Settings Saved 🚀', 'Store Name, Support Email and Support Phone saved to Database and synced across the store!');
     },
     onError: () => error('Save Failed', 'Could not save store configuration.'),
   });

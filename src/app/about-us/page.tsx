@@ -1,8 +1,16 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { PlaySquare, CheckCircle, ShieldCheck, Zap, Mail, Phone, MessageSquare, Clock } from 'lucide-react';
+import { useStoreSettings } from '@/context/StoreSettingsContext';
 
 export default function AboutUsPage() {
+  const { settings } = useStoreSettings();
+  const supportEmail = settings?.supportEmail || 'support.vaultworld.shop@gmail.com';
+  const supportPhone = settings?.supportPhone || settings?.supportWhatsapp || '+91 8051017331';
+  const rawDigits = supportPhone.replace(/\D/g, '');
+  const cleanPhone = rawDigits.length === 10 ? `91${rawDigits}` : rawDigits;
   return (
     <div className="py-12 sm:py-20 bg-slate-50/50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -81,11 +89,11 @@ export default function AboutUsPage() {
                 </div>
               </div>
               <p className="font-black text-base text-slate-950 font-mono tracking-tight">
-                +91 8051017331
+                {supportPhone}
               </p>
               <div className="flex items-center gap-2 pt-1">
                 <a
-                  href="https://wa.me/918051017331?text=Hi%20VaultWorld%20Support!%20I%20have%20an%20inquiry%20regarding%20your%20reels%20bundles."
+                  href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hi ${settings?.storeName || 'VaultWorld Support'}! I have an inquiry regarding your reels bundles.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
@@ -94,7 +102,7 @@ export default function AboutUsPage() {
                   <span>WhatsApp</span>
                 </a>
                 <a
-                  href="tel:+918051017331"
+                  href={`tel:${supportPhone.replace(/\s+/g, '')}`}
                   className="flex-1 py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Phone className="w-3.5 h-3.5" />
@@ -115,11 +123,11 @@ export default function AboutUsPage() {
                 </div>
               </div>
               <p className="font-bold text-xs sm:text-sm text-slate-950 break-all font-mono">
-                support.vaultworld.shop@gmail.com
+                {supportEmail}
               </p>
               <div className="pt-1">
                 <a
-                  href="mailto:support.vaultworld.shop@gmail.com"
+                  href={`mailto:${supportEmail}`}
                   className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Mail className="w-3.5 h-3.5" />

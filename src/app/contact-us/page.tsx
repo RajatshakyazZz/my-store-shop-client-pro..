@@ -8,9 +8,10 @@ import { useStoreSettings } from '@/context/StoreSettingsContext';
 export default function ContactUsPage() {
   const { settings } = useStoreSettings();
 
-  const supportEmail = 'support.vaultworld.shop@gmail.com';
-  const supportPhone = '+91 8051017331';
-  const cleanPhone = '918051017331';
+  const supportEmail = settings?.supportEmail || 'support.vaultworld.shop@gmail.com';
+  const supportPhone = settings?.supportPhone || settings?.supportWhatsapp || '+91 8051017331';
+  const rawDigits = supportPhone.replace(/\D/g, '');
+  const cleanPhone = rawDigits.length === 10 ? `91${rawDigits}` : rawDigits;
 
   return (
     <div className="py-12 sm:py-20 bg-slate-50 min-h-[85vh]">

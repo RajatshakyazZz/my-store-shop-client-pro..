@@ -1939,11 +1939,44 @@ class PortalApiClient {
   async getStoreSetup(): Promise<StoreSetupConfig> {
     if (db) {
       try {
-        const snap = await getDoc(doc(db, 'store_settings', 'general'));
-        if (snap.exists()) {
-          const data = snap.data() as StoreSetupConfig;
-          this.saveSettingLocally('general', data);
-          return data;
+        const [snap, brandSnap, waSnap] = await Promise.all([
+          getDoc(doc(db, 'store_settings', 'general')).catch(() => null),
+          getDoc(doc(db, 'store_settings', 'branding')).catch(() => null),
+          getDoc(doc(db, 'store_settings', 'whatsapp')).catch(() => null),
+        ]);
+
+        const data = snap && snap.exists() ? snap.data() : null;
+        const brandData = brandSnap && brandSnap.exists() ? brandSnap.data() : null;
+        const waData = waSnap && waSnap.exists() ? waSnap.data() : null;
+
+        if (data || brandData || waData) {
+          const resolvedPhone =
+            data?.support_whatsapp ||
+            data?.support_phone ||
+            waData?.phone_number ||
+            brandData?.support_whatsapp ||
+            initialStoreSetup.support_whatsapp;
+
+          const resolvedEmail =
+            data?.contact_email ||
+            brandData?.contact_email ||
+            initialStoreSetup.contact_email;
+
+          const resolvedName =
+            data?.store_name ||
+            brandData?.store_name ||
+            initialStoreSetup.store_name;
+
+          const mapped: StoreSetupConfig = {
+            ...initialStoreSetup,
+            ...(data || {}),
+            store_name: resolvedName,
+            contact_email: resolvedEmail,
+            support_whatsapp: resolvedPhone,
+            support_phone: resolvedPhone,
+          };
+          this.saveSettingLocally('general', mapped);
+          return mapped;
         }
       } catch (e) {
         console.warn('Firestore general config fetch error, using local cache:', e);
@@ -1954,23 +1987,63 @@ class PortalApiClient {
 
   async updateStoreSetup(config: StoreSetupConfig): Promise<StoreSetupConfig> {
     const clean = sanitizePayload(config);
+    clean.support_phone = clean.support_phone || clean.support_whatsapp;
+    clean.support_whatsapp = clean.support_whatsapp || clean.support_phone;
+    clean.contact_email = clean.contact_email ? clean.contact_email.trim() : '';
+
     this.saveSettingLocally('general', clean);
+
+    const rawPhone = clean.support_whatsapp || clean.support_phone || '';
+    const digitsOnly = rawPhone.replace(/\D/g, '');
+
+    const waMapped: Partial<WhatsappButtonConfig> = {
+      phone_number: digitsOnly || rawPhone,
+    };
+    this.saveSettingLocally('whatsapp', waMapped);
+
     if (db) {
       try {
-        await setDoc(doc(db, 'store_settings', 'general'), clean, { merge: true });
-        if (clean.store_name) {
-          await setDoc(doc(db, 'store_settings', 'branding'), { store_name: clean.store_name }, { merge: true });
-        }
+        await Promise.allSettled([
+          setDoc(doc(db, 'store_settings', 'general'), clean, { merge: true }),
+          setDoc(doc(db, 'store_settings', 'branding'), {
+            store_name: clean.store_name,
+            contact_email: clean.contact_email,
+            support_whatsapp: clean.support_whatsapp,
+            support_phone: clean.support_phone,
+          }, { merge: true }),
+          setDoc(doc(db, 'store_settings', 'whatsapp'), {
+            phone_number: digitsOnly || rawPhone,
+          }, { merge: true }),
+        ]);
       } catch (e) {
         console.warn('Firestore updateStoreSetup error:', e);
       }
     }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('vaultworld:whatsapp_updated', {
+        detail: { phone_number: digitsOnly || rawPhone }
+      }));
+      window.dispatchEvent(new CustomEvent('vaultworld:branding_updated', {
+        detail: {
+          store_name: clean.store_name,
+          contact_email: clean.contact_email,
+          support_whatsapp: clean.support_whatsapp,
+          support_phone: clean.support_phone,
+        }
+      }));
+      window.dispatchEvent(new CustomEvent('vaultworld:store_setup_updated', {
+        detail: clean
+      }));
+    }
+
     await logAdminAction({
-      adminEmail: 'admin@vaultzet.com',
+      adminEmail: 'admin@vaultworld.shop',
       action: 'UPDATE_STORE_SETUP',
       module: 'Store Setup',
-      details: `Updated store name to "${clean.store_name}" and checkout parameters`,
+      details: `Updated store name: "${clean.store_name}", email: "${clean.contact_email}", phone: "${clean.support_whatsapp}"`,
     });
+
     return clean;
   }
 
@@ -2090,13 +2163,19 @@ class PortalApiClient {
     this.saveSettingLocally('whatsapp', clean);
     if (db) {
       try {
-        await setDoc(doc(db, 'store_settings', 'whatsapp'), clean, { merge: true });
+        await Promise.allSettled([
+          setDoc(doc(db, 'store_settings', 'whatsapp'), clean, { merge: true }),
+          setDoc(doc(db, 'store_settings', 'general'), {
+            support_whatsapp: clean.phone_number,
+            support_phone: clean.phone_number,
+          }, { merge: true }),
+        ]);
       } catch (e) {
         console.warn('Firestore updateWhatsapp error:', e);
       }
     }
     await logAdminAction({
-      adminEmail: 'admin@vaultzet.com',
+      adminEmail: 'admin@vaultworld.shop',
       action: 'UPDATE_WHATSAPP',
       module: 'WhatsApp Button',
       details: `Updated support phone to ${clean.phone_number}`,

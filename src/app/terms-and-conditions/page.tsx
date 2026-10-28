@@ -1,4 +1,5 @@
 import React from 'react';
+import PolicyContactInfo from '@/components/PolicyContactInfo';
 
 export default function TermsPage() {
   return (
@@ -31,7 +32,9 @@ export default function TermsPage() {
 
           <h2 className="text-lg font-bold text-[#182247]">3. Contact</h2>
           <p>
-            For any queries, please reach out to our official support desk at <strong className="text-slate-800">support.vaultworld.shop@gmail.com</strong> or <strong className="text-slate-800">+91 8051017331</strong>.
+            For any queries, please reach out to our official support desk:
+            <br />
+            <PolicyContactInfo />
           </p>
         </div>
       </div>
