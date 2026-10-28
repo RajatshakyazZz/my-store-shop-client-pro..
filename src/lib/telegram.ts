@@ -230,9 +230,20 @@ export interface OrderAlertData {
 }
 
 function resolveDriveLinkForItem(item: { id?: string; title?: string; googleDriveLink?: string }): string {
-  if (item.googleDriveLink && item.googleDriveLink.startsWith('http')) {
+  if (item.googleDriveLink && item.googleDriveLink.startsWith('http') && !item.googleDriveLink.includes('/demo-')) {
     return item.googleDriveLink;
   }
+  try {
+    const serverProductLinks = require('@/data/productDriveLinks.server.json');
+    const cleanId = (item.id || '').replace(/^rb-/, '');
+    const pdl =
+      serverProductLinks?.byId?.[item.id || ''] ||
+      serverProductLinks?.byId?.[cleanId] ||
+      serverProductLinks?.byId?.[`rb-${cleanId}`];
+    if (pdl && pdl.primaryLink && !pdl.primaryLink.includes('/demo-')) {
+      return pdl.primaryLink;
+    }
+  } catch {}
   const matched = BUNDLE_PRODUCTS.find(
     (b) =>
       (item.id && b.id === item.id) ||

@@ -232,8 +232,24 @@ class PortalApiClient {
       return prods.map((p) => {
         const idKey = String(p.id).toLowerCase();
         const slugKey = p.slug?.toLowerCase();
-        const localOverride = localMap.get(idKey) || (slugKey ? localMap.get(slugKey) : undefined);
-        return localOverride ? { ...p, ...localOverride } : p;
+        const rawOverride = localMap.get(idKey) || (slugKey ? localMap.get(slugKey) : undefined);
+        if (!rawOverride) return p;
+
+        const safeOverride = { ...rawOverride };
+        // Never allow stale empty or demo links from old localStorage to wipe valid drive links
+        if (!safeOverride.google_drive_link || safeOverride.google_drive_link.includes('/demo-')) {
+          delete safeOverride.google_drive_link;
+        }
+        if (
+          !safeOverride.files ||
+          safeOverride.files.length === 0 ||
+          !safeOverride.files[0]?.file_url ||
+          safeOverride.files[0].file_url.includes('/demo-')
+        ) {
+          delete safeOverride.files;
+        }
+
+        return { ...p, ...safeOverride };
       });
     };
 
@@ -241,24 +257,86 @@ class PortalApiClient {
       try {
         const snap = await getDocs(collection(db, 'products'));
         if (!snap.empty) {
-          const dbProds: Product[] = [];
+          const dbProdsMap = new Map<string, Product>();
           const dbIdSet = new Set<string>();
           const dbSlugSet = new Set<string>();
 
           snap.docs.forEach((d) => {
             const data = d.data();
             const id = String(d.id);
-            const slug = String(data.slug || id).toLowerCase();
+            if (id === 'category-registry-v1' || data.name === '[INTERNAL_CATEGORY_REGISTRY]') {
+              return;
+            }
+
+            const rawSlug = String(data.slug || id).toLowerCase();
+            const canonicalSlug = rawSlug.replace(/^rb-/, '');
             const isDeleted = Boolean(data.is_deleted || data.status === 'trash');
 
             dbIdSet.add(id);
-            if (slug) dbSlugSet.add(slug);
+            if (rawSlug) dbSlugSet.add(rawSlug);
+            if (canonicalSlug) dbSlugSet.add(canonicalSlug);
 
             if (isDeleted) {
               localDeletedSlugs.add(id.toLowerCase());
-              if (slug) localDeletedSlugs.add(slug);
+              if (rawSlug) localDeletedSlugs.add(rawSlug);
+              if (canonicalSlug) localDeletedSlugs.add(canonicalSlug);
             } else {
-              dbProds.push({ id: d.id, ...data } as Product);
+              const mockFallback = initialProducts.find(
+                (ip) =>
+                  String(ip.id).toLowerCase() === id.toLowerCase() ||
+                  String(ip.id).toLowerCase().replace(/^rb-/, '') === canonicalSlug ||
+                  (ip.slug && ip.slug.toLowerCase() === rawSlug)
+              );
+
+              const rawDrive =
+                data.google_drive_link ||
+                data.googleDriveLink ||
+                data.driveLink ||
+                (data.files && data.files[0]?.file_url) ||
+                mockFallback?.google_drive_link ||
+                '';
+
+              const cleanDrive =
+                rawDrive.includes('/demo-') && mockFallback?.google_drive_link && !mockFallback.google_drive_link.includes('/demo-')
+                  ? mockFallback.google_drive_link
+                  : rawDrive;
+
+              const filesList: Array<{ id: string; name: string; file_url: string }> =
+                Array.isArray(data.files) && data.files.length > 0 && data.files[0]?.file_url && !data.files[0].file_url.includes('/demo-')
+                  ? data.files
+                  : [
+                      {
+                        id: `file-${canonicalSlug}`,
+                        name: `${data.name || 'Reels Bundle'} (Google Drive Access)`,
+                        file_url: cleanDrive,
+                      },
+                    ];
+
+              const prodObj = {
+                id: id.startsWith('rb-') ? id : `rb-${canonicalSlug}`,
+                ...data,
+                slug: data.slug || canonicalSlug,
+                google_drive_link: cleanDrive,
+                googleDriveLink: cleanDrive,
+                files: filesList,
+                drive_files: filesList,
+              } as unknown as Product;
+
+              const existing = dbProdsMap.get(canonicalSlug);
+              if (!existing) {
+                dbProdsMap.set(canonicalSlug, prodObj);
+              } else {
+                dbProdsMap.set(canonicalSlug, {
+                  ...existing,
+                  ...prodObj,
+                  id: String(existing.id).startsWith('rb-') ? existing.id : prodObj.id,
+                  google_drive_link: existing.google_drive_link || prodObj.google_drive_link,
+                  files:
+                    existing.files && existing.files.length > 0 && existing.files[0]?.file_url && !existing.files[0].file_url.includes('/demo-')
+                      ? existing.files
+                      : prodObj.files,
+                });
+              }
             }
           });
 
@@ -268,6 +346,8 @@ class PortalApiClient {
               localStorage.setItem('vaultzet_deleted_slugs', JSON.stringify(Array.from(localDeletedSlugs)));
             } catch {}
           }
+
+          const dbProds = Array.from(dbProdsMap.values());
 
           const uncommittedLocal = localCustomProds.filter(
             (lp) =>
@@ -580,12 +660,22 @@ class PortalApiClient {
   async updateProduct(product: Partial<Product> & { id: string | number }): Promise<Product> {
     const prodId = String(product.id);
     const existing: Partial<Product> = initialProducts.find((p) => String(p.id) === prodId) || {};
+    const effectiveDrive =
+      product.google_drive_link ||
+      (product as any).googleDriveLink ||
+      (product as any).driveLink ||
+      existing.google_drive_link ||
+      '';
+
     const merged: Product = {
       ...existing,
       ...product,
       id: prodId,
       name: (product.name || existing.name || 'Reels Bundle').trim(),
       price: Number(product.price ?? existing.price ?? 99),
+      google_drive_link: effectiveDrive,
+      googleDriveLink: effectiveDrive,
+      driveLink: effectiveDrive,
     } as Product;
 
     const cleanPayload = sanitizePayload(merged);

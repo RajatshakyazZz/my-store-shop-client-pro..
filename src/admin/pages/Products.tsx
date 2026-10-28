@@ -295,18 +295,25 @@ export default function Products() {
     setEditTab('basic');
 
     // Initialize drive files from prod.files, or fallback to prod.google_drive_link
+    const rawDrive =
+      prod.google_drive_link ||
+      (prod as any).googleDriveLink ||
+      (prod as any).driveLink ||
+      prod.files?.[0]?.file_url ||
+      '';
+
     let initialDriveFiles: Array<{ id: string; name: string; file_url: string }> = [];
     if (prod.files && Array.isArray(prod.files) && prod.files.length > 0) {
       initialDriveFiles = prod.files
-        .filter((f) => Boolean(f && (f.file_url || f.name)))
+        .filter((f) => Boolean(f && (f.file_url || f.name || (f as any).url)))
         .map((f, idx) => ({
           id: f.id || `file-${idx + 1}-${Date.now()}`,
           name: f.name || `${prod.name} Part ${idx + 1}`,
-          file_url: f.file_url || '',
+          file_url: f.file_url || (f as any).url || '',
         }));
     }
-    if (initialDriveFiles.length === 0) {
-      const fallbackUrl = prod.google_drive_link || '';
+    if (initialDriveFiles.length === 0 || !initialDriveFiles[0].file_url) {
+      const fallbackUrl = rawDrive || '';
       initialDriveFiles = [
         {
           id: `file-1-${Date.now()}`,
@@ -317,7 +324,7 @@ export default function Products() {
     }
 
     const primaryFile = initialDriveFiles[0];
-    const driveLink = primaryFile?.file_url || prod.google_drive_link || '';
+    const driveLink = primaryFile?.file_url || rawDrive || '';
     const fileName = primaryFile?.name || `${prod.name} Google Drive Access`;
 
     setEditForm({
@@ -777,7 +784,12 @@ export default function Products() {
     {
       header: 'Drive Download File',
       cell: (p) => {
-        const driveLink = p.google_drive_link || p.files?.[0]?.file_url;
+        const driveLink =
+          p.google_drive_link ||
+          (p as any).googleDriveLink ||
+          (p as any).driveLink ||
+          p.files?.[0]?.file_url ||
+          (p.files?.[0] as any)?.url;
         const count = p.files && p.files.length > 0 ? p.files.length : (driveLink ? 1 : 0);
         return count > 0 ? (
           <div className="flex items-center gap-1.5 text-xs text-emerald-400">
@@ -960,13 +972,18 @@ export default function Products() {
               </div>
             </div>
             <div className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/20 shrink-0">
-              {products.filter((p) => p.google_drive_link || p.files?.length).length} / {products.length} Bundles Configured
+              {products.filter((p) => p.google_drive_link || (p as any).googleDriveLink || p.files?.length).length} / {products.length} Bundles Configured
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {products.map((prod) => {
-              const driveLink = prod.google_drive_link || prod.files?.[0]?.file_url;
+              const driveLink =
+                prod.google_drive_link ||
+                (prod as any).googleDriveLink ||
+                (prod as any).driveLink ||
+                prod.files?.[0]?.file_url ||
+                (prod.files?.[0] as any)?.url;
               const primaryFile = prod.files?.[0];
 
               return (

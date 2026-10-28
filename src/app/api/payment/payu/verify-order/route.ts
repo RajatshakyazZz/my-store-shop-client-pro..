@@ -5,6 +5,7 @@ import { sendSaleSuccessTelegramAlert } from '@/lib/telegram';
 import { sendResellerSaleTelegramAlert } from '@/lib/telegramReseller';
 import { getResellerProfile, getResellerWallet, recordSaleEarning } from '@/lib/resellerService';
 import { BUNDLE_PRODUCTS } from '@/data/bundles';
+import serverProductLinks from '@/data/productDriveLinks.server.json';
 import { sendMetaCapiPurchase } from '@/lib/metaCapi';
 import { extractClientMetadata, generateOrderToken } from '@/lib/orderToken';
 
@@ -95,6 +96,21 @@ async function resolveDriveFilesForProduct(item: { id?: string; title?: string }
     } catch (e) {
       console.warn('Error scanning Firestore products for drive link:', e);
     }
+  }
+
+  // 2.5 Check server-side master product drive links registry
+  try {
+    const pdl = (serverProductLinks as any)?.byId?.[cleanId] ||
+      (serverProductLinks as any)?.byId?.[`rb-${cleanId}`] ||
+      (serverProductLinks as any)?.bySlug?.[cleanId];
+    if (pdl && pdl.primaryLink && !pdl.primaryLink.includes('/demo-')) {
+      return {
+        primaryLink: pdl.primaryLink,
+        files: pdl.files && pdl.files.length > 0 ? pdl.files : [{ name: `${pdl.title || item.title || 'Reels Bundle'} Google Drive Access`, file_url: pdl.primaryLink }],
+      };
+    }
+  } catch (e) {
+    console.warn('Error reading serverProductLinks:', e);
   }
 
   // 3. Fallback to internal catalog
