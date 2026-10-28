@@ -395,6 +395,7 @@ export interface DnpMetaConfig {
   enabled: boolean;
   meta_pixel_id: string;
   capi_token: string;
+  test_event_code?: string;
   last_cart_event: string;
   last_purchase_event: string;
   event_health_score: number;

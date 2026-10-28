@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import './globals.css';
 import StoreLayoutShell from '@/components/StoreLayoutShell';
 import AnalyticsTracker from '@/components/AnalyticsTracker';
+import MetaPixelTracker from '@/components/MetaPixelTracker';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vaultworld.shop';
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-TD8N9SDD';
@@ -264,10 +265,16 @@ export default function RootLayout({
                 }(window, document,'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
                 fbq('init', '${META_PIXEL_ID}');
+                fbq('track', 'PageView');
               } catch(e) { console.warn('Meta Pixel init skipped:', e); }
             `}
           </Script>
         )}
+
+        {/* Dynamic Meta Pixel & CAPI Syncer */}
+        <Suspense fallback={null}>
+          <MetaPixelTracker />
+        </Suspense>
 
         {/* Client-Side SPA Route Tracking */}
         <Suspense fallback={null}>

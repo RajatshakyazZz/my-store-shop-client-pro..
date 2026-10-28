@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Crosshair, Save, Activity, CheckCircle2 } from 'lucide-react';
+import { Crosshair, Save, Activity, CheckCircle2, Send, Radio, RefreshCw, ExternalLink } from 'lucide-react';
 import { portalApi } from '../api/client';
 import { MetaPixelConfig } from '../api/types';
 import { useToast } from '../context/ToastContext';
@@ -14,11 +14,12 @@ export default function MetaPixel() {
     queryFn: () => portalApi.getMetaPixel(),
   });
 
+  const [isTestingEvent, setIsTestingEvent] = useState(false);
   const [form, setForm] = useState<MetaPixelConfig>({
     enabled: true,
-    pixel_id: '928374910293847',
-    capi_token: 'EAAG9...sampleMetaCapiToken...xZ1',
-    test_event_code: 'TEST78912',
+    pixel_id: '',
+    capi_token: '',
+    test_event_code: '',
     track_pageviews: true,
     track_view_content: true,
     track_add_to_cart: true,
@@ -27,14 +28,21 @@ export default function MetaPixel() {
   });
 
   React.useEffect(() => {
-    if (config) setForm(config);
+    if (config) {
+      setForm({
+        ...config,
+        pixel_id: config.pixel_id || '',
+        capi_token: config.capi_token || '',
+        test_event_code: config.test_event_code || '',
+      });
+    }
   }, [config]);
 
   const mutation = useMutation({
     mutationFn: (updated: MetaPixelConfig) => portalApi.updateMetaPixel(updated),
     onSuccess: (data) => {
       queryClient.setQueryData(['meta-pixel'], data);
-      success('Meta Pixel & CAPI Saved', 'Server-side Conversion API tracking updated.');
+      success('Meta Pixel & CAPI Saved', 'Meta Pixel ID and Conversions API tracking updated in Firestore.');
     },
     onError: () => error('Save Failed', 'Could not save Meta Pixel parameters.'),
   });
@@ -42,6 +50,52 @@ export default function MetaPixel() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     mutation.mutate(form);
+  };
+
+  const handleSendTestEvent = async () => {
+    const cleanPixelId = form.pixel_id.trim();
+    if (!cleanPixelId) {
+      error('Pixel ID Required', 'Please enter your Meta Pixel ID first.');
+      return;
+    }
+
+    setIsTestingEvent(true);
+    try {
+      // 1. First save the current form values
+      await portalApi.updateMetaPixel(form);
+      queryClient.invalidateQueries({ queryKey: ['meta-pixel'] });
+
+      // 2. Fire in browser if fbq available
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        try {
+          (window as any).fbq('init', cleanPixelId);
+          (window as any).fbq('track', 'PageView');
+        } catch (e) {}
+      }
+
+      // 3. If CAPI token provided, dispatch server-side test event with test_event_code
+      if (form.capi_token.trim()) {
+        const testRes = await portalApi.testMetaEvent({
+          pixel_id: cleanPixelId,
+          capi_token: form.capi_token.trim(),
+          test_event_code: form.test_event_code.trim() || undefined,
+          event_name: 'PageView',
+        });
+        success(
+          'Meta Event Delivered! 🚀',
+          testRes.message || 'Check your Meta Events Manager Test Events tab now.'
+        );
+      } else {
+        success(
+          'Browser Pixel Active! 🎯',
+          `Pixel initialized with ID ${cleanPixelId}. In Meta Events Manager > Test Events, enter your website URL https://www.vaultworld.shop to view browser events.`
+        );
+      }
+    } catch (err: any) {
+      error('Test Dispatch Failed', err.message || 'Could not deliver test event to Meta.');
+    } finally {
+      setIsTestingEvent(false);
+    }
   };
 
   return (
@@ -144,24 +198,75 @@ export default function MetaPixel() {
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs shadow-lg shadow-purple-600/25 transition-all flex items-center gap-2"
-          >
-            <Save className="w-4 h-4" />
-            <span>Save Meta Pixel Config</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <button
+              type="submit"
+              disabled={mutation.isPending}
+              className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs shadow-lg shadow-purple-600/25 transition-all flex items-center gap-2 disabled:opacity-50"
+            >
+              <Save className="w-4 h-4" />
+              <span>{mutation.isPending ? 'Saving...' : 'Save Meta Pixel Config'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleSendTestEvent}
+              disabled={isTestingEvent || mutation.isPending}
+              className="px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs shadow-lg shadow-blue-600/25 transition-all flex items-center gap-2 disabled:opacity-50"
+            >
+              {isTestingEvent ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <span>Dispatching to Meta...</span>
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  <span>Send Test Event to Meta (Test Now)</span>
+                </>
+              )}
+            </button>
+          </div>
         </form>
 
         {/* Status card */}
-        <div className="lg:col-span-4 p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
-          <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold">
-            <CheckCircle2 className="w-4 h-4" />
-            <span>CAPI Health Status: 98% Normal</span>
+        <div className="lg:col-span-4 space-y-4">
+          <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>CAPI Health Status: Active & Synced</span>
+            </div>
+            <p className="text-xs text-slate-400 leading-relaxed font-medium">
+              Events are dynamically dispatched to Meta with deduplicated event IDs for both the browser Meta Pixel and server-side Conversions API (CAPI).
+            </p>
           </div>
-          <p className="text-xs text-slate-400 leading-relaxed font-medium">
-            Events are dispatched with client IP, user agent, hashed email, and fbc/fbp cookies for maximum match quality.
-          </p>
+
+          <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3 text-xs">
+            <h4 className="font-bold text-white flex items-center gap-1.5">
+              <Radio className="w-4 h-4 text-purple-400" />
+              <span>How to Test Events in Meta:</span>
+            </h4>
+            <ol className="list-decimal list-inside space-y-2 text-slate-300 text-[11px] leading-relaxed">
+              <li>
+                Open <strong>Meta Events Manager</strong> &gt; Select your Pixel &gt; Click <strong>Test Events</strong> tab.
+              </li>
+              <li>
+                <strong>Browser Testing:</strong> Under <em>&quot;Confirm your website events are set up correctly&quot;</em>, enter <code className="bg-slate-950 px-1 py-0.5 rounded text-purple-300">https://www.vaultworld.shop</code> and click <em>Open Website</em>. PageView will show up immediately.
+              </li>
+              <li>
+                <strong>Server CAPI Testing:</strong> Under <em>&quot;Confirm your server events are set up correctly&quot;</em>, copy the <strong>Test Event Code</strong> (e.g. <code className="bg-slate-950 px-1 py-0.5 rounded text-blue-300">TEST12345</code>), paste it in the field above, and click <strong>Send Test Event to Meta</strong>.
+              </li>
+            </ol>
+            <a
+              href="https://adsmanager.facebook.com/events_manager2"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-[11px] font-bold text-purple-400 hover:text-purple-300 pt-1"
+            >
+              <span>Open Meta Events Manager</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
         </div>
       </div>
 

@@ -23,6 +23,7 @@ import {
   Lock,
   Send,
   Bell,
+  RefreshCw,
 } from 'lucide-react';
 import { portalApi } from '../api/client';
 import { useToast } from '../context/ToastContext';
@@ -82,6 +83,7 @@ export default function SettingsIntegrations() {
   const [showTgToken, setShowTgToken] = useState(false);
   const [isTestingTg, setIsTestingTg] = useState(false);
   const [isVerifyingPg, setIsVerifyingPg] = useState(false);
+  const [isTestingMeta, setIsTestingMeta] = useState(false);
 
   // Sync state when data arrives
   React.useEffect(() => {
@@ -229,6 +231,60 @@ export default function SettingsIntegrations() {
       queryClient.invalidateQueries({ queryKey: ['dnp-meta'] });
     },
   });
+
+  const handleTestMeta = async () => {
+    const pixelId = String(dnpForm?.meta_pixel_id || '').trim();
+    if (!pixelId) {
+      addToast({
+        type: 'warning',
+        title: 'Pixel ID Required',
+        message: 'Please enter your Meta Pixel ID first.',
+      });
+      return;
+    }
+
+    setIsTestingMeta(true);
+    try {
+      await portalApi.updateDnpMetaConfig(dnpForm as DnpMetaConfig);
+      queryClient.invalidateQueries({ queryKey: ['dnp-meta'] });
+
+      // Trigger client pixel
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        try {
+          (window as any).fbq('init', pixelId);
+          (window as any).fbq('track', 'PageView');
+        } catch (e) {}
+      }
+
+      if (dnpForm?.capi_token?.trim()) {
+        const testRes = await portalApi.testMetaEvent({
+          pixel_id: pixelId,
+          capi_token: dnpForm.capi_token.trim(),
+          test_event_code: dnpForm.test_event_code?.trim() || undefined,
+          event_name: 'PageView',
+        });
+        addToast({
+          type: 'success',
+          title: 'Meta Event Delivered! 🚀',
+          message: testRes.message || 'Check your Meta Events Manager Test Events tab.',
+        });
+      } else {
+        addToast({
+          type: 'info',
+          title: 'Browser Pixel Active',
+          message: `Pixel ${pixelId} initialized. Open store from Events Manager Test Events to confirm browser events.`,
+        });
+      }
+    } catch (err: any) {
+      addToast({
+        type: 'error',
+        title: 'Meta Test Failed',
+        message: err.message || 'Could not deliver test event to Meta.',
+      });
+    } finally {
+      setIsTestingMeta(false);
+    }
+  };
 
   const updateMmcMutation = useMutation({
     mutationFn: (updated: MmcAnalyticsConfig) => portalApi.updateMmcConfig(updated),
@@ -798,6 +854,17 @@ export default function SettingsIntegrations() {
                   className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
                 />
               </div>
+
+              <div className="md:col-span-2">
+                <label className="text-xs font-bold text-slate-300">Test Event Code (From Meta Events Manager &gt; Test Events)</label>
+                <input
+                  type="text"
+                  value={dnpForm.test_event_code || ''}
+                  onChange={(e) => setDnpForm({ ...dnpForm, test_event_code: e.target.value })}
+                  placeholder="e.g. TEST12345 (Optional - only needed during testing)"
+                  className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+                />
+              </div>
             </div>
 
             <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 text-xs text-slate-300 space-y-2">
@@ -811,7 +878,26 @@ export default function SettingsIntegrations() {
               </p>
             </div>
 
-            <div className="pt-4 border-t border-slate-800 flex justify-end">
+            <div className="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={handleTestMeta}
+                disabled={isTestingMeta || updateDnpMutation.isPending}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-md shadow-emerald-600/20 transition-all disabled:opacity-50"
+              >
+                {isTestingMeta ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span>Sending to Meta...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    <span>Send Test Event to Meta (Test Now)</span>
+                  </>
+                )}
+              </button>
+
               <button
                 type="button"
                 onClick={() => updateDnpMutation.mutate(dnpForm as DnpMetaConfig)}

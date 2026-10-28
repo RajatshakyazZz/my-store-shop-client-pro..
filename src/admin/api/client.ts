@@ -1986,6 +1986,25 @@ class PortalApiClient {
           this.saveSettingLocally('meta_pixel', data);
           return data;
         }
+
+        // Check fallback to dnp_meta
+        const dnpSnap = await getDoc(doc(db, 'store_settings', 'dnp_meta'));
+        if (dnpSnap.exists()) {
+          const dnpData = dnpSnap.data() as DnpMetaConfig;
+          const mapped: MetaPixelConfig = {
+            enabled: typeof dnpData.enabled === 'boolean' ? dnpData.enabled : true,
+            pixel_id: dnpData.meta_pixel_id || '',
+            capi_token: dnpData.capi_token || '',
+            test_event_code: dnpData.test_event_code || '',
+            track_pageviews: true,
+            track_view_content: true,
+            track_add_to_cart: true,
+            track_initiate_checkout: true,
+            track_purchase: true,
+          };
+          this.saveSettingLocally('meta_pixel', mapped);
+          return mapped;
+        }
       } catch (e) {
         console.warn('Firestore meta_pixel fetch error, using local cache:', e);
       }
@@ -1996,20 +2015,55 @@ class PortalApiClient {
   async updateMetaPixel(config: MetaPixelConfig): Promise<MetaPixelConfig> {
     const clean = sanitizePayload(config);
     this.saveSettingLocally('meta_pixel', clean);
+
+    const dnpMapped: Partial<DnpMetaConfig> = {
+      enabled: clean.enabled,
+      meta_pixel_id: clean.pixel_id,
+      capi_token: clean.capi_token,
+      test_event_code: clean.test_event_code,
+    };
+    this.saveSettingLocally('dnp_meta', dnpMapped);
+
     if (db) {
       try {
-        await setDoc(doc(db, 'store_settings', 'meta_pixel'), clean, { merge: true });
+        await Promise.all([
+          setDoc(doc(db, 'store_settings', 'meta_pixel'), clean, { merge: true }),
+          setDoc(doc(db, 'store_settings', 'dnp_meta'), dnpMapped, { merge: true }),
+        ]);
       } catch (e) {
         console.warn('Firestore updateMetaPixel error:', e);
       }
     }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('vaultworld:meta_pixel_updated', { detail: clean }));
+    }
+
     await logAdminAction({
-      adminEmail: 'admin@vaultzet.com',
+      adminEmail: 'admin@vaultworld.shop',
       action: 'UPDATE_META_PIXEL',
       module: 'Meta Pixel',
       details: `Updated Pixel ID: ${clean.pixel_id}`,
     });
     return clean;
+  }
+
+  async testMetaEvent(params?: {
+    pixel_id?: string;
+    capi_token?: string;
+    test_event_code?: string;
+    event_name?: string;
+  }): Promise<any> {
+    const res = await fetch('/api/admin/meta-pixel/test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params || {}),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || 'Meta test event delivery failed.');
+    }
+    return data;
   }
 
   // ==========================================
@@ -2252,6 +2306,23 @@ class PortalApiClient {
           this.saveSettingLocally('dnp_meta', data);
           return data;
         }
+
+        // Fallback to meta_pixel doc
+        const metaSnap = await getDoc(doc(db, 'store_settings', 'meta_pixel'));
+        if (metaSnap.exists()) {
+          const metaData = metaSnap.data();
+          const mapped: DnpMetaConfig = {
+            enabled: typeof metaData.enabled === 'boolean' ? metaData.enabled : true,
+            meta_pixel_id: metaData.pixel_id || metaData.meta_pixel_id || '',
+            capi_token: metaData.capi_token || metaData.access_token || '',
+            test_event_code: metaData.test_event_code || '',
+            last_cart_event: metaData.last_cart_event || new Date().toISOString(),
+            last_purchase_event: metaData.last_purchase_event || new Date().toISOString(),
+            event_health_score: 100,
+          };
+          this.saveSettingLocally('dnp_meta', mapped);
+          return mapped;
+        }
       } catch {}
     }
     return this.getSavedSetting('dnp_meta', initialDnpMeta);
@@ -2260,11 +2331,28 @@ class PortalApiClient {
   async updateDnpMetaConfig(config: DnpMetaConfig): Promise<DnpMetaConfig> {
     const clean = sanitizePayload(config);
     this.saveSettingLocally('dnp_meta', clean);
+
+    const metaPixelMapped: Partial<MetaPixelConfig> = {
+      enabled: clean.enabled,
+      pixel_id: clean.meta_pixel_id,
+      capi_token: clean.capi_token,
+      test_event_code: clean.test_event_code,
+    };
+    this.saveSettingLocally('meta_pixel', metaPixelMapped);
+
     if (db) {
       try {
-        await setDoc(doc(db, 'store_settings', 'dnp_meta'), clean, { merge: true });
+        await Promise.all([
+          setDoc(doc(db, 'store_settings', 'dnp_meta'), clean, { merge: true }),
+          setDoc(doc(db, 'store_settings', 'meta_pixel'), metaPixelMapped, { merge: true }),
+        ]);
       } catch {}
     }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('vaultworld:meta_pixel_updated', { detail: clean }));
+    }
+
     return clean;
   }
 

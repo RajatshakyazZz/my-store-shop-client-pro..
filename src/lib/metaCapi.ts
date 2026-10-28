@@ -88,7 +88,7 @@ interface MetaCredentials {
 }
 
 /**
- * Resolves Meta credentials from Environment Variables or Firestore store_settings/meta_pixel.
+ * Resolves Meta credentials from Environment Variables or Firestore store_settings/meta_pixel & dnp_meta.
  */
 export async function getMetaCredentials(): Promise<MetaCredentials | null> {
   let pixelId = (
@@ -111,20 +111,37 @@ export async function getMetaCredentials(): Promise<MetaCredentials | null> {
     ''
   ).trim();
 
-  // If accessToken missing, check Firestore store_settings
-  if (!accessToken && db) {
+  // Check Firestore store_settings/meta_pixel and store_settings/dnp_meta
+  if (db) {
     try {
-      const snap = await getDoc(doc(db, 'store_settings', 'meta_pixel'));
-      if (snap.exists()) {
-        const data = snap.data();
+      const [metaSnap, dnpSnap] = await Promise.all([
+        getDoc(doc(db, 'store_settings', 'meta_pixel')).catch(() => null),
+        getDoc(doc(db, 'store_settings', 'dnp_meta')).catch(() => null),
+      ]);
+
+      if (metaSnap && metaSnap.exists()) {
+        const data = metaSnap.data();
+        if (data.pixel_id) {
+          pixelId = String(data.pixel_id).trim();
+        }
         if (data.capi_token || data.access_token) {
           accessToken = String(data.capi_token || data.access_token).trim();
         }
-        if (!pixelId && (data.pixel_id || data.meta_pixel_id)) {
-          pixelId = String(data.pixel_id || data.meta_pixel_id).trim();
-        }
-        if (!testEventCode && data.test_event_code) {
+        if (data.test_event_code) {
           testEventCode = String(data.test_event_code).trim();
+        }
+      }
+
+      if (dnpSnap && dnpSnap.exists()) {
+        const dnpData = dnpSnap.data();
+        if (dnpData.meta_pixel_id || dnpData.pixel_id) {
+          pixelId = String(dnpData.meta_pixel_id || dnpData.pixel_id).trim();
+        }
+        if (dnpData.capi_token || dnpData.access_token) {
+          accessToken = String(dnpData.capi_token || dnpData.access_token).trim();
+        }
+        if (dnpData.test_event_code) {
+          testEventCode = String(dnpData.test_event_code).trim();
         }
       }
     } catch (err) {
