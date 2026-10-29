@@ -2793,6 +2793,10 @@ function ProductBumpOfferTab({
 
   const currentBumpType = bumpOffer.bump_type || (bumpOffer.product_slug ? 'store_product' : 'custom');
 
+  const selectedBumpProduct = useMemo(() => {
+    return otherProducts.find((p) => p.slug === bumpOffer.product_slug) || null;
+  }, [otherProducts, bumpOffer.product_slug]);
+
   const handleSelectBumpProduct = (slug: string) => {
     const selected = otherProducts.find((p) => p.slug === slug);
     if (!selected) return;
@@ -2801,6 +2805,7 @@ function ProductBumpOfferTab({
       selected.google_drive_link ||
       (selected.files && selected.files[0]?.file_url) ||
       '';
+    const prodPrice = selected.price || 99;
     const regPrice = selected.regular_price || selected.price * 5 || 499;
 
     onChange({
@@ -2810,9 +2815,10 @@ function ProductBumpOfferTab({
       product_id: String(selected.id),
       product_slug: selected.slug,
       title: selected.name,
-      subtitle: selected.short_description || `Add this exclusive ${selected.reel_count || 1000}+ reels pack to your order with instant discount!`,
+      subtitle: selected.short_description || `Add this exclusive ${selected.reel_count || 1000}+ reels pack to your order!`,
       thumbnail: selected.featured_image || '',
       reel_count: selected.reel_count || 1000,
+      price: prodPrice,
       regular_price: regPrice,
       google_drive_link: drive,
     });
@@ -2876,7 +2882,7 @@ function ProductBumpOfferTab({
                 <span>Ready-Made Bump</span>
               </div>
               <div className="text-[10px] text-slate-400 mt-1 leading-snug">
-                Pick from store products (Image locked)
+                Pick from store products (Store As-Is)
               </div>
             </div>
           </button>
@@ -2944,8 +2950,8 @@ function ProductBumpOfferTab({
                 Ready-Made Bump (Selected From Store)
               </span>
             </div>
-            <span className="text-[10px] font-bold text-slate-400">
-              Image locked to product
+            <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+              Synced from Store (As-Is)
             </span>
           </div>
 
@@ -2968,131 +2974,40 @@ function ProductBumpOfferTab({
             </select>
           </div>
 
-          {/* Pricing Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1">
-                Custom Bump Price (₹) *
-              </label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                  ₹
-                </span>
-                <input
-                  type="number"
-                  min="1"
-                  required
-                  value={bumpOffer.price}
-                  onChange={(e) => onChange({ ...bumpOffer, price: Number(e.target.value) })}
-                  className="w-full pl-7 pr-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-black text-emerald-400 focus:outline-none focus:border-amber-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1">
-                MRP / Strikethrough Price (₹)
-              </label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                  ₹
-                </span>
-                <input
-                  type="number"
-                  min="1"
-                  value={bumpOffer.regular_price}
-                  onChange={(e) => onChange({ ...bumpOffer, regular_price: Number(e.target.value) })}
-                  className="w-full pl-7 pr-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-slate-400 line-through focus:outline-none focus:border-amber-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1">
-                Discount Calculated
-              </label>
-              <div className="h-[38px] px-3 rounded-xl bg-emerald-500/15 border border-emerald-500/25 text-emerald-300 text-xs font-black flex items-center">
-                {discountPercent}% OFF
-              </div>
-            </div>
-          </div>
-
-          {/* Custom Title & Subtitle */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-300 block">
-              Offer Title / Headline *
-            </label>
-            <input
-              type="text"
-              required
-              value={bumpOffer.title}
-              onChange={(e) => onChange({ ...bumpOffer, title: e.target.value })}
-              className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-white focus:outline-none focus:border-amber-500"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-300 block">
-              Offer Subtitle / Pitch
-            </label>
-            <textarea
-              rows={2}
-              value={bumpOffer.subtitle}
-              onChange={(e) => onChange({ ...bumpOffer, subtitle: e.target.value })}
-              className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-medium text-slate-200 focus:outline-none focus:border-amber-500"
-            />
-          </div>
-
-          {/* Cover Image: LOCKED & READ-ONLY (No edit/upload in ready-made mode) */}
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-                <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
-                <span>Bump Cover Image (Locked to Store Product)</span>
-              </label>
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full">
-                <Lock className="w-3 h-3" />
-                Image Locked (No Edit)
-              </span>
-            </div>
-
-            <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center gap-3">
-              {bumpOffer.thumbnail ? (
+          {/* Selected Store Bundle Details (Auto-Synced As-Is) */}
+          {selectedBumpProduct && (
+            <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-3.5">
+              {selectedBumpProduct.featured_image && (
                 <img
-                  src={bumpOffer.thumbnail}
-                  alt="Bundle Cover"
-                  className="w-12 h-12 rounded-lg object-cover border border-slate-700 shrink-0"
+                  src={selectedBumpProduct.featured_image}
+                  alt={selectedBumpProduct.name}
+                  className="w-14 h-14 rounded-lg object-cover border border-slate-700 shrink-0"
                 />
-              ) : (
-                <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500 shrink-0">
-                  <Package className="w-5 h-5" />
-                </div>
               )}
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-bold text-white truncate">
-                  {bumpOffer.title || 'Selected Bundle'}
-                </p>
-                <p className="text-[10px] text-slate-400 mt-0.5">
-                  Cover image is synced from the selected store bundle. (Image editing is disabled). To upload custom artwork from gallery, switch to "Custom Bump Offer" above.
+                <div className="flex items-center gap-2">
+                  <h4 className="text-xs font-bold text-white truncate">
+                    {selectedBumpProduct.name}
+                  </h4>
+                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded shrink-0">
+                    Store As-Is
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-xs mt-1">
+                  <span className="font-black text-emerald-400">₹{selectedBumpProduct.price}</span>
+                  {selectedBumpProduct.regular_price && (
+                    <span className="line-through text-slate-500 font-bold">₹{selectedBumpProduct.regular_price}</span>
+                  )}
+                  <span className="text-[10px] text-amber-400 font-bold">
+                    {selectedBumpProduct.reel_count || 1000}+ Reels
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-400 mt-1">
+                  Cover image, pricing, title &amp; drive link are automatically fetched from this store bundle as-is.
                 </p>
               </div>
             </div>
-          </div>
-
-          {/* Google Drive Link for Bonus Fulfillment */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-              <HardDrive className="w-3.5 h-3.5 text-amber-400" />
-              <span>Google Drive Link for Bonus Access</span>
-            </label>
-            <input
-              type="url"
-              placeholder="https://drive.google.com/drive/folders/..."
-              value={bumpOffer.google_drive_link}
-              onChange={(e) => onChange({ ...bumpOffer, google_drive_link: e.target.value })}
-              className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300 focus:outline-none focus:border-amber-500"
-            />
-          </div>
+          )}
 
           {/* Mini Live Preview */}
           <div className="mt-4 pt-3 border-t border-slate-800 space-y-2">

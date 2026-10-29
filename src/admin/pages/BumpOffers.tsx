@@ -82,6 +82,19 @@ export default function BumpOffers() {
     });
   }, [products, productSearch]);
 
+  // Selected store product memo for Option 1
+  const selectedStoreProduct = useMemo(() => {
+    if (!products.length) return null;
+    return (
+      products.find(
+        (p) =>
+          (selectedStoreProductSlug && p.slug === selectedStoreProductSlug) ||
+          (form.product_slug && p.slug === form.product_slug) ||
+          (form.product_id && String(p.id) === String(form.product_id))
+      ) || null
+    );
+  }, [products, selectedStoreProductSlug, form.product_slug, form.product_id]);
+
   // Handler when user selects a store product to be the bump offer (Option 1)
   const handleSelectProduct = (prod: Product) => {
     setSelectedStoreProductSlug(prod.slug);
@@ -90,9 +103,9 @@ export default function BumpOffers() {
       (prod.files && prod.files[0]?.file_url) ||
       '';
 
-    const currentPrice = form.price || 99;
+    const prodPrice = prod.price || 99;
     const regPrice = prod.regular_price || prod.price * 5 || 499;
-    const discount = Math.max(1, Math.round(((regPrice - currentPrice) / regPrice) * 100));
+    const discount = Math.max(1, Math.round(((regPrice - prodPrice) / regPrice) * 100));
 
     setForm((prev) => ({
       ...prev,
@@ -100,9 +113,10 @@ export default function BumpOffers() {
       product_id: String(prod.id),
       product_slug: prod.slug,
       title: prod.name,
-      subtitle: prod.short_description || `Add this exclusive ${prod.reel_count || 1000}+ reels pack to your order with instant discount!`,
+      subtitle: prod.short_description || `Add this exclusive ${prod.reel_count || 1000}+ reels pack to your order!`,
       thumbnail: prod.featured_image || prev.thumbnail,
       reel_count: prod.reel_count || 1000,
+      price: prodPrice,
       regular_price: regPrice,
       discount_percentage: discount,
       google_drive_link: driveLink || prev.google_drive_link,
@@ -317,12 +331,12 @@ export default function BumpOffers() {
                     </span>
                   </div>
                   <p className="text-[11px] text-slate-400 leading-snug">
-                    Select an existing bundle from your store catalog. <strong>Image is auto-locked</strong> to the product, and you can edit the price &amp; title.
+                    Select an existing bundle from your store catalog. Title, price, image &amp; access link are fetched directly from the store as-is.
                   </p>
                 </div>
                 <div className="mt-3 flex items-center gap-1.5 text-[10px] font-bold text-amber-500">
                   <Check className="w-3 h-3" />
-                  <span>Catalog Bundle + Locked Image</span>
+                  <span>Catalog Bundle (Store As-Is)</span>
                 </div>
               </button>
 
@@ -490,185 +504,56 @@ export default function BumpOffers() {
                 </div>
               </div>
 
-              {/* Ready-Made Bump Pricing & Details Card */}
-              <div className={`p-5 sm:p-6 rounded-2xl border ${
-                isLight ? 'bg-white border-slate-200' : 'bg-slate-900/90 border-slate-800'
-              } shadow-sm space-y-4`}>
-                <div className="flex items-center gap-2 pb-3 border-b border-slate-200 dark:border-slate-800">
-                  <Tag className="w-4 h-4 text-amber-500" />
-                  <h2 className={`text-sm font-extrabold ${isLight ? 'text-slate-950' : 'text-white'}`}>
-                    Ready-Made Bump Pricing &amp; Details
-                  </h2>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {/* Bump Offer Price */}
-                  <div>
-                    <label className={`text-xs font-bold block mb-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                      Bump Offer Price (₹) <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                        ₹
-                      </span>
-                      <input
-                        type="number"
-                        min="1"
-                        required
-                        value={form.price}
-                        onChange={(e) => handlePriceChange(Number(e.target.value))}
-                        className={`w-full pl-7 pr-3.5 py-2.5 rounded-xl border text-sm font-black focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
-                          isLight
-                            ? 'bg-slate-50 border-slate-200 text-emerald-600'
-                            : 'bg-slate-950 border-slate-800 text-emerald-400'
-                        }`}
-                      />
-                    </div>
-                    <span className="text-[10px] text-slate-400 mt-1 block">
-                      Amount customer pays when adding bump
-                    </span>
-                  </div>
-
-                  {/* Regular / MRP Price */}
-                  <div>
-                    <label className={`text-xs font-bold block mb-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                      MRP / Original Price (₹)
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                        ₹
-                      </span>
-                      <input
-                        type="number"
-                        min="1"
-                        value={form.regular_price}
-                        onChange={(e) => handleRegularPriceChange(Number(e.target.value))}
-                        className={`w-full pl-7 pr-3.5 py-2.5 rounded-xl border text-sm font-bold line-through focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
-                          isLight
-                            ? 'bg-slate-50 border-slate-200 text-slate-500'
-                            : 'bg-slate-950 border-slate-800 text-slate-400'
-                        }`}
-                      />
-                    </div>
-                    <span className="text-[10px] text-slate-400 mt-1 block">
-                      Strikethrough original MRP
-                    </span>
-                  </div>
-
-                  {/* Calculated Discount */}
-                  <div>
-                    <label className={`text-xs font-bold block mb-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                      Discount Badge
-                    </label>
-                    <div className="flex items-center h-[42px] px-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm font-black">
-                      {form.discount_percentage}% OFF
-                    </div>
-                    <span className="text-[10px] text-slate-400 mt-1 block">
-                      Calculated automatically
-                    </span>
-                  </div>
-                </div>
-
-                {/* Offer Title */}
-                <div className="space-y-1">
-                  <label className={`text-xs font-bold block ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                    Offer Title / Headline <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={form.title}
-                    onChange={(e) => setForm({ ...form, title: e.target.value })}
-                    className={`w-full px-3.5 py-2.5 rounded-xl border text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
-                      isLight
-                        ? 'bg-slate-50 border-slate-200 text-slate-900'
-                        : 'bg-slate-950 border-slate-800 text-white'
-                    }`}
-                  />
-                </div>
-
-                {/* Offer Subtitle / Pitch */}
-                <div className="space-y-1">
-                  <label className={`text-xs font-bold block ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                    Pitch / Subtitle Description
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={form.subtitle}
-                    onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
-                    className={`w-full px-3.5 py-2 rounded-xl border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
-                      isLight
-                        ? 'bg-slate-50 border-slate-200 text-slate-900'
-                        : 'bg-slate-950 border-slate-800 text-white'
-                    }`}
-                  />
-                </div>
-
-                {/* Cover Image: LOCKED & READ-ONLY (No edit/upload options in Ready-Made mode) */}
-                <div className="space-y-2">
+              {/* Selected Store Bundle Details (Auto-Synced As-Is) */}
+              {selectedStoreProduct && (
+                <div className={`p-5 rounded-2xl border ${
+                  isLight ? 'bg-amber-50/60 border-amber-200' : 'bg-amber-500/10 border-amber-500/20'
+                } space-y-3`}>
                   <div className="flex items-center justify-between">
-                    <label className={`text-xs font-bold flex items-center gap-1.5 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                      <ImageIcon className="w-3.5 h-3.5 text-amber-500" />
-                      <span>Bump Cover Image (Locked to Store Product)</span>
-                    </label>
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full">
-                      <Lock className="w-3 h-3" />
-                      Image Locked (No Edit)
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-500" />
+                      <span className="text-xs font-black text-amber-500 uppercase tracking-wider">
+                        Active Store Bundle Selected
+                      </span>
+                    </div>
+                    <span className="text-[11px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
+                      Synced from Store Catalog
                     </span>
                   </div>
 
-                  <div className={`p-3 rounded-xl border flex items-center gap-3.5 ${
-                    isLight ? 'bg-slate-100/70 border-slate-200' : 'bg-slate-950 border-slate-800'
-                  }`}>
-                    {form.thumbnail ? (
+                  <div className="flex items-center gap-4">
+                    {selectedStoreProduct.featured_image && (
                       <img
-                        src={form.thumbnail}
-                        alt="Product Cover"
-                        className="w-14 h-14 rounded-lg object-cover border border-slate-700 shrink-0 shadow-sm"
+                        src={selectedStoreProduct.featured_image}
+                        alt={selectedStoreProduct.name}
+                        className="w-16 h-16 rounded-xl object-cover border border-amber-500/30 shrink-0 shadow-sm"
                       />
-                    ) : (
-                      <div className="w-14 h-14 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500 shrink-0">
-                        <Package className="w-6 h-6" />
-                      </div>
                     )}
                     <div className="min-w-0 flex-1">
-                      <p className={`text-xs font-extrabold truncate ${isLight ? 'text-slate-900' : 'text-white'}`}>
-                        {form.title || 'Selected Bundle'}
-                      </p>
-                      <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">
-                        Cover image is permanently synced from the selected store bundle. (Image editing is disabled in ready-made mode). To upload custom artwork from your gallery, switch to Option 2 above.
+                      <h3 className={`text-sm font-extrabold truncate ${isLight ? 'text-slate-900' : 'text-white'}`}>
+                        {selectedStoreProduct.name}
+                      </h3>
+                      <div className="flex items-center gap-3 mt-1 text-xs">
+                        <span className="font-black text-emerald-500">₹{selectedStoreProduct.price}</span>
+                        {selectedStoreProduct.regular_price && (
+                          <span className="line-through text-slate-400 font-bold">₹{selectedStoreProduct.regular_price}</span>
+                        )}
+                        <span className="text-[11px] text-amber-500 font-bold">
+                          {selectedStoreProduct.reel_count || 1000}+ Reels
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-400 mt-1 line-clamp-1">
+                        {selectedStoreProduct.short_description || selectedStoreProduct.description || 'Ready-made bundle from store'}
                       </p>
                     </div>
                   </div>
-                </div>
 
-                {/* Google Drive Link for Bonus Fulfillment */}
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <label className={`text-xs font-bold flex items-center gap-1.5 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                      <HardDrive className="w-3.5 h-3.5 text-amber-500" />
-                      <span>Google Drive Access Link (For Bonus Fulfillment)</span>
-                    </label>
-                    <span className="text-[10px] font-bold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded">
-                      Secure Delivery
-                    </span>
+                  <div className="pt-2 border-t border-amber-500/15 flex items-center justify-between text-[11px] text-slate-400">
+                    <span>Bundle Cover, Pricing, Title &amp; Drive Link are fetched directly from your store as-is.</span>
+                    <span className="font-bold text-amber-500">Store As-Is Mode</span>
                   </div>
-                  <input
-                    type="url"
-                    placeholder="https://drive.google.com/drive/folders/..."
-                    value={form.google_drive_link || ''}
-                    onChange={(e) => setForm({ ...form, google_drive_link: e.target.value })}
-                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
-                      isLight
-                        ? 'bg-slate-50 border-slate-200 text-slate-900'
-                        : 'bg-slate-950 border-slate-800 text-white'
-                    }`}
-                  />
-                  <span className="text-[10px] text-slate-400 block">
-                    Customers who add this bump receive this link on the order success confirmation page and via email.
-                  </span>
                 </div>
-              </div>
+              )}
             </>
           )}
 
