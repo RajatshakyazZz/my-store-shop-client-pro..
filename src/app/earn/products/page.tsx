@@ -171,7 +171,7 @@ export default function ResellerProductsPage() {
   return (
     <div className="space-y-6 pb-20 sm:pb-8">
       {/* Header */}
-      <div className="p-5 sm:p-8 rounded-3xl bg-white border border-purple-100 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-5 sm:p-8 rounded-3xl bg-white border border-red-100 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5 flex-wrap">
             <h1 className="text-xl sm:text-2xl font-black text-[#162048]">My Reseller Products</h1>
@@ -188,7 +188,7 @@ export default function ResellerProductsPage() {
 
         <Link
           href="/earn/create"
-          className="px-5 py-3 rounded-2xl bg-gradient-to-r from-[#6734f7] to-[#ec288d] text-white text-xs font-black flex items-center justify-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-transform shrink-0"
+          className="px-5 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-black flex items-center justify-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-transform shrink-0"
         >
           <PlusCircle className="w-4 h-4" />
           <span>New Product Link</span>
@@ -204,20 +204,20 @@ export default function ResellerProductsPage() {
             placeholder="Search your links by title or slug..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-purple-100 text-xs font-medium text-[#162048] focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 shadow-xs"
+            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-red-100 text-xs font-medium text-[#162048] focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100 shadow-xs"
           />
         </div>
       )}
 
       {/* Main Content Area */}
-      <div className="rounded-3xl bg-white border border-purple-100 shadow-xs overflow-hidden">
+      <div className="rounded-3xl bg-white border border-red-100 shadow-xs overflow-hidden">
         {isLoading ? (
           <div className="p-12 text-center text-xs text-gray-400 font-bold">
             Loading your reseller products...
           </div>
         ) : listings.length === 0 ? (
           <div className="p-10 sm:p-14 text-center space-y-3">
-            <Package className="w-12 h-12 text-purple-200 mx-auto" />
+            <Package className="w-12 h-12 text-rose-200 mx-auto" />
             <h3 className="text-sm font-black text-[#162048]">No Reseller Products Found</h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto font-medium">
               You haven&apos;t created any reseller listings yet. Choose a product and start sharing your link!
@@ -225,7 +225,7 @@ export default function ResellerProductsPage() {
             <div className="pt-2">
               <Link
                 href="/earn/create"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#6734f7] text-white text-xs font-black shadow-sm hover:scale-105 active:scale-95 transition-transform"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#dc2626] text-white text-xs font-black shadow-sm hover:scale-105 active:scale-95 transition-transform"
               >
                 <PlusCircle className="w-4 h-4" />
                 <span>Create First Link</span>
@@ -255,10 +255,10 @@ export default function ResellerProductsPage() {
                         <img
                           src={l.coverImage}
                           alt={l.customTitle}
-                          className="w-14 h-14 rounded-2xl object-cover bg-slate-900 border border-purple-100 shrink-0"
+                          className="w-14 h-14 rounded-2xl object-cover bg-slate-900 border border-red-100 shrink-0"
                         />
                       ) : (
-                        <div className="w-14 h-14 rounded-2xl bg-purple-100 text-[#6734f7] flex items-center justify-center shrink-0">
+                        <div className="w-14 h-14 rounded-2xl bg-red-100 text-[#dc2626] flex items-center justify-center shrink-0">
                           <Package className="w-6 h-6" />
                         </div>
                       )}
@@ -276,7 +276,7 @@ export default function ResellerProductsPage() {
                             {l.status}
                           </span>
                         </div>
-                        <span className="text-[10px] text-purple-600 font-mono font-bold block mt-0.5 truncate select-all">
+                        <span className="text-[10px] text-red-600 font-mono font-bold block mt-0.5 truncate select-all">
                           /r/{l.slug}
                         </span>
 
@@ -292,12 +292,12 @@ export default function ResellerProductsPage() {
                     </div>
 
                     {/* Stats Bar */}
-                    <div className="grid grid-cols-3 p-2.5 rounded-2xl bg-purple-50/50 border border-purple-100 text-center text-[10px]">
+                    <div className="grid grid-cols-3 p-2.5 rounded-2xl bg-red-50/50 border border-red-100 text-center text-[10px]">
                       <div>
                         <span className="text-gray-400 block font-bold">Views</span>
                         <span className="font-black text-[#162048]">{views}</span>
                       </div>
-                      <div className="border-x border-purple-100">
+                      <div className="border-x border-red-100">
                         <span className="text-gray-400 block font-bold">Clicks</span>
                         <span className="font-black text-[#162048]">{l.ctaClicksCount || 0}</span>
                       </div>
@@ -316,7 +316,7 @@ export default function ResellerProductsPage() {
                         className={`py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs ${
                           isCopied
                             ? 'bg-green-600 text-white'
-                            : 'bg-[#6734f7] hover:bg-[#5827dc] text-white active:scale-95'
+                            : 'bg-[#dc2626] hover:bg-[#b91c1c] text-white active:scale-95'
                         }`}
                       >
                         {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -342,7 +342,7 @@ export default function ResellerProductsPage() {
                         <button
                           type="button"
                           onClick={() => openEditModal(l)}
-                          className="px-3 py-1.5 rounded-lg border border-purple-200 text-[#6734f7] bg-purple-50/50 hover:bg-purple-100 text-xs font-bold flex items-center gap-1"
+                          className="px-3 py-1.5 rounded-lg border border-red-200 text-[#dc2626] bg-red-50/50 hover:bg-red-100 text-xs font-bold flex items-center gap-1"
                         >
                           <Edit2 className="w-3 h-3" />
                           <span>Edit</span>
@@ -411,7 +411,7 @@ export default function ResellerProductsPage() {
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-purple-100 text-gray-400 font-extrabold uppercase text-[10px] bg-purple-50/30">
+                  <tr className="border-b border-red-100 text-gray-400 font-extrabold uppercase text-[10px] bg-red-50/30">
                     <th className="py-3.5 px-4">Product</th>
                     <th className="py-3.5 px-3">Base</th>
                     <th className="py-3.5 px-3">Price</th>
@@ -430,23 +430,23 @@ export default function ResellerProductsPage() {
                     const isCopied = copiedSlug === l.slug;
 
                     return (
-                      <tr key={l.id} className="hover:bg-purple-50/30 transition-colors">
+                      <tr key={l.id} className="hover:bg-red-50/30 transition-colors">
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-3">
                             {l.coverImage ? (
                               <img
                                 src={l.coverImage}
                                 alt={l.customTitle}
-                                className="w-12 h-12 rounded-xl object-cover bg-slate-900 border border-purple-100 shrink-0"
+                                className="w-12 h-12 rounded-xl object-cover bg-slate-900 border border-red-100 shrink-0"
                               />
                             ) : (
-                              <div className="w-12 h-12 rounded-xl bg-purple-100 text-[#6734f7] flex items-center justify-center shrink-0">
+                              <div className="w-12 h-12 rounded-xl bg-red-100 text-[#dc2626] flex items-center justify-center shrink-0">
                                 <Package className="w-5 h-5" />
                               </div>
                             )}
                             <div className="min-w-0 max-w-xs">
                               <h4 className="font-bold text-[#162048] line-clamp-1">{l.customTitle}</h4>
-                              <span className="text-[10px] text-purple-600 font-mono font-bold">/r/{l.slug}</span>
+                              <span className="text-[10px] text-red-600 font-mono font-bold">/r/{l.slug}</span>
                             </div>
                           </div>
                         </td>
@@ -480,7 +480,7 @@ export default function ResellerProductsPage() {
                               className={`px-2.5 py-1.5 rounded-lg font-bold text-[11px] flex items-center gap-1 transition-colors ${
                                 isCopied
                                   ? 'bg-green-100 text-green-700'
-                                  : 'bg-purple-50 hover:bg-purple-100 text-[#6734f7]'
+                                  : 'bg-red-50 hover:bg-red-100 text-[#dc2626]'
                               }`}
                             >
                               {isCopied ? (
@@ -532,7 +532,7 @@ export default function ResellerProductsPage() {
                               type="button"
                               onClick={() => openEditModal(l)}
                               title="Quick Edit Title & Price"
-                              className="p-1.5 rounded-lg text-gray-400 hover:text-[#6734f7] hover:bg-purple-50 transition-colors"
+                              className="p-1.5 rounded-lg text-gray-400 hover:text-[#dc2626] hover:bg-red-50 transition-colors"
                             >
                               <Edit2 className="w-4 h-4" />
                             </button>
@@ -577,10 +577,10 @@ export default function ResellerProductsPage() {
       {/* ------------------------------------------------------------- */}
       {editingListing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="w-full max-w-md bg-white rounded-3xl p-6 border border-purple-100 shadow-2xl space-y-4">
+          <div className="w-full max-w-md bg-white rounded-3xl p-6 border border-red-100 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-purple-50 pb-3">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-purple-100 text-[#6734f7] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-red-100 text-[#dc2626] flex items-center justify-center">
                   <Edit2 className="w-4 h-4" />
                 </div>
                 <h3 className="text-sm font-black text-[#162048]">Quick Edit Listing</h3>
@@ -609,7 +609,7 @@ export default function ResellerProductsPage() {
                   required
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-[#162048] focus:outline-none focus:border-[#6734f7]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-[#162048] focus:outline-none focus:border-[#dc2626]"
                 />
               </div>
 
@@ -621,9 +621,9 @@ export default function ResellerProductsPage() {
                   required
                   value={editPrice}
                   onChange={(e) => setEditPrice(Number(e.target.value))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm font-black text-[#162048] focus:outline-none focus:border-[#6734f7]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm font-black text-[#162048] focus:outline-none focus:border-[#dc2626]"
                 />
-                <div className="mt-1.5 p-2 rounded-xl bg-purple-50/70 border border-purple-100 flex items-center justify-between text-[11px]">
+                <div className="mt-1.5 p-2 rounded-xl bg-red-50/70 border border-red-100 flex items-center justify-between text-[11px]">
                   <span className="text-gray-500 font-medium">Wholesale Base: ₹{editingListing.basePrice}</span>
                   <span className="font-black text-green-600">
                     Your Margin: +₹{Math.max(0, editPrice - editingListing.basePrice)}
@@ -642,7 +642,7 @@ export default function ResellerProductsPage() {
                 <button
                   type="submit"
                   disabled={isUpdating}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#6734f7] to-[#ec288d] text-white text-xs font-black shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-black shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-50"
                 >
                   {isUpdating ? 'Saving...' : 'Save Changes'}
                 </button>
@@ -699,10 +699,10 @@ export default function ResellerProductsPage() {
       {/* ------------------------------------------------------------- */}
       {shareListing && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150">
-          <div className="max-w-md w-full bg-white rounded-3xl p-6 shadow-2xl space-y-5 border border-purple-100">
+          <div className="max-w-md w-full bg-white rounded-3xl p-6 shadow-2xl space-y-5 border border-red-100">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-purple-100 text-[#6734f7] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-red-100 text-[#dc2626] flex items-center justify-center">
                   <Share2 className="w-4 h-4" />
                 </div>
                 <h3 className="text-sm font-black text-[#162048]">Share Reseller Listing</h3>
@@ -715,7 +715,7 @@ export default function ResellerProductsPage() {
               </button>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-purple-50/60 border border-purple-100 flex items-center gap-3">
+            <div className="p-3.5 rounded-2xl bg-red-50/60 border border-red-100 flex items-center gap-3">
               {shareListing.coverImage && (
                 <img
                   src={shareListing.coverImage}
@@ -754,7 +754,7 @@ export default function ResellerProductsPage() {
             </div>
 
             {/* Copy Promotional Caption */}
-            <div className="space-y-2 pt-2 border-t border-purple-100">
+            <div className="space-y-2 pt-2 border-t border-red-100">
               <label className="text-[11px] font-black uppercase tracking-wider text-slate-500 block">
                 Ready-to-Post Promotional Caption
               </label>
@@ -763,7 +763,7 @@ export default function ResellerProductsPage() {
               </div>
               <button
                 onClick={() => handleCopyCaption(shareListing)}
-                className="w-full py-2.5 rounded-xl bg-purple-100 hover:bg-purple-200 text-[#6734f7] text-xs font-bold flex items-center justify-center gap-2 transition-colors"
+                className="w-full py-2.5 rounded-xl bg-red-100 hover:bg-purple-200 text-[#dc2626] text-xs font-bold flex items-center justify-center gap-2 transition-colors"
               >
                 {copiedCaption ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedCaption ? 'Caption Copied!' : 'Copy Caption & Link'}</span>

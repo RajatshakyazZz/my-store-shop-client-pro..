@@ -17,8 +17,8 @@ export default function ContactUsPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         <div className="text-center space-y-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-[11px] font-black uppercase text-amber-700 tracking-wider">
-            <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/25 text-[11px] font-black uppercase text-red-700 tracking-wider">
+            <ShieldCheck className="w-3.5 h-3.5 text-red-600" />
             <span>OFFICIAL SUPPORT HELPLINE</span>
           </span>
           <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
@@ -53,16 +53,16 @@ export default function ContactUsPage() {
           {/* 2. Direct Phone Call */}
           <a
             href={`tel:+91${cleanPhone}`}
-            className="p-5 rounded-3xl bg-white border border-amber-200/80 shadow-sm hover:shadow-md hover:border-amber-400 transition-all text-center space-y-2.5 block group"
+            className="p-5 rounded-3xl bg-white border border-red-200/80 shadow-sm hover:shadow-md hover:border-red-400 transition-all text-center space-y-2.5 block group"
           >
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200/60 flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 border border-red-200/60 flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
               <Phone className="w-6 h-6" />
             </div>
             <h3 className="font-extrabold text-base text-slate-900">Call Support</h3>
             <p className="text-xs font-semibold text-slate-600">
               {supportPhone}
             </p>
-            <span className="inline-block px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase tracking-wider">
+            <span className="inline-block px-2.5 py-1 rounded-full bg-red-100 text-red-900 text-[10px] font-black uppercase tracking-wider">
               Call Helpline &rarr;
             </span>
           </a>
@@ -70,16 +70,16 @@ export default function ContactUsPage() {
           {/* 3. Email Support */}
           <a
             href={`mailto:${supportEmail}`}
-            className="p-5 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-purple-300 transition-all text-center space-y-2.5 block group"
+            className="p-5 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-red-300 transition-all text-center space-y-2.5 block group"
           >
-            <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 border border-purple-200/60 flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 border border-red-200/60 flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
               <Mail className="w-6 h-6" />
             </div>
             <h3 className="font-extrabold text-base text-slate-900">Email Desk</h3>
             <p className="text-xs font-semibold text-slate-600 break-all">
               {supportEmail}
             </p>
-            <span className="inline-block px-2.5 py-1 rounded-full bg-purple-100 text-purple-900 text-[10px] font-black uppercase tracking-wider">
+            <span className="inline-block px-2.5 py-1 rounded-full bg-red-100 text-red-900 text-[10px] font-black uppercase tracking-wider">
               Send Email &rarr;
             </span>
           </a>
@@ -98,7 +98,7 @@ export default function ContactUsPage() {
         {/* Instant Self-Service Order Portal Card */}
         <div className="rounded-3xl p-7 sm:p-8 bg-white border border-slate-200/90 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-5">
           <div className="flex items-center sm:items-start gap-4 text-center sm:text-left flex-col sm:flex-row">
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200/60 text-amber-700 flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 border border-red-200/60 text-red-700 flex items-center justify-center shrink-0">
               <FolderOpen className="w-6 h-6" />
             </div>
             <div>
@@ -113,10 +113,10 @@ export default function ContactUsPage() {
 
           <Link
             href="/my-order"
-            className="px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-xs flex items-center gap-2 shrink-0 shadow-md shadow-amber-500/20 active:scale-95 transition-all"
+            className="px-5 py-3 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-xs flex items-center gap-2 shrink-0 shadow-md shadow-red-500/20 active:scale-95 transition-all"
           >
             <span>My Orders</span>
-            <ArrowRight className="w-4 h-4 text-slate-950 stroke-[2.5]" />
+            <ArrowRight className="w-4 h-4 text-white stroke-[2.5]" />
           </Link>
         </div>
 

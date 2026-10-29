@@ -54,8 +54,8 @@ export default function EditListingPage({ params }: EditListingPageProps) {
 
   if (loading || authLoading) {
     return (
-      <div className="p-12 text-center flex flex-col items-center justify-center space-y-3 bg-white rounded-3xl border border-purple-100">
-        <Loader2 className="w-8 h-8 text-[#6734f7] animate-spin" />
+      <div className="p-12 text-center flex flex-col items-center justify-center space-y-3 bg-white rounded-3xl border border-red-100">
+        <Loader2 className="w-8 h-8 text-[#dc2626] animate-spin" />
         <p className="text-xs text-slate-500 font-bold">Loading listing editor...</p>
       </div>
     );
@@ -70,7 +70,7 @@ export default function EditListingPage({ params }: EditListingPageProps) {
         <h2 className="text-base font-black text-red-600">{error || 'Listing Not Found'}</h2>
         <Link
           href="/earn/products"
-          className="inline-block px-5 py-2.5 rounded-xl bg-purple-100 text-[#6734f7] text-xs font-bold"
+          className="inline-block px-5 py-2.5 rounded-xl bg-red-100 text-[#dc2626] text-xs font-bold"
         >
           Return to My Products
         </Link>
@@ -84,12 +84,12 @@ export default function EditListingPage({ params }: EditListingPageProps) {
 
   if (!originalProduct) {
     return (
-      <div className="p-8 rounded-3xl bg-white border border-purple-100 text-center space-y-4">
+      <div className="p-8 rounded-3xl bg-white border border-red-100 text-center space-y-4">
         <h2 className="text-base font-black text-red-600">Original Product Missing</h2>
         <p className="text-xs text-slate-500">The wholesale product tied to this listing is no longer available.</p>
         <Link
           href="/earn/products"
-          className="inline-block px-4 py-2 rounded-xl bg-purple-100 text-[#6734f7] text-xs font-bold"
+          className="inline-block px-4 py-2 rounded-xl bg-red-100 text-[#dc2626] text-xs font-bold"
         >
           Back to Listings
         </Link>

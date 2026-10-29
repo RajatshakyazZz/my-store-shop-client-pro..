@@ -100,7 +100,7 @@ export function getBundleContentDetails(product: BundleProduct): BundleDetailsDa
       {
         title: 'Digital Marketers & Agencies',
         description: `Ready-to-deploy vertical assets for brand campaigns, reach expansion, organic SEO, and ads.`,
-        tone: 'amber',
+        tone: 'rose',
         icon: 'agency',
       },
     ],
@@ -113,7 +113,7 @@ export function getBundleContentDetails(product: BundleProduct): BundleDetailsDa
       { label: 'Aspect Ratio', value: '9:16 (Fullscreen)', icon: 'smartphone', color: 'pink' },
       { label: 'Resolution', value: product.resolution || '1080P HD', icon: 'monitor', color: 'violet' },
       { label: 'Audio', value: 'Included', icon: 'volume', color: 'emerald' },
-      { label: 'Watermark', value: 'Zero (100% Clean)', icon: 'sparkles', color: 'amber' },
+      { label: 'Watermark', value: 'Zero (100% Clean)', icon: 'sparkles', color: 'rose' },
       { label: 'License Access', value: 'Lifetime Access', icon: 'shield', color: 'indigo' },
     ],
 

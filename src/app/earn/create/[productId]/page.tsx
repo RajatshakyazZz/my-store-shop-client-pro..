@@ -54,10 +54,10 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
 
   if (!product) {
     return (
-      <div className="p-8 rounded-3xl bg-white border border-purple-100 text-center space-y-4">
+      <div className="p-8 rounded-3xl bg-white border border-red-100 text-center space-y-4">
         <h2 className="text-lg font-black text-red-600">Product Not Found</h2>
         <p className="text-xs text-gray-500">The selected bundle does not exist or has been removed.</p>
-        <Link href="/earn/create" className="inline-block px-4 py-2 rounded-xl bg-purple-100 text-[#6734f7] text-xs font-bold">
+        <Link href="/earn/create" className="inline-block px-4 py-2 rounded-xl bg-red-100 text-[#dc2626] text-xs font-bold">
           Choose Another Product
         </Link>
       </div>
@@ -134,14 +134,14 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
       <div className="flex items-center justify-between">
         <Link
           href="/earn/create"
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 hover:text-[#6734f7] transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 hover:text-[#dc2626] transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Product Selection</span>
         </Link>
 
         {step < 5 && (
-          <div className="text-xs font-black text-purple-600">
+          <div className="text-xs font-black text-red-600">
             Step {step} of 4
           </div>
         )}
@@ -159,7 +159,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
                 key={label}
                 className={`py-2 px-2.5 rounded-xl border text-center transition-all ${
                   isCurrent
-                    ? 'bg-purple-50 border-[#6734f7] text-[#6734f7] font-black shadow-xs'
+                    ? 'bg-red-50 border-[#dc2626] text-[#dc2626] font-black shadow-xs'
                     : isCompleted
                     ? 'bg-green-50 border-green-200 text-green-700 font-bold'
                     : 'bg-white border-gray-200 text-gray-400 font-medium'
@@ -181,7 +181,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
 
       {/* STEP 1: CONFIRM PRODUCT */}
       {step === 1 && (
-        <div className="p-5 sm:p-8 rounded-3xl bg-white border border-purple-100 shadow-xs space-y-6">
+        <div className="p-5 sm:p-8 rounded-3xl bg-white border border-red-100 shadow-xs space-y-6">
           <div>
             <h2 className="text-xl font-black text-[#162048]">Step 1: Confirm Base Product</h2>
             <p className="text-xs text-slate-500 mt-1">
@@ -189,14 +189,14 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-5 p-4 rounded-2xl bg-purple-50/50 border border-purple-100">
+          <div className="flex flex-col sm:flex-row gap-5 p-4 rounded-2xl bg-red-50/50 border border-red-100">
             <img
               src={product.thumbnail}
               alt={product.title}
               className="w-full sm:w-44 aspect-video sm:aspect-square object-cover rounded-xl bg-slate-900 shrink-0"
             />
             <div className="space-y-2 flex-1 min-w-0">
-              <span className="px-2.5 py-0.5 rounded-md bg-purple-100 text-[#6734f7] font-bold text-[10px] uppercase">
+              <span className="px-2.5 py-0.5 rounded-md bg-red-100 text-[#dc2626] font-bold text-[10px] uppercase">
                 {product.category}
               </span>
               <h3 className="text-base font-black text-[#162048]">{product.title}</h3>
@@ -211,7 +211,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
                 </div>
                 <div className="p-2 rounded-lg bg-white border border-purple-50">
                   <span className="text-gray-400 block text-[9px] font-bold uppercase">Official Base Price</span>
-                  <span className="font-black text-[#6734f7]">₹{basePrice}</span>
+                  <span className="font-black text-[#dc2626]">₹{basePrice}</span>
                 </div>
                 <div className="p-2 rounded-lg bg-white border border-purple-50 col-span-2 sm:col-span-1">
                   <span className="text-gray-400 block text-[9px] font-bold uppercase">Delivery</span>
@@ -225,7 +225,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
             <button
               type="button"
               onClick={handleNext}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-[#6734f7] to-[#ec288d] text-white text-xs font-black flex items-center justify-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-black flex items-center justify-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-transform cursor-pointer"
             >
               <span>Continue to Customization</span>
               <ArrowRight className="w-4 h-4" />
@@ -236,7 +236,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
 
       {/* STEP 2: CUSTOMIZE LISTING */}
       {step === 2 && (
-        <div className="p-5 sm:p-8 rounded-3xl bg-white border border-purple-100 shadow-xs space-y-5">
+        <div className="p-5 sm:p-8 rounded-3xl bg-white border border-red-100 shadow-xs space-y-5">
           <div>
             <h2 className="text-xl font-black text-[#162048]">Step 2: Customize Your Marketing Text</h2>
             <p className="text-xs text-slate-500 mt-1">
@@ -253,7 +253,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
                 value={customTitle}
                 onChange={(e) => setCustomTitle(e.target.value)}
                 placeholder="e.g. 1000+ Viral AI Motivational Reels Bundle"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-[#162048] focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-[#162048] focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100"
               />
             </div>
 
@@ -264,7 +264,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
                 value={customSubtitle}
                 onChange={(e) => setCustomSubtitle(e.target.value)}
                 placeholder="e.g. Instant Google Drive Download • Ready to Post • High Quality"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-[#162048] focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-[#162048] focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100"
               />
             </div>
 
@@ -275,7 +275,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
                 value={customShortDescription}
                 onChange={(e) => setCustomShortDescription(e.target.value)}
                 placeholder="A compelling 1-2 sentence hook highlighting the main value."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-[#162048] focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-[#162048] focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100"
               />
             </div>
 
@@ -286,7 +286,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
                 value={customDescription}
                 onChange={(e) => setCustomDescription(e.target.value)}
                 placeholder="Describe what is inside the bundle, why creators need it, and how it helps them grow."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-[#162048] focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-[#162048] focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100"
               />
             </div>
           </div>
@@ -302,7 +302,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
             <button
               type="button"
               onClick={handleNext}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#6734f7] to-[#ec288d] text-white text-xs font-black flex items-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-black flex items-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-transform cursor-pointer"
             >
               <span>Continue to Pricing</span>
               <ArrowRight className="w-4 h-4" />
@@ -313,7 +313,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
 
       {/* STEP 3: SET PRICE & MARGIN CALCULATOR */}
       {step === 3 && (
-        <div className="p-5 sm:p-8 rounded-3xl bg-white border border-purple-100 shadow-xs space-y-6">
+        <div className="p-5 sm:p-8 rounded-3xl bg-white border border-red-100 shadow-xs space-y-6">
           <div>
             <h2 className="text-xl font-black text-[#162048]">Step 3: Set Your Resale Price</h2>
             <p className="text-xs text-slate-500 mt-1">
@@ -325,7 +325,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
           <div className="p-6 rounded-2xl bg-gradient-to-br from-[#162048] to-[#2b1754] text-white space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
               <div>
-                <label className="block text-xs font-bold text-purple-200 mb-1">
+                <label className="block text-xs font-bold text-rose-200 mb-1">
                   Your Selling Price (₹ INR)
                 </label>
                 <div className="relative">
@@ -339,7 +339,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
                     className="w-full pl-8 pr-3 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white font-black text-lg focus:outline-none focus:border-pink-400"
                   />
                 </div>
-                <span className="text-[10px] text-purple-200/80 mt-1 block">
+                <span className="text-[10px] text-rose-200/80 mt-1 block">
                   Minimum allowed: ₹{basePrice + 1}
                 </span>
               </div>
@@ -360,7 +360,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
 
             {/* Quick Price Suggestions */}
             <div className="pt-2 border-t border-white/10 flex flex-wrap items-center gap-2 text-xs">
-              <span className="text-[11px] text-purple-200 font-bold">Suggested:</span>
+              <span className="text-[11px] text-rose-200 font-bold">Suggested:</span>
               {[basePrice + 50, basePrice + 100, basePrice + 200, basePrice + 300].map((p) => (
                 <button
                   key={p}
@@ -388,7 +388,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
               type="button"
               disabled={!isPriceValid}
               onClick={handleNext}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#6734f7] to-[#ec288d] text-white text-xs font-black flex items-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-transform disabled:opacity-50 cursor-pointer"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-black flex items-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-transform disabled:opacity-50 cursor-pointer"
             >
               <span>Preview Product Page</span>
               <ArrowRight className="w-4 h-4" />
@@ -399,7 +399,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
 
       {/* STEP 4: LIVE PREVIEW & PUBLISH */}
       {step === 4 && (
-        <div className="p-5 sm:p-8 rounded-3xl bg-white border border-purple-100 shadow-xs space-y-6">
+        <div className="p-5 sm:p-8 rounded-3xl bg-white border border-red-100 shadow-xs space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-black text-[#162048]">Step 4: Live Customer Preview</h2>
@@ -407,14 +407,14 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
                 This is exactly how your customer will see the product on your unique link.
               </p>
             </div>
-            <span className="px-3 py-1 rounded-full bg-purple-100 text-[#6734f7] text-[10px] font-black uppercase">
+            <span className="px-3 py-1 rounded-full bg-red-100 text-[#dc2626] text-[10px] font-black uppercase">
               Preview Mode
             </span>
           </div>
 
           {/* Realistic Landing Preview Box */}
-          <div className="rounded-2xl border-2 border-purple-200 overflow-hidden shadow-sm bg-white">
-            <div className="p-3 bg-purple-50 border-b border-purple-100 flex items-center justify-between text-[11px] text-gray-500">
+          <div className="rounded-2xl border-2 border-red-200 overflow-hidden shadow-sm bg-white">
+            <div className="p-3 bg-red-50 border-b border-red-100 flex items-center justify-between text-[11px] text-gray-500">
               <span className="font-bold">Landing URL: https://myztore.shop/r/your-slug</span>
               <span className="text-green-600 font-bold flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5" />
@@ -428,7 +428,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
               </div>
 
               <div className="text-center space-y-2 max-w-lg mx-auto">
-                <span className="text-xs font-bold text-[#6734f7] uppercase tracking-wider">
+                <span className="text-xs font-bold text-[#dc2626] uppercase tracking-wider">
                   {customSubtitle}
                 </span>
                 <h3 className="text-xl font-black text-[#162048]">{customTitle}</h3>
@@ -445,7 +445,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
                   <button
                     type="button"
                     disabled
-                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#6734f7] to-[#ec288d] text-white font-black text-xs shadow-md opacity-90 cursor-not-allowed"
+                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-xs shadow-md opacity-90 cursor-not-allowed"
                   >
                     Buy Now — ₹{resalePrice}
                   </button>
@@ -478,7 +478,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
               type="button"
               disabled={isLoading}
               onClick={handlePublish}
-              className="px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#6734f7] to-[#ec288d] text-white text-xs font-black flex items-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
+              className="px-7 py-3.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-black flex items-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
             >
               <Sparkles className="w-4 h-4" />
               <span>{isLoading ? 'Generating Link...' : 'Publish & Get Share Link'}</span>
@@ -489,7 +489,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
 
       {/* STEP 5: SUCCESS & SHARE LINK */}
       {step === 5 && createdListing && (
-        <div className="p-6 sm:p-10 rounded-3xl bg-white border border-purple-100 shadow-xl text-center space-y-6">
+        <div className="p-6 sm:p-10 rounded-3xl bg-white border border-red-100 shadow-xl text-center space-y-6">
           <div className="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center mx-auto shadow-sm">
             <Check className="w-8 h-8" />
           </div>
@@ -502,17 +502,17 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
           </div>
 
           {/* Link Box */}
-          <div className="max-w-xl mx-auto p-4 rounded-2xl bg-purple-50/70 border border-purple-200 flex flex-col sm:flex-row items-center gap-3">
+          <div className="max-w-xl mx-auto p-4 rounded-2xl bg-red-50/70 border border-red-200 flex flex-col sm:flex-row items-center gap-3">
             <div className="flex-1 text-left min-w-0">
               <span className="text-[10px] text-gray-400 font-bold uppercase block">Your Shareable URL</span>
-              <span className="text-xs font-black text-[#6734f7] truncate block select-all">
+              <span className="text-xs font-black text-[#dc2626] truncate block select-all">
                 {shareUrl}
               </span>
             </div>
             <button
               type="button"
               onClick={copyLink}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#6734f7] hover:bg-[#5827dc] text-white text-xs font-black flex items-center justify-center gap-1.5 transition-colors shadow-sm shrink-0 cursor-pointer"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#dc2626] hover:bg-[#b91c1c] text-white text-xs font-black flex items-center justify-center gap-1.5 transition-colors shadow-sm shrink-0 cursor-pointer"
             >
               {copied ? (
                 <>
@@ -573,7 +573,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
               <Link
                 href={`/r/${createdListing.slug}`}
                 target="_blank"
-                className="px-4 py-2.5 rounded-xl bg-purple-100 hover:bg-purple-200 text-[#6734f7] text-xs font-bold flex items-center gap-1.5 transition-all"
+                className="px-4 py-2.5 rounded-xl bg-red-100 hover:bg-purple-200 text-[#dc2626] text-xs font-bold flex items-center gap-1.5 transition-all"
               >
                 <span>View Live Page</span>
                 <ExternalLink className="w-3.5 h-3.5" />
@@ -585,14 +585,14 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
           <div className="pt-6 border-t border-purple-50 flex items-center justify-center gap-4">
             <Link
               href="/earn/products"
-              className="text-xs font-bold text-gray-600 hover:text-[#6734f7]"
+              className="text-xs font-bold text-gray-600 hover:text-[#dc2626]"
             >
               View My Products List
             </Link>
             <span className="text-gray-300">•</span>
             <Link
               href="/earn/dashboard"
-              className="text-xs font-black text-[#6734f7] hover:underline"
+              className="text-xs font-black text-[#dc2626] hover:underline"
             >
               Go to Reseller Dashboard &rarr;
             </Link>

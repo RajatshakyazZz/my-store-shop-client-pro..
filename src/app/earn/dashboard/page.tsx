@@ -84,7 +84,7 @@ export default function ResellerDashboardOverview() {
       {/* ------------------------------------------------------------- */}
       <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#162048] via-[#221652] to-[#3a1b63] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-xl shadow-purple-950/20 relative overflow-hidden">
         {/* Glow orb */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-[#ec288d]/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-80 h-80 bg-[#f43f5e]/15 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
@@ -109,7 +109,7 @@ export default function ResellerDashboardOverview() {
         <div className="relative z-10 flex items-center gap-2.5 shrink-0">
           <Link
             href="/earn/create"
-            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-[#6734f7] to-[#ec288d] text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all"
+            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-red-500/25 hover:shadow-red-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
             <PlusCircle className="w-4 h-4" />
             <span>Create New Link</span>
@@ -130,8 +130,8 @@ export default function ResellerDashboardOverview() {
       {/* ------------------------------------------------------------- */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
         {/* Total Earned */}
-        <div className="p-4 sm:p-5 rounded-3xl bg-white border border-purple-100/90 shadow-xs space-y-2 hover:shadow-md transition-shadow">
-          <div className="w-10 h-10 rounded-2xl bg-purple-100 text-[#6734f7] flex items-center justify-center shadow-inner">
+        <div className="p-4 sm:p-5 rounded-3xl bg-white border border-red-100/90 shadow-xs space-y-2 hover:shadow-md transition-shadow">
+          <div className="w-10 h-10 rounded-2xl bg-red-100 text-[#dc2626] flex items-center justify-center shadow-inner">
             <TrendingUp className="w-5 h-5" />
           </div>
           <div>
@@ -164,7 +164,7 @@ export default function ResellerDashboardOverview() {
 
         {/* Total Attributed Sales */}
         <div className="p-4 sm:p-5 rounded-3xl bg-white border border-pink-100 shadow-xs space-y-2 hover:shadow-md transition-shadow">
-          <div className="w-10 h-10 rounded-2xl bg-pink-100 text-[#ec288d] flex items-center justify-center shadow-inner">
+          <div className="w-10 h-10 rounded-2xl bg-pink-100 text-[#f43f5e] flex items-center justify-center shadow-inner">
             <ShoppingBag className="w-5 h-5" />
           </div>
           <div>
@@ -194,10 +194,10 @@ export default function ResellerDashboardOverview() {
       {/* ------------------------------------------------------------- */}
       {/* MY RESELLER PRODUCT LINKS */}
       {/* ------------------------------------------------------------- */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-white border border-purple-100/90 shadow-xs space-y-4">
+      <div className="p-5 sm:p-6 rounded-3xl bg-white border border-red-100/90 shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-purple-100 text-[#6734f7] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-red-100 text-[#dc2626] flex items-center justify-center">
               <Package className="w-4 h-4" />
             </div>
             <div>
@@ -211,7 +211,7 @@ export default function ResellerDashboardOverview() {
           </div>
           <Link
             href="/earn/products"
-            className="text-xs font-black text-[#6734f7] hover:underline flex items-center gap-1"
+            className="text-xs font-black text-[#dc2626] hover:underline flex items-center gap-1"
           >
             <span>View All ({listings.length})</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -219,8 +219,8 @@ export default function ResellerDashboardOverview() {
         </div>
 
         {listings.length === 0 ? (
-          <div className="p-8 sm:p-10 rounded-2xl bg-purple-50/50 border border-purple-100 text-center space-y-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-purple-100 text-[#6734f7] flex items-center justify-center mx-auto">
+          <div className="p-8 sm:p-10 rounded-2xl bg-red-50/50 border border-red-100 text-center space-y-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-red-100 text-[#dc2626] flex items-center justify-center mx-auto">
               <Sparkles className="w-6 h-6" />
             </div>
             <div className="space-y-1">
@@ -231,7 +231,7 @@ export default function ResellerDashboardOverview() {
             </div>
             <Link
               href="/earn/create"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#6734f7] to-[#ec288d] text-white text-xs font-black shadow-lg shadow-purple-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-black shadow-lg shadow-red-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               <PlusCircle className="w-4 h-4" />
               <span>Create First Reseller Link</span>
@@ -241,7 +241,7 @@ export default function ResellerDashboardOverview() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-purple-100 text-slate-400 font-extrabold uppercase text-[10px]">
+                <tr className="border-b border-red-100 text-slate-400 font-extrabold uppercase text-[10px]">
                   <th className="py-3 px-2">Product Title</th>
                   <th className="py-3 px-2">Your Price</th>
                   <th className="py-3 px-2">Your Net Profit</th>
@@ -255,7 +255,7 @@ export default function ResellerDashboardOverview() {
                   const waUrl = getWhatsAppShareUrl(listing, typeof window !== 'undefined' ? window.location.origin : '');
 
                   return (
-                    <tr key={listing.id} className="hover:bg-purple-50/30 transition-colors">
+                    <tr key={listing.id} className="hover:bg-red-50/30 transition-colors">
                       <td className="py-3 px-2">
                         <div className="font-bold text-[#162048] max-w-xs truncate">
                           {listing.customTitle}
@@ -279,7 +279,7 @@ export default function ResellerDashboardOverview() {
                           <button
                             type="button"
                             onClick={() => copyToClipboard(listing.slug)}
-                            className="px-2.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#6734f7] font-bold text-[11px] flex items-center gap-1 transition-all active:scale-95"
+                            className="px-2.5 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-[#dc2626] font-bold text-[11px] flex items-center gap-1 transition-all active:scale-95"
                             title="Copy link"
                           >
                             {copiedSlug === listing.slug ? (
@@ -332,17 +332,17 @@ export default function ResellerDashboardOverview() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         
         {/* Recent Attributed Orders */}
-        <div className="p-5 sm:p-6 rounded-3xl bg-white border border-purple-100/90 shadow-xs space-y-4">
+        <div className="p-5 sm:p-6 rounded-3xl bg-white border border-red-100/90 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-pink-100 text-[#ec288d] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-pink-100 text-[#f43f5e] flex items-center justify-center">
                 <ShoppingBag className="w-4 h-4" />
               </div>
               <h2 className="text-sm font-black text-[#162048]">
                 Recent Attributed Sales
               </h2>
             </div>
-            <Link href="/earn/orders" className="text-xs font-black text-[#6734f7] hover:underline">
+            <Link href="/earn/orders" className="text-xs font-black text-[#dc2626] hover:underline">
               All Orders
             </Link>
           </div>
@@ -372,7 +372,7 @@ export default function ResellerDashboardOverview() {
         </div>
 
         {/* Recent Wallet Activity */}
-        <div className="p-5 sm:p-6 rounded-3xl bg-white border border-purple-100/90 shadow-xs space-y-4">
+        <div className="p-5 sm:p-6 rounded-3xl bg-white border border-red-100/90 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
@@ -382,7 +382,7 @@ export default function ResellerDashboardOverview() {
                 Recent Wallet Activity
               </h2>
             </div>
-            <Link href="/earn/wallet" className="text-xs font-black text-[#6734f7] hover:underline">
+            <Link href="/earn/wallet" className="text-xs font-black text-[#dc2626] hover:underline">
               Full Ledger
             </Link>
           </div>

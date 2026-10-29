@@ -66,14 +66,14 @@ export default function MembershipPlans() {
         <div className="relative rounded-[28px] sm:rounded-[34px] bg-white border border-slate-200/90 p-4 sm:p-7 space-y-6 shadow-[0_12px_40px_rgba(15,23,42,0.04)] overflow-hidden">
           
           {/* Top Gradient Accent Bar */}
-          <div className="absolute top-0 left-6 right-6 h-[3px] bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 rounded-b-full" />
+          <div className="absolute top-0 left-6 right-6 h-[3px] bg-gradient-to-r from-red-600 via-rose-500 to-red-600 rounded-b-full" />
 
-          {/* Centered Midnight Slate & Imperial Gold Header Banner */}
-          <div className="max-w-[660px] mx-auto relative rounded-[20px] bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 px-6 py-5 sm:px-8 sm:py-6 text-white border border-amber-500/35 shadow-[0_14px_35px_rgba(0,0,0,0.3)] overflow-hidden">
+          {/* Centered Midnight Slate & Luxury Crimson Header Banner */}
+          <div className="max-w-[660px] mx-auto relative rounded-[20px] bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 px-6 py-5 sm:px-8 sm:py-6 text-white border border-red-500/35 shadow-[0_14px_35px_rgba(0,0,0,0.3)] overflow-hidden">
             {/* Subtle glossy curve in top-right */}
-            <div className="pointer-events-none absolute -top-12 -right-8 w-44 h-44 rounded-full bg-amber-500/10 blur-xl" />
-            {/* Left vertical amber gold indicator bar */}
-            <div className="hidden sm:block absolute left-3.5 top-4 bottom-4 w-[4px] bg-gradient-to-b from-amber-400 to-yellow-500 rounded-full shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
+            <div className="pointer-events-none absolute -top-12 -right-8 w-44 h-44 rounded-full bg-red-500/10 blur-xl" />
+            {/* Left vertical crimson indicator bar */}
+            <div className="hidden sm:block absolute left-3.5 top-4 bottom-4 w-[4px] bg-gradient-to-b from-red-500 to-rose-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
 
             <div className="relative text-center space-y-1.5">
               <h2 className="text-xl sm:text-[29px] font-black text-white tracking-tight leading-tight">
@@ -99,7 +99,7 @@ export default function MembershipPlans() {
             >
               <div
                 className={`text-xs sm:text-[13.5px] font-extrabold ${
-                  !isReseller ? 'text-amber-700' : 'text-slate-600'
+                  !isReseller ? 'text-red-700' : 'text-slate-600'
                 }`}
               >
                 Personal
@@ -121,7 +121,7 @@ export default function MembershipPlans() {
               <div>
                 <div
                   className={`text-xs sm:text-[13.5px] font-extrabold ${
-                    isReseller ? 'text-amber-700' : 'text-slate-600'
+                    isReseller ? 'text-red-700' : 'text-slate-600'
                   }`}
                 >
                   Reseller
@@ -130,7 +130,7 @@ export default function MembershipPlans() {
                   For resale &amp; clients
                 </div>
               </div>
-              <span className="text-[9.5px] font-black uppercase tracking-wider text-amber-900 bg-amber-100/90 border border-amber-300/60 px-2.5 py-0.5 rounded-full shrink-0">
+              <span className="text-[9.5px] font-black uppercase tracking-wider text-red-900 bg-red-100/90 border border-red-300/60 px-2.5 py-0.5 rounded-full shrink-0">
                 POPULAR
               </span>
             </button>
@@ -148,23 +148,23 @@ export default function MembershipPlans() {
                 {/* Icon + Badge + Title + Description */}
                 <div className="flex items-start gap-3.5">
                   <div
-                    className="w-12 h-12 rounded-[16px] text-slate-950 flex items-center justify-center shrink-0 bg-gradient-to-br from-amber-400 via-amber-500 to-yellow-500 shadow-[0_6px_16px_rgba(245,158,11,0.3)]"
+                    className="w-12 h-12 rounded-[16px] text-white flex items-center justify-center shrink-0 bg-gradient-to-br from-red-600 via-rose-600 to-red-700 shadow-[0_6px_16px_rgba(225,29,72,0.3)]"
                   >
                     {isReseller ? (
-                      <ArrowUpRight className="w-5 h-5 text-slate-950 stroke-[2.5]" />
+                      <ArrowUpRight className="w-5 h-5 text-white stroke-[2.5]" />
                     ) : (
-                      <Play className="w-4 h-4 fill-slate-950 text-slate-950 ml-0.5" />
+                      <Play className="w-4 h-4 fill-white text-white ml-0.5" />
                     )}
                   </div>
 
                   <div className="space-y-1">
                     <span
-                      className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full inline-block bg-amber-50 text-amber-900 border border-amber-200/60"
+                      className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full inline-block bg-red-50 text-red-900 border border-red-200/60"
                     >
                       {isReseller ? 'RESELLER ACCESS' : 'PERSONAL ACCESS'}
                     </span>
                     <h3 className="text-xl sm:text-[22px] font-black text-slate-950 leading-snug">
-                      <Link href={`/product/${targetProductSlug}`} className="hover:text-amber-600 transition-colors">
+                      <Link href={`/product/${targetProductSlug}`} className="hover:text-red-600 transition-colors">
                         {currentPlan.name}
                       </Link>
                     </h3>
@@ -210,7 +210,7 @@ export default function MembershipPlans() {
               >
                 {/* Floating BEST VALUE pill on Reseller tab */}
                 {isReseller && (
-                  <span className="absolute -top-3 right-4 bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md shadow-amber-500/25 border border-amber-300">
+                  <span className="absolute -top-3 right-4 bg-gradient-to-r from-red-600 to-rose-600 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md shadow-red-500/25 border border-red-300">
                     BEST VALUE
                   </span>
                 )}
@@ -221,7 +221,7 @@ export default function MembershipPlans() {
                     className="py-2.5 flex items-center gap-3 first:pt-1 last:pb-1"
                   >
                     <div
-                      className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-amber-100 text-amber-800"
+                      className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-red-100 text-red-800"
                     >
                       <Check className="w-3 h-3 stroke-[3]" />
                     </div>
@@ -234,22 +234,22 @@ export default function MembershipPlans() {
 
             </div>
 
-            {/* Full-Width Royal Amber Gold CTA Button */}
+            {/* Full-Width Luxury Crimson Red CTA Button */}
             <Link
               href={`/product/${targetProductSlug}`}
-              className="w-full py-3.5 sm:py-4 px-6 rounded-[16px] bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-sm sm:text-[15px] flex items-center justify-center gap-2.5 shadow-[0_10px_25px_rgba(245,158,11,0.28)] transition-all hover:scale-[1.005]"
+              className="w-full py-3.5 sm:py-4 px-6 rounded-[16px] bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-sm sm:text-[15px] flex items-center justify-center gap-2.5 shadow-[0_10px_25px_rgba(225,29,72,0.35)] transition-all hover:scale-[1.005]"
             >
               <span>
                 {isReseller ? 'Get Reseller Access' : 'Get Personal Access'}
               </span>
-              <span className="w-5 h-5 rounded-full bg-slate-950/15 flex items-center justify-center">
-                <ArrowRight className="w-3.5 h-3.5 text-slate-950 stroke-[2.5]" />
+              <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+                <ArrowRight className="w-3.5 h-3.5 text-white stroke-[2.5]" />
               </span>
             </Link>
 
             {/* Bottom Accent Line */}
             <div
-              className="absolute bottom-0 left-10 right-10 h-[3px] rounded-t-full bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500"
+              className="absolute bottom-0 left-10 right-10 h-[3px] rounded-t-full bg-gradient-to-r from-red-600 via-rose-500 to-red-600"
             />
           </div>
 

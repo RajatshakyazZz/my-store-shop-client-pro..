@@ -66,10 +66,10 @@ export default function ResellerAuthModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-purple-100 overflow-hidden">
+      <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-red-100 overflow-hidden">
         
         {/* Header gradient banner */}
-        <div className="relative p-6 pb-5 bg-gradient-to-br from-[#6734f7] via-[#942bf6] to-[#ec288d] text-white">
+        <div className="relative p-6 pb-5 bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white">
           <button
             type="button"
             onClick={onClose}
@@ -106,7 +106,7 @@ export default function ResellerAuthModal({
               onClick={() => { setTab('signup'); setError(null); }}
               className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all ${
                 tab === 'signup'
-                  ? 'bg-white text-[#6734f7] shadow-sm'
+                  ? 'bg-white text-[#dc2626] shadow-sm'
                   : 'text-gray-500 hover:text-gray-900'
               }`}
             >
@@ -117,7 +117,7 @@ export default function ResellerAuthModal({
               onClick={() => { setTab('signin'); setError(null); }}
               className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all ${
                 tab === 'signin'
-                  ? 'bg-white text-[#6734f7] shadow-sm'
+                  ? 'bg-white text-[#dc2626] shadow-sm'
                   : 'text-gray-500 hover:text-gray-900'
               }`}
             >
@@ -153,7 +153,7 @@ export default function ResellerAuthModal({
                   placeholder="e.g. Rahul Sharma"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 transition-all font-medium"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100 transition-all font-medium"
                 />
               </div>
             </div>
@@ -169,7 +169,7 @@ export default function ResellerAuthModal({
                 placeholder="yourname@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 transition-all font-medium"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100 transition-all font-medium"
               />
             </div>
           </div>
@@ -187,7 +187,7 @@ export default function ResellerAuthModal({
                   maxLength={10}
                   value={phone}
                   onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 transition-all font-medium"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100 transition-all font-medium"
                 />
               </div>
             </div>
@@ -201,7 +201,7 @@ export default function ResellerAuthModal({
                   <button
                     type="button"
                     onClick={() => { setTab('forgot'); setError(null); }}
-                    className="text-[11px] font-bold text-[#6734f7] hover:underline"
+                    className="text-[11px] font-bold text-[#dc2626] hover:underline"
                   >
                     Forgot?
                   </button>
@@ -215,7 +215,7 @@ export default function ResellerAuthModal({
                   placeholder="At least 6 characters"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 transition-all font-medium"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100 transition-all font-medium"
                 />
               </div>
             </div>
@@ -224,7 +224,7 @@ export default function ResellerAuthModal({
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#6734f7] via-[#942bf6] to-[#ec288d] text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
+            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
           >
             {isLoading ? (
               <span>Processing...</span>

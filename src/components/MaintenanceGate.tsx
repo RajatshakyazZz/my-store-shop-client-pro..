@@ -58,25 +58,25 @@ export default function MaintenanceGate({
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white flex flex-col justify-between selection:bg-amber-500 selection:text-slate-950 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white flex flex-col justify-between selection:bg-red-600 selection:text-white relative overflow-hidden">
       
       {/* Background ambient lighting */}
-      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-amber-500/10 rounded-full blur-[140px]" />
-      <div className="pointer-events-none absolute bottom-0 right-0 w-[400px] h-[400px] bg-yellow-500/5 rounded-full blur-[120px]" />
+      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-red-500/10 rounded-full blur-[140px]" />
+      <div className="pointer-events-none absolute bottom-0 right-0 w-[400px] h-[400px] bg-rose-500/5 rounded-full blur-[120px]" />
 
       {/* Top Navbar */}
       <header className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 flex items-center justify-between border-b border-slate-800/60">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/20">
-            <Sparkles className="w-5 h-5 fill-slate-950" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-rose-600 flex items-center justify-center text-white font-black shadow-lg shadow-red-500/20">
+            <Sparkles className="w-5 h-5 fill-white" />
           </div>
           <span className="font-black text-lg tracking-tight text-white">
             {storeName}
           </span>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold">
-          <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-rose-300 text-xs font-bold">
+          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
           <span>Under Maintenance</span>
         </div>
       </header>
@@ -87,15 +87,15 @@ export default function MaintenanceGate({
           
           {/* Animated Hero Icon */}
           <div className="relative inline-flex items-center justify-center">
-            <div className="absolute inset-0 rounded-3xl bg-amber-500/20 blur-xl animate-pulse" />
-            <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-slate-900 border-2 border-amber-500/40 shadow-2xl flex items-center justify-center text-amber-400">
+            <div className="absolute inset-0 rounded-3xl bg-red-500/20 blur-xl animate-pulse" />
+            <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-slate-900 border-2 border-red-500/40 shadow-2xl flex items-center justify-center text-rose-400">
               <ShieldAlert className="w-12 h-12 sm:w-14 sm:h-14 stroke-[2]" />
             </div>
           </div>
 
           {/* Heading & Downtime Message */}
           <div className="space-y-4">
-            <div className="inline-block px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-extrabold uppercase tracking-widest">
+            <div className="inline-block px-3.5 py-1 rounded-full bg-red-500/15 border border-red-500/30 text-rose-300 text-xs font-extrabold uppercase tracking-widest">
               Performance Upgrade In Progress
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
@@ -111,7 +111,7 @@ export default function MaintenanceGate({
             <button
               onClick={checkStatusNow}
               disabled={isChecking}
-              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/25 transition-all cursor-pointer disabled:opacity-50"
+              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-red-500/25 transition-all cursor-pointer disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${isChecking ? 'animate-spin' : ''}`} />
               <span>{isChecking ? 'Checking Store Status...' : 'Check If Store Is Back Online'}</span>
@@ -123,7 +123,7 @@ export default function MaintenanceGate({
           </div>
 
           {checkStatus && (
-            <div className="text-xs font-bold text-amber-300 animate-in fade-in">
+            <div className="text-xs font-bold text-rose-300 animate-in fade-in">
               {checkStatus}
             </div>
           )}
@@ -151,7 +151,7 @@ export default function MaintenanceGate({
 
             {/* Need Urgent Help */}
             <div className="p-5 rounded-2xl bg-slate-900/70 border border-slate-800/80 space-y-3 hover:border-slate-700 transition-all">
-              <div className="flex items-center gap-2.5 text-amber-400">
+              <div className="flex items-center gap-2.5 text-rose-400">
                 <Mail className="w-5 h-5 shrink-0" />
                 <h3 className="font-extrabold text-sm text-white">Need Urgent Help?</h3>
               </div>
@@ -160,7 +160,7 @@ export default function MaintenanceGate({
               </p>
               <a
                 href={`mailto:${supportEmail}`}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors pt-1"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-400 hover:text-rose-300 transition-colors pt-1"
               >
                 <span>Email Support Team</span>
                 <span>→</span>

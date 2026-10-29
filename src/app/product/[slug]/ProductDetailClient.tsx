@@ -215,7 +215,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       case 'family':
         return <Heart className="w-4 h-4 text-orange-600" />;
       case 'agency':
-        return <Target className="w-4 h-4 text-amber-600" />;
+        return <Target className="w-4 h-4 text-rose-600" />;
       default:
         return <Sparkles className="w-4 h-4 text-purple-600" />;
     }
@@ -229,13 +229,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         {/* Navigation / Breadcrumb */}
         <div className="flex items-center justify-between gap-3 text-xs font-semibold text-slate-500">
           <nav aria-label="Breadcrumb" className="hidden sm:flex items-center gap-2">
-            <Link href="/" className="hover:text-amber-600 transition-colors">Home</Link>
+            <Link href="/" className="hover:text-red-600 transition-colors">Home</Link>
             <span className="text-slate-300">/</span>
-            <Link href="/shop" className="hover:text-amber-600 transition-colors">Shop</Link>
+            <Link href="/shop" className="hover:text-red-600 transition-colors">Shop</Link>
             <span className="text-slate-300">/</span>
             <Link
               href={`/category/${p.categorySlug || 'ai-reels'}`}
-              className="hover:text-amber-600 transition-colors"
+              className="hover:text-red-600 transition-colors"
             >
               {p.category || 'Reels Bundle'}
             </Link>
@@ -302,7 +302,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     onClick={() => setSelectedImage(img)}
                     className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-slate-50 cursor-pointer ${
                       currentImage === img
-                        ? 'border-amber-500 ring-2 ring-amber-200'
+                        ? 'border-red-500 ring-2 ring-red-200'
                         : 'border-slate-200 opacity-70 hover:opacity-100'
                     }`}
                   >
@@ -323,16 +323,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {hasVideoPreview && (
               <a
                 href="#view-samples"
-                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 hover:from-slate-900 hover:to-slate-800 text-amber-300 border border-amber-500/40 font-extrabold text-xs flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.01] active:scale-[0.99] group cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 hover:from-slate-900 hover:to-slate-800 text-rose-300 border border-red-500/40 font-extrabold text-xs flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.01] active:scale-[0.99] group cursor-pointer"
               >
-                <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-300 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Play className="w-3 h-3 fill-amber-300 text-amber-300 ml-0.5" />
+                <span className="w-5 h-5 rounded-full bg-red-500/20 text-rose-300 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Play className="w-3 h-3 fill-rose-300 text-rose-300 ml-0.5" />
                 </span>
                 <span>
                   Watch Reel Samples & Video Preview{' '}
                   {parsedVideos.length > 1 ? `(${parsedVideos.length} Samples)` : '(1080P)'}
                 </span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-red-500/20 text-rose-300 font-bold border border-red-500/30">
                   LIVE DEMO
                 </span>
               </a>
@@ -341,7 +341,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {/* Clean Trust Reassurance Strip */}
             <div className="grid grid-cols-3 gap-2 p-3 rounded-2xl bg-white border border-slate-200/80 shadow-2xs text-center text-xs">
               <div className="flex items-center justify-center gap-1.5 py-1 font-semibold text-slate-700">
-                <FolderOpen className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                <FolderOpen className="w-3.5 h-3.5 text-red-600 shrink-0" />
                 <span className="text-[11px] sm:text-xs">Google Drive</span>
               </div>
               <div className="flex items-center justify-center gap-1.5 py-1 font-semibold text-slate-700 border-x border-slate-100">
@@ -349,7 +349,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <span className="text-[11px] sm:text-xs">Safe UPI</span>
               </div>
               <div className="flex items-center justify-center gap-1.5 py-1 font-semibold text-slate-700">
-                <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                <Sparkles className="w-3.5 h-3.5 text-red-500 shrink-0" />
                 <span className="text-[11px] sm:text-xs">No Watermark</span>
               </div>
             </div>
@@ -363,7 +363,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <div className="space-y-2">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 font-extrabold text-[11px] uppercase tracking-wider border border-amber-200/60">
+                    <span className="px-2.5 py-0.5 rounded-full bg-red-50 text-red-900 font-extrabold text-[11px] uppercase tracking-wider border border-red-200/60">
                       {p.category || 'Reels Bundle'}
                     </span>
                     <span className="text-slate-300">•</span>
@@ -416,19 +416,19 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               {/* Key Highlights */}
               <div className="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
                 <div className="flex items-center gap-1.5 p-2 rounded-xl bg-slate-50 border border-slate-200/80">
-                  <Check className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <Check className="w-3.5 h-3.5 text-red-600 shrink-0" />
                   <span>{p.reelCount || 1000}+ HD Video Clips</span>
                 </div>
                 <div className="flex items-center gap-1.5 p-2 rounded-xl bg-slate-50 border border-slate-200/80">
-                  <Check className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <Check className="w-3.5 h-3.5 text-red-600 shrink-0" />
                   <span>100% Watermark-Free</span>
                 </div>
                 <div className="flex items-center gap-1.5 p-2 rounded-xl bg-slate-50 border border-slate-200/80">
-                  <Check className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <Check className="w-3.5 h-3.5 text-red-600 shrink-0" />
                   <span>9:16 Vertical (Reels/Shorts)</span>
                 </div>
                 <div className="flex items-center gap-1.5 p-2 rounded-xl bg-slate-50 border border-slate-200/80">
-                  <Check className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <Check className="w-3.5 h-3.5 text-red-600 shrink-0" />
                   <span>Instant Drive Link Access</span>
                 </div>
               </div>
@@ -438,14 +438,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <button
                   type="button"
                   onClick={() => buyNow(p, 'personal')}
-                  className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-base shadow-lg shadow-amber-500/25 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-base shadow-lg shadow-red-500/25 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <Zap className="w-4 h-4 fill-slate-950" />
+                  <Zap className="w-4 h-4 fill-white" />
                   <span>Buy Now — ₹{activePrice}.00 (Instant Access)</span>
                 </button>
 
                 <p className="text-center text-[11px] text-slate-500 font-medium flex items-center justify-center gap-1.5">
-                  <FolderOpen className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <FolderOpen className="w-3.5 h-3.5 text-red-600 shrink-0" />
                   <span>Drive link appears on screen immediately & is sent to your email.</span>
                 </p>
 
@@ -475,11 +475,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                         setIsAuthModalOpen(true);
                       }
                     }}
-                    className="w-full py-3 px-5 rounded-xl bg-white hover:bg-amber-50/80 border border-amber-300/80 text-amber-900 font-black text-sm flex items-center justify-center gap-2 shadow-xs hover:shadow-md transition-all active:scale-95 cursor-pointer"
+                    className="w-full py-3 px-5 rounded-xl bg-white hover:bg-red-50/80 border border-red-300/80 text-red-900 font-black text-sm flex items-center justify-center gap-2 shadow-xs hover:shadow-md transition-all active:scale-95 cursor-pointer"
                   >
-                    <Briefcase className="w-4 h-4 text-amber-600" />
+                    <Briefcase className="w-4 h-4 text-red-600" />
                     <span>Resell & Earn on This Bundle</span>
-                    <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 text-[10px] font-extrabold uppercase">
+                    <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-red-600 to-rose-600 text-white text-[10px] font-extrabold uppercase">
                       Keep 100% Margin
                     </span>
                   </button>
@@ -498,21 +498,21 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         {hasVideoPreview && (
           <section
             id="view-samples"
-            className="bg-gradient-to-br from-slate-950 via-[#0d1222] to-slate-950 rounded-2xl sm:rounded-3xl border border-amber-500/30 p-5 sm:p-8 shadow-[0_12px_40px_rgba(0,0,0,0.35)] text-white space-y-6 relative overflow-hidden [contain:layout_style]"
+            className="bg-gradient-to-br from-slate-950 via-[#0d1222] to-slate-950 rounded-2xl sm:rounded-3xl border border-red-500/30 p-5 sm:p-8 shadow-[0_12px_40px_rgba(0,0,0,0.35)] text-white space-y-6 relative overflow-hidden [contain:layout_style]"
           >
             {/* Ambient glow backgrounds */}
-            <div className="absolute -top-32 -right-32 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -top-32 -right-32 w-80 h-80 bg-red-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
 
             {/* Header banner */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-5 relative z-10">
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[11px] font-extrabold uppercase tracking-wider">
-                  <Play className="w-3 h-3 fill-amber-300" />
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/15 text-rose-300 border border-red-500/30 text-[11px] font-extrabold uppercase tracking-wider">
+                  <Play className="w-3 h-3 fill-rose-300" />
                   <span>
                     Official Sample {parsedVideos.length > 1 ? `Reels (${parsedVideos.length} Available)` : 'Reel'}
                   </span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
                 </div>
                 <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2.5">
                   <span>View Samples Before You Buy</span>
@@ -531,9 +531,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <button
                   type="button"
                   onClick={() => buyNow(p, 'personal')}
-                  className="w-full sm:w-auto py-3 px-5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-amber-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                  className="w-full sm:w-auto py-3 px-5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-xs sm:text-sm shadow-lg shadow-red-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
                 >
-                  <Zap className="w-4 h-4 fill-slate-950" />
+                  <Zap className="w-4 h-4 fill-white" />
                   <span>Buy This Bundle — ₹{activePrice}.00</span>
                 </button>
               </div>
@@ -543,7 +543,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {parsedVideos.length > 1 && (
               <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none relative z-10 pt-1">
                 <span className="text-xs font-bold text-slate-300 shrink-0 flex items-center gap-1.5 mr-1">
-                  <Film className="w-3.5 h-3.5 text-amber-400" />
+                  <Film className="w-3.5 h-3.5 text-rose-400" />
                   <span>Select Sample:</span>
                 </span>
                 {parsedVideos.map((vid, idx) => {
@@ -555,7 +555,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       onClick={() => setActiveSampleIdx(idx)}
                       className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold flex items-center gap-1.5 shrink-0 transition-all cursor-pointer ${
                         isActive
-                          ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 shadow-md shadow-amber-500/25 scale-[1.03]'
+                          ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md shadow-red-500/25 scale-[1.03]'
                           : 'bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80'
                       }`}
                     >
@@ -633,7 +633,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               {/* Right Details: Specifications & Instant Guarantee */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="space-y-2">
-                  <span className="text-xs font-black uppercase tracking-wider text-amber-400">
+                  <span className="text-xs font-black uppercase tracking-wider text-rose-400">
                     What You See is What You Get
                   </span>
                   <h3 className="text-lg sm:text-xl font-black text-white leading-snug">
@@ -647,7 +647,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 {/* Feature Bullets */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                   <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-rose-300">
                       <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>Zero Watermark / Logo</span>
                     </div>
@@ -657,7 +657,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   </div>
 
                   <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-rose-300">
                       <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>9:16 Vertical HD Format</span>
                     </div>
@@ -667,7 +667,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   </div>
 
                   <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-rose-300">
                       <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>Trending Audio Included</span>
                     </div>
@@ -677,7 +677,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   </div>
 
                   <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-rose-300">
                       <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>Instant Google Drive Access</span>
                     </div>
@@ -692,9 +692,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   <button
                     type="button"
                     onClick={() => buyNow(p, 'personal')}
-                    className="w-full sm:w-auto py-3 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full sm:w-auto py-3 px-6 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <Zap className="w-4 h-4 fill-slate-950" />
+                    <Zap className="w-4 h-4 fill-white" />
                     <span>Instant Checkout — ₹{activePrice}.00</span>
                   </button>
                   <span className="text-[11px] text-slate-400 flex items-center gap-1.5">
@@ -710,7 +710,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         {/* SECTION 1: HOW IT WORKS (3 Simple Steps) */}
         <section className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-5">
           <div className="text-center sm:text-left">
-            <span className="text-xs font-black uppercase tracking-wider text-amber-700 block">
+            <span className="text-xs font-black uppercase tracking-wider text-red-700 block">
               100% Instant Delivery
             </span>
             <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight mt-0.5">
@@ -723,7 +723,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
             <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 space-y-2">
-              <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-900 font-black text-xs flex items-center justify-center">
+              <div className="w-7 h-7 rounded-lg bg-red-100 text-red-900 font-black text-xs flex items-center justify-center">
                 1
               </div>
               <h3 className="text-xs sm:text-sm font-bold text-slate-900">30-Second Checkout</h3>
@@ -757,7 +757,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         {/* SECTION 2: BUNDLE DETAILS & DESCRIPTION */}
         <section className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-5">
           <div>
-            <span className="text-xs font-black uppercase tracking-wider text-amber-700 block">
+            <span className="text-xs font-black uppercase tracking-wider text-red-600 block">
               Bundle Specifications
             </span>
             <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight mt-0.5">
@@ -811,7 +811,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         {/* SECTION 3: WHO IS THIS FOR */}
         <section className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-4">
           <div>
-            <span className="text-xs font-black uppercase tracking-wider text-amber-700 block">
+            <span className="text-xs font-black uppercase tracking-wider text-red-600 block">
               Audience
             </span>
             <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight mt-0.5">
@@ -1014,7 +1014,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
                 <div className="space-y-1">
                   <Link href={`/product/${rel.slug}`}>
-                    <h3 className="font-bold text-xs text-slate-900 line-clamp-2 hover:text-amber-600 transition-colors leading-snug">
+                    <h3 className="font-bold text-xs text-slate-900 line-clamp-2 hover:text-red-600 transition-colors leading-snug">
                       {rel.title}
                     </h3>
                   </Link>
@@ -1026,7 +1026,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     <button
                       type="button"
                       onClick={() => buyNow(rel, 'personal')}
-                      className="px-2.5 py-1 rounded-md bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 text-[10px] font-black shadow-2xs active:scale-95 transition-transform cursor-pointer"
+                      className="px-2.5 py-1 rounded-md bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white text-[10px] font-black shadow-xs active:scale-95 transition-transform cursor-pointer"
                     >
                       Buy Now
                     </button>
@@ -1040,12 +1040,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       </div>
 
       {/* MOBILE STICKY BOTTOM BAR */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-slate-950/95 backdrop-blur-md border-t border-amber-500/20 px-4 py-2.5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] shadow-[0_-8px_30px_rgba(0,0,0,0.5)]">
+      <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-slate-950/95 backdrop-blur-md border-t border-red-500/25 px-4 py-2.5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] shadow-[0_-8px_30px_rgba(0,0,0,0.5)]">
         <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
           {/* Price */}
           <div className="flex flex-col shrink-0">
-            <span className="text-[9px] font-bold text-amber-400 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+            <span className="text-[9px] font-bold text-rose-400 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
               Instant Access
             </span>
             <div className="flex items-baseline gap-1.5">
@@ -1065,18 +1065,18 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   setIsAuthModalOpen(true);
                 }
               }}
-              className="py-2.5 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-amber-500/30 text-amber-300 font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-transform cursor-pointer shrink-0"
+              className="py-2.5 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-red-500/30 text-rose-300 font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-transform cursor-pointer shrink-0"
               title="Resell this bundle and earn margin"
             >
-              <Briefcase className="w-3.5 h-3.5 text-amber-400" />
+              <Briefcase className="w-3.5 h-3.5 text-rose-400" />
               <span>Resell</span>
             </button>
             <button
               type="button"
               onClick={() => buyNow(p, 'personal')}
-              className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-sm shadow-md shadow-amber-500/25 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:via-rose-500 hover:to-red-600 text-white font-black text-sm shadow-md shadow-red-600/30 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              <Zap className="w-3.5 h-3.5 fill-slate-950" />
+              <Zap className="w-3.5 h-3.5 fill-white" />
               <span>Buy Now</span>
             </button>
           </div>
@@ -1188,8 +1188,8 @@ function ReelDirectVideoPlayer({
       {/* Paused state subtle indicator */}
       {!isPlaying && !showAnimation && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 bg-black/35">
-          <div className="w-14 h-14 rounded-full bg-amber-500/95 text-slate-950 flex items-center justify-center shadow-lg shadow-amber-500/40">
-            <Play className="w-7 h-7 fill-slate-950 ml-1" />
+          <div className="w-14 h-14 rounded-full bg-red-600/95 text-white flex items-center justify-center shadow-lg shadow-red-600/40">
+            <Play className="w-7 h-7 fill-white ml-1" />
           </div>
         </div>
       )}
@@ -1203,7 +1203,7 @@ function ReelDirectVideoPlayer({
           title={isMuted ? 'Unmute sound' : 'Mute sound'}
         >
           {isMuted ? (
-            <VolumeX className="w-4 h-4 text-amber-400" />
+            <VolumeX className="w-4 h-4 text-rose-400" />
           ) : (
             <Volume2 className="w-4 h-4 text-white" />
           )}
@@ -1213,7 +1213,7 @@ function ReelDirectVideoPlayer({
       {/* Bottom Progress Bar */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 z-30">
         <div
-          className="h-full bg-gradient-to-r from-amber-400 to-yellow-400 transition-[width] duration-100"
+          className="h-full bg-gradient-to-r from-red-600 to-rose-500 transition-[width] duration-100"
           style={{ width: `${progress}%` }}
         />
       </div>

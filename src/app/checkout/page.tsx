@@ -697,7 +697,7 @@ function CheckoutContent() {
   if (isLoadingBundle) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center space-y-4 bg-[#faf9f6]">
-        <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 animate-pulse">
+        <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-600 animate-pulse">
           <Loader2 className="w-8 h-8 animate-spin" />
         </div>
         <h2 className="text-xl font-black text-slate-950">Loading Your Checkout...</h2>
@@ -713,7 +713,7 @@ function CheckoutContent() {
     if (resellerSlug) {
       return (
         <div className="max-w-2xl mx-auto px-4 py-20 text-center space-y-4 bg-[#faf9f6]">
-          <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mx-auto text-2xl">
+          <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 text-red-600 flex items-center justify-center mx-auto text-2xl">
             📦
           </div>
           <h1 className="text-2xl font-black text-slate-950">Bundle Not Found</h1>
@@ -722,7 +722,7 @@ function CheckoutContent() {
           </p>
           <Link
             href={`/r/${resellerSlug}`}
-            className="inline-block px-6 py-3 rounded-full btn-gradient-primary text-slate-950 text-xs font-black shadow-md hover:scale-105 transition-transform"
+            className="inline-block px-6 py-3 rounded-full btn-gradient-primary text-white text-xs font-black shadow-md hover:scale-105 transition-transform"
           >
             ← Return to Product Page
           </Link>
@@ -732,14 +732,14 @@ function CheckoutContent() {
 
     return (
       <div className="max-w-2xl mx-auto px-4 py-20 text-center space-y-4 bg-[#faf9f6]">
-        <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mx-auto text-2xl">
+        <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 text-red-600 flex items-center justify-center mx-auto text-2xl">
           🛍️
         </div>
         <h1 className="text-2xl font-black text-slate-950">Your Checkout is Empty</h1>
         <p className="text-sm text-slate-500">Pick a viral reels bundle before proceeding to checkout.</p>
         <Link
           href="/shop"
-          className="inline-block px-6 py-3 rounded-full btn-gradient-primary text-slate-950 text-xs font-black shadow-md hover:scale-105 transition-transform"
+          className="inline-block px-6 py-3 rounded-full btn-gradient-primary text-white text-xs font-black shadow-md hover:scale-105 transition-transform"
         >
           Explore All Bundles →
         </Link>
@@ -758,7 +758,7 @@ function CheckoutContent() {
                 <div className="flex items-center gap-2 mb-1.5">
                   <Link
                     href={`/r/${resellerSlug}`}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-amber-600 hover:text-amber-700 hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-red-600 hover:text-red-700 hover:underline"
                   >
                     ← Back to Product
                   </Link>
@@ -821,10 +821,10 @@ function CheckoutContent() {
             <div className="lg:col-span-7 space-y-6">
               
               {/* 1. Customer Details (Minimal 3 Fields with Strict Anti-Fake Validation) */}
-              <div id="delivery-info" className="rounded-3xl p-5 sm:p-6 bg-white border border-slate-200/90 shadow-sm hover:border-amber-400/40 transition-colors space-y-4 scroll-mt-24">
+              <div id="delivery-info" className="rounded-3xl p-5 sm:p-6 bg-white border border-slate-200/90 shadow-sm hover:border-red-400/40 transition-colors space-y-4 scroll-mt-24">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-slate-950 text-amber-400 border border-amber-500/40 text-xs font-black flex items-center justify-center shadow-xs">
+                    <span className="w-6 h-6 rounded-full bg-slate-950 text-rose-400 border border-red-500/40 text-xs font-black flex items-center justify-center shadow-xs">
                       1
                     </span>
                     <h2 className="text-base font-extrabold text-slate-900">
@@ -859,7 +859,7 @@ function CheckoutContent() {
                           ? 'border-red-400 bg-red-50/30 focus:ring-red-400'
                           : fullName.length > 0 && !nameError
                           ? 'border-emerald-400 bg-emerald-50/20 focus:ring-emerald-400'
-                          : 'border-slate-200 focus:ring-amber-500/30 focus:border-amber-500'
+                          : 'border-slate-200 focus:ring-red-500/30 focus:border-red-500'
                       }`}
                     />
                     {(touched.name || fullName.length > 0) && nameError && (
@@ -876,7 +876,7 @@ function CheckoutContent() {
                       <label className="block text-xs font-bold text-slate-700">
                         Gmail Address (For Google Drive Access) <span className="text-red-500">*</span>
                       </label>
-                      <span className="text-[10px] font-extrabold text-amber-900 bg-amber-50 border border-amber-200/70 px-2 py-0.5 rounded">
+                      <span className="text-[10px] font-extrabold text-red-900 bg-red-50 border border-red-200/70 px-2 py-0.5 rounded">
                         Only @gmail.com
                       </span>
                     </div>
@@ -893,7 +893,7 @@ function CheckoutContent() {
                           ? 'border-red-400 bg-red-50/30 focus:ring-red-400'
                           : email.length > 0 && !emailError
                           ? 'border-emerald-400 bg-emerald-50/20 focus:ring-emerald-400'
-                          : 'border-slate-200 focus:ring-amber-500/30 focus:border-amber-500'
+                          : 'border-slate-200 focus:ring-red-500/30 focus:border-red-500'
                       }`}
                     />
                     {(touched.email || email.length > 0) && emailError ? (
@@ -935,7 +935,7 @@ function CheckoutContent() {
                           ? 'border-red-400 bg-red-50/30 focus-within:ring-red-400'
                           : phone.length === 10 && !phoneError
                           ? 'border-emerald-400 bg-emerald-50/20 focus-within:ring-emerald-400'
-                          : 'border-slate-200 bg-white focus-within:ring-amber-500/30 focus-within:border-amber-500'
+                          : 'border-slate-200 bg-white focus-within:ring-red-500/30 focus-within:border-red-500'
                       }`}
                     >
                       <span className="px-3.5 py-3 bg-slate-100 border-r border-slate-200 text-xs sm:text-sm font-extrabold text-slate-700 select-none shrink-0">
@@ -979,7 +979,7 @@ function CheckoutContent() {
                     <button
                       type="submit"
                       disabled={isProcessing}
-                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(245,158,11,0.35)] hover:shadow-[0_14px_34px_rgba(245,158,11,0.5)] border border-amber-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
+                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:via-rose-500 hover:to-red-600 text-white font-black text-base flex items-center justify-center gap-2 shadow-[0_12px_32px_rgba(225,29,72,0.38)] hover:shadow-[0_16px_40px_rgba(225,29,72,0.5)] border border-red-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
                     >
                       {isProcessing ? (
                         <span className="flex items-center gap-2">
@@ -1007,10 +1007,10 @@ function CheckoutContent() {
 
               {/* 2. Exclusive Order Bump with Live 10-Min Timer matching reelsbundles.in */}
               {!isBumpExpired && activeBumpOffer && (
-                <div className="rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-amber-50/50 via-white to-amber-100/30 border-2 border-amber-400/60 shadow-sm relative overflow-hidden">
+                <div className="rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-red-50/70 via-white to-rose-100/40 border-2 border-red-400/60 shadow-sm relative overflow-hidden">
                   {/* Header ribbon */}
                   <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
-                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-950 text-amber-400 border border-amber-500/30 shadow-xs">
+                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-950 text-rose-400 border border-red-500/30 shadow-xs">
                       ★ SPECIAL 1-TIME OFFER
                     </div>
                     <div className="flex items-center gap-1.5 text-xs font-black text-red-600 bg-red-50 px-2.5 py-1 rounded-full border border-red-200 animate-pulse">
@@ -1023,7 +1023,7 @@ function CheckoutContent() {
                     <img
                       src={activeBumpOffer.thumbnail}
                       alt={activeBumpOffer.title}
-                      className="w-20 sm:w-24 aspect-[4/3] rounded-xl object-cover shrink-0 border border-amber-200 shadow-sm"
+                      className="w-20 sm:w-24 aspect-[4/3] rounded-xl object-cover shrink-0 border border-red-200 shadow-sm"
                     />
                     <div className="flex-1 min-w-0">
                       <h3 className="font-extrabold text-sm text-slate-950 leading-snug">
@@ -1047,12 +1047,12 @@ function CheckoutContent() {
                   </div>
 
                   {/* Switcher Toggle */}
-                  <label className="mt-4 pt-3 border-t border-amber-200/80 flex items-center gap-3 cursor-pointer select-none">
+                  <label className="mt-4 pt-3 border-t border-red-200/80 flex items-center gap-3 cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={orderBumpAdded}
                       onChange={() => setOrderBumpAdded(!orderBumpAdded)}
-                      className="w-5 h-5 rounded text-amber-500 focus:ring-amber-500 border-slate-300 cursor-pointer"
+                      className="w-5 h-5 rounded text-red-600 focus:ring-red-500 border-slate-300 cursor-pointer"
                     />
                     <span className="text-xs font-extrabold text-slate-900">
                       Yes! Add this {activeBumpOffer.reelCount || 1000}+ reels mega pack to my order for just ₹{activeBumpOffer.discountPrice}
@@ -1065,7 +1065,7 @@ function CheckoutContent() {
               <div className="rounded-3xl p-6 bg-white border border-slate-200/90 shadow-sm space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-slate-950 text-amber-400 border border-amber-500/40 text-xs font-black flex items-center justify-center shadow-xs">
+                    <span className="w-6 h-6 rounded-full bg-slate-950 text-rose-400 border border-red-500/40 text-xs font-black flex items-center justify-center shadow-xs">
                       2
                     </span>
                     <h2 className="text-base font-extrabold text-slate-900">
@@ -1078,10 +1078,10 @@ function CheckoutContent() {
                 </div>
 
                 {/* Branded PayU Details Card */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-amber-500/20 text-white space-y-3.5 shadow-md">
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-red-500/20 text-white space-y-3.5 shadow-md">
                   <div className="flex items-center justify-between">
-                    <div className="font-bold text-xs text-amber-400 flex items-center gap-1.5">
-                      <CreditCard className="w-4 h-4 text-amber-400" />
+                    <div className="font-bold text-xs text-rose-400 flex items-center gap-1.5">
+                      <CreditCard className="w-4 h-4 text-rose-400" />
                       <span>PayU Payment Gateway (India)</span>
                     </div>
                     <span className="text-[10px] font-bold text-slate-400">
@@ -1096,7 +1096,7 @@ function CheckoutContent() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <Smartphone className="w-3.5 h-3.5 text-amber-400" />
+                        <Smartphone className="w-3.5 h-3.5 text-rose-400" />
                         <span>All UPI Apps</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
@@ -1106,7 +1106,7 @@ function CheckoutContent() {
 
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <CreditCard className="w-3.5 h-3.5 text-amber-400" />
+                        <CreditCard className="w-3.5 h-3.5 text-rose-400" />
                         <span>Cards</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
@@ -1116,7 +1116,7 @@ function CheckoutContent() {
 
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <Building className="w-3.5 h-3.5 text-amber-400" />
+                        <Building className="w-3.5 h-3.5 text-rose-400" />
                         <span>NetBanking</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
@@ -1157,7 +1157,7 @@ function CheckoutContent() {
                         <h4 className="font-bold text-xs text-slate-950 line-clamp-1">
                           {item?.product?.title || 'Viral Reels Bundle'}
                         </h4>
-                        <span className="text-[10px] font-bold text-amber-900 bg-amber-50 border border-amber-200/70 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-bold text-red-900 bg-red-50 border border-red-200/70 px-1.5 py-0.5 rounded">
                           {item?.license === 'reseller' ? 'Reseller Rights' : 'Personal Use'}
                         </span>
                       </div>
@@ -1181,22 +1181,22 @@ function CheckoutContent() {
                   ))}
 
                   {orderBumpAdded && activeBumpOffer && (
-                    <div className="flex gap-3 items-center justify-between p-2.5 rounded-xl bg-amber-50/70 border border-amber-200">
+                    <div className="flex gap-3 items-center justify-between p-2.5 rounded-xl bg-red-50/70 border border-red-200">
                       <img
                         src={activeBumpOffer.thumbnail}
                         alt={activeBumpOffer.title}
                         className="w-12 h-14 object-cover rounded-lg shrink-0"
                       />
                       <div className="flex-1 min-w-0 px-1">
-                        <h4 className="font-bold text-xs text-amber-950 line-clamp-1">
+                        <h4 className="font-bold text-xs text-red-950 line-clamp-1">
                           {activeBumpOffer.title}
                         </h4>
-                        <span className="text-[10px] font-bold text-amber-800 bg-amber-200 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-bold text-red-800 bg-red-200 px-1.5 py-0.5 rounded">
                           Bonus Offer
                         </span>
                       </div>
                       <div className="text-right shrink-0">
-                        <div className="font-extrabold text-xs text-amber-950">
+                        <div className="font-extrabold text-xs text-red-950">
                           ₹{activeBumpOffer.discountPrice}.00
                         </div>
                         <button
@@ -1263,15 +1263,15 @@ function CheckoutContent() {
 
                   {/* If qualified but hasn't claimed all free bundles */}
                   {isOfferActive && checkoutSubtotal >= minCart && freeBundles.length < freeQty && (
-                    <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-400/10 to-amber-500/15 border border-amber-400/40 flex items-center justify-between gap-2 shadow-xs">
-                      <div className="text-xs font-bold text-amber-950 flex items-center gap-1.5">
-                        <Gift className="w-4 h-4 shrink-0 text-amber-600" />
+                    <div className="p-3.5 rounded-2xl bg-gradient-to-r from-red-500/10 via-rose-500/10 to-red-500/15 border border-red-400/40 flex items-center justify-between gap-2 shadow-xs">
+                      <div className="text-xs font-bold text-red-950 flex items-center gap-1.5">
+                        <Gift className="w-4 h-4 shrink-0 text-red-600" />
                         <span>You unlocked {freeQty} Free Bundles!</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => setIsFreeBundleModalOpen(true)}
-                        className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 text-slate-950 text-xs font-black hover:opacity-95 shadow-xs cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+                        className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white text-xs font-black hover:opacity-95 shadow-xs cursor-pointer hover:scale-105 active:scale-95 transition-transform"
                       >
                         Claim Now (₹0)
                       </button>
@@ -1283,7 +1283,7 @@ function CheckoutContent() {
                 <div className="pt-3 border-t border-slate-100">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                      <Tag className="w-3.5 h-3.5 text-amber-500" />
+                      <Tag className="w-3.5 h-3.5 text-rose-500" />
                       Promo / Discount Code
                     </span>
                     {appliedCoupon && (
@@ -1312,14 +1312,14 @@ function CheckoutContent() {
                               }
                             }}
                             placeholder="Enter coupon code"
-                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 uppercase tracking-wider"
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500 uppercase tracking-wider"
                           />
                         </div>
                         <button
                           type="button"
                           onClick={() => handleApplyCoupon()}
                           disabled={couponLoading || !couponInput.trim()}
-                          className="px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 active:scale-95 disabled:opacity-50 text-amber-400 text-xs font-black transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs border border-slate-800"
+                          className="px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 active:scale-95 disabled:opacity-50 text-rose-400 text-xs font-black transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs border border-slate-800"
                         >
                           {couponLoading ? (
                             <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -1400,7 +1400,7 @@ function CheckoutContent() {
                   <button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(245,158,11,0.35)] hover:shadow-[0_14px_34px_rgba(245,158,11,0.5)] border border-amber-400/50 hover:scale-[1.01] transition-all disabled:opacity-70 cursor-pointer"
+                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:via-rose-500 hover:to-red-600 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_12px_32px_rgba(225,29,72,0.38)] hover:shadow-[0_16px_40px_rgba(225,29,72,0.5)] border border-red-500/40 hover:scale-[1.01] transition-all disabled:opacity-70 cursor-pointer"
                   >
                     {isProcessing ? (
                       <span className="flex items-center gap-2">
@@ -1478,7 +1478,7 @@ function CheckoutContent() {
                 <button
                   type="submit"
                   disabled={isProcessing}
-                  className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(245,158,11,0.35)] hover:shadow-[0_14px_34px_rgba(245,158,11,0.5)] border border-amber-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
+                  className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:via-rose-500 hover:to-red-600 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_12px_32px_rgba(225,29,72,0.38)] hover:shadow-[0_16px_40px_rgba(225,29,72,0.5)] border border-red-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
                 >
                   {isProcessing ? (
                     <span className="flex items-center gap-2">
@@ -1516,8 +1516,8 @@ export default function CheckoutPage() {
       <Suspense
         fallback={
           <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center space-y-4 bg-[#faf9f6]">
-            <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 animate-pulse">
-              <div className="w-8 h-8 rounded-full border-4 border-amber-500 border-t-transparent animate-spin" />
+            <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-600 animate-pulse">
+              <div className="w-8 h-8 rounded-full border-4 border-red-600 border-t-transparent animate-spin" />
             </div>
             <h2 className="text-xl font-black text-slate-950">Loading Checkout...</h2>
             <p className="text-xs text-slate-500 max-w-sm">

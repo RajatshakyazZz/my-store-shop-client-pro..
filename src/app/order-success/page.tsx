@@ -372,7 +372,7 @@ function OrderSuccessContent() {
               <button
                 type="button"
                 onClick={() => setRetryCount((c) => c + 1)}
-                className="w-full sm:w-auto px-7 py-3 rounded-full bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 text-xs font-black flex items-center justify-center gap-2 shadow-lg shadow-amber-500/25 transition-transform hover:scale-[1.02]"
+                className="w-full sm:w-auto px-7 py-3 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white text-xs font-black flex items-center justify-center gap-2 shadow-lg shadow-red-500/25 transition-transform hover:scale-[1.02]"
               >
                 <RefreshCw className="w-4 h-4" />
                 <span>Re-Check Payment Status</span>
@@ -756,7 +756,7 @@ function OrderSuccessContent() {
 
                 <div className="relative space-y-4">
                   <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-black uppercase tracking-wider text-white">
-                    <Sparkles className="w-3.5 h-3.5 fill-amber-300 text-amber-300" />
+                    <Sparkles className="w-3.5 h-3.5 fill-rose-200 text-rose-200" />
                     <span>VIP All-Access Membership Activated</span>
                   </div>
 
@@ -998,10 +998,10 @@ function OrderSuccessContent() {
 
                 {/* BONUS PACK IF ORDER BUMP ADDED */}
                 {verifiedData?.hasBump && (
-                  <article className="rounded-[22px] border border-amber-200 bg-gradient-to-r from-[#fffcf2] to-[#fffaf0] p-4 sm:p-5 shadow-[0_8px_24px_rgba(217,119,6,0.06)]">
+                  <article className="rounded-[22px] border border-red-200 bg-gradient-to-r from-[#fff5f5] to-[#fffafa] p-4 sm:p-5 shadow-[0_8px_24px_rgba(225,29,72,0.06)]">
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
                       <div className="md:col-span-3">
-                        <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-900 border border-amber-200">
+                        <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-900 border border-red-200">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={verifiedData?.orderBump?.thumbnail || "https://reelsbundles.in/wp-content/uploads/2026/10/3200-ultimate-twisted-world-reel-bundle-reels-bundle-1-2-768x576.png"}
@@ -1009,20 +1009,20 @@ function OrderSuccessContent() {
                             className="w-full h-full object-cover"
                             loading="lazy"
                           />
-                          <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-amber-600 text-[10px] font-black uppercase text-white">
+                          <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-red-600 text-[10px] font-black uppercase text-white">
                             ★ EXCLUSIVE BONUS
                           </div>
                         </div>
                       </div>
 
                       <div className="md:col-span-5 space-y-2">
-                        <span className="text-[10.5px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900">
+                        <span className="text-[10.5px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-red-100 text-red-900">
                           Order Bump Bonus Offer
                         </span>
-                        <h3 className="text-base sm:text-lg font-black text-amber-950">
+                        <h3 className="text-base sm:text-lg font-black text-red-950">
                           {verifiedData?.orderBump?.title || "1500+ Ultimate Twisted World & Viral AI Reels Pack"}
                         </h3>
-                        <p className="text-xs text-amber-800 font-medium leading-relaxed">
+                        <p className="text-xs text-red-800 font-medium leading-relaxed">
                           {verifiedData?.orderBump?.subtitle || "Extra bonus collection unlocked via checkout special offer. High retention surreal & reverse world AI animations."}
                         </p>
                       </div>
@@ -1032,7 +1032,7 @@ function OrderSuccessContent() {
                           href={verifiedData?.orderBump?.googleDriveLink || "https://drive.google.com/drive/folders/bonus-pack-twisted-world"}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_10px_22px_rgba(245,158,11,0.25)] transition-transform hover:scale-[1.02]"
+                          className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_10px_22px_rgba(225,29,72,0.25)] transition-transform hover:scale-[1.02]"
                         >
                           <Download className="w-4 h-4 stroke-[2.5]" />
                           <span>Open Bonus Drive Folder</span>
@@ -1109,19 +1109,19 @@ function OrderSuccessContent() {
                   </h3>
                   <ul className="space-y-2 text-xs text-[#4a526c] font-medium">
                     <li className="flex items-start gap-2">
-                      <span className="w-4 h-4 rounded-full bg-amber-400 text-white text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-4 h-4 rounded-full bg-red-500 text-white text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5">
                         ✓
                       </span>
                       <span>Works seamlessly on Mobile (Google Drive App) &amp; PC / Mac.</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="w-4 h-4 rounded-full bg-amber-400 text-white text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-4 h-4 rounded-full bg-red-500 text-white text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5">
                         ✓
                       </span>
                       <span>No zip extraction required — preview and stream directly in the cloud.</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="w-4 h-4 rounded-full bg-amber-400 text-white text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-4 h-4 rounded-full bg-red-500 text-white text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5">
                         ✓
                       </span>
                       <span>1080p Full HD 9:16 vertical resolution with viral background audio.</span>
@@ -1129,9 +1129,9 @@ function OrderSuccessContent() {
                   </ul>
                 </div>
 
-                <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200/60 text-[11px] text-amber-900 font-semibold">
+                <div className="p-3 rounded-xl bg-red-50/80 border border-red-200/60 text-[11px] text-red-900 font-semibold">
                   Access anytime later by visiting our passwordless{' '}
-                  <Link href="/my-order" className="underline font-black text-amber-950">
+                  <Link href="/my-order" className="underline font-black text-red-950">
                     My Orders Portal
                   </Link>.
                 </div>

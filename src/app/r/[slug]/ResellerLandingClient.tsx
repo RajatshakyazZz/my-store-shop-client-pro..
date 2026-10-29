@@ -51,17 +51,17 @@ const THEME_STYLES: Record<
   }
 > = {
   dark: {
-    bg: 'bg-[#0b0819]',
-    cardBg: 'bg-[#15102a]/80 backdrop-blur-xl',
-    cardBorder: 'border-purple-500/20',
+    bg: 'bg-[#0f0709]',
+    cardBg: 'bg-[#1c0d12]/80 backdrop-blur-xl',
+    cardBorder: 'border-red-500/25',
     textPrimary: 'text-white',
-    textSecondary: 'text-purple-200/70',
-    badgeBg: 'bg-purple-500/10',
-    badgeText: 'text-purple-300',
-    badgeBorder: 'border-purple-500/30',
-    ctaGradient: 'from-[#6734f7] via-[#8445f8] to-[#ec288d]',
-    accentGlow: 'shadow-[0_0_35px_rgba(103,52,247,0.35)]',
-    accentText: 'text-[#a87ffb]',
+    textSecondary: 'text-rose-200/70',
+    badgeBg: 'bg-red-500/10',
+    badgeText: 'text-rose-300',
+    badgeBorder: 'border-red-500/30',
+    ctaGradient: 'from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600',
+    accentGlow: 'shadow-[0_0_35px_rgba(225,29,72,0.35)]',
+    accentText: 'text-rose-400',
   },
   midnight: {
     bg: 'bg-[#050a18]',
@@ -467,7 +467,7 @@ export default function ResellerLandingClient({
             <div className="space-y-3">
               {/* Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold border border-white/10 bg-white/5">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <Sparkles className="w-3.5 h-3.5 text-rose-400" />
                 <span className={theme.accentText}>{listing.customSubtitle || 'Ready-to-Post HD Reels Bundle'}</span>
               </div>
 
@@ -528,7 +528,7 @@ export default function ResellerLandingClient({
                 onClick={handleBuyNow}
                 className={`w-full py-4 sm:py-4.5 px-6 rounded-2xl bg-gradient-to-r ${theme.ctaGradient} text-white text-base sm:text-lg font-black flex items-center justify-center gap-3 shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-transform group`}
               >
-                <Zap className="w-5 h-5 fill-current text-amber-300" />
+                <Zap className="w-5 h-5 fill-current text-white" />
                 <span>{listing.ctaText || 'Download HD Bundle Now'}</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -609,17 +609,17 @@ export default function ResellerLandingClient({
         {/* Instant Automated Delivery Breakdown */}
         <div className={`p-6 sm:p-8 rounded-3xl border ${theme.cardBorder} ${theme.cardBg} space-y-4`}>
           <h2 className="text-lg sm:text-xl font-black flex items-center gap-2">
-            <Zap className="w-5 h-5 text-amber-400" />
+            <Zap className="w-5 h-5 text-rose-400" />
             <span>How Automated Delivery Works</span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
             <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1.5">
-              <span className="text-[10px] font-black uppercase text-purple-400">Step 1</span>
+              <span className="text-[10px] font-black uppercase text-rose-400">Step 1</span>
               <h4 className="text-xs font-black">Complete Secure Checkout</h4>
               <p className="text-[11px] text-white/60">Pay seamlessly using UPI (Google Pay, PhonePe, Paytm), Cards, or NetBanking.</p>
             </div>
             <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1.5">
-              <span className="text-[10px] font-black uppercase text-purple-400">Step 2</span>
+              <span className="text-[10px] font-black uppercase text-rose-400">Step 2</span>
               <h4 className="text-xs font-black">Instant Link Access</h4>
               <p className="text-[11px] text-white/60">Directly after payment, your unique Google Drive access link opens on screen and is delivered to your email.</p>
             </div>

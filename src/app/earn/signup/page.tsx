@@ -47,10 +47,10 @@ function SignupContent() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-8 sm:py-12 pb-24">
-      <div className="w-full max-w-md bg-white rounded-3xl border border-purple-100 shadow-xl overflow-hidden">
+      <div className="w-full max-w-md bg-white rounded-3xl border border-red-100 shadow-xl overflow-hidden">
         
         {/* Banner */}
-        <div className="p-8 pb-6 bg-gradient-to-br from-[#6734f7] via-[#942bf6] to-[#ec288d] text-white text-center">
+        <div className="p-8 pb-6 bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white text-center">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-[11px] font-black uppercase tracking-wider mb-3">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Resell & Earn Today</span>
@@ -80,7 +80,7 @@ function SignupContent() {
                 placeholder="Rahul Sharma"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 font-medium"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100 font-medium"
               />
             </div>
           </div>
@@ -95,7 +95,7 @@ function SignupContent() {
                 placeholder="yourname@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 font-medium"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100 font-medium"
               />
             </div>
           </div>
@@ -112,7 +112,7 @@ function SignupContent() {
                 maxLength={10}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 font-medium"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100 font-medium"
               />
             </div>
           </div>
@@ -127,7 +127,7 @@ function SignupContent() {
                 placeholder="At least 6 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 font-medium"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#dc2626] focus:ring-2 focus:ring-red-100 font-medium"
               />
             </div>
           </div>
@@ -135,7 +135,7 @@ function SignupContent() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#6734f7] via-[#942bf6] to-[#ec288d] text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
+            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
           >
             {isLoading ? <span>Creating Account...</span> : (
               <>
@@ -149,7 +149,7 @@ function SignupContent() {
             <span className="text-xs text-gray-500">Already have an account? </span>
             <Link
               href={`/earn/login${redirectUrl ? `?redirect=${encodeURIComponent(redirectUrl)}` : ''}`}
-              className="text-xs font-black text-[#6734f7] hover:underline"
+              className="text-xs font-black text-[#dc2626] hover:underline"
             >
               Sign In
             </Link>
