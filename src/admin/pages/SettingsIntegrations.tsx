@@ -112,9 +112,10 @@ export default function SettingsIntegrations() {
 
   React.useEffect(() => {
     if (dnpMeta) {
+      const cleanPixelId = dnpMeta.meta_pixel_id === '1715650960276913' ? '' : (dnpMeta.meta_pixel_id || '');
       setDnpForm({
         ...dnpMeta,
-        meta_pixel_id: dnpMeta.meta_pixel_id || '1715650960276913',
+        meta_pixel_id: cleanPixelId,
       });
     }
   }, [dnpMeta]);
@@ -854,7 +855,7 @@ export default function SettingsIntegrations() {
                   type="text"
                   value={dnpForm.meta_pixel_id || ''}
                   onChange={(e) => setDnpForm({ ...dnpForm, meta_pixel_id: e.target.value })}
-                  placeholder="e.g. 1715650960276913"
+                  placeholder="e.g. 123456789012345"
                   className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
                 />
               </div>

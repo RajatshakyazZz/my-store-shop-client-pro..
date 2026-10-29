@@ -11,7 +11,7 @@ const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-TD8N9SDD';
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || 'G-7RMXL2RZ4J';
 const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION || 'googlef90de30240e3b03b';
 const BING_VERIFICATION = process.env.NEXT_PUBLIC_BING_VERIFICATION || '';
-const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || '1715650960276913';
+const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || '';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -179,18 +179,6 @@ export default function RootLayout({
           </noscript>
         )}
 
-        {/* Meta Pixel (noscript) */}
-        {META_PIXEL_ID && (
-          <noscript>
-            <img
-              height="1"
-              width="1"
-              style={{ display: 'none' }}
-              src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
-              alt=""
-            />
-          </noscript>
-        )}
 
         {/* Google Consent Mode v2: default denied, update non-blocking */}
         <Script id="consent-mode-v2" strategy="afterInteractive">
@@ -249,27 +237,23 @@ export default function RootLayout({
           </Script>
         )}
 
-        {/* Meta Pixel Script */}
-        {META_PIXEL_ID && (
-          <Script id="meta-pixel" strategy="afterInteractive">
-            {`
-              try {
-                !function(f,b,e,v,n,t,s)
-                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                n.queue=[];t=b.createElement(e);t.async=!0;
-                t.src=v;s=b.getElementsByTagName(e)[0];
-                if(s && s.parentNode){s.parentNode.insertBefore(t,s);}
-                else{(b.head||b.body||b.documentElement).appendChild(t);}
-                }(window, document,'script',
-                'https://connect.facebook.net/en_US/fbevents.js');
-                fbq('init', '${META_PIXEL_ID}');
-                fbq('track', 'PageView');
-              } catch(e) { console.warn('Meta Pixel init skipped:', e); }
-            `}
-          </Script>
-        )}
+        {/* Meta Pixel Base Loader (fbevents.js) - Initialized dynamically via MetaPixelTracker with Admin Panel's saved Pixel ID */}
+        <Script id="meta-pixel-base" strategy="afterInteractive">
+          {`
+            try {
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              if(s && s.parentNode){s.parentNode.insertBefore(t,s);}
+              else{(b.head||b.body||b.documentElement).appendChild(t);}
+              }(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+            } catch(e) { console.warn('Meta Pixel base loader skipped:', e); }
+          `}
+        </Script>
 
         {/* Dynamic Meta Pixel & CAPI Syncer */}
         <Suspense fallback={null}>

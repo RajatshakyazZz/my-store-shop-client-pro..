@@ -10075,9 +10075,9 @@ export const initialStoreSetup: StoreSetupConfig = {
 
 export const initialMetaPixel: MetaPixelConfig = {
   enabled: true,
-  pixel_id: '1715650960276913',
-  capi_token: 'EAAXxXxXx...',
-  test_event_code: 'TEST84729',
+  pixel_id: '',
+  capi_token: '',
+  test_event_code: '',
   track_pageviews: true,
   track_view_content: true,
   track_add_to_cart: true,
@@ -10156,8 +10156,8 @@ export const initialPgBridge = initialPayUConfig;
 
 export const initialDnpMeta: DnpMetaConfig = {
   enabled: true,
-  meta_pixel_id: '1715650960276913',
-  capi_token: 'EAAXxXxXx...',
+  meta_pixel_id: '',
+  capi_token: '',
   last_cart_event: new Date().toISOString(),
   last_purchase_event: new Date().toISOString(),
   event_health_score: 100,

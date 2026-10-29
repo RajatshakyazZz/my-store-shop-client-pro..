@@ -17,7 +17,7 @@ export default function MetaPixel() {
   const [isTestingEvent, setIsTestingEvent] = useState(false);
   const [form, setForm] = useState<MetaPixelConfig>({
     enabled: true,
-    pixel_id: '1715650960276913',
+    pixel_id: '',
     capi_token: '',
     test_event_code: '',
     track_pageviews: true,
@@ -29,9 +29,10 @@ export default function MetaPixel() {
 
   React.useEffect(() => {
     if (config) {
+      const cleanPixelId = config.pixel_id === '1715650960276913' ? '' : (config.pixel_id || '');
       setForm({
         ...config,
-        pixel_id: config.pixel_id || '1715650960276913',
+        pixel_id: cleanPixelId,
         capi_token: config.capi_token || '',
         test_event_code: config.test_event_code || '',
       });
@@ -129,7 +130,7 @@ export default function MetaPixel() {
             <label className="text-xs font-bold text-slate-300 block">Meta Dataset / Pixel ID</label>
             <input
               type="text"
-              placeholder="1715650960276913"
+              placeholder="Enter your Meta Dataset / Pixel ID (e.g. 123456789012345)"
               value={form.pixel_id}
               onChange={(e) => setForm({ ...form, pixel_id: e.target.value })}
               className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white font-mono focus:outline-none focus:ring-2 focus:ring-purple-500"

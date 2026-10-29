@@ -107,7 +107,7 @@ export function track(event: AnalyticsEventName, payload: Record<string, any> = 
  * Maps standard GA4 events to Meta Pixel equivalents for unified tracking without duplication.
  */
 function bridgeToMetaPixel(event: AnalyticsEventName, payload: Record<string, any>): void {
-  if (typeof window === 'undefined' || typeof window.fbq !== 'function') return;
+  if (typeof window === 'undefined' || typeof window.fbq !== 'function' || !window._vaultworld_active_pixel_id) return;
 
   try {
     switch (event) {

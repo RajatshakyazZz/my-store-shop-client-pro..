@@ -149,9 +149,9 @@ export async function getMetaCredentials(): Promise<MetaCredentials | null> {
     }
   }
 
-  // Fallback to default configured pixel ID if still empty
-  if (!pixelId) {
-    pixelId = '1715650960276913';
+  // If no pixelId or if it matches developer's personal test pixel, do not fire CAPI!
+  if (!pixelId || pixelId === '1715650960276913') {
+    return null;
   }
 
   if (!accessToken) {

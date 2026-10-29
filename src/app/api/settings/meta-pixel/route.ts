@@ -20,15 +20,18 @@ export async function GET() {
 
         if (metaSnap && metaSnap.exists()) {
           const data = metaSnap.data();
-          if (data.pixel_id) pixelId = String(data.pixel_id).trim();
+          if (data.pixel_id && data.pixel_id !== '1715650960276913') {
+            pixelId = String(data.pixel_id).trim();
+          }
           if (data.test_event_code) testEventCode = String(data.test_event_code).trim();
           if (typeof data.enabled === 'boolean') enabled = data.enabled;
         }
 
         if (dnpSnap && dnpSnap.exists()) {
           const dnpData = dnpSnap.data();
-          if (!pixelId && (dnpData.meta_pixel_id || dnpData.pixel_id)) {
-            pixelId = String(dnpData.meta_pixel_id || dnpData.pixel_id).trim();
+          const dnpPixel = String(dnpData.meta_pixel_id || dnpData.pixel_id || '').trim();
+          if (!pixelId && dnpPixel && dnpPixel !== '1715650960276913') {
+            pixelId = dnpPixel;
           }
           if (!testEventCode && dnpData.test_event_code) {
             testEventCode = String(dnpData.test_event_code).trim();
@@ -40,13 +43,12 @@ export async function GET() {
       }
     }
 
-    // 2. Check environment variable fallback
+    // 2. Check environment variable fallback (strictly ignoring personal dev pixel)
     if (!pixelId) {
-      pixelId = (
-        process.env.META_PIXEL_ID ||
-        process.env.NEXT_PUBLIC_META_PIXEL_ID ||
-        '1715650960276913'
-      ).trim();
+      const envPixel = (process.env.META_PIXEL_ID || process.env.NEXT_PUBLIC_META_PIXEL_ID || '').trim();
+      if (envPixel && envPixel !== '1715650960276913') {
+        pixelId = envPixel;
+      }
     }
 
     if (!testEventCode) {
@@ -62,7 +64,7 @@ export async function GET() {
         success: true,
         pixel_id: pixelId,
         test_event_code: testEventCode || null,
-        enabled,
+        enabled: Boolean(pixelId && enabled),
       },
       {
         headers: {
@@ -76,8 +78,8 @@ export async function GET() {
     return NextResponse.json(
       {
         success: false,
-        pixel_id: process.env.NEXT_PUBLIC_META_PIXEL_ID || '1715650960276913',
-        enabled: true,
+        pixel_id: '',
+        enabled: false,
       },
       { status: 200 }
     );
