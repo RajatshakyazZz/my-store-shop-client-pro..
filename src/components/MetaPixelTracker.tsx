@@ -6,8 +6,60 @@ import { usePathname, useSearchParams } from 'next/navigation';
 declare global {
   interface Window {
     fbq?: (...args: any[]) => void;
+    _fbq?: any;
     _vaultworld_active_pixel_id?: string;
   }
+}
+
+/**
+ * Dynamically injects Meta's fbevents.js library ONLY when a valid Pixel ID is present.
+ * If no Pixel ID is set in the store admin, this function is NEVER called.
+ */
+function ensureFbeventsLoaded(): Promise<void> {
+  return new Promise((resolve) => {
+    if (typeof window === 'undefined') return resolve();
+    if (typeof window.fbq === 'function' && window._fbq) return resolve();
+
+    try {
+      const f = window as any;
+      const b = document;
+      const e = 'script';
+      const v = 'https://connect.facebook.net/en_US/fbevents.js';
+
+      if (!f.fbq) {
+        const n: any = function () {
+          n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = true;
+        n.version = '2.0';
+        n.queue = [];
+        f.fbq = n;
+      }
+
+      // Check if script element already exists
+      const existing = b.querySelector(`script[src*="fbevents.js"]`);
+      if (existing) {
+        return resolve();
+      }
+
+      const t = b.createElement(e) as HTMLScriptElement;
+      t.async = true;
+      t.src = v;
+      t.onload = () => resolve();
+      t.onerror = () => resolve();
+
+      const s = b.getElementsByTagName(e)[0];
+      if (s && s.parentNode) {
+        s.parentNode.insertBefore(t, s);
+      } else {
+        (b.head || b.body || b.documentElement).appendChild(t);
+      }
+    } catch {
+      resolve();
+    }
+  });
 }
 
 export default function MetaPixelTracker() {
@@ -24,7 +76,7 @@ export default function MetaPixelTracker() {
     const setupPixel = async () => {
       let resolvedId = '';
 
-      // 1. Try local storage cache (ignoring developer personal pixel 1715650960276913)
+      // 1. Try local storage cache (strictly ignoring developer personal pixel 1715650960276913)
       try {
         const storedMeta = localStorage.getItem('rb_portal_settings_meta_pixel');
         if (storedMeta) {
@@ -64,7 +116,7 @@ export default function MetaPixelTracker() {
             resolvedId = '';
           }
         }
-      } catch (err) {
+      } catch {
         // Fallback
       }
 
@@ -84,7 +136,11 @@ export default function MetaPixelTracker() {
         return;
       }
 
-      // 3. Initialize or update fbq
+      // 3. Dynamically load fbevents.js only when client Pixel ID is verified
+      await ensureFbeventsLoaded();
+      if (isCancelled) return;
+
+      // 4. Initialize fbq with client's pixel ID
       if (typeof window.fbq === 'function') {
         if (currentPixelId.current !== resolvedId) {
           currentPixelId.current = resolvedId;
@@ -98,41 +154,26 @@ export default function MetaPixelTracker() {
             console.warn('[MetaPixelTracker] fbq init warning:', fbErr);
           }
         }
-      } else {
-        // Retry shortly if fbevents.js script tag is still hydrating
-        const interval = setInterval(() => {
-          if (typeof window.fbq === 'function') {
-            clearInterval(interval);
-            if (currentPixelId.current !== resolvedId) {
-              currentPixelId.current = resolvedId;
-              window._vaultworld_active_pixel_id = resolvedId;
-              try {
-                window.fbq('init', resolvedId);
-                window.fbq('track', 'PageView');
-                initialPageViewSent.current = true;
-              } catch (e) {}
-            }
-          }
-        }, 150);
-
-        setTimeout(() => clearInterval(interval), 3000);
       }
     };
 
     setupPixel();
 
-    const handlePixelUpdated = (e: any) => {
+    const handlePixelUpdated = async (e: any) => {
       const newId = String(e.detail?.pixel_id || e.detail?.meta_pixel_id || '').trim();
       const isEnabled = e.detail?.enabled !== false;
 
-      if (newId && newId !== '1715650960276913' && isEnabled && typeof window.fbq === 'function') {
-        currentPixelId.current = newId;
-        window._vaultworld_active_pixel_id = newId;
-        try {
-          window.fbq('init', newId);
-          window.fbq('track', 'PageView');
-          initialPageViewSent.current = true;
-        } catch {}
+      if (newId && newId !== '1715650960276913' && isEnabled) {
+        await ensureFbeventsLoaded();
+        if (typeof window.fbq === 'function') {
+          currentPixelId.current = newId;
+          window._vaultworld_active_pixel_id = newId;
+          try {
+            window.fbq('init', newId);
+            window.fbq('track', 'PageView');
+            initialPageViewSent.current = true;
+          } catch {}
+        }
       } else {
         currentPixelId.current = '';
         window._vaultworld_active_pixel_id = undefined;

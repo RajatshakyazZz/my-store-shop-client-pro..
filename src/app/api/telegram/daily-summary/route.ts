@@ -4,7 +4,7 @@ import { sendStoreCommandReport } from '@/lib/telegram';
 /**
  * GET / POST /api/telegram/daily-summary
  * Triggered automatically every night at 10:00 PM IST (16:30 UTC) via Vercel Cron
- * Sends the Daily Night Summary Report to Authorized Telegram Admins (7483268297, 5950203511, 6206169480)
+ * Sends the Daily Night Summary Report to Authorized Telegram Admins
  */
 export async function GET() {
   try {

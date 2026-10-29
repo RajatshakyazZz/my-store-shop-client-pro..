@@ -35,10 +35,25 @@ export async function POST(request: Request) {
     }
 
     if (!token) {
-      token = process.env.TELEGRAM_BOT_TOKEN || '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
+      token = (process.env.TELEGRAM_BOT_TOKEN || '').trim();
     }
+
+    if (!token) {
+      return NextResponse.json(
+        { success: false, error: 'Telegram Bot Token is missing. Please enter your Bot Token first.' },
+        { status: 400, headers: CORS_HEADERS }
+      );
+    }
+
     if (!rawIds) {
-      rawIds = '7483268297, 5950203511, 6206169480';
+      rawIds = (process.env.TELEGRAM_CHAT_ID || process.env.TELEGRAM_OWNER_CHAT_ID || '').trim();
+    }
+
+    if (!rawIds) {
+      return NextResponse.json(
+        { success: false, error: 'Admin Chat ID is missing. Please enter at least one Telegram Chat ID.' },
+        { status: 400, headers: CORS_HEADERS }
+      );
     }
 
     const targetChatIds = rawIds

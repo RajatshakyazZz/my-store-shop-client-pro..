@@ -16,9 +16,9 @@ export interface TelegramSettingsConfig {
 }
 
 const DEFAULT_CONFIG: TelegramSettingsConfig = {
-  enabled: true,
-  bot_token: process.env.TELEGRAM_BOT_TOKEN || '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA',
-  admin_chat_ids: '7483268297, 5950203511, 6206169480',
+  enabled: false,
+  bot_token: process.env.TELEGRAM_BOT_TOKEN || '',
+  admin_chat_ids: '',
   new_order_alert: true,
   product_alert: true,
   daily_summary_alert: true,

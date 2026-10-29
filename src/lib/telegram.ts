@@ -1,5 +1,5 @@
-// Telegram Instant Alert & Command Center Bot for MYZTORE (@Vault_World_bot)
-// Authorized Admins: 7483268297, 5950203511, 6206169480
+// Telegram Instant Alert & Command Center Bot for MYZTORE
+// Authorized Admins: Dynamically configured via Admin Panel (store_settings/telegram) or TELEGRAM_CHAT_ID
 
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -17,11 +17,10 @@ export interface ServerTelegramConfig {
   dailySummaryAlert: boolean;
 }
 
-export const TELEGRAM_BOT_TOKEN =
-  process.env.TELEGRAM_BOT_TOKEN || '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
-export const OWNER_CHAT_ID = process.env.TELEGRAM_OWNER_CHAT_ID || '7483268297';
+export const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+export const OWNER_CHAT_ID = process.env.TELEGRAM_OWNER_CHAT_ID || '';
 
-const DEFAULT_ADMIN_IDS = ['7483268297', '5950203511', '6206169480'];
+const DEFAULT_ADMIN_IDS: string[] = [];
 const ENV_ADMIN_IDS = [
   ...(process.env.TELEGRAM_ALLOWED_USER_IDS ? process.env.TELEGRAM_ALLOWED_USER_IDS.split(',') : []),
   process.env.TELEGRAM_CHAT_ID,
@@ -53,8 +52,8 @@ export async function fetchDynamicTelegramConfig(force = false): Promise<ServerT
 
   let resolvedConfig: ServerTelegramConfig = {
     enabled: true,
-    botToken: process.env.TELEGRAM_BOT_TOKEN || '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA',
-    adminChatIds: Array.from(new Set([...DEFAULT_ADMIN_IDS, ...envAdmins])),
+    botToken: process.env.TELEGRAM_BOT_TOKEN || '',
+    adminChatIds: envAdmins,
     newOrderAlert: true,
     productAlert: true,
     dailySummaryAlert: true,

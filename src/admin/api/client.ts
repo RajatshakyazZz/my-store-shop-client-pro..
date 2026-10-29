@@ -95,9 +95,9 @@ export function sanitizePayload<T>(input: T): T {
 }
 
 const initialTelegram: TelegramConfig = {
-  enabled: true,
-  bot_token: '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA',
-  admin_chat_ids: '7483268297, 5950203511, 6206169480',
+  enabled: false,
+  bot_token: '',
+  admin_chat_ids: '',
   new_order_alert: true,
   product_alert: true,
   daily_summary_alert: true,
@@ -577,8 +577,8 @@ class PortalApiClient {
         (typeof process !== 'undefined' &&
           ((process.env as any).NEXT_PUBLIC_TELEGRAM_BOT_TOKEN ||
             (process.env as any).TELEGRAM_BOT_TOKEN)) ||
-        '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
-      let targetChatIds = ['7483268297', '5950203511', '6206169480'];
+        '';
+      let targetChatIds: string[] = [];
       let alertEnabled = false;
 
       try {

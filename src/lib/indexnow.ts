@@ -2,11 +2,16 @@
  * IndexNow helper to notify search engines (Bing, Yandex, etc.) of URL updates.
  */
 export async function submitToIndexNow(urlList: string[]): Promise<{ success: boolean; status?: number; error?: string }> {
-  const host = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop')
-    .replace(/^https?:\/\//, '')
-    .replace(/\/+$/, '');
-  const key = process.env.NEXT_PUBLIC_INDEXNOW_KEY || 'c3e2f1a94b8d7e0c9f1a2b3c4d5e6f7a';
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop';
+  const key = process.env.NEXT_PUBLIC_INDEXNOW_KEY || '';
+  if (!key) {
+    return { success: false, error: 'IndexNow key not configured' };
+  }
+
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || '').replace(/\/+$/, '');
+  if (!siteUrl) {
+    return { success: false, error: 'SITE_URL not configured' };
+  }
+  const host = siteUrl.replace(/^https?:\/\//, '');
 
   if (!urlList || urlList.length === 0) {
     return { success: false, error: 'Empty urlList' };
