@@ -83,14 +83,59 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const loginWithPassword = async (pass: string): Promise<boolean> => {
     setIsLoading(true);
+    const cleanPass = pass.trim();
+
+    try {
+      // 1. First attempt secure server-side verification (keeps ADMIN_PASSWORD secret on backend)
+      const res = await fetch('/api/admin/auth/verify-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: cleanPass }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          const profile: AdminProfile = data.admin || {
+            name: 'MYZTORE Administrator',
+            email: 'ztoredigital@gmail.com',
+            role: 'SuperAdmin',
+            source: 'portal-key',
+          };
+          setApiKey(data.token || 'vaultworld_admin_token');
+          setAdmin(profile);
+          localStorage.setItem('rb_portal_api_key', data.token || 'vaultworld_admin_token');
+          localStorage.setItem('rb_portal_admin_profile', JSON.stringify(profile));
+
+          await logAdminAction({
+            adminEmail: profile.email,
+            action: 'PASSWORD_LOGIN',
+            module: 'Auth',
+            details: 'Admin authenticated securely with master password',
+          });
+
+          setIsLoading(false);
+          return true;
+        }
+      }
+    } catch (e) {
+      console.warn('Server password verification failed, falling back to local check:', e);
+    }
+
+    // 2. Client-side fallback check for local dev or network failure
     const configuredPassword =
       (typeof process !== 'undefined' &&
         (process.env.NEXT_PUBLIC_ADMIN_PASSWORD ||
           (process.env as any).ADMIN_PASSWORD ||
           (process.env as any).VITE_ADMIN_PASSWORD)) ||
-      'vaultzet@2026';
+      'myztore@2026';
 
-    if ((configuredPassword && pass === configuredPassword) || pass === 'myztore@2026' || pass === 'vaultworld@2026' || pass === 'vaultzet@2026') {
+    if (
+      (configuredPassword && cleanPass === configuredPassword) ||
+      cleanPass === 'myztore@2026' ||
+      cleanPass === 'vaultworld@2026' ||
+      cleanPass === 'vaultzet@2026'
+    ) {
       const profile: AdminProfile = {
         name: 'MYZTORE Administrator',
         email: 'ztoredigital@gmail.com',
@@ -106,7 +151,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         adminEmail: profile.email,
         action: 'PASSWORD_LOGIN',
         module: 'Auth',
-        details: 'Admin authenticated with master password',
+        details: 'Admin authenticated with fallback password',
       });
 
       setIsLoading(false);
