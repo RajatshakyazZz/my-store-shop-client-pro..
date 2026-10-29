@@ -89,15 +89,17 @@ export default function SettingsIntegrations() {
   // Sync state when data arrives
   React.useEffect(() => {
     if (pgConfig) {
+      const keyId = pgConfig.key_id || pgConfig.razorpay_key_id || pgConfig.merchant_key || pgConfig.app_id || '';
+      const keySecret = pgConfig.key_secret || pgConfig.razorpay_key_secret || pgConfig.merchant_salt || pgConfig.secret_key || '';
       setPgForm({
         ...pgConfig,
-        merchant_key: pgConfig.merchant_key || pgConfig.app_id || '',
-        merchant_salt: pgConfig.merchant_salt || pgConfig.secret_key || '',
+        key_id: keyId,
+        key_secret: keySecret,
+        razorpay_key_id: keyId,
+        razorpay_key_secret: keySecret,
+        merchant_key: keyId,
+        merchant_salt: keySecret,
         environment: pgConfig.environment === 'TEST' || pgConfig.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
-        return_url: (pgConfig.return_url || 'https://vaultworld.shop/api/payment/payu/return')
-          .replace('api/payment/cashfree/return', 'api/payment/payu/return')
-          .replace('store.vaultzet.shop', 'vaultworld.shop')
-          .replace('vaultzet.shop', 'vaultworld.shop'),
       });
     }
   }, [pgConfig]);
@@ -131,27 +133,33 @@ export default function SettingsIntegrations() {
   // Mutations
   const updatePgMutation = useMutation({
     mutationFn: (updated: PgBridgeConfig) => {
+      const keyId = updated.key_id || updated.razorpay_key_id || updated.merchant_key || updated.app_id || '';
+      const keySecret = updated.key_secret || updated.razorpay_key_secret || updated.merchant_salt || updated.secret_key || '';
       const payload: PgBridgeConfig = {
         ...updated,
-        merchant_key: updated.merchant_key || updated.app_id || '',
-        merchant_salt: updated.merchant_salt || updated.secret_key || '',
-        app_id: updated.merchant_key || updated.app_id || '',
-        secret_key: updated.merchant_salt || updated.secret_key || '',
+        key_id: keyId,
+        key_secret: keySecret,
+        razorpay_key_id: keyId,
+        razorpay_key_secret: keySecret,
+        merchant_key: keyId,
+        merchant_salt: keySecret,
+        app_id: keyId,
+        secret_key: keySecret,
       };
       return portalApi.updatePgBridgeConfig(payload);
     },
     onSuccess: () => {
       addToast({
         type: 'success',
-        title: 'PayU Saved to Cloud Database 🚀',
-        message: 'PayU credentials saved to Firestore! Live across all mobile devices, laptops & storefront checkout.',
+        title: 'Razorpay Saved to Cloud Database 🚀',
+        message: 'Razorpay credentials saved to Firestore! Live across all mobile devices, laptops & storefront checkout.',
       });
       queryClient.invalidateQueries({ queryKey: ['pg-bridge'] });
     },
     onError: (err: any) => {
       addToast({
         type: 'error',
-        title: 'Failed to update PayU Config',
+        title: 'Failed to update Razorpay Config',
         message: err.message,
       });
     },
@@ -330,39 +338,50 @@ export default function SettingsIntegrations() {
   });
 
   const handleTestCallback = () => {
-    const key = pgForm?.merchant_key || pgForm?.app_id;
-    const salt = pgForm?.merchant_salt || pgForm?.secret_key;
+    const key = pgForm?.key_id || pgForm?.razorpay_key_id || pgForm?.merchant_key || pgForm?.app_id;
+    const salt = pgForm?.key_secret || pgForm?.razorpay_key_secret || pgForm?.merchant_salt || pgForm?.secret_key;
     if (!key || !salt) {
       addToast({
         type: 'warning',
         title: 'Missing Credentials',
-        message: 'Please enter your PayU Merchant Key and Salt first.',
+        message: 'Please enter your Razorpay Key ID and Secret first.',
       });
       return;
     }
     addToast({
       type: 'info',
-      title: 'PayU Test Check',
+      title: 'Razorpay Test Check',
       message: `Environment: ${pgForm.environment || 'PRODUCTION'}. Ready for checkout.`,
     });
   };
 
   const handleProcessorVerify = async () => {
-    const key = String(pgForm?.merchant_key || pgForm?.app_id || '').trim();
-    const salt = String(pgForm?.merchant_salt || pgForm?.secret_key || '').trim();
+    const key = String(pgForm?.key_id || pgForm?.razorpay_key_id || pgForm?.merchant_key || pgForm?.app_id || '').trim();
+    const salt = String(pgForm?.key_secret || pgForm?.razorpay_key_secret || pgForm?.merchant_salt || pgForm?.secret_key || '').trim();
     if (!key || !salt) {
       addToast({
         type: 'warning',
         title: 'Credentials Required',
-        message: 'Please fill in both PayU Merchant Key and Merchant Salt before verifying.',
+        message: 'Please fill in both Razorpay Key ID and Key Secret before verifying.',
       });
       return;
     }
 
     setIsVerifyingPg(true);
     try {
+      // 1. Live test with Razorpay API
+      const testResult = await portalApi.testRazorpayConfig(key, salt);
+      if (!testResult.success) {
+        throw new Error(testResult.message || 'Razorpay API rejected credentials.');
+      }
+
+      // 2. Persist to Firestore
       await updatePgMutation.mutateAsync({
         ...pgForm,
+        key_id: key,
+        key_secret: salt,
+        razorpay_key_id: key,
+        razorpay_key_secret: salt,
         merchant_key: key,
         merchant_salt: salt,
         app_id: key,
@@ -371,14 +390,14 @@ export default function SettingsIntegrations() {
 
       addToast({
         type: 'success',
-        title: 'PayU Status Verified & Synced! 🚀',
-        message: `Environment: ${pgForm?.environment || 'PRODUCTION'}. Credentials are saved in Firestore and ready for live checkout.`,
+        title: 'Razorpay Status Verified & Synced! 🚀',
+        message: `Environment: ${pgForm?.environment || 'PRODUCTION'}. Validated with Razorpay API, saved in Firestore, and live for storefront checkout.`,
       });
     } catch (err: any) {
       addToast({
         type: 'error',
-        title: 'Verification Failed',
-        message: err.message || 'Could not verify PayU credentials.',
+        title: 'Razorpay Verification Failed',
+        message: err.message || 'Could not verify Razorpay credentials.',
       });
     } finally {
       setIsVerifyingPg(false);
@@ -411,7 +430,7 @@ export default function SettingsIntegrations() {
       {/* Tabs - Touch-scrollable & edge-to-edge on mobile */}
       <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto admin-touch-scroll admin-no-scrollbar -mx-3.5 px-3.5 sm:mx-0 sm:px-0">
         {[
-          { id: 'pg', label: 'PayU Gateway', icon: CreditCard, color: 'text-purple-400' },
+          { id: 'pg', label: 'Razorpay Gateway', icon: CreditCard, color: 'text-red-500' },
           { id: 'telegram', label: 'Telegram Alerts & Bot', icon: Send, color: 'text-sky-400' },
           { id: 'meta', label: 'DNP Meta CAPI', icon: Radio, color: 'text-blue-400' },
           { id: 'analytics', label: 'MMC Analytics', icon: Users, color: 'text-emerald-400' },
@@ -426,7 +445,7 @@ export default function SettingsIntegrations() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${
                 isActive
-                  ? 'bg-purple-600/20 text-purple-300 border border-purple-500/40 shadow-sm'
+                  ? 'bg-red-600/20 text-red-300 border border-red-500/40 shadow-sm'
                   : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
               }`}
             >
@@ -437,7 +456,7 @@ export default function SettingsIntegrations() {
         })}
       </div>
 
-      {/* TAB 1: PAYU PAYMENT GATEWAY */}
+      {/* TAB 1: RAZORPAY PAYMENT GATEWAY */}
       {activeTab === 'pg' && pgForm && (
         <div className="space-y-6">
           <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-6">
@@ -445,8 +464,8 @@ export default function SettingsIntegrations() {
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <CreditCard className="w-5 h-5 text-purple-400" />
-                    PayU Payment Gateway (India)
+                    <CreditCard className="w-5 h-5 text-red-500" />
+                    Razorpay Payment Gateway (India)
                   </h3>
                   <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
                     pgForm.enabled
@@ -464,28 +483,28 @@ export default function SettingsIntegrations() {
                   </span>
                 </div>
                 <p className="text-xs text-slate-400 mt-1">
-                  Primary payment engine powering UPI (PhonePe, GPay, Paytm, CRED), Cards & NetBanking on MYZTORE via PayU India.
+                  Primary payment engine powering UPI (PhonePe, GPay, Paytm, CRED), Cards & NetBanking on MYZTORE via Razorpay India.
                 </p>
               </div>
 
               <div className="flex items-center gap-3 shrink-0">
                 <a
-                  href="https://dashboard.payu.in"
+                  href="https://dashboard.razorpay.com/app/keys"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 border border-slate-700 transition-all flex items-center gap-1.5"
                 >
-                  <ExternalLink className="w-3.5 h-3.5 text-purple-400" />
-                  <span>PayU Dashboard</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-red-400" />
+                  <span>Razorpay Dashboard</span>
                 </a>
                 <button
                   type="button"
                   onClick={handleProcessorVerify}
                   disabled={isVerifyingPg || updatePgMutation.isPending}
-                  className="px-3 py-1.5 rounded-lg bg-purple-600/20 hover:bg-purple-600/30 text-xs font-bold text-purple-300 border border-purple-500/30 transition-all flex items-center gap-1.5 disabled:opacity-50"
+                  className="px-3 py-1.5 rounded-lg bg-red-600/20 hover:bg-red-600/30 text-xs font-bold text-red-300 border border-red-500/30 transition-all flex items-center gap-1.5 disabled:opacity-50"
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>{isVerifyingPg ? 'Verifying...' : 'Verify Status'}</span>
+                  <span>{isVerifyingPg ? 'Verifying...' : 'Verify Status & Live Test'}</span>
                 </button>
               </div>
             </div>
@@ -493,16 +512,16 @@ export default function SettingsIntegrations() {
             {/* Gateway Status Switch */}
             <div className="flex items-center justify-between p-4 rounded-xl bg-slate-950/80 border border-slate-800/80">
               <div className="space-y-0.5">
-                <div className="text-xs font-bold text-white">Enable PayU on Storefront</div>
+                <div className="text-xs font-bold text-white">Enable Razorpay on Storefront</div>
                 <div className="text-[11px] text-slate-400">
-                  When active, customers will checkout securely via PayU India Payment Gateway.
+                  When active, customers will checkout securely via Razorpay India Payment Gateway.
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setPgForm({ ...pgForm, enabled: !pgForm.enabled })}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
-                  pgForm.enabled ? 'bg-purple-600' : 'bg-slate-700'
+                  pgForm.enabled ? 'bg-red-600' : 'bg-slate-700'
                 }`}
               >
                 <span
@@ -514,11 +533,11 @@ export default function SettingsIntegrations() {
             </div>
 
             {/* Direct Cloud Database Synchronization Banner */}
-            <div className="p-3.5 rounded-xl bg-purple-950/20 border border-purple-500/30 flex items-start gap-3">
-              <Database className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+            <div className="p-3.5 rounded-xl bg-red-950/20 border border-red-500/30 flex items-start gap-3">
+              <Database className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
               <div className="text-xs text-slate-300 leading-relaxed">
                 <span className="font-bold text-white">Direct Cloud Database Sync: </span>
-                PayU Merchant Key & Salt database me save hote hain. Iske liye koi Vercel environment variables ya code rebuild ki zaroorat nahi hai. Ek baar save karne par Phone, Laptop aur Storefront Checkout par ye keys automatically live ho jayengi.
+                Razorpay Key ID & Key Secret direct database me save hote hain. Iske liye koi Vercel environment variables ya code rebuild ki zaroorat nahi hai. Ek baar save karne par Phone, Laptop aur Storefront Checkout par ye keys automatically live ho jayengi.
               </div>
             </div>
 
@@ -530,73 +549,80 @@ export default function SettingsIntegrations() {
                 <select
                   value={pgForm.environment || 'PRODUCTION'}
                   onChange={(e) => setPgForm({ ...pgForm, environment: e.target.value as any })}
-                  className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-medium"
+                  className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-red-500 font-medium"
                 >
-                  <option value="PRODUCTION">PRODUCTION (Real live payments - secure.payu.in)</option>
-                  <option value="TEST">TEST (Sandbox Test mode - test.payu.in)</option>
+                  <option value="PRODUCTION">PRODUCTION (Real live payments - rzp_live_...)</option>
+                  <option value="TEST">TEST (Sandbox Test mode - rzp_test_...)</option>
                 </select>
                 <p className="text-[10px] text-slate-500 mt-1">Select PRODUCTION when receiving real customer payments.</p>
               </div>
 
               <div>
                 <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-                  <Key className="w-3.5 h-3.5 text-purple-400" />
-                  <span>PayU Merchant Key *</span>
+                  <Key className="w-3.5 h-3.5 text-red-400" />
+                  <span>Razorpay Key ID *</span>
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. 7rnFly or your PayU Merchant Key"
-                  value={pgForm.merchant_key || pgForm.app_id || ''}
-                  onChange={(e) => setPgForm({ ...pgForm, merchant_key: e.target.value, app_id: e.target.value })}
-                  className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
+                  placeholder="e.g. rzp_live_xxxxxxxx or rzp_test_xxxxxxxx"
+                  value={pgForm.key_id || pgForm.razorpay_key_id || pgForm.merchant_key || pgForm.app_id || ''}
+                  onChange={(e) => {
+                    const val = e.target.value.trim();
+                    setPgForm({
+                      ...pgForm,
+                      key_id: val,
+                      razorpay_key_id: val,
+                      merchant_key: val,
+                      app_id: val,
+                    });
+                  }}
+                  className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-red-500 font-mono"
                 />
-                <p className="text-[10px] text-slate-500 mt-1">Found in PayU Dashboard &gt; Integration Details / API Keys.</p>
+                <p className="text-[10px] text-slate-500 mt-1">Found in Razorpay Dashboard &gt; Settings &gt; API Keys.</p>
               </div>
 
               <div className="md:col-span-2">
                 <label className="text-xs font-bold text-slate-300 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Lock className="w-3.5 h-3.5 text-purple-400" />
-                    <span>PayU Merchant Salt *</span>
+                    <Lock className="w-3.5 h-3.5 text-red-400" />
+                    <span>Razorpay Key Secret *</span>
                   </span>
                   <button
                     type="button"
                     onClick={() => setShowSecret(!showSecret)}
-                    className="text-[11px] text-purple-400 hover:text-purple-300 flex items-center gap-1 font-semibold"
+                    className="text-[11px] text-red-400 hover:text-red-300 flex items-center gap-1 font-semibold"
                   >
                     {showSecret ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                    <span>{showSecret ? 'Hide Salt' : 'Show Salt'}</span>
+                    <span>{showSecret ? 'Hide Secret' : 'Show Secret'}</span>
                   </button>
                 </label>
                 <div className="relative mt-1.5">
                   <input
                     type={showSecret ? 'text' : 'password'}
-                    placeholder="e.g. pj1nGpHgw... or your PayU Salt"
-                    value={pgForm.merchant_salt || pgForm.secret_key || ''}
-                    onChange={(e) => setPgForm({ ...pgForm, merchant_salt: e.target.value, secret_key: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono pr-10"
+                    placeholder="e.g. 24-character Razorpay Key Secret"
+                    value={pgForm.key_secret || pgForm.razorpay_key_secret || pgForm.merchant_salt || pgForm.secret_key || ''}
+                    onChange={(e) => {
+                      const val = e.target.value.trim();
+                      setPgForm({
+                        ...pgForm,
+                        key_secret: val,
+                        razorpay_key_secret: val,
+                        merchant_salt: val,
+                        secret_key: val,
+                      });
+                    }}
+                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-red-500 font-mono pr-10"
                   />
                 </div>
-                <p className="text-[10px] text-slate-500 mt-1">Never share your Merchant Salt. Stored securely and used for SHA-512 signature hashing.</p>
-              </div>
-
-              <div className="md:col-span-2">
-                <label className="text-xs font-bold text-slate-300">Customer Return / Redirect URL</label>
-                <input
-                  type="text"
-                  value={pgForm.return_url || 'https://vaultworld.shop/api/payment/payu/return'}
-                  onChange={(e) => setPgForm({ ...pgForm, return_url: e.target.value })}
-                  className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
-                />
-                <p className="text-[10px] text-slate-500 mt-1">URL where buyer returns after completing PayU payment.</p>
+                <p className="text-[10px] text-slate-500 mt-1">Generated alongside Key ID. Stored securely and used for HMAC-SHA256 signature verification.</p>
               </div>
             </div>
 
             {/* Payment Feature Badges Banner */}
-            <div className="p-4 rounded-xl bg-purple-950/20 border border-purple-800/30">
-              <div className="text-xs font-bold text-purple-300 flex items-center gap-1.5 mb-2">
-                <Sparkles className="w-4 h-4 text-purple-400" />
-                <span>Supported Customer Payment Methods via PayU India</span>
+            <div className="p-4 rounded-xl bg-red-950/20 border border-red-800/30">
+              <div className="text-xs font-bold text-red-300 flex items-center gap-1.5 mb-2">
+                <Sparkles className="w-4 h-4 text-red-400" />
+                <span>Supported Customer Payment Methods via Razorpay India</span>
               </div>
               <div className="flex flex-wrap gap-2 text-[11px] text-slate-300">
                 <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 flex items-center gap-1 font-medium">
@@ -612,7 +638,7 @@ export default function SettingsIntegrations() {
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> CRED UPI & Any UPI App
                 </span>
                 <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 flex items-center gap-1 font-medium">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Visa / MasterCard / RuPay
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Visa / MasterCard / RuPay Cards
                 </span>
                 <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 flex items-center gap-1 font-medium">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> 50+ NetBanking Banks
@@ -625,10 +651,10 @@ export default function SettingsIntegrations() {
                 type="button"
                 onClick={() => updatePgMutation.mutate(pgForm as PgBridgeConfig)}
                 disabled={updatePgMutation.isPending}
-                className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold shadow-md shadow-purple-600/20 transition-all disabled:opacity-50"
+                className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white text-xs font-bold shadow-md shadow-red-600/20 transition-all disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
-                <span>{updatePgMutation.isPending ? 'Saving...' : 'Save PayU Gateway Config'}</span>
+                <span>{updatePgMutation.isPending ? 'Saving...' : 'Save Razorpay Gateway Config'}</span>
               </button>
             </div>
           </div>

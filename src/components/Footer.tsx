@@ -67,7 +67,7 @@ export default function Footer() {
     },
     {
       title: 'Secure Checkout',
-      subtitle: 'Verified PayU Gateway',
+      subtitle: 'Verified Razorpay Gateway',
       icon: ShieldCheck,
       bg: 'bg-emerald-100/80 text-emerald-700',
     },

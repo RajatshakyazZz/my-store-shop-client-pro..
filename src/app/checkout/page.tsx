@@ -590,7 +590,7 @@ function CheckoutContent() {
 
     // Track GA4 add_payment_info
     track('add_payment_info', {
-      payment_type: 'PayU India UPI / Netbanking / Cards',
+      payment_type: 'Razorpay India UPI / Netbanking / Cards',
       currency: 'INR',
       value: checkoutTotal,
       items: allCheckoutItems.map((i, idx) => ({
@@ -644,8 +644,8 @@ function CheckoutContent() {
     };
 
     try {
-      // 1. Create PayU Order on server
-      const res = await fetch('/api/payment/payu/create-order', {
+      // 1. Create Razorpay Order on server
+      const res = await fetch('/api/payment/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderPayload),
@@ -653,10 +653,10 @@ function CheckoutContent() {
 
       const data = await res.json();
 
-      if (!res.ok || !data.success || !data.action || !data.params) {
+      if (!res.ok || !data.success || !data.razorpay_order_id) {
         throw new Error(
           data.error ||
-            'Could not initialize PayU payment. Please verify PayU API credentials in the Admin Portal.'
+            'Could not initialize Razorpay payment. Please verify Razorpay Key ID & Key Secret in the Admin Panel.'
         );
       }
 
@@ -665,27 +665,87 @@ function CheckoutContent() {
         ...orderPayload,
         orderId: orderNumber,
         orderToken: data.order_token,
+        razorpayOrderId: data.razorpay_order_id,
         status: 'pending',
       }));
 
-      // 2. Auto-submit form to PayU India Hosted Checkout (UPI, GPay, PhonePe, Paytm, Cards, NetBanking)
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = data.action;
-      form.style.display = 'none';
+      // 2. Dynamically ensure Razorpay checkout script is loaded
+      const loadRazorpayScript = () => {
+        return new Promise<boolean>((resolve) => {
+          if (typeof window === 'undefined') return resolve(false);
+          if ((window as any).Razorpay) return resolve(true);
+          const script = document.createElement('script');
+          script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+          script.async = true;
+          script.onload = () => resolve(true);
+          script.onerror = () => resolve(false);
+          document.body.appendChild(script);
+        });
+      };
 
-      Object.entries(data.params).forEach(([key, value]) => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = String(value);
-        form.appendChild(input);
+      const isLoaded = await loadRazorpayScript();
+      if (!isLoaded || !(window as any).Razorpay) {
+        throw new Error('Razorpay SDK could not be loaded. Please check your internet connection.');
+      }
+
+      // 3. Launch official Razorpay Checkout Modal
+      const rzpOptions = {
+        key: data.key_id,
+        amount: data.amount,
+        currency: data.currency || 'INR',
+        name: 'MYZTORE',
+        description: allCheckoutItems[0]?.product?.title || 'Viral Reels Bundle - Instant Download',
+        image: '/logo.png',
+        order_id: data.razorpay_order_id,
+        prefill: {
+          name: data.customer?.name || fullName.trim(),
+          email: data.customer?.email || email.trim(),
+          contact: data.customer?.contact || phone.trim(),
+        },
+        theme: {
+          color: '#dc2626', // luxury red brand accent
+        },
+        modal: {
+          ondismiss: () => {
+            setIsProcessing(false);
+          },
+        },
+        handler: async (response: any) => {
+          setIsProcessing(true);
+          try {
+            const verifyRes = await fetch('/api/payment/razorpay/verify-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                orderId: orderNumber,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              }),
+            });
+            const verifyData = await verifyRes.json();
+            if (verifyData.success) {
+              window.location.href = `/order-success?orderId=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(verifyData.order_token || data.order_token)}`;
+            } else {
+              throw new Error(verifyData.error || 'Payment verification failed');
+            }
+          } catch (vErr: any) {
+            console.error('Razorpay verification error:', vErr);
+            window.location.href = `/order-success?orderId=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}`;
+          }
+        },
+      };
+
+      const rzp = new (window as any).Razorpay(rzpOptions);
+      rzp.on('payment.failed', (response: any) => {
+        setIsProcessing(false);
+        setErrorMessage(
+          response.error?.description || 'Payment was unsuccessful or cancelled. Please try again.'
+        );
       });
-
-      document.body.appendChild(form);
-      form.submit();
+      rzp.open();
     } catch (err: any) {
-      console.error('PayU order error:', err);
+      console.error('Razorpay order error:', err);
       setIsProcessing(false);
       setErrorMessage(
         err.message || 'Payment initiation failed. Please check your connection and try again.'
@@ -702,7 +762,7 @@ function CheckoutContent() {
         </div>
         <h2 className="text-xl font-black text-slate-950">Loading Your Checkout...</h2>
         <p className="text-xs text-slate-500 max-w-sm">
-          Preparing bundle details and secure PayU payment gateway.
+          Preparing bundle details and secure Razorpay payment gateway.
         </p>
       </div>
     );
@@ -766,10 +826,10 @@ function CheckoutContent() {
                   <span className="text-[11px] font-bold text-slate-500">Authorized Partner Checkout</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
-                  Secure PayU Checkout
+                  Secure Razorpay Checkout
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-                  Fill your details below, pay securely via PayU, and get instant Google Drive access.
+                  Fill your details below, pay securely via Razorpay, and get instant Google Drive access.
                 </p>
               </div>
               <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/80 self-start sm:self-center shrink-0">
@@ -784,7 +844,7 @@ function CheckoutContent() {
                   {isBuyNowMode ? 'Instant Buy Now Checkout' : 'Express Checkout'}
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-                  Zero hassle: Fill your details, pay securely via PayU, and get instant Google Drive access.
+                  Zero hassle: Fill your details, pay securely via Razorpay, and get instant Google Drive access.
                 </p>
               </div>
               <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/80">
@@ -806,9 +866,9 @@ function CheckoutContent() {
                   <span className="font-bold">Checkout Issue: </span>
                   {errorMessage}
                 </div>
-                {(errorMessage.includes('PayU') || errorMessage.includes('Merchant')) && (
+                {(errorMessage.includes('Razorpay') || errorMessage.includes('Key') || errorMessage.includes('Merchant')) && (
                   <p className="text-[11px] text-rose-700 font-normal mt-1 leading-relaxed">
-                    Note: Agar aapne Admin Portal ya Vercel me PayU keys update ki hain, toh Vercel dashboard me <strong>Deployments &gt; Redeploy</strong> karein ya Admin Portal (Settings &gt; Integrations &gt; PayU Gateway) me Merchant Key &amp; Salt save karein.
+                    Note: Agar aapne Admin Portal me Razorpay keys update ki hain, toh Admin Portal (Settings &gt; Integrations &gt; Razorpay Gateway) me Razorpay Key ID &amp; Key Secret save karein.
                   </p>
                 )}
               </div>
@@ -984,12 +1044,12 @@ function CheckoutContent() {
                       {isProcessing ? (
                         <span className="flex items-center gap-2">
                           <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>Connecting PayU Gateway...</span>
+                          <span>Connecting Razorpay Gateway...</span>
                         </span>
                       ) : (
                         <>
                           <Lock className="w-4 h-4 text-slate-950" />
-                          <span>Pay ₹{checkoutTotal}.00 via PayU (Instant Access)</span>
+                          <span>Pay ₹{checkoutTotal}.00 via Razorpay (Instant Access)</span>
                         </>
                       )}
                     </button>
@@ -1061,7 +1121,7 @@ function CheckoutContent() {
                 </div>
               )}
 
-              {/* 3. PayU Payment Gateway Card */}
+              {/* 3. Razorpay Payment Gateway Card */}
               <div className="rounded-3xl p-6 bg-white border border-slate-200/90 shadow-sm space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">
@@ -1073,16 +1133,16 @@ function CheckoutContent() {
                     </h2>
                   </div>
                   <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5" /> PayU Verified
+                    <ShieldCheck className="w-3.5 h-3.5" /> Razorpay Verified
                   </span>
                 </div>
 
-                {/* Branded PayU Details Card */}
+                {/* Branded Razorpay Details Card */}
                 <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-red-500/20 text-white space-y-3.5 shadow-md">
                   <div className="flex items-center justify-between">
                     <div className="font-bold text-xs text-rose-400 flex items-center gap-1.5">
                       <CreditCard className="w-4 h-4 text-rose-400" />
-                      <span>PayU Payment Gateway (India)</span>
+                      <span>Razorpay Payment Gateway (India)</span>
                     </div>
                     <span className="text-[10px] font-bold text-slate-400">
                       RBI Regulated • Zero Extra Fee
@@ -1090,7 +1150,7 @@ function CheckoutContent() {
                   </div>
 
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Pay securely with any payment option of your choice. A fast, encrypted PayU checkout will open to complete payment via UPI, Cards, or NetBanking.
+                    Pay securely with any payment option of your choice. A fast, encrypted Razorpay checkout will open to complete payment via UPI, Cards, or NetBanking.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
@@ -1405,12 +1465,12 @@ function CheckoutContent() {
                     {isProcessing ? (
                       <span className="flex items-center gap-2">
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Connecting PayU Gateway...
+                        Connecting Razorpay Gateway...
                       </span>
                     ) : (
                       <>
                         <Lock className="w-4 h-4 text-slate-950" />
-                        <span>Pay ₹{checkoutTotal}.00 via PayU (Instant Access)</span>
+                        <span>Pay ₹{checkoutTotal}.00 via Razorpay (Instant Access)</span>
                       </>
                     )}
                   </button>
@@ -1420,7 +1480,7 @@ function CheckoutContent() {
                       <ShieldCheck className="w-4 h-4 text-emerald-600" />
                       Instant Google Drive Link Delivery
                     </p>
-                    <p>Protected by 256-bit SSL encryption & PayU India Security</p>
+                    <p>Protected by 256-bit SSL encryption & Razorpay India Security</p>
                   </div>
                 </div>
               </div>
@@ -1483,12 +1543,12 @@ function CheckoutContent() {
                   {isProcessing ? (
                     <span className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Connecting PayU Gateway...
+                      Connecting Razorpay Gateway...
                     </span>
                   ) : (
                     <>
                       <Lock className="w-4 h-4 text-slate-950" />
-                      <span>Pay ₹{checkoutTotal}.00 via PayU (Instant Access)</span>
+                      <span>Pay ₹{checkoutTotal}.00 via Razorpay (Instant Access)</span>
                     </>
                   )}
                 </button>
@@ -1510,9 +1570,11 @@ function CheckoutContent() {
 export default function CheckoutPage() {
   return (
     <>
-      {/* PayU India Secure Hosted Checkout - high priority preconnect */}
-      <link rel="preconnect" href="https://secure.payu.in" />
-      <link rel="dns-prefetch" href="https://secure.payu.in" />
+      {/* Razorpay India Secure Checkout preconnect */}
+      <link rel="preconnect" href="https://checkout.razorpay.com" />
+      <link rel="dns-prefetch" href="https://checkout.razorpay.com" />
+      <link rel="preconnect" href="https://api.razorpay.com" />
+      <link rel="dns-prefetch" href="https://api.razorpay.com" />
       <Suspense
         fallback={
           <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center space-y-4 bg-[#faf9f6]">
@@ -1521,7 +1583,7 @@ export default function CheckoutPage() {
             </div>
             <h2 className="text-xl font-black text-slate-950">Loading Checkout...</h2>
             <p className="text-xs text-slate-500 max-w-sm">
-              Preparing bundle details and secure PayU payment gateway.
+              Preparing bundle details and secure Razorpay payment gateway.
             </p>
           </div>
         }

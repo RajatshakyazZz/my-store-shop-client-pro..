@@ -662,7 +662,7 @@ export default function ResellerLandingClient({
             Authorized Reseller Listing • Powered by MYZTORE Digital Storefront
           </p>
           <p>
-            Payments are securely processed via certified PayU India Payment Gateway with 256-bit SSL encryption.
+            Payments are securely processed via certified Razorpay India Payment Gateway with 256-bit SSL encryption.
             Digital files are delivered instantly via automated cloud infrastructure.
           </p>
         </div>

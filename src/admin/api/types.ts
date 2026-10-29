@@ -420,22 +420,26 @@ export interface ConnectorStatus {
 // ==========================================
 // 16. SETTINGS & INTEGRATIONS PANELS
 // ==========================================
-export interface PayUConfig {
+export interface RazorpayConfig {
   enabled: boolean;
+  key_id?: string;
+  key_secret?: string;
+  razorpay_key_id?: string;
+  razorpay_key_secret?: string;
   merchant_key: string;
   merchant_salt: string;
   environment: 'PRODUCTION' | 'TEST' | 'SANDBOX';
-  return_url: string;
+  return_url?: string;
   last_test_status?: string;
-  // Legacy aliases
   app_id?: string;
   secret_key?: string;
   api_version?: string;
   webhook_secret?: string;
 }
 
-export type CashfreeConfig = PayUConfig;
-export type PgBridgeConfig = PayUConfig;
+export type PayUConfig = RazorpayConfig;
+export type CashfreeConfig = RazorpayConfig;
+export type PgBridgeConfig = RazorpayConfig;
 
 export interface DnpMetaConfig {
   enabled: boolean;

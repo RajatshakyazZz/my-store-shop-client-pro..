@@ -35,7 +35,7 @@ export default function PrivacyPolicyPage() {
 
           <h2 className="text-lg font-bold text-[#182247]">2. Payment Processing</h2>
           <p>
-            We do not store your credit card, debit card, or UPI PIN details. All payments are securely processed by RBI-licensed payment gateways (PayU Payments India) using 256-bit SSL encryption.
+            We do not store your credit card, debit card, or UPI PIN details. All payments are securely processed by RBI-licensed payment gateways (Razorpay Software Private Limited) using 256-bit SSL encryption.
           </p>
 
           <h2 className="text-lg font-bold text-[#182247]">3. Data Security & Third-Party Sharing</h2>

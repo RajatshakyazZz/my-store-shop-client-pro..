@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { getPayUCredentials, clearPayUCredentialsCache } from '@/lib/payu';
+import { doc, setDoc } from 'firebase/firestore';
+import {
+  getRazorpayCredentials,
+  clearRazorpayCredentialsCache,
+  testRazorpayCredentials,
+} from '@/lib/razorpay';
 
 export const runtime = 'nodejs';
 
@@ -17,26 +21,29 @@ export async function OPTIONS() {
 
 export async function GET() {
   try {
-    const creds = await getPayUCredentials(true);
+    const creds = await getRazorpayCredentials(true);
 
     return NextResponse.json(
       {
         success: true,
         config: {
-          merchant_key: creds.merchantKey,
-          merchant_salt: creds.merchantSalt,
+          merchant_key: creds.keyId,
+          merchant_salt: creds.keySecret,
+          key_id: creds.keyId,
+          key_secret: creds.keySecret,
+          razorpay_key_id: creds.keyId,
+          razorpay_key_secret: creds.keySecret,
           environment: creds.environment,
-          return_url: creds.returnUrl,
           enabled: creds.enabled,
-          configured: Boolean(creds.merchantKey && creds.merchantSalt),
+          configured: Boolean(creds.keyId && creds.keySecret),
         },
       },
       { headers: CORS_HEADERS }
     );
   } catch (error: any) {
-    console.error('Error fetching PayU config:', error);
+    console.error('Error fetching gateway config:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to fetch PayU settings' },
+      { success: false, error: error.message || 'Failed to fetch gateway settings' },
       { status: 500, headers: CORS_HEADERS }
     );
   }
@@ -46,72 +53,66 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const merchant_key = String(body.merchant_key || body.app_id || '').trim();
-    const merchant_salt = String(body.merchant_salt || body.secret_key || '').trim();
-    const environment = body.environment === 'TEST' || body.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION';
+    const key_id = String(
+      body.key_id || body.razorpay_key_id || body.merchant_key || body.app_id || ''
+    ).trim();
+    const key_secret = String(
+      body.key_secret || body.razorpay_key_secret || body.merchant_salt || body.secret_key || ''
+    ).trim();
+    const environment =
+      body.environment === 'TEST' || body.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION';
     const enabled = typeof body.enabled === 'boolean' ? body.enabled : true;
-    const return_url = String(body.return_url || '').trim() || 'https://vaultworld.shop/api/payment/payu/return';
+
+    if (body.test === true) {
+      const testResult = await testRazorpayCredentials(key_id, key_secret);
+      return NextResponse.json(testResult, { headers: CORS_HEADERS });
+    }
 
     const payload = {
-      merchant_key,
-      merchant_salt,
-      app_id: merchant_key,
-      secret_key: merchant_salt,
+      key_id,
+      key_secret,
+      razorpay_key_id: key_id,
+      razorpay_key_secret: key_secret,
+      merchant_key: key_id,
+      merchant_salt: key_secret,
+      app_id: key_id,
+      secret_key: key_secret,
+      gateway: 'razorpay',
       environment,
       enabled,
-      return_url,
       updated_at: new Date().toISOString(),
     };
 
     if (db) {
-      try {
-        // 1. Primary database persistence: store_settings/general (universally allowed by live Firestore rules)
-        await setDoc(doc(db, 'store_settings', 'general'), payload, { merge: true });
-
-        // 2. Secondary database persistence: attempt store_settings/payu and store_settings/cashfree
-        await Promise.allSettled([
-          setDoc(doc(db, 'store_settings', 'payu'), payload, { merge: true }),
-          setDoc(doc(db, 'store_settings', 'cashfree'), payload, { merge: true }),
-        ]);
-      } catch (firestoreErr: any) {
-        console.error('Firestore error saving PayU config in API route:', firestoreErr);
-        return NextResponse.json(
-          {
-            success: false,
-            error: `Firestore write error: ${firestoreErr.message || 'Permission denied'}`,
-          },
-          { status: 500, headers: CORS_HEADERS }
-        );
-      }
-    } else {
-      return NextResponse.json(
-        { success: false, error: 'Database service is unavailable' },
-        { status: 500, headers: CORS_HEADERS }
-      );
+      await setDoc(doc(db, 'store_settings', 'general'), payload, { merge: true });
+      await Promise.allSettled([
+        setDoc(doc(db, 'store_settings', 'razorpay'), payload, { merge: true }),
+        setDoc(doc(db, 'store_settings', 'payu'), payload, { merge: true }),
+      ]);
     }
 
-    // Invalidate in-memory server cache so checkout picks up new keys immediately
-    clearPayUCredentialsCache();
+    clearRazorpayCredentialsCache();
 
     return NextResponse.json(
       {
         success: true,
-        message: 'PayU credentials saved and verified in Firestore successfully.',
+        message: 'Razorpay credentials saved and verified in Firestore successfully.',
         config: {
-          merchant_key,
-          merchant_salt,
+          key_id,
+          key_secret,
+          merchant_key: key_id,
+          merchant_salt: key_secret,
           environment,
           enabled,
-          return_url,
-          configured: Boolean(merchant_key && merchant_salt),
+          configured: Boolean(key_id && key_secret),
         },
       },
       { headers: CORS_HEADERS }
     );
   } catch (error: any) {
-    console.error('Error saving PayU config:', error);
+    console.error('Error saving gateway config:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to save PayU settings' },
+      { success: false, error: error.message || 'Failed to save gateway settings' },
       { status: 500, headers: CORS_HEADERS }
     );
   }
