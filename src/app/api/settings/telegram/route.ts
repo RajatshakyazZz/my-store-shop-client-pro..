@@ -34,12 +34,12 @@ export async function GET() {
         if (snap && snap.exists()) {
           const data = snap.data();
           config = {
-            enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
+            enabled: typeof data.enabled === 'boolean' ? data.enabled : String(data.enabled || '').toLowerCase() !== 'false',
             bot_token: String(data.bot_token || '').trim() || DEFAULT_CONFIG.bot_token,
             admin_chat_ids: String(data.admin_chat_ids || '').trim() || DEFAULT_CONFIG.admin_chat_ids,
-            new_order_alert: typeof data.new_order_alert === 'boolean' ? data.new_order_alert : true,
-            product_alert: typeof data.product_alert === 'boolean' ? data.product_alert : true,
-            daily_summary_alert: typeof data.daily_summary_alert === 'boolean' ? data.daily_summary_alert : true,
+            new_order_alert: typeof data.new_order_alert === 'boolean' ? data.new_order_alert : String(data.new_order_alert || '').toLowerCase() !== 'false',
+            product_alert: typeof data.product_alert === 'boolean' ? data.product_alert : String(data.product_alert || '').toLowerCase() !== 'false',
+            daily_summary_alert: typeof data.daily_summary_alert === 'boolean' ? data.daily_summary_alert : String(data.daily_summary_alert || '').toLowerCase() !== 'false',
             last_test_status: data.last_test_status,
             last_test_at: data.last_test_at,
           };

@@ -577,7 +577,7 @@ class PortalApiClient {
             (process.env as any).TELEGRAM_BOT_TOKEN)) ||
         '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
       let targetChatIds = ['7483268297', '5950203511', '6206169480'];
-      let alertEnabled = false;
+      let alertEnabled = true;
 
       try {
         const tg = await this.getTelegramConfig();
@@ -590,15 +590,36 @@ class PortalApiClient {
         }
       } catch {}
 
-      if (alertEnabled && targetChatIds.length > 0) {
-        const istTime = new Date().toLocaleString('en-IN', {
-          timeZone: 'Asia/Kolkata',
-          dateStyle: 'medium',
-          timeStyle: 'medium',
-        });
-        const siteOrigin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop');
-        const productUrl = `${siteOrigin}/product/${newProduct.slug}`;
-        const telegramText = `🚀📦 <b>NEW PRODUCT UPLOADED TO STORE!</b> ✨🔥
+      if (alertEnabled) {
+        // 1. Dispatch via server API
+        fetch('/api/telegram/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event: 'product_added',
+            data: {
+              name: newProduct.name,
+              slug: newProduct.slug,
+              price: newProduct.price,
+              regular_price: newProduct.regular_price,
+              categories: newProduct.categories,
+              reel_count: newProduct.reel_count,
+              resolution: newProduct.resolution,
+              googleDriveLink: newProduct.google_drive_link,
+            },
+          }),
+        }).catch((e) => console.warn('Telegram notify API error:', e));
+
+        // 2. Direct Bot dispatch fallback
+        if (targetChatIds.length > 0) {
+          const istTime = new Date().toLocaleString('en-IN', {
+            timeZone: 'Asia/Kolkata',
+            dateStyle: 'medium',
+            timeStyle: 'medium',
+          });
+          const siteOrigin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop');
+          const productUrl = `${siteOrigin}/product/${newProduct.slug}`;
+          const telegramText = `🚀📦 <b>NEW PRODUCT UPLOADED TO STORE!</b> ✨🔥
 ━━━━━━━━━━━━━━━━━━━━━━
 
 🏷️ <b>Bundle Name:</b> <b>${newProduct.name}</b>
@@ -610,23 +631,24 @@ class PortalApiClient {
 🕒 <b>Uploaded At (IST):</b> ${istTime}
 ━━━━━━━━━━━━━━━━━━━━━━`;
 
-        await Promise.allSettled(
-          targetChatIds.map((chatId) =>
-            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                chat_id: chatId,
-                text: telegramText,
-                parse_mode: 'HTML',
-                disable_web_page_preview: true,
-                reply_markup: {
-                  inline_keyboard: [[{ text: '🔗 View New Bundle on InstaReel Store', url: productUrl }]],
-                },
-              }),
-            })
-          )
-        );
+          await Promise.allSettled(
+            targetChatIds.map((chatId) =>
+              fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  chat_id: chatId,
+                  text: telegramText,
+                  parse_mode: 'HTML',
+                  disable_web_page_preview: true,
+                  reply_markup: {
+                    inline_keyboard: [[{ text: '🔗 View New Bundle on VaultWorld Store', url: productUrl }]],
+                  },
+                }),
+              })
+            )
+          );
+        }
       }
     } catch (tgErr) {
       console.warn('Telegram product upload alert error:', tgErr);
@@ -2841,7 +2863,7 @@ class PortalApiClient {
       timeStyle: 'medium',
     });
 
-    const msg = `⚡🔔 <b>INSTAREEL STORE — TELEGRAM BOT TEST ALERT</b> 🚀
+    const msg = `⚡🔔 <b>VAULTWORLD STORE — TELEGRAM BOT TEST ALERT</b> 🚀
 ━━━━━━━━━━━━━━━━━━━━━━
 ✅ <b>Bot Connection:</b> Active & Verified
 📱 <b>Admin Chat IDs:</b> ${targetChatIds.join(', ')}

@@ -91,6 +91,7 @@ export async function POST(request: Request) {
     if (successCount > 0) {
       const statusText = `Verified (${successCount}/${targetChatIds.length} chats)`;
       const timestamp = new Date().toISOString();
+      const note = errors.length > 0 ? ` (Note: ${errors.join('; ')} — users must click /start on @Vault_World_bot to receive messages)` : '';
 
       if (db) {
         try {
@@ -108,7 +109,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: true,
-          message: `Test alert sent successfully to ${successCount} admin chat(s)!`,
+          message: `Test alert sent successfully to ${successCount} admin chat(s)!${note}`,
           status: statusText,
           timestamp,
         },

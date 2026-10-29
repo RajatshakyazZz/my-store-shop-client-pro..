@@ -6,6 +6,12 @@ import {
   sendLeadCapturedTelegramAlert,
   sendStoreCommandReport,
 } from '@/lib/telegram';
+import {
+  sendNewResellerTelegramAlert,
+  sendWithdrawalRequestTelegramAlert,
+  sendResellerSaleTelegramAlert,
+  sendWithdrawalStatusTelegramAlert,
+} from '@/lib/telegramReseller';
 
 export async function POST(request: Request) {
   try {
@@ -26,14 +32,22 @@ export async function POST(request: Request) {
       ok = await sendAbandonedOrPendingTelegramAlert(data, 'payment_abandoned');
     } else if (event === 'checkout_initiated') {
       ok = await sendAbandonedOrPendingTelegramAlert(data, 'checkout_initiated');
-    } else if (event === 'sale_completed') {
+    } else if (event === 'sale_completed' || event === 'sale_success') {
       ok = await sendSaleSuccessTelegramAlert(data);
-    } else if (event === 'product_added') {
+    } else if (event === 'product_added' || event === 'product_uploaded') {
       ok = await sendProductAddedTelegramAlert(data);
     } else if (event === 'lead_captured') {
       ok = await sendLeadCapturedTelegramAlert(data);
-    } else if (event === 'night_summary') {
+    } else if (event === 'night_summary' || event === 'daily_summary') {
       ok = await sendStoreCommandReport('night_summary');
+    } else if (event === 'reseller_registered' || event === 'reseller_signup') {
+      ok = await sendNewResellerTelegramAlert(data);
+    } else if (event === 'withdrawal_requested' || event === 'reseller_withdrawal') {
+      ok = await sendWithdrawalRequestTelegramAlert(data);
+    } else if (event === 'reseller_sale') {
+      ok = await sendResellerSaleTelegramAlert(data);
+    } else if (event === 'withdrawal_status') {
+      ok = await sendWithdrawalStatusTelegramAlert(data);
     } else {
       return NextResponse.json(
         { success: false, error: `Unknown event type: ${event}` },

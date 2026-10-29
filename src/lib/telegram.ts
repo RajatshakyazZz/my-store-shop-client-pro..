@@ -15,6 +15,8 @@ export interface ServerTelegramConfig {
   newOrderAlert: boolean;
   productAlert: boolean;
   dailySummaryAlert: boolean;
+  leadAlert?: boolean;
+  resellerAlert?: boolean;
 }
 
 export const TELEGRAM_BOT_TOKEN =
@@ -37,6 +39,29 @@ export const AUTHORIZED_TELEGRAM_ADMINS: string[] = Array.from(
 let cachedServerTelegramConfig: ServerTelegramConfig | null = null;
 let lastServerTelegramFetch = 0;
 
+function parseConfigBool(val: any, fallback = true): boolean {
+  if (typeof val === 'boolean') return val;
+  if (typeof val === 'string') {
+    const s = val.trim().toLowerCase();
+    if (s === 'false' || s === '0' || s === 'off' || s === 'disabled') return false;
+    if (s === 'true' || s === '1' || s === 'on' || s === 'enabled') return true;
+  }
+  return fallback;
+}
+
+function parseConfigChatIds(val: any): string[] {
+  if (Array.isArray(val)) {
+    return val.map((s) => String(s || '').trim()).filter(Boolean);
+  }
+  if (typeof val === 'string') {
+    return val
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
 export async function fetchDynamicTelegramConfig(force = false): Promise<ServerTelegramConfig> {
   const now = Date.now();
   if (!force && cachedServerTelegramConfig && now - lastServerTelegramFetch < 30000) {
@@ -58,6 +83,8 @@ export async function fetchDynamicTelegramConfig(force = false): Promise<ServerT
     newOrderAlert: true,
     productAlert: true,
     dailySummaryAlert: true,
+    leadAlert: true,
+    resellerAlert: true,
   };
 
   if (db) {
@@ -65,22 +92,21 @@ export async function fetchDynamicTelegramConfig(force = false): Promise<ServerT
       const snap = await getDoc(doc(db, 'store_settings', 'telegram')).catch(() => null);
       if (snap && snap.exists()) {
         const data = snap.data();
-        const customAdmins = String(data.admin_chat_ids || '')
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean);
+        const customAdmins = parseConfigChatIds(data.admin_chat_ids);
 
         const allAdmins = Array.from(
           new Set([...DEFAULT_ADMIN_IDS, ...envAdmins, ...customAdmins])
         );
 
         resolvedConfig = {
-          enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
+          enabled: parseConfigBool(data.enabled, true),
           botToken: String(data.bot_token || '').trim() || resolvedConfig.botToken,
           adminChatIds: allAdmins.length > 0 ? allAdmins : resolvedConfig.adminChatIds,
-          newOrderAlert: typeof data.new_order_alert === 'boolean' ? data.new_order_alert : true,
-          productAlert: typeof data.product_alert === 'boolean' ? data.product_alert : true,
-          dailySummaryAlert: typeof data.daily_summary_alert === 'boolean' ? data.daily_summary_alert : true,
+          newOrderAlert: parseConfigBool(data.new_order_alert, true),
+          productAlert: parseConfigBool(data.product_alert, true),
+          dailySummaryAlert: parseConfigBool(data.daily_summary_alert, true),
+          leadAlert: parseConfigBool(data.lead_alert, true),
+          resellerAlert: parseConfigBool(data.reseller_alert, true),
         };
       } else {
         const genSnap = await getDoc(doc(db, 'store_settings', 'general')).catch(() => null);
@@ -88,22 +114,21 @@ export async function fetchDynamicTelegramConfig(force = false): Promise<ServerT
           const gData = genSnap.data();
           if (gData.telegram && typeof gData.telegram === 'object') {
             const t = gData.telegram;
-            const customAdmins = String(t.admin_chat_ids || '')
-              .split(',')
-              .map((s) => s.trim())
-              .filter(Boolean);
+            const customAdmins = parseConfigChatIds(t.admin_chat_ids);
 
             const allAdmins = Array.from(
               new Set([...DEFAULT_ADMIN_IDS, ...envAdmins, ...customAdmins])
             );
 
             resolvedConfig = {
-              enabled: typeof t.enabled === 'boolean' ? t.enabled : true,
+              enabled: parseConfigBool(t.enabled, true),
               botToken: String(t.bot_token || '').trim() || resolvedConfig.botToken,
               adminChatIds: allAdmins.length > 0 ? allAdmins : resolvedConfig.adminChatIds,
-              newOrderAlert: typeof t.new_order_alert === 'boolean' ? t.new_order_alert : true,
-              productAlert: typeof t.product_alert === 'boolean' ? t.product_alert : true,
-              dailySummaryAlert: typeof t.daily_summary_alert === 'boolean' ? t.daily_summary_alert : true,
+              newOrderAlert: parseConfigBool(t.new_order_alert, true),
+              productAlert: parseConfigBool(t.product_alert, true),
+              dailySummaryAlert: parseConfigBool(t.daily_summary_alert, true),
+              leadAlert: parseConfigBool(t.lead_alert, true),
+              resellerAlert: parseConfigBool(t.reseller_alert, true),
             };
           }
         }
@@ -226,6 +251,35 @@ export async function sendTelegramMessage(
         } else {
           const errText = await res.text();
           console.warn(`Telegram API error for chat ${chatId}:`, errText);
+
+          // Resilient Fallback: If Telegram rejected due to HTML entities or formatting, retry as clean text
+          if (
+            errText.includes("can't parse entities") ||
+            errText.includes('parse') ||
+            errText.includes('entity') ||
+            errText.includes('entities')
+          ) {
+            try {
+              const plainText = htmlText
+                .replace(/<br\s*\/?>/gi, '\n')
+                .replace(/<\/p>/gi, '\n\n')
+                .replace(/<[^>]+>/g, '');
+              const retryPayload: Record<string, any> = {
+                chat_id: chatId,
+                text: plainText,
+                disable_web_page_preview: true,
+              };
+              if (payload.reply_markup) {
+                retryPayload.reply_markup = payload.reply_markup;
+              }
+              const retryRes = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(retryPayload),
+              });
+              if (retryRes.ok) return true;
+            } catch {}
+          }
           return false;
         }
       } catch (err) {

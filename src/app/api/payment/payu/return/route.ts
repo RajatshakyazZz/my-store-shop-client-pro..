@@ -212,35 +212,49 @@ export async function POST(request: Request) {
       }
 
       // Send Instant Telegram Alert
-      if (!isAlreadyCompleted) {
-        if (storedOrder?.reseller_id) {
-          try {
-            const profile = await getResellerProfile(storedOrder.reseller_id);
-            const wallet = await getResellerWallet(storedOrder.reseller_id);
-            await sendResellerSaleTelegramAlert({
-              orderNumber: txnid,
-              resellerId: storedOrder.reseller_id,
-              resellerUid: profile?.resellerUid || storedOrder.reseller_uid || 'RSL-VAULTZET',
-              resellerName: profile?.displayName || storedOrder.reseller_name || 'Reseller',
-              resellerEmail: profile?.email || '',
-              resellerPhone: profile?.phone || '',
-              productTitle: storedOrder.items?.[0]?.title || 'Viral Reels Bundle',
-              totalAmount: Number(storedOrder.totalAmount || receivedAmount || 0),
-              basePrice: Number(
-                storedOrder.base_price_snapshot ||
-                  (Number(storedOrder.totalAmount || 0) - Number(storedOrder.reseller_earning || 0))
-              ),
-              resellerEarning: Number(storedOrder.reseller_earning || 0),
-              customer: alertPayload.customer,
-              availableBalance: wallet?.availableBalance ?? Number(storedOrder.reseller_earning || 0),
-              totalEarned: wallet?.totalEarned ?? Number(storedOrder.reseller_earning || 0),
-            });
-          } catch (rErr) {
-            console.warn('[PayU Return] Fallback to standard telegram alert:', rErr);
+      const isTelegramSent = storedOrder?.telegram_alert_sent === true;
+      if (!isAlreadyCompleted && !isTelegramSent) {
+        try {
+          if (storedOrder?.reseller_id) {
+            try {
+              const profile = await getResellerProfile(storedOrder.reseller_id);
+              const wallet = await getResellerWallet(storedOrder.reseller_id);
+              await sendResellerSaleTelegramAlert({
+                orderNumber: txnid,
+                resellerId: storedOrder.reseller_id,
+                resellerUid: profile?.resellerUid || storedOrder.reseller_uid || 'RSL-VAULTZET',
+                resellerName: profile?.displayName || storedOrder.reseller_name || 'Reseller',
+                resellerEmail: profile?.email || '',
+                resellerPhone: profile?.phone || '',
+                productTitle: storedOrder.items?.[0]?.title || 'Viral Reels Bundle',
+                totalAmount: Number(storedOrder.totalAmount || receivedAmount || 0),
+                basePrice: Number(
+                  storedOrder.base_price_snapshot ||
+                    (Number(storedOrder.totalAmount || 0) - Number(storedOrder.reseller_earning || 0))
+                ),
+                resellerEarning: Number(storedOrder.reseller_earning || 0),
+                customer: alertPayload.customer,
+                availableBalance: wallet?.availableBalance ?? Number(storedOrder.reseller_earning || 0),
+                totalEarned: wallet?.totalEarned ?? Number(storedOrder.reseller_earning || 0),
+              });
+            } catch (rErr) {
+              console.warn('[PayU Return] Fallback to standard telegram alert:', rErr);
+              await sendSaleSuccessTelegramAlert(alertPayload);
+            }
+          } else {
             await sendSaleSuccessTelegramAlert(alertPayload);
           }
-        } else {
-          await sendSaleSuccessTelegramAlert(alertPayload);
+
+          if (db) {
+            try {
+              await updateDoc(doc(db, 'orders', txnid), {
+                telegram_alert_sent: true,
+                telegram_alert_sent_at: new Date().toISOString(),
+              });
+            } catch {}
+          }
+        } catch (tgErr) {
+          console.warn('[PayU Return] Error sending sale Telegram alert:', tgErr);
         }
       }
 
