@@ -314,7 +314,7 @@ export default function MyOrdersPage() {
                           <div className="flex items-center justify-between bg-amber-50/80 p-3.5 rounded-xl border border-amber-200 gap-3">
                             <div>
                               <h4 className="font-bold text-xs sm:text-sm text-amber-950">
-                                ★ Bonus Pack: 1500+ Ultimate Twisted World &amp; Viral AI Reels
+                                ★ Bonus Pack: {ord.orderBump?.title || '1500+ Ultimate Twisted World & Viral AI Reels'}
                               </h4>
                               <span className="text-[11px] text-amber-700 font-semibold">
                                 Order Bump Special Offer
@@ -322,7 +322,7 @@ export default function MyOrdersPage() {
                             </div>
 
                             <a
-                              href="https://drive.google.com/drive/folders/bonus-pack-twisted-world"
+                              href={ord.orderBump?.googleDriveLink || 'https://drive.google.com/drive/folders/bonus-pack-twisted-world'}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm shrink-0"

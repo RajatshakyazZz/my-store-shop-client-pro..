@@ -19,11 +19,19 @@ export default function CartDrawer() {
     total,
     orderBumpAdded,
     toggleOrderBump,
+    globalBumpOffer,
     freeBundles,
     removeFreeBundle,
     setIsFreeBundleModalOpen,
     isQualifiedForFreeOffer,
   } = useCart();
+
+  const isBumpEnabled = globalBumpOffer ? globalBumpOffer.enabled !== false : true;
+  const bumpTitle = globalBumpOffer?.title || ORDER_BUMP.title;
+  const bumpThumb = globalBumpOffer?.thumbnail || ORDER_BUMP.thumbnail;
+  const bumpPrice = globalBumpOffer?.price != null ? globalBumpOffer.price : ORDER_BUMP.discountPrice;
+  const bumpRegPrice = globalBumpOffer?.regularPrice != null ? globalBumpOffer.regularPrice : ORDER_BUMP.originalPrice;
+  const bumpDiscount = globalBumpOffer?.discountPercentage != null ? globalBumpOffer.discountPercentage : 80;
 
   if (pathname?.startsWith('/r/') || pathname === '/r') return null;
   if (!isCartOpen) return null;
@@ -205,49 +213,51 @@ export default function CartDrawer() {
               ) : null}
 
               {/* Order Bump In-Cart Offer */}
-              <div className="p-3.5 rounded-2xl border-2 border-dashed border-amber-300 bg-amber-50/60 mt-4 relative">
-                <div className="flex items-center gap-1.5 text-amber-800 text-[11px] font-extrabold uppercase tracking-wider mb-1.5">
-                  <Zap className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                  Exclusive 1-Click Order Bump
-                </div>
-                <div className="flex gap-3 items-center">
-                  <img
-                    src={optimizeImageUrl(ORDER_BUMP.thumbnail, 128, 70)}
-                    alt={ORDER_BUMP.title}
-                    width={48}
-                    height={56}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-12 h-14 rounded-lg object-cover shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-xs text-slate-900 leading-snug line-clamp-2">
-                      {ORDER_BUMP.title}
-                    </p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="font-extrabold text-xs text-green-700">
-                        ₹{ORDER_BUMP.discountPrice}
-                      </span>
-                      <span className="text-[10px] text-slate-400 line-through">
-                        ₹{ORDER_BUMP.originalPrice}
-                      </span>
-                      <span className="text-[10px] font-bold px-1.5 py-0.2 bg-green-200/80 text-green-800 rounded">
-                        80% OFF
-                      </span>
-                    </div>
+              {isBumpEnabled && (
+                <div className="p-3.5 rounded-2xl border-2 border-dashed border-amber-300 bg-amber-50/60 mt-4 relative">
+                  <div className="flex items-center gap-1.5 text-amber-800 text-[11px] font-extrabold uppercase tracking-wider mb-1.5">
+                    <Zap className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                    Exclusive 1-Click Order Bump
                   </div>
-                  <button
-                    onClick={toggleOrderBump}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
-                      orderBumpAdded
-                        ? 'bg-green-600 text-white shadow-sm'
-                        : 'bg-white border border-amber-300 text-amber-900 hover:bg-amber-100'
-                    }`}
-                  >
-                    {orderBumpAdded ? '✓ Added' : '+ Add ₹99'}
-                  </button>
+                  <div className="flex gap-3 items-center">
+                    <img
+                      src={optimizeImageUrl(bumpThumb, 128, 70)}
+                      alt={bumpTitle}
+                      width={48}
+                      height={56}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-12 h-14 rounded-lg object-cover shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-xs text-slate-900 leading-snug line-clamp-2">
+                        {bumpTitle}
+                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="font-extrabold text-xs text-green-700">
+                          ₹{bumpPrice}
+                        </span>
+                        <span className="text-[10px] text-slate-400 line-through">
+                          ₹{bumpRegPrice}
+                        </span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 bg-green-200/80 text-green-800 rounded">
+                          {bumpDiscount}% OFF
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={toggleOrderBump}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
+                        orderBumpAdded
+                          ? 'bg-green-600 text-white shadow-sm'
+                          : 'bg-white border border-amber-300 text-amber-900 hover:bg-amber-100'
+                      }`}
+                    >
+                      {orderBumpAdded ? '✓ Added' : `+ Add ₹${bumpPrice}`}
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Pay Now / Instant Checkout Button right below the bump offer */}
               <div className="mt-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-3.5 shadow-sm">
@@ -256,10 +266,10 @@ export default function CartDrawer() {
                     <span>Subtotal</span>
                     <span className="font-bold text-slate-700">₹{subtotal}.00</span>
                   </div>
-                  {orderBumpAdded && (
+                  {orderBumpAdded && isBumpEnabled && (
                     <div className="flex justify-between text-emerald-600 text-xs font-bold">
-                      <span>Bonus Upsell Pack (80% Off)</span>
-                      <span>+₹{ORDER_BUMP.discountPrice}.00</span>
+                      <span>Bonus Upsell Pack ({bumpDiscount}% Off)</span>
+                      <span>+₹{bumpPrice}.00</span>
                     </div>
                   )}
                   <div className="flex justify-between text-sm sm:text-base font-extrabold text-slate-950 pt-2 border-t border-slate-200">

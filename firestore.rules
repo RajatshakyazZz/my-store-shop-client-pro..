@@ -81,10 +81,12 @@ rules_version = '2';
 //    - faqs: list (optional, <= 50 items)
 //    - files: list (optional, <= 50 items)
 //    - drive_files: list (optional, <= 50 items)
+//    - bump_offer: map (optional)
+//    - bumpOffer: map (optional)
 //    - Protection: Read open for storefront; full create, update, delete for admin panel catalog maintenance.
 //
 // 3. store_settings:
-//    - Supported Documents: 'general', 'branding', 'site_mode', 'meta_pixel', 'whatsapp', 'cashfree', 'payu', 'rankmath_seo', 'dnp_meta', 'mmc_analytics', 'litespeed_cache', 'reseller', 'telegram'
+//    - Supported Documents: 'general', 'branding', 'site_mode', 'meta_pixel', 'whatsapp', 'cashfree', 'payu', 'rankmath_seo', 'dnp_meta', 'mmc_analytics', 'litespeed_cache', 'reseller', 'telegram', 'bump_offer'
 //    - Supports general, branding, SEO, analytics, payment gateway, WhatsApp, and Telegram bot configuration fields
 //    - String fields bounded to prevent resource exhaustion / DoS
 //    - Protection: Deletion strictly denied.
@@ -450,7 +452,9 @@ service cloud.firestore {
         isValidOptionalList(data, 'features', 50) &&
         isValidOptionalList(data, 'faqs', 50) &&
         isValidOptionalList(data, 'files', 50) &&
-        isValidOptionalList(data, 'drive_files', 50);
+        isValidOptionalList(data, 'drive_files', 50) &&
+        isValidOptionalMap(data, 'bump_offer') &&
+        isValidOptionalMap(data, 'bumpOffer');
     }
 
     function isValidStoreSetting(data) {
@@ -532,7 +536,18 @@ service cloud.firestore {
         isValidOptionalList(data, 'bypass_ips', 100) &&
         isValidOptionalList(data, 'deleted_order_ids', 100) &&
         isValidOptionalMap(data, 'modules') &&
-        isValidOptionalMap(data, 'endpoints');
+        isValidOptionalMap(data, 'endpoints') &&
+        isValidOptionalMap(data, 'bump_offer') &&
+        isValidOptionalString(data, 'bump_product_id', 150) &&
+        isValidOptionalString(data, 'bump_product_slug', 150) &&
+        isValidOptionalString(data, 'bump_title', 250) &&
+        isValidOptionalString(data, 'bump_subtitle', 500) &&
+        isValidOptionalNumber(data, 'bump_price', 0, 1000000) &&
+        isValidOptionalNumber(data, 'bump_regular_price', 0, 1000000) &&
+        isValidOptionalString(data, 'bump_thumbnail', 1000) &&
+        isValidOptionalNumber(data, 'bump_reel_count', 0, 1000000) &&
+        isValidOptionalBool(data, 'bump_enabled') &&
+        isValidOptionalString(data, 'bump_mode', 50);
     }
 
     function isValidCoupon(data) {
@@ -871,7 +886,8 @@ service cloud.firestore {
       // Only recognized setting docs can be saved with bounded sizes
       allow create, update: if settingId in [
         'general', 'branding', 'site_mode', 'meta_pixel', 'whatsapp', 'cashfree', 'payu',
-        'rankmath_seo', 'dnp_meta', 'mmc_analytics', 'litespeed_cache', 'reseller', 'telegram'
+        'rankmath_seo', 'dnp_meta', 'mmc_analytics', 'litespeed_cache', 'reseller', 'telegram',
+        'bump_offer'
       ] && isValidStoreSetting(request.resource.data);
 
       // Settings documents cannot be deleted

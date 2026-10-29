@@ -33,6 +33,21 @@ export interface BundleProduct {
   categories?: string[];
   categorySlugs?: string[];
   aliases?: string[];
+  bumpOffer?: ProductBumpOfferConfig;
+}
+
+export interface ProductBumpOfferConfig {
+  enabled: boolean;
+  mode: 'custom' | 'disabled' | 'default';
+  productId?: string;
+  productSlug?: string;
+  title?: string;
+  subtitle?: string;
+  price?: number;
+  regularPrice?: number;
+  thumbnail?: string;
+  reelCount?: number;
+  googleDriveLink?: string;
 }
 
 export interface CartItem {
@@ -51,6 +66,10 @@ export interface OrderBumpItem {
   discountPercentage: number;
   thumbnail: string;
   reelCount: number;
+  googleDriveLink?: string;
+  enabled?: boolean;
+  productId?: string;
+  productSlug?: string;
 }
 
 export interface ReelItem {

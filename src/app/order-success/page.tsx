@@ -153,10 +153,10 @@ function OrderSuccessContent() {
 
             if (data.hasBump) {
               purchaseItems.push({
-                item_id: 'order-bump-course',
-                item_name: 'Viral Reels Masterclass & Canva Templates',
+                item_id: String(data.orderBump?.id || 'order-bump'),
+                item_name: String(data.orderBump?.title || 'Bonus Bump Offer'),
                 item_category: 'Order Bump',
-                price: 99,
+                price: Number(data.orderBump?.price || 99),
                 quantity: 1,
                 item_variant: 'bump',
                 index: purchaseItems.length,
@@ -936,8 +936,8 @@ function OrderSuccessContent() {
                         <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-900 border border-amber-200">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
-                            src="https://reelsbundles.in/wp-content/uploads/2026/10/3200-ultimate-twisted-world-reel-bundle-reels-bundle-1-2-768x576.png"
-                            alt="Bonus Twisted World Reels"
+                            src={verifiedData?.orderBump?.thumbnail || "https://reelsbundles.in/wp-content/uploads/2026/10/3200-ultimate-twisted-world-reel-bundle-reels-bundle-1-2-768x576.png"}
+                            alt={verifiedData?.orderBump?.title || "Bonus Reels Pack"}
                             className="w-full h-full object-cover"
                             loading="lazy"
                           />
@@ -952,16 +952,16 @@ function OrderSuccessContent() {
                           Order Bump Bonus Offer
                         </span>
                         <h3 className="text-base sm:text-lg font-black text-amber-950">
-                          1500+ Ultimate Twisted World &amp; Viral AI Reels Pack
+                          {verifiedData?.orderBump?.title || "1500+ Ultimate Twisted World & Viral AI Reels Pack"}
                         </h3>
                         <p className="text-xs text-amber-800 font-medium leading-relaxed">
-                          Extra bonus collection unlocked via checkout special offer. High retention surreal &amp; reverse world AI animations.
+                          {verifiedData?.orderBump?.subtitle || "Extra bonus collection unlocked via checkout special offer. High retention surreal & reverse world AI animations."}
                         </p>
                       </div>
 
                       <div className="md:col-span-4">
                         <a
-                          href="https://drive.google.com/drive/folders/bonus-pack-twisted-world"
+                          href={verifiedData?.orderBump?.googleDriveLink || "https://drive.google.com/drive/folders/bonus-pack-twisted-world"}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_10px_22px_rgba(245,158,11,0.25)] transition-transform hover:scale-[1.02]"

@@ -50,6 +50,7 @@ import {
   OrderSyncParams,
   DownloadableFileTokenResponse,
   ReelItem,
+  GlobalBumpOffer,
 } from './types';
 import { db, logAdminAction } from '../lib/firebase';
 import {
@@ -501,6 +502,7 @@ class PortalApiClient {
       downloads_count: 0,
       created_at: new Date().toISOString(),
       files: productData.files || [],
+      bump_offer: productData.bump_offer || undefined,
     };
 
     const cleanPayload = sanitizePayload(newProduct);
@@ -714,6 +716,7 @@ class PortalApiClient {
       google_drive_link: effectiveDrive,
       googleDriveLink: effectiveDrive,
       driveLink: effectiveDrive,
+      bump_offer: product.bump_offer !== undefined ? product.bump_offer : existing.bump_offer,
     } as Product;
 
     const cleanPayload = sanitizePayload(merged);
@@ -2780,6 +2783,186 @@ class PortalApiClient {
     } else {
       throw new Error(`Failed to dispatch alert: ${errors.join('; ') || 'Telegram API error'}`);
     }
+  }
+
+  // ==========================================
+  // 17. GLOBAL BUMP OFFER MANAGEMENT
+  // ==========================================
+  async getGlobalBumpOffer(): Promise<GlobalBumpOffer> {
+    const defaultBump: GlobalBumpOffer = {
+      enabled: true,
+      product_id: 'bump-special-01',
+      product_slug: '1500-ultimate-twisted-world-reel-bundle',
+      title: '1500+ Ultimate Twisted World & Viral AI Reels Pack',
+      subtitle: 'Add this exclusive bonus pack to your order & get 80% instant discount!',
+      price: 99,
+      regular_price: 499,
+      discount_percentage: 80,
+      thumbnail: 'https://reelsbundles.in/wp-content/uploads/2026/10/3200-ultimate-twisted-world-reel-bundle-reels-bundle-1-2-768x576.png',
+      reel_count: 1500,
+      google_drive_link: 'https://drive.google.com/drive/folders/bonus-pack-twisted-world',
+    };
+
+    // 1. Try local storage cache
+    let cached: GlobalBumpOffer | null = null;
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem('vaultzet_global_bump_offer');
+        if (raw) {
+          cached = JSON.parse(raw);
+        }
+      } catch {}
+    }
+
+    // 2. Try server-side admin API route
+    try {
+      const res = await fetch('/api/admin/settings/bump-offer', { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.bumpOffer) {
+          const b = data.bumpOffer;
+          const merged: GlobalBumpOffer = {
+            enabled: typeof b.enabled === 'boolean' ? b.enabled : true,
+            product_id: b.productId || b.product_id || defaultBump.product_id,
+            product_slug: b.productSlug || b.product_slug || defaultBump.product_slug,
+            title: b.title || defaultBump.title,
+            subtitle: b.subtitle || defaultBump.subtitle,
+            price: Number(b.price != null ? b.price : defaultBump.price),
+            regular_price: Number(b.regularPrice || b.regular_price || defaultBump.regular_price),
+            discount_percentage: Number(b.discountPercentage || b.discount_percentage || defaultBump.discount_percentage),
+            thumbnail: b.thumbnail || defaultBump.thumbnail,
+            reel_count: Number(b.reelCount || b.reel_count || defaultBump.reel_count),
+            google_drive_link: b.googleDriveLink || b.google_drive_link || defaultBump.google_drive_link,
+            updated_at: b.updatedAt || b.updated_at,
+          };
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('vaultzet_global_bump_offer', JSON.stringify(merged));
+            } catch {}
+          }
+          return merged;
+        }
+      }
+    } catch (err) {
+      console.warn('Could not fetch bump offer from admin API, checking Firestore:', err);
+    }
+
+    // 3. Direct Firestore fallback
+    if (db) {
+      try {
+        const snap = await getDoc(doc(db, 'store_settings', 'bump_offer'));
+        if (snap.exists()) {
+          const data = snap.data();
+          const discount_percentage =
+            data.regular_price && data.price
+              ? Math.max(1, Math.round(((Number(data.regular_price) - Number(data.price)) / Number(data.regular_price)) * 100))
+              : data.discount_percentage || 80;
+
+          const merged: GlobalBumpOffer = {
+            enabled: typeof data.enabled === 'boolean' ? data.enabled : (data.bump_enabled ?? true),
+            product_id: data.product_id || data.bump_product_id || defaultBump.product_id,
+            product_slug: data.product_slug || data.bump_product_slug || defaultBump.product_slug,
+            title: data.title || data.bump_title || defaultBump.title,
+            subtitle: data.subtitle || data.bump_subtitle || defaultBump.subtitle,
+            price: Number(data.price != null ? data.price : defaultBump.price),
+            regular_price: Number(data.regular_price != null ? data.regular_price : defaultBump.regular_price),
+            discount_percentage,
+            thumbnail: data.thumbnail || data.bump_thumbnail || defaultBump.thumbnail,
+            reel_count: Number(data.reel_count != null ? data.reel_count : defaultBump.reel_count),
+            google_drive_link: data.google_drive_link || defaultBump.google_drive_link,
+            updated_at: data.updated_at,
+          };
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('vaultzet_global_bump_offer', JSON.stringify(merged));
+            } catch {}
+          }
+          return merged;
+        }
+      } catch (err) {
+        console.warn('Direct Firestore read error for bump_offer:', err);
+      }
+    }
+
+    if (cached) return cached;
+    return defaultBump;
+  }
+
+  async updateGlobalBumpOffer(data: Partial<GlobalBumpOffer>): Promise<GlobalBumpOffer> {
+    const existing = await this.getGlobalBumpOffer();
+    const price = Number(data.price != null ? data.price : existing.price);
+    const regular_price = Number(data.regular_price != null ? data.regular_price : (price * 5));
+    const discount_percentage = Math.max(
+      1,
+      Math.round(((regular_price - price) / regular_price) * 100)
+    );
+
+    const merged: GlobalBumpOffer = {
+      ...existing,
+      ...data,
+      price,
+      regular_price,
+      discount_percentage,
+      updated_at: new Date().toISOString(),
+    };
+
+    // 1. Send to server API route
+    try {
+      const res = await fetch('/api/admin/settings/bump-offer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(merged),
+      });
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        console.warn('API error saving bump offer:', errJson);
+      }
+    } catch (e) {
+      console.warn('Network error saving bump offer to admin API:', e);
+    }
+
+    // 2. Direct Firestore persistence
+    if (db) {
+      try {
+        const cleanPayload = sanitizePayload({
+          ...merged,
+          bump_enabled: merged.enabled,
+          bump_product_id: merged.product_id,
+          bump_product_slug: merged.product_slug,
+          bump_title: merged.title,
+          bump_subtitle: merged.subtitle,
+          bump_price: merged.price,
+          bump_regular_price: merged.regular_price,
+          bump_thumbnail: merged.thumbnail,
+          bump_reel_count: merged.reel_count,
+        });
+
+        await setDoc(doc(db, 'store_settings', 'bump_offer'), cleanPayload, { merge: true });
+        await setDoc(
+          doc(db, 'store_settings', 'general'),
+          { bump_offer: cleanPayload },
+          { merge: true }
+        );
+      } catch (e) {
+        console.warn('Firestore write warning for bump offer:', e);
+      }
+    }
+
+    // 3. Save in localStorage
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('vaultzet_global_bump_offer', JSON.stringify(merged));
+      } catch {}
+    }
+
+    await logAdminAction({
+      adminEmail: 'admin@vaultzet.com',
+      action: 'UPDATE_BUMP_OFFER',
+      module: 'Settings',
+      details: `Updated global checkout bump offer: ${merged.title} (₹${merged.price}, Status: ${merged.enabled ? 'ACTIVE' : 'OFF'})`,
+    });
+
+    return merged;
   }
 }
 

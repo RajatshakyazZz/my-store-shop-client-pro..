@@ -123,7 +123,7 @@ export async function POST(request: Request) {
       const resellerEarning = Math.max(0, approvedResalePrice - basePrice);
 
       // Authoritative order total derived strictly server-side
-      const bumpPrice = orderBump ? ORDER_BUMP.discountPrice : 0;
+      const bumpPrice = orderBump ? Number(orderBump.price != null && orderBump.price > 0 ? orderBump.price : (ORDER_BUMP.discountPrice || 99)) : 0;
       finalTotalAmount = approvedResalePrice + bumpPrice;
 
       resellerAttribution = {
@@ -190,7 +190,8 @@ export async function POST(request: Request) {
       expectedCatalogTotal = paidItemsCatalogTotal;
 
       if (orderBump) {
-        expectedCatalogTotal += Number(ORDER_BUMP.discountPrice);
+        const bumpPrice = Number(orderBump.price != null && orderBump.price > 0 ? orderBump.price : (ORDER_BUMP.discountPrice || 99));
+        expectedCatalogTotal += bumpPrice;
       }
 
       // Apply validated coupon discount if couponCode is provided

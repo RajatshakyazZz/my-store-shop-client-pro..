@@ -187,6 +187,24 @@ export function mapFirestoreDocToBundleProduct(data: any): BundleProduct {
     file_url: '', // Explicitly wiped for public frontend security
   }));
 
+  const rawBump = data.bump_offer || data.bumpOffer;
+  let bumpOffer: any = undefined;
+  if (rawBump && typeof rawBump === 'object') {
+    bumpOffer = {
+      enabled: typeof rawBump.enabled === 'boolean' ? rawBump.enabled : true,
+      mode: (rawBump.mode as 'custom' | 'disabled' | 'default') || (rawBump.enabled === false ? 'disabled' : 'default'),
+      productId: rawBump.product_id || rawBump.productId || '',
+      productSlug: rawBump.product_slug || rawBump.productSlug || '',
+      title: rawBump.title || '',
+      subtitle: rawBump.subtitle || '',
+      price: rawBump.price != null ? Number(rawBump.price) : undefined,
+      regularPrice: rawBump.regular_price != null ? Number(rawBump.regular_price) : (rawBump.regularPrice != null ? Number(rawBump.regularPrice) : undefined),
+      thumbnail: rawBump.thumbnail || '',
+      reelCount: rawBump.reel_count != null ? Number(rawBump.reel_count) : (rawBump.reelCount != null ? Number(rawBump.reelCount) : undefined),
+      googleDriveLink: rawBump.google_drive_link || rawBump.googleDriveLink || '',
+    };
+  }
+
   return {
     id: String(data.id || baseProd?.id || slug),
     slug,
@@ -225,6 +243,7 @@ export function mapFirestoreDocToBundleProduct(data: any): BundleProduct {
     files,
     categories: rawCats,
     categorySlugs,
+    bumpOffer,
   };
 }
 

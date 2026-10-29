@@ -27,6 +27,7 @@ import Connector from './pages/Connector';
 import SettingsIntegrations from './pages/SettingsIntegrations';
 import AuditLogs from './pages/AuditLogs';
 import Resellers from './pages/Resellers';
+import BumpOffers from './pages/BumpOffers';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,6 +59,7 @@ export default function AdminApp() {
                     <Route path="orders" element={<Orders />} />
                     <Route path="customers" element={<Customers />} />
                     <Route path="resellers" element={<Resellers />} />
+                    <Route path="bump-offers" element={<BumpOffers />} />
                     <Route path="coupons" element={<Coupons />} />
                     <Route path="content" element={<Content />} />
                     <Route path="branding" element={<Branding />} />

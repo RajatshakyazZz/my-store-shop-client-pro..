@@ -122,7 +122,8 @@ export async function POST(request: Request) {
       }
 
       const calculatedProfit = Math.max(0, approvedResalePrice - basePrice);
-      finalTotalAmount = approvedResalePrice;
+      const bumpPrice = orderBump ? Number(orderBump.price != null && orderBump.price > 0 ? orderBump.price : 99) : 0;
+      finalTotalAmount = approvedResalePrice + bumpPrice;
 
       resellerAttribution = {
         reseller_slug: cleanSlug,
@@ -155,7 +156,8 @@ export async function POST(request: Request) {
       }
 
       if (orderBump) {
-        expectedCatalogTotal += Number(ORDER_BUMP.discountPrice || 99);
+        const bumpPrice = Number(orderBump.price != null && orderBump.price > 0 ? orderBump.price : (ORDER_BUMP.discountPrice || 99));
+        expectedCatalogTotal += bumpPrice;
       }
 
       if (couponCode && String(couponCode).trim()) {

@@ -20,6 +20,7 @@ import {
   ShieldCheck,
   Activity,
   Play,
+  Sparkles,
   X,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -46,6 +47,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
       group: 'COMMERCE',
       items: [
         { name: 'Products & Files', href: '/products', icon: Package },
+        { name: 'Bump Offers', href: '/bump-offers', icon: Sparkles, badge: 'Offers' },
         { name: 'Orders & Delivery', href: '/orders', icon: ShoppingCart },
         { name: 'Customers', href: '/customers', icon: Users },
         { name: 'Resellers & Payouts', href: '/resellers', icon: Users, badge: 'Live' },

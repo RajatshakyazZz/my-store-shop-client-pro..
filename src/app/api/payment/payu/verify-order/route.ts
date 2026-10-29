@@ -209,6 +209,16 @@ async function handleVerify(
       })
     );
 
+    let resolvedBump: any = null;
+    if (storedOrder?.orderBump) {
+      const bumpDrive = await resolveDriveFilesForProduct(storedOrder.orderBump);
+      resolvedBump = {
+        ...storedOrder.orderBump,
+        googleDriveLink: bumpDrive.primaryLink || storedOrder.orderBump.googleDriveLink || 'https://drive.google.com/drive/folders/bonus-pack-twisted-world',
+        files: bumpDrive.files,
+      };
+    }
+
     const eligibleForBrowserEvent = !isClientFired;
 
     return {
@@ -220,6 +230,7 @@ async function handleVerify(
       customer: storedOrder?.customer || { fullName: 'Customer', email: '' },
       items: verifiedItems,
       hasBump: Boolean(storedOrder?.orderBump),
+      orderBump: resolvedBump,
       purchase_event_id: `purchase_${orderId}`,
       eligible_for_browser_event: eligibleForBrowserEvent,
       order_token: storedOrder?.order_token || validToken,

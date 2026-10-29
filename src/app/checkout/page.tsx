@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -23,8 +23,13 @@ import {
   Gift,
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
-import { CartItem, LicenseType } from '@/types';
+import { CartItem, LicenseType, OrderBumpItem } from '@/types';
 import { ORDER_BUMP } from '@/data/bundles';
+import {
+  fetchGlobalBumpOffer,
+  resolveEffectiveBumpOffer,
+  GlobalBumpOfferConfig,
+} from '@/lib/bumpOffer';
 import { track } from '@/lib/analytics';
 import { resolveBundleSlug } from '@/lib/bundleResolver';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
@@ -208,6 +213,29 @@ function CheckoutContent() {
 
   const allCheckoutItems: CartItem[] = [...checkoutItems, ...freeBonusItems];
 
+  // Load Global Bump Offer settings from Firestore / API
+  const [globalBumpOffer, setGlobalBumpOffer] = useState<GlobalBumpOfferConfig | null>(null);
+
+  useEffect(() => {
+    fetchGlobalBumpOffer().then((res) => {
+      setGlobalBumpOffer(res);
+    }).catch(() => {});
+  }, []);
+
+  // Determine active primary product for bump offer resolution
+  const primaryProduct = isBuyNowMode ? buyNowItem?.product : (checkoutItems.length > 0 ? checkoutItems[0]?.product : null);
+
+  const activeBumpOffer: OrderBumpItem | null = useMemo(() => {
+    return resolveEffectiveBumpOffer(primaryProduct, globalBumpOffer);
+  }, [primaryProduct, globalBumpOffer]);
+
+  // If bump offer is disabled (activeBumpOffer === null), ensure orderBumpAdded is false
+  useEffect(() => {
+    if (!activeBumpOffer && orderBumpAdded) {
+      setOrderBumpAdded(false);
+    }
+  }, [activeBumpOffer, orderBumpAdded, setOrderBumpAdded]);
+
   // Coupon state
   const [couponInput, setCouponInput] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<{
@@ -308,7 +336,8 @@ function CheckoutContent() {
   };
 
   // Dynamically calculate gross total and discount
-  const grossSubtotal = checkoutSubtotal + (orderBumpAdded ? ORDER_BUMP.discountPrice : 0);
+  const effectiveBumpPrice = (orderBumpAdded && activeBumpOffer) ? Number(activeBumpOffer.discountPrice) : 0;
+  const grossSubtotal = checkoutSubtotal + effectiveBumpPrice;
   const couponDiscount = appliedCoupon
     ? appliedCoupon.discountType === 'percent' && appliedCoupon.discountPercent
       ? Math.round((grossSubtotal * appliedCoupon.discountPercent) / 100)
@@ -501,10 +530,11 @@ function CheckoutContent() {
                 price: Number(i?.price || 0),
                 isFreeBonus: Boolean(i?.isFreeBonus),
               })),
-              orderBump: orderBumpAdded
+              orderBump: (orderBumpAdded && activeBumpOffer)
                 ? {
-                    title: ORDER_BUMP.title,
-                    price: ORDER_BUMP.discountPrice,
+                    id: activeBumpOffer.id || activeBumpOffer.productId || 'order-bump',
+                    title: activeBumpOffer.title,
+                    price: activeBumpOffer.discountPrice,
                   }
                 : null,
               totalAmount: checkoutTotal,
@@ -575,11 +605,14 @@ function CheckoutContent() {
         price: Number(i?.price || 0),
         isFreeBonus: Boolean(i?.isFreeBonus),
       })),
-      orderBump: orderBumpAdded
+      orderBump: (orderBumpAdded && activeBumpOffer)
         ? {
-            id: ORDER_BUMP.id,
-            title: ORDER_BUMP.title,
-            price: ORDER_BUMP.discountPrice,
+            id: activeBumpOffer.id || activeBumpOffer.productId || 'order-bump',
+            title: activeBumpOffer.title,
+            price: activeBumpOffer.discountPrice,
+            thumbnail: activeBumpOffer.thumbnail,
+            googleDriveLink: activeBumpOffer.googleDriveLink || '',
+            slug: activeBumpOffer.productSlug || '',
           }
         : null,
       totalAmount: checkoutTotal,
@@ -950,7 +983,7 @@ function CheckoutContent() {
               </div>
 
               {/* 2. Exclusive Order Bump with Live 10-Min Timer matching reelsbundles.in */}
-              {!isBumpExpired && (
+              {!isBumpExpired && activeBumpOffer && (
                 <div className="rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-amber-50/50 via-white to-amber-100/30 border-2 border-amber-400/60 shadow-sm relative overflow-hidden">
                   {/* Header ribbon */}
                   <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
@@ -965,26 +998,26 @@ function CheckoutContent() {
 
                   <div className="flex gap-4 items-start">
                     <img
-                      src={ORDER_BUMP.thumbnail}
-                      alt={ORDER_BUMP.title}
+                      src={activeBumpOffer.thumbnail}
+                      alt={activeBumpOffer.title}
                       className="w-20 sm:w-24 aspect-[4/3] rounded-xl object-cover shrink-0 border border-amber-200 shadow-sm"
                     />
                     <div className="flex-1 min-w-0">
                       <h3 className="font-extrabold text-sm text-slate-950 leading-snug">
-                        {ORDER_BUMP.title}
+                        {activeBumpOffer.title}
                       </h3>
                       <p className="text-xs text-slate-500 mt-1 line-clamp-2">
-                        {ORDER_BUMP.subtitle}
+                        {activeBumpOffer.subtitle}
                       </p>
                       <div className="flex items-center gap-2 mt-2">
                         <span className="font-black text-sm text-emerald-700">
-                          ₹{ORDER_BUMP.discountPrice}.00
+                          ₹{activeBumpOffer.discountPrice}.00
                         </span>
                         <span className="text-xs text-slate-400 line-through">
-                          ₹{ORDER_BUMP.originalPrice}.00
+                          ₹{activeBumpOffer.originalPrice}.00
                         </span>
                         <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200">
-                          80% OFF
+                          {activeBumpOffer.discountPercentage}% OFF
                         </span>
                       </div>
                     </div>
@@ -999,7 +1032,7 @@ function CheckoutContent() {
                       className="w-5 h-5 rounded text-amber-500 focus:ring-amber-500 border-slate-300 cursor-pointer"
                     />
                     <span className="text-xs font-extrabold text-slate-900">
-                      Yes! Add this {ORDER_BUMP.reelCount}+ reels mega pack to my order for just ₹{ORDER_BUMP.discountPrice}
+                      Yes! Add this {activeBumpOffer.reelCount || 1000}+ reels mega pack to my order for just ₹{activeBumpOffer.discountPrice}
                     </span>
                   </label>
                 </div>
@@ -1124,16 +1157,16 @@ function CheckoutContent() {
                     </div>
                   ))}
 
-                  {orderBumpAdded && (
+                  {orderBumpAdded && activeBumpOffer && (
                     <div className="flex gap-3 items-center justify-between p-2.5 rounded-xl bg-amber-50/70 border border-amber-200">
                       <img
-                        src={ORDER_BUMP.thumbnail}
-                        alt={ORDER_BUMP.title}
+                        src={activeBumpOffer.thumbnail}
+                        alt={activeBumpOffer.title}
                         className="w-12 h-14 object-cover rounded-lg shrink-0"
                       />
                       <div className="flex-1 min-w-0 px-1">
                         <h4 className="font-bold text-xs text-amber-950 line-clamp-1">
-                          {ORDER_BUMP.title}
+                          {activeBumpOffer.title}
                         </h4>
                         <span className="text-[10px] font-bold text-amber-800 bg-amber-200 px-1.5 py-0.5 rounded">
                           Bonus Offer
@@ -1141,7 +1174,7 @@ function CheckoutContent() {
                       </div>
                       <div className="text-right shrink-0">
                         <div className="font-extrabold text-xs text-amber-950">
-                          ₹{ORDER_BUMP.discountPrice}.00
+                          ₹{activeBumpOffer.discountPrice}.00
                         </div>
                         <button
                           type="button"
@@ -1318,10 +1351,10 @@ function CheckoutContent() {
                     <span>Subtotal</span>
                     <span className="text-slate-800">₹{checkoutSubtotal}.00</span>
                   </div>
-                  {orderBumpAdded && (
+                  {orderBumpAdded && activeBumpOffer && (
                     <div className="flex justify-between text-emerald-700 font-bold">
-                      <span>Order Bump (80% Off)</span>
-                      <span>+₹{ORDER_BUMP.discountPrice}.00</span>
+                      <span>Order Bump ({activeBumpOffer.discountPercentage}% Off)</span>
+                      <span>+₹{activeBumpOffer.discountPrice}.00</span>
                     </div>
                   )}
                   {appliedCoupon && couponDiscount > 0 && (

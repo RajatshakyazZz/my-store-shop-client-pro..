@@ -93,8 +93,39 @@ export const ProductSchema = z.object({
       })
     )
     .optional(),
+  bump_offer: z
+    .object({
+      enabled: z.boolean().default(true),
+      mode: z.enum(['custom', 'disabled', 'default']).default('default'),
+      product_id: z.string().optional(),
+      product_slug: z.string().optional(),
+      title: z.string().optional(),
+      subtitle: z.string().optional(),
+      price: z.number().optional(),
+      regular_price: z.number().optional(),
+      thumbnail: z.string().optional(),
+      reel_count: z.number().optional(),
+      google_drive_link: z.string().optional(),
+    })
+    .optional(),
 });
 export type Product = z.infer<typeof ProductSchema>;
+
+export const GlobalBumpOfferSchema = z.object({
+  enabled: z.boolean().default(true),
+  product_id: z.string().default('bump-special-01'),
+  product_slug: z.string().default('1500-ultimate-twisted-world-reel-bundle'),
+  title: z.string().default('1500+ Ultimate Twisted World & Viral AI Reels Pack'),
+  subtitle: z.string().default('Add this exclusive bonus pack to your order & get 80% instant discount!'),
+  price: z.number().default(99),
+  regular_price: z.number().default(499),
+  discount_percentage: z.number().default(80),
+  thumbnail: z.string().default('https://reelsbundles.in/wp-content/uploads/2026/10/3200-ultimate-twisted-world-reel-bundle-reels-bundle-1-2-768x576.png'),
+  reel_count: z.number().default(1500),
+  google_drive_link: z.string().optional(),
+  updated_at: z.string().optional(),
+});
+export type GlobalBumpOffer = z.infer<typeof GlobalBumpOfferSchema>;
 
 export const CategoryItemSchema = z.object({
   id: z.string().optional(),

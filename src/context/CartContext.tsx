@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { BundleProduct, CartItem, LicenseType } from '@/types';
 import { ORDER_BUMP } from '@/data/bundles';
+import { fetchGlobalBumpOffer, GlobalBumpOfferConfig } from '@/lib/bumpOffer';
 import { useRouter } from 'next/navigation';
 import { track } from '@/lib/analytics';
 
@@ -21,6 +22,7 @@ interface CartContextType {
   cartCount: number;
   subtotal: number;
   total: number;
+  globalBumpOffer?: GlobalBumpOfferConfig | null;
   isCartOpen: boolean;
   setIsCartOpen: (open: boolean) => void;
   // Free Bundles Offer
@@ -41,8 +43,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isFreeBundleModalOpen, setIsFreeBundleModalOpen] = useState(false);
   const [buyNowItem, setBuyNowItemState] = useState<CartItem | null>(null);
   const [orderBumpAdded, setOrderBumpAdded] = useState(false);
+  const [globalBumpOffer, setGlobalBumpOffer] = useState<GlobalBumpOfferConfig | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    fetchGlobalBumpOffer().then((res) => {
+      setGlobalBumpOffer(res);
+    }).catch(() => {});
+  }, []);
 
   const setBuyNowItem = (item: CartItem | null) => {
     setBuyNowItemState(item);
@@ -108,10 +117,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items, freeBundles, orderBumpAdded]);
 
   const subtotal = items.reduce((acc, item) => acc + item.price, 0);
-  const total = subtotal + (orderBumpAdded ? ORDER_BUMP.discountPrice : 0);
+  const bumpPrice = globalBumpOffer?.price != null && globalBumpOffer.price > 0 ? Number(globalBumpOffer.price) : ORDER_BUMP.discountPrice;
+  const isBumpActive = globalBumpOffer ? globalBumpOffer.enabled !== false : true;
+  const total = subtotal + (orderBumpAdded && isBumpActive ? bumpPrice : 0);
   const isQualifiedForFreeOffer = subtotal >= 149;
   const freeOfferProgress = Math.min(100, Math.round((subtotal / 149) * 100));
-  const cartCount = items.length + freeBundles.length + (orderBumpAdded ? 1 : 0);
+  const cartCount = items.length + freeBundles.length + (orderBumpAdded && isBumpActive ? 1 : 0);
 
   // Automatically trigger "2 Free Bundles Unlocked" popup when cart total crosses or reaches >= 149
   useEffect(() => {
@@ -258,6 +269,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         cartCount,
         subtotal,
         total,
+        globalBumpOffer,
         isCartOpen,
         setIsCartOpen,
         freeBundles,
