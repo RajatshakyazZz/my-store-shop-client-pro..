@@ -10175,7 +10175,7 @@ export const initialContent: ContentItem[] = [
 ];
 
 export const initialBranding: StoreBranding = {
-  store_name: 'VaultWorld Store',
+  store_name: 'MYZTORE',
   tagline: 'Premium Reels for Your Growth',
   logo_url: '/logo.png',
   favicon_url: '/favicon.ico',
@@ -10193,7 +10193,7 @@ export const initialSiteMode: SiteModeConfig = {
 };
 
 export const initialStoreSetup: StoreSetupConfig = {
-  store_name: 'VaultWorld Store',
+  store_name: 'MYZTORE',
   contact_email: 'support.vaultworld.shop@gmail.com',
   support_whatsapp: '+91 8051017331',
   currency: 'INR',
@@ -10221,7 +10221,7 @@ export const initialMetaPixel: MetaPixelConfig = {
 export const initialWhatsappButton: WhatsappButtonConfig = {
   enabled: true,
   phone_number: '919142408286',
-  default_message: 'Hi VaultWorld Support! I need quick help regarding my VaultWorld Store order.',
+  default_message: 'Hi MYZTORE Support! I need quick help regarding my MYZTORE order.',
   position: 'bottom-right',
   show_popup_badge: true,
   popup_text: 'Need help? Chat on WhatsApp',
@@ -10247,13 +10247,13 @@ export const initialPlugins: WpPlugin[] = [
     version: '2.0.0',
     active: true,
     has_update: false,
-    description: 'High-speed real-time Firestore database sync for VaultWorld Store',
+    description: 'High-speed real-time Firestore database sync for MYZTORE',
   },
 ];
 
 export const initialThemes: WpTheme[] = [
   {
-    name: 'VaultWorld Modern Dark Store',
+    name: 'MYZTORE Modern Dark Store',
     slug: 'vaultworld-dark',
     version: '1.0.0',
     active: true,
@@ -10263,7 +10263,7 @@ export const initialThemes: WpTheme[] = [
 ];
 
 export const initialConnectorStatus: ConnectorStatus = {
-  plugin_name: 'VaultWorld Cloud Engine',
+  plugin_name: 'MYZTORE Cloud Engine',
   current_version: '2.0.0',
   latest_version: '2.0.0',
   update_available: false,
@@ -10310,7 +10310,7 @@ export const initialRankMath: RankMathConfig = {
     seo_analysis: true,
   },
   global_title_separator: '|',
-  homepage_meta_title: 'VaultWorld Store | 220,000+ Viral Reels Bundles & Reseller Rights',
+  homepage_meta_title: 'MYZTORE | 220,000+ Viral Reels Bundles & Reseller Rights',
   homepage_meta_description: 'Download 220,000+ viral AI Reels, Spiritual, Aesthetic & Motivation bundles. Instant Google Drive access & Reseller Rights.',
 };
 

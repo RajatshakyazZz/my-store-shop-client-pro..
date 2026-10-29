@@ -89,13 +89,13 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
       }`}>
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-9 h-9 rounded-xl bg-black border border-amber-500/30 overflow-hidden flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0">
-            <img src="/logo.webp" alt="VaultWorld Store Logo" className="w-full h-full object-cover" />
+            <img src="/logo.webp" alt="MYZTORE Logo" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col min-w-0">
             <span className={`font-extrabold text-[15px] tracking-tight leading-none truncate ${
               isLight ? 'text-slate-950' : 'text-white'
             }`}>
-              VaultWorld Store
+              MYZTORE
             </span>
             <span className="text-[11px] font-black text-amber-500 tracking-wide mt-1 truncate">
               COMMAND CENTER v2.0

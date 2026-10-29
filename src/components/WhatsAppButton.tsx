@@ -70,7 +70,7 @@ export default function WhatsAppButton({
     cleanPhone = '91' + cleanPhone.slice(1);
   }
 
-  const effectiveStoreName = storeName || settings?.storeName || 'VaultWorld Store';
+  const effectiveStoreName = storeName || settings?.storeName || 'MYZTORE';
   const effectiveDefaultMessage = defaultMessage || settings?.whatsappDefaultMessage;
 
   // Determine intelligent positioning based on current route
@@ -133,7 +133,7 @@ export default function WhatsAppButton({
   const QUICK_PROMPTS = [
     { label: '⚡ How to download reels after purchase?', text: 'Hi! How do I get Google Drive access immediately after paying?' },
     { label: '📦 Is commercial & resale license included?', text: 'Hi! Can I resell or post these reels on Instagram/YouTube without copyright issues?' },
-    { label: '🤝 Help me with Resell & Earn setup', text: 'Hi! I want to earn with VaultWorld Resell & Earn. How do I start?' },
+    { label: '🤝 Help me with Resell & Earn setup', text: 'Hi! I want to earn with MYZTORE Resell & Earn. How do I start?' },
   ];
 
   return (
@@ -159,7 +159,7 @@ export default function WhatsAppButton({
                       (e.target as HTMLElement).style.display = 'none';
                     }}
                   />
-                  <span className="text-xs font-black">VW</span>
+                  <span className="text-xs font-black">MZ</span>
                 </div>
                 {/* Active online pulse dot */}
                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-[#25D366] border-2 border-[#075E54] rounded-full" />

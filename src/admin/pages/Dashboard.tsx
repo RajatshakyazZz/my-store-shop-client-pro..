@@ -179,7 +179,7 @@ export default function Dashboard() {
             Store Performance Overview
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 font-medium mt-0.5">
-            Real-time sales, fulfillment, and revenue metrics for VaultWorld Store
+            Real-time sales, fulfillment, and revenue metrics for MYZTORE
           </p>
         </div>
 

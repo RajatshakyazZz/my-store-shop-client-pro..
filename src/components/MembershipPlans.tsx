@@ -59,7 +59,7 @@ export default function MembershipPlans() {
   const targetProductSlug = isReseller ? 'all-bundles-reseller-rights' : 'all-bundles-personal-use';
 
   return (
-    <section id="vaultworld-plans" className="py-6 sm:py-10 [contain:layout_style]">
+    <section id="myztore-plans" className="py-6 sm:py-10 [contain:layout_style]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Outer Section Card Wrapper */}

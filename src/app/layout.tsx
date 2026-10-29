@@ -24,14 +24,14 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'VaultWorld Store | Buy Viral Reels Bundles in India – 222,000+ Ready-to-Post Reels',
-    template: '%s | VaultWorld Store',
+    default: 'MYZTORE | Buy Viral Reels Bundles in India – 222,000+ Ready-to-Post Reels',
+    template: '%s | MYZTORE',
   },
   description:
     'Download 222,000+ viral ready-to-post vertical reels bundles for Instagram Reels, YouTube Shorts & Facebook across 129+ niches. Zero watermarks, commercial & reseller rights, and instant Google Drive access.',
   keywords: [
-    'vaultworld',
-    'vaultworld store',
+    'myztore',
+    'myztore store',
     'vaultzet',
     'viral reels bundle',
     'ai reels bundle',
@@ -44,9 +44,9 @@ export const metadata: Metadata = {
     'digital products resell india',
     'watermark free reels download',
   ],
-  authors: [{ name: 'VaultWorld Store', url: SITE_URL }],
-  creator: 'VaultWorld Store',
-  publisher: 'VaultWorld Store',
+  authors: [{ name: 'MYZTORE', url: SITE_URL }],
+  creator: 'MYZTORE',
+  publisher: 'MYZTORE',
   alternates: {
     canonical: SITE_URL,
   },
@@ -65,21 +65,21 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_IN',
     url: SITE_URL,
-    siteName: 'VaultWorld Store',
-    title: 'VaultWorld Store | 222,000+ Viral Reels Bundles – Instant Download',
+    siteName: 'MYZTORE',
+    title: 'MYZTORE | 222,000+ Viral Reels Bundles – Instant Download',
     description:
       'Over 222,000+ vertical HD reels across 129+ niches with zero watermarks & full commercial rights. Instant Google Drive delivery.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'VaultWorld Store | Viral Reels Bundles – Instant Google Drive Access',
+    title: 'MYZTORE | Viral Reels Bundles – Instant Google Drive Access',
     description:
       'Grow faster on Instagram & YouTube Shorts with 222,000+ ready-to-post HD reels bundles.',
   },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'VaultWorld Store',
+    title: 'MYZTORE',
   },
   icons: {
     icon: [
@@ -110,7 +110,7 @@ export default function RootLayout({
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
         url: SITE_URL,
-        name: 'VaultWorld Store',
+        name: 'MYZTORE',
         description:
           'India’s #1 marketplace for ready-to-post viral Instagram Reels & YouTube Shorts bundles with instant Google Drive delivery.',
         potentialAction: {
@@ -122,7 +122,7 @@ export default function RootLayout({
       {
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
-        name: 'VaultWorld Store',
+        name: 'MYZTORE',
         url: SITE_URL,
         logo: `${SITE_URL}/logo.webp`,
         sameAs: [

@@ -15,7 +15,7 @@ export default function StoreSetup() {
   });
 
   const [form, setForm] = useState<StoreSetupConfig>({
-    store_name: 'VaultWorld Store',
+    store_name: 'MYZTORE',
     contact_email: 'support.vaultworld.shop@gmail.com',
     support_whatsapp: '+91 8051017331',
     currency: 'INR',

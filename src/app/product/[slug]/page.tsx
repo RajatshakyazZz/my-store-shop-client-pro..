@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
   if (!product) {
     return {
-      title: 'Product Not Found | VaultWorld Store',
+      title: 'Product Not Found | MYZTORE',
       description: 'The requested reels bundle could not be found.',
       robots: { index: false, follow: true },
     };
@@ -34,8 +34,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
   const canonicalUrl = `${siteUrl}/product/${product.slug}`;
 
-  // Unique <title> (max 60 chars): "{Product Name} Bundle — Ready to Post Reels | VaultWorld"
-  const suffix = ' Bundle — Ready to Post Reels | VaultWorld';
+  // Unique <title> (max 60 chars): "{Product Name} Bundle — Ready to Post Reels | MYZTORE"
+  const suffix = ' Bundle — Ready to Post Reels | MYZTORE';
   const availableLength = 60 - suffix.length; // 21 chars
   const rawCleanName = product.title
     .replace(/\s*(bundle|reels bundle|pack)\s*$/i, '')
@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       url: canonicalUrl,
       title,
       description,
-      siteName: 'VaultWorld Store',
+      siteName: 'MYZTORE',
       locale: 'en_IN',
       images: [
         {
@@ -120,7 +120,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     sku: product.slug,
     brand: {
       '@type': 'Brand',
-      name: 'VaultWorld',
+      name: 'MYZTORE',
     },
     offers: {
       '@type': 'Offer',
@@ -132,7 +132,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       itemCondition: 'https://schema.org/NewCondition',
       seller: {
         '@type': 'Organization',
-        name: 'VaultWorld Store',
+        name: 'MYZTORE',
       },
     },
   };

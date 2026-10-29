@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setAdmin(parsed);
         } catch {
           setAdmin({
-            name: 'VaultWorld Administrator',
+            name: 'MYZTORE Administrator',
             email: 'support.vaultworld.shop@gmail.com',
             role: 'SuperAdmin',
             source: 'portal-key',
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       } else {
         setAdmin({
-          name: 'VaultWorld Administrator',
+          name: 'MYZTORE Administrator',
           email: 'support.vaultworld.shop@gmail.com',
           role: 'SuperAdmin',
           source: 'portal-key',
@@ -90,9 +90,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           (process.env as any).VITE_ADMIN_PASSWORD)) ||
       'vaultzet@2026';
 
-    if ((configuredPassword && pass === configuredPassword) || pass === 'vaultworld@2026' || pass === 'vaultzet@2026') {
+    if ((configuredPassword && pass === configuredPassword) || pass === 'myztore@2026' || pass === 'vaultworld@2026' || pass === 'vaultzet@2026') {
       const profile: AdminProfile = {
-        name: 'VaultWorld Administrator',
+        name: 'MYZTORE Administrator',
         email: 'support.vaultworld.shop@gmail.com',
         role: 'SuperAdmin',
         source: 'portal-key',
@@ -123,7 +123,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await portalApi.verifyKey(key);
       if (res.valid) {
         const profile: AdminProfile = {
-          name: res.user || 'VaultWorld Administrator',
+          name: res.user || 'MYZTORE Administrator',
           email: 'support.vaultworld.shop@gmail.com',
           role: (res.role as AdminRole) || 'SuperAdmin',
           source: 'portal-key',

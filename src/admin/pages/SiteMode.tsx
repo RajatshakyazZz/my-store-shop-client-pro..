@@ -37,7 +37,7 @@ export default function SiteMode() {
       if (data.mode === 'MAINTENANCE') {
         warning('Maintenance Mode Activated', 'Public access paused. Customers now see the maintenance screen.');
       } else {
-        success('Store is LIVE', 'VaultWorld Store is now open to all global visitors.');
+        success('Store is LIVE', 'MYZTORE is now open to all global visitors.');
       }
     },
     onError: () => error('Action Failed', 'Could not update site mode state.'),

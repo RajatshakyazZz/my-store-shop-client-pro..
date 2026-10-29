@@ -17,7 +17,7 @@ export default function WhatsappButton() {
   const [form, setForm] = useState<WhatsappButtonConfig>({
     enabled: true,
     phone_number: '919142408286',
-    default_message: 'Hi VaultWorld Support! I have a question regarding the bundles.',
+    default_message: 'Hi MYZTORE Support! I have a question regarding the bundles.',
     position: 'bottom-right',
     show_popup_badge: true,
     popup_text: 'Need help? Chat on WhatsApp',
@@ -151,7 +151,7 @@ export default function WhatsappButton() {
 
           <div className="h-80 rounded-2xl bg-slate-950 border border-slate-800 relative p-4 flex flex-col justify-end">
             <div className="absolute top-4 left-4 text-[11px] text-slate-500 font-mono">
-              VaultWorld Store (Mobile Viewport)
+              MYZTORE (Mobile Viewport)
             </div>
 
             {/* Floating button */}

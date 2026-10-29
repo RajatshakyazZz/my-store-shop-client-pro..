@@ -136,7 +136,7 @@ export default function Footer() {
                 <div className="w-11 h-11 rounded-full bg-black border border-amber-500/30 overflow-hidden flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0">
                   <img
                     src="/logo.webp?v=2"
-                    alt="VaultWorld Store Logo"
+                    alt="MYZTORE Logo"
                     width={44}
                     height={44}
                     loading="lazy"
@@ -146,7 +146,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <span className="font-extrabold text-lg text-slate-900 tracking-tight block">
-                    {settings.storeName || 'VaultWorld Store'}
+                    {settings.storeName || 'MYZTORE'}
                   </span>
                   <span className="text-[11px] font-semibold text-slate-500 block">
                     {settings.tagline || 'Everything You Need, All in One Place.'}
@@ -154,7 +154,7 @@ export default function Footer() {
                 </div>
               </Link>
               <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed max-w-sm">
-                Premium ready-to-use reels bundles for creators, pages and digital businesses by {settings.storeName || 'VaultWorld Store'}.
+                Premium ready-to-use reels bundles for creators, pages and digital businesses by {settings.storeName || 'MYZTORE'}.
               </p>
             </div>
 
@@ -202,7 +202,7 @@ export default function Footer() {
 
           </div>
 
-          {/* "Want a high-converting digital store like VaultWorld Store?" WhatsApp CTA Banner */}
+          {/* "Want a high-converting digital store like MYZTORE?" WhatsApp CTA Banner */}
           <div className="relative rounded-2xl sm:rounded-3xl bg-slate-950 border border-amber-500/20 p-4 sm:p-6 shadow-xl overflow-hidden">
             {/* Ambient gold glow in the background */}
             <div className="pointer-events-none absolute -top-16 left-1/3 w-80 h-32 bg-amber-500/10 rounded-full blur-3xl" />
@@ -222,7 +222,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <h4 className="text-sm sm:text-base font-extrabold text-white tracking-tight flex flex-wrap items-center gap-2">
-                    <span>Want a high-converting digital store like VaultWorld Store?</span>
+                    <span>Want a high-converting digital store like MYZTORE?</span>
                     <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                       Designed by Vaultzet
                     </span>
@@ -235,7 +235,7 @@ export default function Footer() {
 
               {/* Right Side: Glowing Amber WhatsApp CTA Button */}
               <a
-                href={`https://wa.me/917895317940?text=${encodeURIComponent('Hi Vaultzet, I want to build a high-converting digital store like VaultWorld Store.')}`}
+                href={`https://wa.me/917895317940?text=${encodeURIComponent('Hi Vaultzet, I want to build a high-converting digital store like MYZTORE.')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => {
@@ -287,7 +287,7 @@ export default function Footer() {
 
           {/* Bottom Copyright Row */}
           <div className="pt-4 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-2 text-xs text-slate-500 font-medium">
-            <p>© {new Date().getFullYear()} {settings.storeName || 'VaultWorld Store'}. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} {settings.storeName || 'MYZTORE'}. All rights reserved.</p>
             <span className="hidden sm:inline text-slate-300">•</span>
             <p className="flex items-center gap-1.5 font-semibold text-slate-600">
               <span>Designed by</span>

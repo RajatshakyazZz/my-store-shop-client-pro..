@@ -55,19 +55,19 @@ export default function EarnLandingPage() {
     },
     {
       q: 'Do I have to deliver files or handle Google Drive links myself?',
-      a: 'Zero manual work! VaultWorld handles everything. The moment payment is verified, the customer gets instant access to the Google Drive links on their screen and via email. You never have to host, upload, or email anything.',
+      a: 'Zero manual work! MYZTORE handles everything. The moment payment is verified, the customer gets instant access to the Google Drive links on their screen and via email. You never have to host, upload, or email anything.',
     },
     {
       q: 'Is there any joining fee, deposit, or monthly charge?',
-      a: 'No. VaultWorld Partner Program is 100% free to join. There are zero upfront costs, zero monthly platform fees, and zero hidden charges.',
+      a: 'No. MYZTORE Partner Program is 100% free to join. There are zero upfront costs, zero monthly platform fees, and zero hidden charges.',
     },
     {
       q: 'How much can I charge for each bundle?',
-      a: 'You have complete pricing freedom! VaultWorld has a minimum base price (e.g. ₹299). You can set your resale price to ₹499, ₹699, or ₹999. Every single rupee above the base price is 100% your net profit.',
+      a: 'You have complete pricing freedom! MYZTORE has a minimum base price (e.g. ₹299). You can set your resale price to ₹499, ₹699, or ₹999. Every single rupee above the base price is 100% your net profit.',
     },
     {
       q: 'Where can I share and promote my reseller links?',
-      a: 'Everywhere! You get a clean, customized link (vaultworld.shop/r/your-custom-slug). You can paste it in your Instagram bio, YouTube video descriptions, Telegram channels, WhatsApp groups, or run Facebook / Google ads.',
+      a: 'Everywhere! You get a clean, customized link (myztore.shop/r/your-custom-slug). You can paste it in your Instagram bio, YouTube video descriptions, Telegram channels, WhatsApp groups, or run Facebook / Google ads.',
     },
     {
       q: 'Can I track which link generated sales in real time?',
@@ -91,7 +91,7 @@ export default function EarnLandingPage() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
             </span>
-            <span>VaultWorld Official Partner Program &bull; ₹0 Joining Fee</span>
+            <span>MYZTORE Official Partner Program &bull; ₹0 Joining Fee</span>
           </div>
 
           {/* Main Title */}
@@ -219,7 +219,7 @@ export default function EarnLandingPage() {
 
               <div className="text-[11px] text-purple-200/80 font-medium flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-green-400 shrink-0" />
-                <span>Example: VaultWorld Base ₹299 + Your ₹{marginPerBundle} Markup = Buyer pays ₹{299 + marginPerBundle}</span>
+                <span>Example: MYZTORE Base ₹299 + Your ₹{marginPerBundle} Markup = Buyer pays ₹{299 + marginPerBundle}</span>
               </div>
             </div>
 
@@ -270,7 +270,7 @@ export default function EarnLandingPage() {
             <span>Simple 4-Step Process</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-black text-[#111836]">
-            How VaultWorld Reselling Works
+            How MYZTORE Reselling Works
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 font-medium">
             No packaging, no courier delays, no inventory storage. Everything runs 100% digitally in 4 simple steps.
@@ -307,7 +307,7 @@ export default function EarnLandingPage() {
             </div>
             <h3 className="text-base font-black text-[#162048]">Share Your Custom Link</h3>
             <p className="text-xs text-slate-500 leading-relaxed font-medium">
-              You receive a personalized link <code className="bg-purple-50 px-1 py-0.5 rounded text-[10px] text-[#6734f7] font-mono">vaultworld.shop/r/your-slug</code>. Share it in Instagram bio, WhatsApp, or Telegram.
+              You receive a personalized link <code className="bg-purple-50 px-1 py-0.5 rounded text-[10px] text-[#6734f7] font-mono">myztore.shop/r/your-slug</code>. Share it in Instagram bio, WhatsApp, or Telegram.
             </p>
           </div>
 
@@ -318,19 +318,19 @@ export default function EarnLandingPage() {
             </div>
             <h3 className="text-base font-black text-[#162048]">Instant UPI Cashout</h3>
             <p className="text-xs text-slate-500 leading-relaxed font-medium">
-              When a buyer purchases, VaultWorld delivers the files automatically. Your markup is credited to your wallet & can be withdrawn to UPI anytime!
+              When a buyer purchases, MYZTORE delivers the files automatically. Your markup is credited to your wallet & can be withdrawn to UPI anytime!
             </p>
           </div>
         </div>
       </section>
 
       {/* ------------------------------------------------------------- */}
-      {/* COMPARISON: PHYSICAL DROPSHIPPING VS VAULTWORLD DIGITAL RESELLING */}
+      {/* COMPARISON: PHYSICAL DROPSHIPPING VS MYZTORE DIGITAL RESELLING */}
       {/* ------------------------------------------------------------- */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto pb-20">
         <div className="rounded-3xl bg-white border border-purple-100 shadow-sm p-6 sm:p-8 space-y-6">
           <div className="text-center max-w-xl mx-auto space-y-1">
-            <span className="text-[10px] font-black uppercase tracking-wider text-[#6734f7]">Why VaultWorld Reselling Wins</span>
+            <span className="text-[10px] font-black uppercase tracking-wider text-[#6734f7]">Why MYZTORE Reselling Wins</span>
             <h2 className="text-xl sm:text-3xl font-black text-[#162048]">
               Compare with Traditional Dropshipping
             </h2>
@@ -342,7 +342,7 @@ export default function EarnLandingPage() {
                 <tr className="border-b border-purple-100 text-slate-400 font-extrabold uppercase text-[10px]">
                   <th className="py-3 px-3">Business Factor</th>
                   <th className="py-3 px-3 text-red-500">Traditional Physical Dropshipping</th>
-                  <th className="py-3 px-3 text-green-700 bg-green-50/60 rounded-t-xl">VaultWorld Digital Reselling</th>
+                  <th className="py-3 px-3 text-green-700 bg-green-50/60 rounded-t-xl">MYZTORE Digital Reselling</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-purple-50">
@@ -513,7 +513,7 @@ export default function EarnLandingPage() {
               Ready to Start Earning Today?
             </h2>
             <p className="text-xs sm:text-sm text-white/90 font-medium leading-relaxed">
-              Join 1,400+ Indian creators, marketers, and students making consistent daily income with VaultWorld reseller links.
+              Join 1,400+ Indian creators, marketers, and students making consistent daily income with MYZTORE reseller links.
             </p>
             <div className="pt-2">
               <Link

@@ -397,7 +397,7 @@ function OrderSuccessContent() {
           <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8 animate-fadeIn">
             {/* Top Minimal Brand Bar */}
             <div className="flex items-center justify-between pb-4 border-b border-purple-100 text-xs text-slate-500">
-              <span className="font-bold text-slate-700">VaultWorld Order Confirmation</span>
+              <span className="font-bold text-slate-700">MYZTORE Order Confirmation</span>
               <span className="font-mono text-[11px] bg-purple-50 text-purple-700 px-2.5 py-1 rounded-full font-bold">
                 Order #{verifiedData?.orderNumber || orderId}
               </span>
@@ -570,7 +570,7 @@ function OrderSuccessContent() {
               </p>
               <a
                 href={`https://wa.me/${cleanWhatsappNumber}?text=${encodeURIComponent(
-                  `Hi ${settings.storeName || 'VaultWorld'}, I purchased order #${verifiedData?.orderNumber || orderId} and need assistance.`
+                  `Hi ${settings.storeName || 'MYZTORE'}, I purchased order #${verifiedData?.orderNumber || orderId} and need assistance.`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1329,7 +1329,7 @@ function OrderSuccessContent() {
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
               {/* 1. WhatsApp Support */}
               <a
-                href={`https://wa.me/${cleanWhatsappNumber}?text=Hi%20VaultWorld%20Support%2C%20I%20have%20an%20order%20query%20regarding%20Order%20${verifiedData?.orderNumber || orderId}`}
+                href={`https://wa.me/${cleanWhatsappNumber}?text=Hi%20MYZTORE%20Support%2C%20I%20have%20an%20order%20query%20regarding%20Order%20${verifiedData?.orderNumber || orderId}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-2xl border border-emerald-200/80 bg-[#f5fff9] p-4 space-y-2 hover:shadow-md transition-shadow"
@@ -1509,7 +1509,7 @@ class OrderSuccessErrorBoundary extends React.Component<
 
             <div className="pt-2 space-y-3">
               <a
-                href="https://drive.google.com/drive/folders/vaultworld-master-access"
+                href="https://drive.google.com/drive/folders/myztore-master-access"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition"
@@ -1520,7 +1520,7 @@ class OrderSuccessErrorBoundary extends React.Component<
               </a>
 
               <a
-                href={`https://wa.me/${waPhone}?text=${encodeURIComponent('Hi VaultWorld Support, I have completed my payment and need my download access.')}`}
+                href={`https://wa.me/${waPhone}?text=${encodeURIComponent('Hi MYZTORE Support, I have completed my payment and need my download access.')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3.5 px-6 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs flex items-center justify-center gap-2 border border-slate-700 transition"

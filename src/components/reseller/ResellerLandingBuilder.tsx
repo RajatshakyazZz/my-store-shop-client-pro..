@@ -808,7 +808,7 @@ export default function ResellerLandingBuilder({
                   <div>
                     <h4 className="text-xs font-black text-emerald-950">WhatsApp Customer Chat Button</h4>
                     <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed font-medium">
-                      Control the floating WhatsApp widget on your landing page. You can customize your own contact number, use VaultWorld support, or remove it completely.
+                      Control the floating WhatsApp widget on your landing page. You can customize your own contact number, use MYZTORE support, or remove it completely.
                     </p>
                   </div>
                 </div>
@@ -862,7 +862,7 @@ export default function ResellerLandingBuilder({
                         />
                       </div>
                       <p className="text-[10px] text-slate-500 mt-1.5 font-medium leading-relaxed">
-                        💡 <strong>Smart Fallback:</strong> If you leave this empty, buyers will be connected to the VaultWorld 24/7 Store Support desk (<strong className="text-slate-800">+91 9142408286</strong>) who will assist the customer and close the sale for you!
+                        💡 <strong>Smart Fallback:</strong> If you leave this empty, buyers will be connected to the MYZTORE 24/7 Store Support desk (<strong className="text-slate-800">+91 9142408286</strong>) who will assist the customer and close the sale for you!
                       </p>
                     </div>
                   </div>
@@ -900,7 +900,7 @@ export default function ResellerLandingBuilder({
                 {/* Header Badge */}
                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
                   <span className="text-[10px] text-white/60 font-bold">⚡ Instant Google Drive Download</span>
-                  <span className="text-[10px] font-bold text-purple-400">VaultWorld Verified</span>
+                  <span className="text-[10px] font-bold text-purple-400">MYZTORE Verified</span>
                 </div>
 
                 {/* Media & Badge */}
@@ -998,7 +998,7 @@ export default function ResellerLandingBuilder({
 
                 {/* Seller Disclosure */}
                 <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 text-[9px] text-center text-white/40">
-                  Authorized VaultWorld Reseller Listing • Instant Cloud Delivery
+                  Authorized MYZTORE Reseller Listing • Instant Cloud Delivery
                 </div>
 
                 {/* Floating WhatsApp Live Preview Badge */}
@@ -1009,7 +1009,7 @@ export default function ResellerLandingBuilder({
                       <span>WhatsApp Chat Badge: Active</span>
                     </span>
                     <span className="text-[10px] text-white/60">
-                      {whatsappNumber ? `+91 ${whatsappNumber}` : 'VaultWorld (+91 9142408286)'}
+                      {whatsappNumber ? `+91 ${whatsappNumber}` : 'MYZTORE (+91 9142408286)'}
                     </span>
                   </div>
                 )}

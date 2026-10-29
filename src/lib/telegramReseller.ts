@@ -1,4 +1,4 @@
-// Telegram Reseller Notifications & Admin Command Bot for VaultWorld Store
+// Telegram Reseller Notifications & Admin Command Bot for MYZTORE
 import {
   TELEGRAM_BOT_TOKEN,
   OWNER_CHAT_ID,
@@ -263,7 +263,7 @@ export async function sendResellerSaleTelegramAlert(params: {
   const {
     orderNumber,
     resellerId,
-    resellerUid = 'RSL-VAULTWORLD',
+    resellerUid = 'RSL-MYZTORE',
     resellerName = 'Reseller',
     resellerEmail = '',
     resellerPhone = '',
@@ -285,7 +285,7 @@ export async function sendResellerSaleTelegramAlert(params: {
 🧾 <b>Order ID:</b> <code>${escapeHtml(orderNumber)}</code>
 📦 <b>Reels Bundle:</b> ${escapeHtml(productTitle)}
 💰 <b>Customer Paid:</b> <b>₹${totalAmount}.00</b>
-🏷️ <b>VaultWorld Base Cost:</b> ₹${calculatedBase}.00
+🏷️ <b>MYZTORE Base Cost:</b> ₹${calculatedBase}.00
 💵 <b>Reseller Commission:</b> <b>+₹${resellerEarning}.00</b> (Instant Credit)
 
 👤 <b>RESELLER DETAILS</b>
@@ -333,7 +333,7 @@ export async function handleAdminTelegramCommand(
 ): Promise<boolean> {
   if (!isAuthorizedTelegramAdmin(fromId, chatId)) {
     await sendTelegramMessage(
-      '⛔ <b>Access Denied:</b> This bot command interface is restricted to authorized VaultWorld Store administrators.',
+      '⛔ <b>Access Denied:</b> This bot command interface is restricted to authorized MYZTORE administrators.',
       undefined,
       chatId
     );
@@ -346,7 +346,7 @@ export async function handleAdminTelegramCommand(
 
   // /help or /start
   if (command === '/help' || command === '/start' || command === 'help') {
-    const helpMsg = `🤖 <b>VAULTWORLD RESELLER ADMIN BOT COMMANDS</b>
+    const helpMsg = `🤖 <b>MYZTORE RESELLER ADMIN BOT COMMANDS</b>
 ━━━━━━━━━━━━━━━━━━
 Available Admin Commands:
 

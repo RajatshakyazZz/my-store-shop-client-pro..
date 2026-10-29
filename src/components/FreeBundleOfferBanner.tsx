@@ -57,7 +57,7 @@ export default function FreeBundleOfferBanner({
           }}
           alt={
             freeBundleOffer?.headline ||
-            `VaultWorld Neon Reels Bundle Sale - Get ${freeQty} Free Bundles on Min ₹${minCart} Payment`
+            `MYZTORE Neon Reels Bundle Sale - Get ${freeQty} Free Bundles on Min ₹${minCart} Payment`
           }
           width={1280}
           height={480}

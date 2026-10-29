@@ -14,7 +14,7 @@ export default function TermsPage() {
 
           <h2 className="text-lg font-bold text-[#182247]">1. License & Usage Rights</h2>
           <p>
-            When purchasing a bundle on VaultWorld Store, you are granted one of two licenses depending on your selection at checkout:
+            When purchasing a bundle on MYZTORE, you are granted one of two licenses depending on your selection at checkout:
           </p>
           <ul className="list-disc pl-5 space-y-2">
             <li>

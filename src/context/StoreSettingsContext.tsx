@@ -33,8 +33,8 @@ const DEFAULT_SITE_MODE: SiteModeData = {
 };
 
 const DEFAULT_SETTINGS: StoreSettings = {
-  storeName: 'VaultWorld Store',
-  ownerName: 'VaultWorld Team',
+  storeName: 'MYZTORE',
+  ownerName: 'MYZTORE Team',
   tagline: 'Everything You Need, All in One Place.',
   supportEmail: 'support.vaultworld.shop@gmail.com',
   supportPhone: '+91 8051017331',
@@ -42,15 +42,15 @@ const DEFAULT_SETTINGS: StoreSettings = {
   currency: 'INR',
   currencySymbol: '₹',
   whatsappButtonEnabled: true,
-  whatsappDefaultMessage: 'Hi VaultWorld Support! I need quick help regarding my VaultWorld Store order.',
+  whatsappDefaultMessage: 'Hi MYZTORE Support! I need quick help regarding my MYZTORE order.',
   whatsappPopupText: 'Need help? Chat on WhatsApp',
   siteMode: DEFAULT_SITE_MODE,
 };
 
-function sanitizeStoreName(name?: string, fallback = 'VaultWorld Store'): string {
+function sanitizeStoreName(name?: string, fallback = 'MYZTORE'): string {
   if (!name || !name.trim()) return fallback;
-  if (/reels\s*bundles?/i.test(name) || /digonest/i.test(name) || /vaultzet/i.test(name)) {
-    return 'VaultWorld Store';
+  if (/reels\s*bundles?/i.test(name) || /digonest/i.test(name) || /vaultzet/i.test(name) || /vaultworld/i.test(name)) {
+    return 'MYZTORE';
   }
   return name.trim();
 }

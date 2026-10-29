@@ -12,7 +12,7 @@ interface MaintenanceGateProps {
 
 export default function MaintenanceGate({
   message = 'Our store is undergoing scheduled performance upgrades. We will be back online shortly!',
-  storeName = 'VaultWorld Store',
+  storeName = 'MYZTORE',
   supportEmail = 'support.vaultworld.shop@gmail.com',
 }: MaintenanceGateProps) {
   const [isChecking, setIsChecking] = useState(false);

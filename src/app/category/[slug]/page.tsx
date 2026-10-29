@@ -40,14 +40,14 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
   if (!category) {
     return {
-      title: 'Category Not Found | VaultWorld Store',
+      title: 'Category Not Found | MYZTORE',
       robots: { index: false, follow: true },
     };
   }
 
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
   const canonicalUrl = `${siteUrl}/category/${category.slug}`;
-  const title = `${category.name} Bundles — Ready to Post Reels | VaultWorld`.slice(0, 60);
+  const title = `${category.name} Bundles — Ready to Post Reels | MYZTORE`.slice(0, 60);
 
   let description = `Download ${category.name} reels bundles for Instagram & YouTube Shorts. Get 1000+ viral HD vertical videos with instant Google Drive access and commercial rights.`;
   if (description.length < 140) {
@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
       url: canonicalUrl,
       title,
       description,
-      siteName: 'VaultWorld Store',
+      siteName: 'MYZTORE',
       locale: 'en_IN',
       images: [
         {

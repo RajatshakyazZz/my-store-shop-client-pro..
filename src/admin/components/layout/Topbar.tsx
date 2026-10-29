@@ -66,7 +66,7 @@ export default function Topbar({ onOpenMobileMenu }: TopbarProps) {
           title="Open Live Customer Store"
         >
           <Globe className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-          <span className="truncate max-w-[110px] sm:max-w-none">VaultWorld Store</span>
+          <span className="truncate max-w-[110px] sm:max-w-none">MYZTORE</span>
           <ExternalLink className="w-3 h-3 text-slate-400 group-hover:text-purple-400 transition-colors shrink-0" />
         </a>
 

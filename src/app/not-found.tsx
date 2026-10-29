@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Search, Home, Film, Sparkles, ArrowRight } from 'lucide-react';
 
 export const metadata = {
-  title: '404 - Bundle Not Found | VaultWorld Store',
+  title: '404 - Bundle Not Found | MYZTORE',
   description: 'The requested reels bundle or page could not be found. Explore our 222,000+ viral reels bundles in shop.',
   robots: {
     index: false,
