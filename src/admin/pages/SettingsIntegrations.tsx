@@ -111,7 +111,12 @@ export default function SettingsIntegrations() {
   }, [rankMath]);
 
   React.useEffect(() => {
-    if (dnpMeta) setDnpForm(dnpMeta);
+    if (dnpMeta) {
+      setDnpForm({
+        ...dnpMeta,
+        meta_pixel_id: dnpMeta.meta_pixel_id || '1715650960276913',
+      });
+    }
   }, [dnpMeta]);
 
   React.useEffect(() => {
@@ -849,7 +854,7 @@ export default function SettingsIntegrations() {
                   type="text"
                   value={dnpForm.meta_pixel_id || ''}
                   onChange={(e) => setDnpForm({ ...dnpForm, meta_pixel_id: e.target.value })}
-                  placeholder="e.g. 109283746501928"
+                  placeholder="e.g. 1715650960276913"
                   className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
                 />
               </div>
