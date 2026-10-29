@@ -28,6 +28,7 @@ import {
   Copy,
   Clock,
   Sliders,
+  Lock,
 } from 'lucide-react';
 import { portalApi } from '../api/client';
 import { Product, CategoryItem } from '../api/types';
@@ -102,6 +103,7 @@ export default function Products() {
     bump_offer: {
       enabled: true,
       mode: 'default' as 'default' | 'custom' | 'disabled',
+      bump_type: 'store_product' as 'store_product' | 'custom',
       product_id: '',
       product_slug: '',
       title: '',
@@ -148,6 +150,7 @@ export default function Products() {
     bump_offer: {
       enabled: boolean;
       mode: 'default' | 'custom' | 'disabled';
+      bump_type?: 'store_product' | 'custom';
       product_id: string;
       product_slug: string;
       title: string;
@@ -187,6 +190,7 @@ export default function Products() {
     bump_offer: {
       enabled: true,
       mode: 'default',
+      bump_type: 'store_product' as 'store_product' | 'custom',
       product_id: '',
       product_slug: '',
       title: '',
@@ -251,6 +255,7 @@ export default function Products() {
         bump_offer: {
           enabled: true,
           mode: 'default',
+          bump_type: 'store_product' as 'store_product' | 'custom',
           product_id: '',
           product_slug: '',
           title: '',
@@ -385,6 +390,7 @@ export default function Products() {
     const initialBump = {
       enabled: typeof rawProdBump?.enabled === 'boolean' ? rawProdBump.enabled : true,
       mode: (rawProdBump?.mode as 'default' | 'custom' | 'disabled') || (rawProdBump?.enabled === false ? 'disabled' : (rawProdBump?.product_id || rawProdBump?.productId ? 'custom' : 'default')),
+      bump_type: (rawProdBump?.bump_type || rawProdBump?.bumpType || (rawProdBump?.product_slug ? 'store_product' : 'custom')) as 'store_product' | 'custom',
       product_id: rawProdBump?.product_id || rawProdBump?.productId || '',
       product_slug: rawProdBump?.product_slug || rawProdBump?.productSlug || '',
       title: rawProdBump?.title || '',
@@ -1423,7 +1429,7 @@ export default function Products() {
                 }`}
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>5. Bump Offer {editForm.bump_offer.mode === 'custom' ? '(Custom)' : editForm.bump_offer.mode === 'disabled' ? '(Off)' : '(Default)'}</span>
+                <span>5. Bump Offer {editForm.bump_offer.mode === 'custom' ? (editForm.bump_offer.bump_type === 'custom' ? '(Custom)' : '(Ready-Made)') : editForm.bump_offer.mode === 'disabled' ? '(Off)' : '(Default)'}</span>
               </button>
             </div>
 
@@ -2195,7 +2201,7 @@ export default function Products() {
                 }`}
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>5. Bump Offer {createForm.bump_offer.mode === 'custom' ? '(Custom)' : createForm.bump_offer.mode === 'disabled' ? '(Off)' : '(Default)'}</span>
+                <span>5. Bump Offer {createForm.bump_offer.mode === 'custom' ? (createForm.bump_offer.bump_type === 'custom' ? '(Custom)' : '(Ready-Made)') : createForm.bump_offer.mode === 'disabled' ? '(Off)' : '(Default)'}</span>
               </button>
             </div>
 
@@ -2752,6 +2758,7 @@ interface ProductBumpOfferTabProps {
   bumpOffer: {
     enabled: boolean;
     mode: 'default' | 'custom' | 'disabled';
+    bump_type?: 'store_product' | 'custom';
     product_id: string;
     product_slug: string;
     title: string;
@@ -2784,6 +2791,8 @@ function ProductBumpOfferTab({
     });
   }, [products, currentProductId, currentProductSlug]);
 
+  const currentBumpType = bumpOffer.bump_type || (bumpOffer.product_slug ? 'store_product' : 'custom');
+
   const handleSelectBumpProduct = (slug: string) => {
     const selected = otherProducts.find((p) => p.slug === slug);
     if (!selected) return;
@@ -2796,6 +2805,8 @@ function ProductBumpOfferTab({
 
     onChange({
       ...bumpOffer,
+      mode: 'custom',
+      bump_type: 'store_product',
       product_id: String(selected.id),
       product_slug: selected.slug,
       title: selected.name,
@@ -2814,67 +2825,127 @@ function ProductBumpOfferTab({
 
   return (
     <div className="space-y-5">
-      {/* 1. Mode Selector */}
+      {/* 1. Mode Selector (4 Options) */}
       <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3">
         <label className="text-xs font-bold text-slate-300 block">
           Checkout Bump Offer Behavior for this Product
         </label>
         
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          {/* Option 1: Use Global Default */}
           <button
             type="button"
             onClick={() => onChange({ ...bumpOffer, mode: 'default', enabled: true })}
-            className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+            className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
               bumpOffer.mode === 'default'
                 ? 'bg-purple-600/20 border-purple-500 text-white shadow-sm ring-1 ring-purple-500/50'
                 : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
             }`}
           >
-            <div className="text-xs font-black">1. Use Global Default</div>
-            <div className="text-[10px] text-slate-400 mt-0.5 leading-snug">
-              Shows store's global checkout bump offer
+            <div>
+              <div className="text-xs font-black flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                <span>Global Default</span>
+              </div>
+              <div className="text-[10px] text-slate-400 mt-1 leading-snug">
+                Uses store default checkout bump offer
+              </div>
             </div>
           </button>
 
+          {/* Option 2: Ready-Made Bump (Store Product) */}
           <button
             type="button"
-            onClick={() => onChange({ ...bumpOffer, mode: 'custom', enabled: true })}
-            className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-              bumpOffer.mode === 'custom'
+            onClick={() =>
+              onChange({
+                ...bumpOffer,
+                mode: 'custom',
+                bump_type: 'store_product',
+                enabled: true,
+              })
+            }
+            className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+              bumpOffer.mode === 'custom' && currentBumpType === 'store_product'
                 ? 'bg-amber-500/20 border-amber-500 text-amber-300 shadow-sm ring-1 ring-amber-500/50'
                 : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
             }`}
           >
-            <div className="text-xs font-black">2. Custom Bump Offer</div>
-            <div className="text-[10px] text-slate-400 mt-0.5 leading-snug">
-              Specific bundle &amp; custom price for this product
+            <div>
+              <div className="text-xs font-black flex items-center gap-1.5">
+                <Package className="w-3.5 h-3.5 text-amber-400" />
+                <span>Ready-Made Bump</span>
+              </div>
+              <div className="text-[10px] text-slate-400 mt-1 leading-snug">
+                Pick from store products (Image locked)
+              </div>
             </div>
           </button>
 
+          {/* Option 3: Custom Bump Offer (Gallery Upload) */}
+          <button
+            type="button"
+            onClick={() =>
+              onChange({
+                ...bumpOffer,
+                mode: 'custom',
+                bump_type: 'custom',
+                enabled: true,
+              })
+            }
+            className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+              bumpOffer.mode === 'custom' && currentBumpType === 'custom'
+                ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300 shadow-sm ring-1 ring-indigo-500/50'
+                : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
+            }`}
+          >
+            <div>
+              <div className="text-xs font-black flex items-center gap-1.5">
+                <Upload className="w-3.5 h-3.5 text-indigo-400" />
+                <span>Custom Bump Offer</span>
+              </div>
+              <div className="text-[10px] text-slate-400 mt-1 leading-snug">
+                Upload image from gallery + custom link
+              </div>
+            </div>
+          </button>
+
+          {/* Option 4: Turn Off / Disabled */}
           <button
             type="button"
             onClick={() => onChange({ ...bumpOffer, mode: 'disabled', enabled: false })}
-            className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+            className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
               bumpOffer.mode === 'disabled'
                 ? 'bg-rose-500/20 border-rose-500 text-rose-300 shadow-sm ring-1 ring-rose-500/50'
                 : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
             }`}
           >
-            <div className="text-xs font-black">3. Turn Off / Disabled</div>
-            <div className="text-[10px] text-slate-400 mt-0.5 leading-snug">
-              No bump offer will appear for this product
+            <div>
+              <div className="text-xs font-black flex items-center gap-1.5">
+                <X className="w-3.5 h-3.5 text-rose-400" />
+                <span>Turn Off / Disabled</span>
+              </div>
+              <div className="text-[10px] text-slate-400 mt-1 leading-snug">
+                No bump offer on this product checkout
+              </div>
             </div>
           </button>
         </div>
       </div>
 
-      {/* 2. Custom Bump Offer Configuration */}
-      {bumpOffer.mode === 'custom' && (
+      {/* ======================================================== */}
+      {/* OPTION 1: READY-MADE BUMP (STORE PRODUCT SELECT) */}
+      {/* ======================================================== */}
+      {bumpOffer.mode === 'custom' && currentBumpType === 'store_product' && (
         <div className="space-y-4 p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
-          <div className="flex items-center gap-2 pb-2 border-b border-slate-800">
-            <Sparkles className="w-4 h-4 text-amber-400" />
-            <span className="text-xs font-extrabold text-amber-400 uppercase tracking-wide">
-              Configure Specific Bump Offer &amp; Price
+          <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+            <div className="flex items-center gap-2">
+              <Package className="w-4 h-4 text-amber-400" />
+              <span className="text-xs font-extrabold text-amber-400 uppercase tracking-wide">
+                Ready-Made Bump (Selected From Store)
+              </span>
+            </div>
+            <span className="text-[10px] font-bold text-slate-400">
+              Image locked to product
             </span>
           </div>
 
@@ -2972,17 +3043,40 @@ function ProductBumpOfferTab({
             />
           </div>
 
-          {/* Thumbnail Image URL */}
+          {/* Cover Image: LOCKED & READ-ONLY (No edit/upload in ready-made mode) */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-300 block">
-              Bump Cover Image URL
-            </label>
-            <input
-              type="url"
-              value={bumpOffer.thumbnail}
-              onChange={(e) => onChange({ ...bumpOffer, thumbnail: e.target.value })}
-              className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300 focus:outline-none focus:border-amber-500"
-            />
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
+                <span>Bump Cover Image (Locked to Store Product)</span>
+              </label>
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full">
+                <Lock className="w-3 h-3" />
+                Image Locked (No Edit)
+              </span>
+            </div>
+
+            <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center gap-3">
+              {bumpOffer.thumbnail ? (
+                <img
+                  src={bumpOffer.thumbnail}
+                  alt="Bundle Cover"
+                  className="w-12 h-12 rounded-lg object-cover border border-slate-700 shrink-0"
+                />
+              ) : (
+                <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500 shrink-0">
+                  <Package className="w-5 h-5" />
+                </div>
+              )}
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-bold text-white truncate">
+                  {bumpOffer.title || 'Selected Bundle'}
+                </p>
+                <p className="text-[10px] text-slate-400 mt-0.5">
+                  Cover image is synced from the selected store bundle. (Image editing is disabled). To upload custom artwork from gallery, switch to "Custom Bump Offer" above.
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Google Drive Link for Bonus Fulfillment */}
@@ -3020,6 +3114,175 @@ function ProductBumpOfferTab({
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-black text-white truncate">
                   {bumpOffer.title || 'Selected Bump Bundle'}
+                </div>
+                <div className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
+                  {bumpOffer.subtitle || '1-click special bonus offer'}
+                </div>
+                <div className="flex items-center gap-2 mt-1.5">
+                  <span className="text-xs font-black text-emerald-400">
+                    ₹{bumpOffer.price || 99}.00
+                  </span>
+                  <span className="text-[10px] text-slate-500 line-through">
+                    ₹{bumpOffer.regular_price || 499}.00
+                  </span>
+                  <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    {discountPercent}% OFF
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* OPTION 2: CUSTOM BUMP OFFER (SCREENSHOT 2 LAYOUT + GALLERY UPLOAD) */}
+      {/* ======================================================== */}
+      {bumpOffer.mode === 'custom' && currentBumpType === 'custom' && (
+        <div className="space-y-4 p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-indigo-400" />
+              <span className="text-xs font-extrabold text-indigo-400 uppercase tracking-wide">
+                Custom Bump Offer (Gallery Upload &amp; Custom Link)
+              </span>
+            </div>
+            <span className="text-[10px] font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded-full">
+              Full Customization
+            </span>
+          </div>
+
+          {/* Pricing Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1">
+                Custom Bump Price (₹) *
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                  ₹
+                </span>
+                <input
+                  type="number"
+                  min="1"
+                  required
+                  value={bumpOffer.price}
+                  onChange={(e) => onChange({ ...bumpOffer, price: Number(e.target.value) })}
+                  className="w-full pl-7 pr-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-black text-emerald-400 focus:outline-none focus:border-amber-500"
+                  placeholder="99"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1">
+                MRP / Strikethrough Price (₹)
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                  ₹
+                </span>
+                <input
+                  type="number"
+                  min="1"
+                  value={bumpOffer.regular_price}
+                  onChange={(e) => onChange({ ...bumpOffer, regular_price: Number(e.target.value) })}
+                  className="w-full pl-7 pr-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-slate-400 line-through focus:outline-none focus:border-amber-500"
+                  placeholder="399"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1">
+                Discount Calculated
+              </label>
+              <div className="h-[38px] px-3 rounded-xl bg-emerald-500/15 border border-emerald-500/25 text-emerald-300 text-xs font-black flex items-center">
+                {discountPercent}% OFF
+              </div>
+            </div>
+          </div>
+
+          {/* Offer Title & Subtitle */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-slate-300 block">
+              Offer Title / Headline *
+            </label>
+            <input
+              type="text"
+              required
+              value={bumpOffer.title}
+              onChange={(e) => onChange({ ...bumpOffer, title: e.target.value })}
+              className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-white focus:outline-none focus:border-amber-500"
+              placeholder="1000+ AI Dog Reels Bundle – Cute Viral Dog Videos for Reels & Shorts"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-slate-300 block">
+              Offer Subtitle / Pitch
+            </label>
+            <textarea
+              rows={2}
+              value={bumpOffer.subtitle}
+              onChange={(e) => onChange({ ...bumpOffer, subtitle: e.target.value })}
+              className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-medium text-slate-200 focus:outline-none focus:border-amber-500"
+              placeholder="Cute AI dog moments, funny pet scenes and shareable canine content..."
+            />
+          </div>
+
+          {/* Bump Cover Image / Thumbnail (WITH GALLERY UPLOAD BUTTON matching screenshot 1 & 2) */}
+          <ImageUploadField
+            label="Bump Cover Image / Thumbnail"
+            value={bumpOffer.thumbnail}
+            onChange={(url) => onChange({ ...bumpOffer, thumbnail: url })}
+            helperText="Upload cover image from your device gallery or paste CDN image URL."
+            placeholder="https://... or upload from your device gallery"
+          />
+
+          {/* Google Drive Link for Bonus Fulfillment */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                <HardDrive className="w-3.5 h-3.5 text-amber-400" />
+                <span>Google Drive Link for Bonus Access</span>
+              </label>
+              <span className="text-[10px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">
+                Secure Delivery
+              </span>
+            </div>
+            <input
+              type="url"
+              placeholder="https://drive.google.com/drive/folders/..."
+              value={bumpOffer.google_drive_link}
+              onChange={(e) => onChange({ ...bumpOffer, google_drive_link: e.target.value })}
+              className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300 focus:outline-none focus:border-amber-500"
+            />
+            <span className="text-[10px] text-slate-500 block">
+              Customers who add this bump receive this link on the order success confirmation page and via email.
+            </span>
+          </div>
+
+          {/* Mini Live Preview */}
+          <div className="mt-4 pt-3 border-t border-slate-800 space-y-2">
+            <span className="text-[11px] font-black uppercase text-amber-400 tracking-wider">
+              Preview on Checkout Page:
+            </span>
+            <div className="rounded-2xl p-4 bg-gradient-to-br from-indigo-500/10 via-slate-900 to-indigo-500/5 border border-indigo-500/40 flex items-start gap-3">
+              {bumpOffer.thumbnail ? (
+                <img
+                  src={bumpOffer.thumbnail}
+                  alt={bumpOffer.title}
+                  className="w-16 h-12 rounded-lg object-cover border border-indigo-500/30 shrink-0"
+                />
+              ) : (
+                <div className="w-16 h-12 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500 shrink-0">
+                  <Package className="w-6 h-6" />
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-black text-white truncate">
+                  {bumpOffer.title || 'Custom Bump Bundle'}
                 </div>
                 <div className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
                   {bumpOffer.subtitle || '1-click special bonus offer'}

@@ -2870,6 +2870,7 @@ class PortalApiClient {
   async getGlobalBumpOffer(): Promise<GlobalBumpOffer> {
     const defaultBump: GlobalBumpOffer = {
       enabled: true,
+      bump_type: 'store_product',
       product_id: 'bump-special-01',
       product_slug: '1500-ultimate-twisted-world-reel-bundle',
       title: '1500+ Ultimate Twisted World & Viral AI Reels Pack',
@@ -2902,6 +2903,7 @@ class PortalApiClient {
           const b = data.bumpOffer;
           const merged: GlobalBumpOffer = {
             enabled: typeof b.enabled === 'boolean' ? b.enabled : true,
+            bump_type: b.bump_type || b.bumpType || (b.product_slug ? 'store_product' : 'custom') || defaultBump.bump_type,
             product_id: b.productId || b.product_id || defaultBump.product_id,
             product_slug: b.productSlug || b.product_slug || defaultBump.product_slug,
             title: b.title || defaultBump.title,
@@ -2939,6 +2941,7 @@ class PortalApiClient {
 
           const merged: GlobalBumpOffer = {
             enabled: typeof data.enabled === 'boolean' ? data.enabled : (data.bump_enabled ?? true),
+            bump_type: data.bump_type || (data.product_slug ? 'store_product' : 'custom') || defaultBump.bump_type,
             product_id: data.product_id || data.bump_product_id || defaultBump.product_id,
             product_slug: data.product_slug || data.bump_product_slug || defaultBump.product_slug,
             title: data.title || data.bump_title || defaultBump.title,

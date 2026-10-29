@@ -16,6 +16,9 @@ import {
   HardDrive,
   ShieldCheck,
   Sliders,
+  Lock,
+  Upload,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { portalApi } from '../api/client';
 import { GlobalBumpOffer, Product } from '../api/types';
@@ -42,6 +45,7 @@ export default function BumpOffers() {
   // 2. Form state
   const [form, setForm] = useState<GlobalBumpOffer>({
     enabled: true,
+    bump_type: 'store_product',
     product_id: 'bump-special-01',
     product_slug: '1500-ultimate-twisted-world-reel-bundle',
     title: '1500+ Ultimate Twisted World & Viral AI Reels Pack',
@@ -78,7 +82,7 @@ export default function BumpOffers() {
     });
   }, [products, productSearch]);
 
-  // Handler when user selects a store product to be the bump offer
+  // Handler when user selects a store product to be the bump offer (Option 1)
   const handleSelectProduct = (prod: Product) => {
     setSelectedStoreProductSlug(prod.slug);
     const driveLink =
@@ -92,6 +96,7 @@ export default function BumpOffers() {
 
     setForm((prev) => ({
       ...prev,
+      bump_type: 'store_product',
       product_id: String(prod.id),
       product_slug: prod.slug,
       title: prod.name,
@@ -146,6 +151,7 @@ export default function BumpOffers() {
     if (confirm('Reset global bump offer to factory default bundle?')) {
       const defaultBump: GlobalBumpOffer = {
         enabled: true,
+        bump_type: 'store_product',
         product_id: 'bump-special-01',
         product_slug: '1500-ultimate-twisted-world-reel-bundle',
         title: '1500+ Ultimate Twisted World & Viral AI Reels Pack',
@@ -263,272 +269,567 @@ export default function BumpOffers() {
             </label>
           </div>
 
-          {/* Select Product from Store */}
+          {/* 2. Choose Bump Offer Type (2 Options) */}
           <div className={`p-5 sm:p-6 rounded-2xl border ${
             isLight ? 'bg-white border-slate-200' : 'bg-slate-900/90 border-slate-800'
           } shadow-sm space-y-4`}>
             <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-2">
-                <Package className="w-4 h-4 text-amber-500" />
+                <Sparkles className="w-4 h-4 text-amber-500" />
                 <h2 className={`text-sm font-extrabold ${isLight ? 'text-slate-950' : 'text-white'}`}>
-                  Choose Product From Your Store
+                  Choose Bump Offer Type
                 </h2>
               </div>
-              <span className="text-[11px] font-bold text-slate-400">
-                {products.length} Products Available
+              <span className="text-[11px] font-bold text-amber-500">
+                2 Modes Available
               </span>
             </div>
 
-            <p className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Select any existing product from your catalog to offer as the checkout bump bonus. Details like title, thumbnail, and drive link will automatically populate.
-            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Option 1: Ready-Made Bump (Store Catalog Product) */}
+              <button
+                type="button"
+                onClick={() => {
+                  setForm((prev) => ({ ...prev, bump_type: 'store_product' }));
+                }}
+                className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                  form.bump_type === 'store_product'
+                    ? 'bg-amber-500/10 border-amber-500 ring-2 ring-amber-500/30'
+                    : isLight
+                    ? 'bg-slate-50 border-slate-200 hover:border-slate-300'
+                    : 'bg-slate-950 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between w-full mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-500 flex items-center justify-center">
+                        <Package className="w-4 h-4" />
+                      </div>
+                      <span className={`text-xs font-black ${isLight ? 'text-slate-900' : 'text-white'}`}>
+                        Option 1: Ready-Made Bump
+                      </span>
+                    </div>
+                    <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                      form.bump_type === 'store_product' ? 'border-amber-500 bg-amber-500' : 'border-slate-500'
+                    }`}>
+                      {form.bump_type === 'store_product' && <span className="w-1.5 h-1.5 rounded-full bg-slate-950" />}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-snug">
+                    Select an existing bundle from your store catalog. <strong>Image is auto-locked</strong> to the product, and you can edit the price &amp; title.
+                  </p>
+                </div>
+                <div className="mt-3 flex items-center gap-1.5 text-[10px] font-bold text-amber-500">
+                  <Check className="w-3 h-3" />
+                  <span>Catalog Bundle + Locked Image</span>
+                </div>
+              </button>
 
-            {/* Product Quick Picker Dropdown */}
-            <div className="space-y-2">
-              <label className={`text-xs font-bold block ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                Select Catalog Bundle
-              </label>
-              
-              <div className="relative">
-                <select
-                  value={selectedStoreProductSlug}
-                  onChange={(e) => {
-                    const found = products.find((p) => p.slug === e.target.value);
-                    if (found) handleSelectProduct(found);
-                  }}
-                  className={`w-full px-3.5 py-2.5 rounded-xl border text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/40 transition-colors ${
+              {/* Option 2: Custom Bump Offer (Create On This Page) */}
+              <button
+                type="button"
+                onClick={() => {
+                  setForm((prev) => ({ ...prev, bump_type: 'custom' }));
+                }}
+                className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                  form.bump_type === 'custom'
+                    ? 'bg-purple-500/10 border-purple-500 ring-2 ring-purple-500/30'
+                    : isLight
+                    ? 'bg-slate-50 border-slate-200 hover:border-slate-300'
+                    : 'bg-slate-950 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between w-full mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                        <Sparkles className="w-4 h-4" />
+                      </div>
+                      <span className={`text-xs font-black ${isLight ? 'text-slate-900' : 'text-white'}`}>
+                        Option 2: Custom Bump Offer
+                      </span>
+                    </div>
+                    <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                      form.bump_type === 'custom' ? 'border-purple-500 bg-purple-500' : 'border-slate-500'
+                    }`}>
+                      {form.bump_type === 'custom' && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-snug">
+                    Create a custom bump offer on this page. <strong>Upload cover image from gallery</strong> and enter a custom Google Drive link.
+                  </p>
+                </div>
+                <div className="mt-3 flex items-center gap-1.5 text-[10px] font-bold text-purple-400">
+                  <Upload className="w-3 h-3" />
+                  <span>Gallery Image Upload + Custom Drive</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* ======================================================== */}
+          {/* OPTION 1 CONTENT: READY-MADE FROM STORE CATALOG */}
+          {/* ======================================================== */}
+          {form.bump_type === 'store_product' && (
+            <>
+              {/* Select Product from Store */}
+              <div className={`p-5 sm:p-6 rounded-2xl border ${
+                isLight ? 'bg-white border-slate-200' : 'bg-slate-900/90 border-slate-800'
+              } shadow-sm space-y-4`}>
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+                  <div className="flex items-center gap-2">
+                    <Package className="w-4 h-4 text-amber-500" />
+                    <h2 className={`text-sm font-extrabold ${isLight ? 'text-slate-950' : 'text-white'}`}>
+                      Select Store Bundle
+                    </h2>
+                  </div>
+                  <span className="text-[11px] font-bold text-slate-400">
+                    {products.length} Products Available
+                  </span>
+                </div>
+
+                <p className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+                  Choose any bundle from your store. Its title, locked image, and Google Drive access link will auto-populate.
+                </p>
+
+                {/* Product Quick Picker Dropdown */}
+                <div className="space-y-2">
+                  <label className={`text-xs font-bold block ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                    Select Catalog Bundle
+                  </label>
+                  
+                  <div className="relative">
+                    <select
+                      value={selectedStoreProductSlug}
+                      onChange={(e) => {
+                        const found = products.find((p) => p.slug === e.target.value);
+                        if (found) handleSelectProduct(found);
+                      }}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/40 transition-colors ${
+                        isLight
+                          ? 'bg-slate-50 border-slate-200 text-slate-900'
+                          : 'bg-slate-950 border-slate-800 text-white'
+                      }`}
+                    >
+                      <option value="">-- Choose a bundle from store --</option>
+                      {products.map((p) => (
+                        <option key={p.id} value={p.slug}>
+                          {p.name} (₹{p.price} • {p.reel_count || 1000} Reels)
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Quick Product Search & List */}
+                <div className="space-y-2 pt-2">
+                  <div className="flex items-center justify-between">
+                    <label className={`text-xs font-bold ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                      Or Search Catalog
+                    </label>
+                    {productSearch && (
+                      <button
+                        type="button"
+                        onClick={() => setProductSearch('')}
+                        className="text-[11px] text-amber-500 font-bold hover:underline"
+                      >
+                        Clear search
+                      </button>
+                    )}
+                  </div>
+                  
+                  <input
+                    type="text"
+                    placeholder="Search products by title or keywords..."
+                    value={productSearch}
+                    onChange={(e) => setProductSearch(e.target.value)}
+                    className={`w-full px-3.5 py-2 rounded-xl border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
+                      isLight
+                        ? 'bg-slate-50 border-slate-200 text-slate-900'
+                        : 'bg-slate-950 border-slate-800 text-white'
+                    }`}
+                  />
+
+                  {productSearch.trim() && (
+                    <div className={`max-h-48 overflow-y-auto rounded-xl border divide-y ${
+                      isLight ? 'bg-slate-50 border-slate-200 divide-slate-100' : 'bg-slate-950 border-slate-800 divide-slate-900'
+                    }`}>
+                      {availableProducts.slice(0, 8).map((p) => (
+                        <div
+                          key={p.id}
+                          onClick={() => {
+                            handleSelectProduct(p);
+                            setProductSearch('');
+                          }}
+                          className={`p-2.5 flex items-center justify-between gap-3 cursor-pointer transition-colors ${
+                            selectedStoreProductSlug === p.slug
+                              ? 'bg-amber-500/10'
+                              : isLight ? 'hover:bg-slate-100' : 'hover:bg-slate-900'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            {p.featured_image && (
+                              <img
+                                src={p.featured_image}
+                                alt={p.name}
+                                className="w-8 h-8 rounded-lg object-cover shrink-0 border border-slate-700/30"
+                              />
+                            )}
+                            <span className={`text-xs font-bold truncate ${isLight ? 'text-slate-900' : 'text-white'}`}>
+                              {p.name}
+                            </span>
+                          </div>
+                          <span className="text-xs font-black text-amber-500 shrink-0">
+                            Select
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Ready-Made Bump Pricing & Details Card */}
+              <div className={`p-5 sm:p-6 rounded-2xl border ${
+                isLight ? 'bg-white border-slate-200' : 'bg-slate-900/90 border-slate-800'
+              } shadow-sm space-y-4`}>
+                <div className="flex items-center gap-2 pb-3 border-b border-slate-200 dark:border-slate-800">
+                  <Tag className="w-4 h-4 text-amber-500" />
+                  <h2 className={`text-sm font-extrabold ${isLight ? 'text-slate-950' : 'text-white'}`}>
+                    Ready-Made Bump Pricing &amp; Details
+                  </h2>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {/* Bump Offer Price */}
+                  <div>
+                    <label className={`text-xs font-bold block mb-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                      Bump Offer Price (₹) <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                        ₹
+                      </span>
+                      <input
+                        type="number"
+                        min="1"
+                        required
+                        value={form.price}
+                        onChange={(e) => handlePriceChange(Number(e.target.value))}
+                        className={`w-full pl-7 pr-3.5 py-2.5 rounded-xl border text-sm font-black focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
+                          isLight
+                            ? 'bg-slate-50 border-slate-200 text-emerald-600'
+                            : 'bg-slate-950 border-slate-800 text-emerald-400'
+                        }`}
+                      />
+                    </div>
+                    <span className="text-[10px] text-slate-400 mt-1 block">
+                      Amount customer pays when adding bump
+                    </span>
+                  </div>
+
+                  {/* Regular / MRP Price */}
+                  <div>
+                    <label className={`text-xs font-bold block mb-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                      MRP / Original Price (₹)
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                        ₹
+                      </span>
+                      <input
+                        type="number"
+                        min="1"
+                        value={form.regular_price}
+                        onChange={(e) => handleRegularPriceChange(Number(e.target.value))}
+                        className={`w-full pl-7 pr-3.5 py-2.5 rounded-xl border text-sm font-bold line-through focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
+                          isLight
+                            ? 'bg-slate-50 border-slate-200 text-slate-500'
+                            : 'bg-slate-950 border-slate-800 text-slate-400'
+                        }`}
+                      />
+                    </div>
+                    <span className="text-[10px] text-slate-400 mt-1 block">
+                      Strikethrough original MRP
+                    </span>
+                  </div>
+
+                  {/* Calculated Discount */}
+                  <div>
+                    <label className={`text-xs font-bold block mb-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                      Discount Badge
+                    </label>
+                    <div className="flex items-center h-[42px] px-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm font-black">
+                      {form.discount_percentage}% OFF
+                    </div>
+                    <span className="text-[10px] text-slate-400 mt-1 block">
+                      Calculated automatically
+                    </span>
+                  </div>
+                </div>
+
+                {/* Offer Title */}
+                <div className="space-y-1">
+                  <label className={`text-xs font-bold block ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                    Offer Title / Headline <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={form.title}
+                    onChange={(e) => setForm({ ...form, title: e.target.value })}
+                    className={`w-full px-3.5 py-2.5 rounded-xl border text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
+                      isLight
+                        ? 'bg-slate-50 border-slate-200 text-slate-900'
+                        : 'bg-slate-950 border-slate-800 text-white'
+                    }`}
+                  />
+                </div>
+
+                {/* Offer Subtitle / Pitch */}
+                <div className="space-y-1">
+                  <label className={`text-xs font-bold block ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                    Pitch / Subtitle Description
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={form.subtitle}
+                    onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
+                    className={`w-full px-3.5 py-2 rounded-xl border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
+                      isLight
+                        ? 'bg-slate-50 border-slate-200 text-slate-900'
+                        : 'bg-slate-950 border-slate-800 text-white'
+                    }`}
+                  />
+                </div>
+
+                {/* Cover Image: LOCKED & READ-ONLY (No edit/upload options in Ready-Made mode) */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className={`text-xs font-bold flex items-center gap-1.5 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                      <ImageIcon className="w-3.5 h-3.5 text-amber-500" />
+                      <span>Bump Cover Image (Locked to Store Product)</span>
+                    </label>
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full">
+                      <Lock className="w-3 h-3" />
+                      Image Locked (No Edit)
+                    </span>
+                  </div>
+
+                  <div className={`p-3 rounded-xl border flex items-center gap-3.5 ${
+                    isLight ? 'bg-slate-100/70 border-slate-200' : 'bg-slate-950 border-slate-800'
+                  }`}>
+                    {form.thumbnail ? (
+                      <img
+                        src={form.thumbnail}
+                        alt="Product Cover"
+                        className="w-14 h-14 rounded-lg object-cover border border-slate-700 shrink-0 shadow-sm"
+                      />
+                    ) : (
+                      <div className="w-14 h-14 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500 shrink-0">
+                        <Package className="w-6 h-6" />
+                      </div>
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <p className={`text-xs font-extrabold truncate ${isLight ? 'text-slate-900' : 'text-white'}`}>
+                        {form.title || 'Selected Bundle'}
+                      </p>
+                      <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">
+                        Cover image is permanently synced from the selected store bundle. (Image editing is disabled in ready-made mode). To upload custom artwork from your gallery, switch to Option 2 above.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Google Drive Link for Bonus Fulfillment */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <label className={`text-xs font-bold flex items-center gap-1.5 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                      <HardDrive className="w-3.5 h-3.5 text-amber-500" />
+                      <span>Google Drive Access Link (For Bonus Fulfillment)</span>
+                    </label>
+                    <span className="text-[10px] font-bold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded">
+                      Secure Delivery
+                    </span>
+                  </div>
+                  <input
+                    type="url"
+                    placeholder="https://drive.google.com/drive/folders/..."
+                    value={form.google_drive_link || ''}
+                    onChange={(e) => setForm({ ...form, google_drive_link: e.target.value })}
+                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
+                      isLight
+                        ? 'bg-slate-50 border-slate-200 text-slate-900'
+                        : 'bg-slate-950 border-slate-800 text-white'
+                    }`}
+                  />
+                  <span className="text-[10px] text-slate-400 block">
+                    Customers who add this bump receive this link on the order success confirmation page and via email.
+                  </span>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* ======================================================== */}
+          {/* OPTION 2 CONTENT: CUSTOM BUMP OFFER (SCREENSHOT 1 LAYOUT) */}
+          {/* ======================================================== */}
+          {form.bump_type === 'custom' && (
+            <div className={`p-5 sm:p-6 rounded-2xl border ${
+              isLight ? 'bg-white border-slate-200' : 'bg-slate-900/90 border-slate-800'
+            } shadow-sm space-y-4`}>
+              <div className="flex items-center gap-2 pb-3 border-b border-slate-200 dark:border-slate-800">
+                <Tag className="w-4 h-4 text-amber-500" />
+                <h2 className={`text-sm font-extrabold ${isLight ? 'text-slate-950' : 'text-white'}`}>
+                  Bump Pricing &amp; Details
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Bump Offer Price */}
+                <div>
+                  <label className={`text-xs font-bold block mb-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                    Bump Offer Price (₹) <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                      ₹
+                    </span>
+                    <input
+                      type="number"
+                      min="1"
+                      required
+                      value={form.price}
+                      onChange={(e) => handlePriceChange(Number(e.target.value))}
+                      className={`w-full pl-7 pr-3.5 py-2.5 rounded-xl border text-sm font-black focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
+                        isLight
+                          ? 'bg-slate-50 border-slate-200 text-emerald-600'
+                          : 'bg-slate-950 border-slate-800 text-emerald-400'
+                      }`}
+                      placeholder="99"
+                    />
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">
+                    Amount customer pays when adding bump
+                  </span>
+                </div>
+
+                {/* Regular / MRP Price */}
+                <div>
+                  <label className={`text-xs font-bold block mb-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                    MRP / Original Price (₹)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                      ₹
+                    </span>
+                    <input
+                      type="number"
+                      min="1"
+                      value={form.regular_price}
+                      onChange={(e) => handleRegularPriceChange(Number(e.target.value))}
+                      className={`w-full pl-7 pr-3.5 py-2.5 rounded-xl border text-sm font-bold line-through focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
+                        isLight
+                          ? 'bg-slate-50 border-slate-200 text-slate-500'
+                          : 'bg-slate-950 border-slate-800 text-slate-400'
+                      }`}
+                      placeholder="499"
+                    />
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">
+                    Strikethrough original MRP
+                  </span>
+                </div>
+
+                {/* Calculated Discount */}
+                <div>
+                  <label className={`text-xs font-bold block mb-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                    Discount Badge
+                  </label>
+                  <div className="flex items-center h-[42px] px-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm font-black">
+                    {form.discount_percentage}% OFF
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">
+                    Calculated automatically
+                  </span>
+                </div>
+              </div>
+
+              {/* Offer Title / Headline */}
+              <div className="space-y-1">
+                <label className={`text-xs font-bold block ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                  Offer Title / Headline <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={form.title}
+                  onChange={(e) => setForm({ ...form, title: e.target.value })}
+                  className={`w-full px-3.5 py-2.5 rounded-xl border text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
                     isLight
                       ? 'bg-slate-50 border-slate-200 text-slate-900'
                       : 'bg-slate-950 border-slate-800 text-white'
                   }`}
-                >
-                  <option value="">-- Choose a bundle from store --</option>
-                  {products.map((p) => (
-                    <option key={p.id} value={p.slug}>
-                      {p.name} (₹{p.price} • {p.reel_count || 1000} Reels)
-                    </option>
-                  ))}
-                </select>
+                  placeholder="1500+ Ultimate Twisted World & Viral AI Reels Pack"
+                />
               </div>
-            </div>
 
-            {/* Quick Product Search & List */}
-            <div className="space-y-2 pt-2">
-              <div className="flex items-center justify-between">
-                <label className={`text-xs font-bold ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                  Or Search Catalog
+              {/* Pitch / Subtitle Description */}
+              <div className="space-y-1">
+                <label className={`text-xs font-bold block ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                  Pitch / Subtitle Description
                 </label>
-                {productSearch && (
-                  <button
-                    type="button"
-                    onClick={() => setProductSearch('')}
-                    className="text-[11px] text-amber-500 font-bold hover:underline"
-                  >
-                    Clear search
-                  </button>
-                )}
+                <textarea
+                  rows={2}
+                  value={form.subtitle}
+                  onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
+                  className={`w-full px-3.5 py-2 rounded-xl border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
+                    isLight
+                      ? 'bg-slate-50 border-slate-200 text-slate-900'
+                      : 'bg-slate-950 border-slate-800 text-white'
+                  }`}
+                  placeholder="Add this exclusive bonus pack to your order & get 80% instant discount!"
+                />
               </div>
-              
-              <input
-                type="text"
-                placeholder="Search products by title or keywords..."
-                value={productSearch}
-                onChange={(e) => setProductSearch(e.target.value)}
-                className={`w-full px-3.5 py-2 rounded-xl border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
-                  isLight
-                    ? 'bg-slate-50 border-slate-200 text-slate-900'
-                    : 'bg-slate-950 border-slate-800 text-white'
-                }`}
+
+              {/* Bump Cover Image / Thumbnail (With Gallery Upload Button matching Screenshot 1) */}
+              <ImageUploadField
+                label="Bump Cover Image / Thumbnail"
+                value={form.thumbnail}
+                onChange={(url) => setForm({ ...form, thumbnail: url })}
+                helperText="Cover image displayed inside the checkout bump card."
+                placeholder="https://... or upload from your device gallery"
               />
 
-              {productSearch.trim() && (
-                <div className={`max-h-48 overflow-y-auto rounded-xl border divide-y ${
-                  isLight ? 'bg-slate-50 border-slate-200 divide-slate-100' : 'bg-slate-950 border-slate-800 divide-slate-900'
-                }`}>
-                  {availableProducts.slice(0, 8).map((p) => (
-                    <div
-                      key={p.id}
-                      onClick={() => {
-                        handleSelectProduct(p);
-                        setProductSearch('');
-                      }}
-                      className={`p-2.5 flex items-center justify-between gap-3 cursor-pointer transition-colors ${
-                        selectedStoreProductSlug === p.slug
-                          ? 'bg-amber-500/10'
-                          : isLight ? 'hover:bg-slate-100' : 'hover:bg-slate-900'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        {p.featured_image && (
-                          <img
-                            src={p.featured_image}
-                            alt={p.name}
-                            className="w-8 h-8 rounded-lg object-cover shrink-0 border border-slate-700/30"
-                          />
-                        )}
-                        <span className={`text-xs font-bold truncate ${isLight ? 'text-slate-900' : 'text-white'}`}>
-                          {p.name}
-                        </span>
-                      </div>
-                      <span className="text-xs font-black text-amber-500 shrink-0">
-                        Select
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Pricing & Offer Details */}
-          <div className={`p-5 sm:p-6 rounded-2xl border ${
-            isLight ? 'bg-white border-slate-200' : 'bg-slate-900/90 border-slate-800'
-          } shadow-sm space-y-4`}>
-            <div className="flex items-center gap-2 pb-3 border-b border-slate-200 dark:border-slate-800">
-              <Tag className="w-4 h-4 text-amber-500" />
-              <h2 className={`text-sm font-extrabold ${isLight ? 'text-slate-950' : 'text-white'}`}>
-                Bump Pricing &amp; Details
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {/* Bump Offer Price */}
-              <div>
-                <label className={`text-xs font-bold block mb-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                  Bump Offer Price (₹) <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                    ₹
+              {/* Google Drive Access Link (For Bonus Fulfillment) */}
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <label className={`text-xs font-bold flex items-center gap-1.5 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+                    <HardDrive className="w-3.5 h-3.5 text-amber-500" />
+                    <span>Google Drive Access Link (For Bonus Fulfillment)</span>
+                  </label>
+                  <span className="text-[10px] font-bold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded">
+                    Secure Delivery
                   </span>
-                  <input
-                    type="number"
-                    min="1"
-                    required
-                    value={form.price}
-                    onChange={(e) => handlePriceChange(Number(e.target.value))}
-                    className={`w-full pl-7 pr-3.5 py-2.5 rounded-xl border text-sm font-black focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
-                      isLight
-                        ? 'bg-slate-50 border-slate-200 text-emerald-600'
-                        : 'bg-slate-950 border-slate-800 text-emerald-400'
-                    }`}
-                  />
                 </div>
-                <span className="text-[10px] text-slate-400 mt-1 block">
-                  Amount customer pays when adding bump
-                </span>
-              </div>
-
-              {/* Regular / MRP Price */}
-              <div>
-                <label className={`text-xs font-bold block mb-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                  MRP / Original Price (₹)
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                    ₹
-                  </span>
-                  <input
-                    type="number"
-                    min="1"
-                    value={form.regular_price}
-                    onChange={(e) => handleRegularPriceChange(Number(e.target.value))}
-                    className={`w-full pl-7 pr-3.5 py-2.5 rounded-xl border text-sm font-bold line-through focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
-                      isLight
-                        ? 'bg-slate-50 border-slate-200 text-slate-500'
-                        : 'bg-slate-950 border-slate-800 text-slate-400'
-                    }`}
-                  />
-                </div>
-                <span className="text-[10px] text-slate-400 mt-1 block">
-                  Strikethrough original MRP
-                </span>
-              </div>
-
-              {/* Calculated Discount */}
-              <div>
-                <label className={`text-xs font-bold block mb-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                  Discount Badge
-                </label>
-                <div className="flex items-center h-[42px] px-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm font-black">
-                  {form.discount_percentage}% OFF
-                </div>
-                <span className="text-[10px] text-slate-400 mt-1 block">
-                  Calculated automatically
+                <input
+                  type="url"
+                  placeholder="https://drive.google.com/drive/folders/bonus-pack-twisted-world"
+                  value={form.google_drive_link || ''}
+                  onChange={(e) => setForm({ ...form, google_drive_link: e.target.value })}
+                  className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
+                    isLight
+                      ? 'bg-slate-50 border-slate-200 text-slate-900'
+                      : 'bg-slate-950 border-slate-800 text-white'
+                  }`}
+                />
+                <span className="text-[10px] text-slate-400 block">
+                  Customers who add this bump receive this link on the order success confirmation page and via email.
                 </span>
               </div>
             </div>
-
-            {/* Offer Title */}
-            <div className="space-y-1">
-              <label className={`text-xs font-bold block ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                Offer Title / Headline <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                value={form.title}
-                onChange={(e) => setForm({ ...form, title: e.target.value })}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
-                  isLight
-                    ? 'bg-slate-50 border-slate-200 text-slate-900'
-                    : 'bg-slate-950 border-slate-800 text-white'
-                }`}
-              />
-            </div>
-
-            {/* Offer Subtitle / Pitch */}
-            <div className="space-y-1">
-              <label className={`text-xs font-bold block ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                Pitch / Subtitle Description
-              </label>
-              <textarea
-                rows={2}
-                value={form.subtitle}
-                onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
-                className={`w-full px-3.5 py-2 rounded-xl border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
-                  isLight
-                    ? 'bg-slate-50 border-slate-200 text-slate-900'
-                    : 'bg-slate-950 border-slate-800 text-white'
-                }`}
-              />
-            </div>
-
-            {/* Thumbnail Image */}
-            <ImageUploadField
-              label="Bump Cover Image / Thumbnail"
-              value={form.thumbnail}
-              onChange={(url) => setForm({ ...form, thumbnail: url })}
-              helperText="Cover image displayed inside the checkout bump card."
-            />
-
-            {/* Google Drive Link for Bonus Fulfillment */}
-            <div className="space-y-1">
-              <div className="flex items-center justify-between">
-                <label className={`text-xs font-bold flex items-center gap-1.5 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                  <HardDrive className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Google Drive Access Link (For Bonus Fulfillment)</span>
-                </label>
-                <span className="text-[10px] font-bold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded">
-                  Secure Delivery
-                </span>
-              </div>
-              <input
-                type="url"
-                placeholder="https://drive.google.com/drive/folders/..."
-                value={form.google_drive_link || ''}
-                onChange={(e) => setForm({ ...form, google_drive_link: e.target.value })}
-                className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
-                  isLight
-                    ? 'bg-slate-50 border-slate-200 text-slate-900'
-                    : 'bg-slate-950 border-slate-800 text-white'
-                }`}
-              />
-              <span className="text-[10px] text-slate-400 block">
-                Customers who add this bump receive this link on the order success confirmation page and via email.
-              </span>
-            </div>
-          </div>
+          )}
 
           {/* Save Button Row */}
           <div className="flex items-center justify-end gap-3 pt-2">

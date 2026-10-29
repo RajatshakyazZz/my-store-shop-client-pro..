@@ -21,6 +21,7 @@ export async function GET() {
 
           bumpOffer = {
             enabled: typeof data.enabled === 'boolean' ? data.enabled : (data.bump_enabled ?? true),
+            bumpType: data.bump_type || data.bumpType || (data.product_slug ? 'store_product' : 'custom'),
             productId: data.product_id || data.bump_product_id || DEFAULT_GLOBAL_BUMP.productId,
             productSlug: data.product_slug || data.bump_product_slug || DEFAULT_GLOBAL_BUMP.productSlug,
             title: data.title || data.bump_title || DEFAULT_GLOBAL_BUMP.title,

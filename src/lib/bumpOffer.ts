@@ -5,6 +5,7 @@ import type { BundleProduct, OrderBumpItem, ProductBumpOfferConfig } from '@/typ
 
 export interface GlobalBumpOfferConfig {
   enabled: boolean;
+  bumpType?: 'store_product' | 'custom';
   productId: string;
   productSlug: string;
   title: string;
@@ -20,6 +21,7 @@ export interface GlobalBumpOfferConfig {
 
 export const DEFAULT_GLOBAL_BUMP: GlobalBumpOfferConfig = {
   enabled: true,
+  bumpType: 'store_product',
   productId: ORDER_BUMP.id || 'bump-special-01',
   productSlug: '1500-ultimate-twisted-world-reel-bundle',
   title: ORDER_BUMP.title || '1500+ Ultimate Twisted World & Viral AI Reels Pack',
@@ -83,6 +85,7 @@ export async function fetchGlobalBumpOffer(force = false): Promise<GlobalBumpOff
 
         cachedGlobalBump = {
           enabled: typeof data.enabled === 'boolean' ? data.enabled : (data.bump_enabled ?? true),
+          bumpType: data.bump_type || data.bumpType || (data.product_slug ? 'store_product' : 'custom'),
           productId: data.product_id || data.bump_product_id || DEFAULT_GLOBAL_BUMP.productId,
           productSlug: data.product_slug || data.bump_product_slug || DEFAULT_GLOBAL_BUMP.productSlug,
           title: data.title || data.bump_title || DEFAULT_GLOBAL_BUMP.title,
@@ -118,6 +121,7 @@ export async function fetchGlobalBumpOffer(force = false): Promise<GlobalBumpOff
 
           cachedGlobalBump = {
             enabled: typeof b.enabled === 'boolean' ? b.enabled : true,
+            bumpType: b.bump_type || b.bumpType || (b.product_slug ? 'store_product' : 'custom'),
             productId: b.product_id || DEFAULT_GLOBAL_BUMP.productId,
             productSlug: b.product_slug || DEFAULT_GLOBAL_BUMP.productSlug,
             title: b.title || DEFAULT_GLOBAL_BUMP.title,

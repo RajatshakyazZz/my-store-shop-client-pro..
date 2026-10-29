@@ -113,6 +113,7 @@ export type Product = z.infer<typeof ProductSchema>;
 
 export const GlobalBumpOfferSchema = z.object({
   enabled: z.boolean().default(true),
+  bump_type: z.enum(['store_product', 'custom']).default('store_product'),
   product_id: z.string().default('bump-special-01'),
   product_slug: z.string().default('1500-ultimate-twisted-world-reel-bundle'),
   title: z.string().default('1500+ Ultimate Twisted World & Viral AI Reels Pack'),

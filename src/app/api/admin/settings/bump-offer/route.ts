@@ -31,6 +31,7 @@ export async function GET() {
 
           bumpOffer = {
             enabled: typeof data.enabled === 'boolean' ? data.enabled : (data.bump_enabled ?? true),
+            bumpType: data.bump_type || data.bumpType || (data.product_slug ? 'store_product' : 'custom'),
             productId: data.product_id || data.bump_product_id || DEFAULT_GLOBAL_BUMP.productId,
             productSlug: data.product_slug || data.bump_product_slug || DEFAULT_GLOBAL_BUMP.productSlug,
             title: data.title || data.bump_title || DEFAULT_GLOBAL_BUMP.title,
@@ -58,6 +59,7 @@ export async function GET() {
 
             bumpOffer = {
               enabled: typeof b.enabled === 'boolean' ? b.enabled : true,
+              bumpType: b.bump_type || b.bumpType || (b.product_slug ? 'store_product' : 'custom'),
               productId: b.product_id || DEFAULT_GLOBAL_BUMP.productId,
               productSlug: b.product_slug || DEFAULT_GLOBAL_BUMP.productSlug,
               title: b.title || DEFAULT_GLOBAL_BUMP.title,
@@ -102,11 +104,14 @@ export async function POST(request: Request) {
     const thumbnail = String(body.thumbnail || DEFAULT_GLOBAL_BUMP.thumbnail).trim();
     const reel_count = Math.max(0, Number(body.reel_count || body.reelCount || DEFAULT_GLOBAL_BUMP.reelCount));
     const google_drive_link = String(body.google_drive_link || body.googleDriveLink || DEFAULT_GLOBAL_BUMP.googleDriveLink || '').trim();
+    const bump_type = (body.bump_type || body.bumpType || 'store_product') as 'store_product' | 'custom';
     const updated_at = new Date().toISOString();
 
     const payload = {
       enabled,
       bump_enabled: enabled,
+      bump_type,
+      bump_mode: bump_type,
       product_id,
       bump_product_id: product_id,
       product_slug,
