@@ -29,9 +29,79 @@ import {
 } from 'lucide-react';
 import { useStoreSettings } from '@/context/StoreSettingsContext';
 import { useCart } from '@/context/CartContext';
-import { ALL_ACCESS_PLANS } from '@/data/bundles';
+import { ALL_ACCESS_PLANS, BUNDLE_PRODUCTS } from '@/data/bundles';
 import { BundleProduct } from '@/types';
 import { track } from '@/lib/analytics';
+
+function resolveItemImage(item: any): string {
+  if (item?.thumbnail && !item.thumbnail.includes('photo-1618005182384-a83a8bd57fbe')) {
+    return item.thumbnail;
+  }
+  if (item?.featured_image && !item.featured_image.includes('photo-1618005182384-a83a8bd57fbe')) {
+    return item.featured_image;
+  }
+  if (item?.image && !item.image.includes('photo-1618005182384-a83a8bd57fbe')) {
+    return item.image;
+  }
+  if (item?.coverImage && !item.coverImage.includes('photo-1618005182384-a83a8bd57fbe')) {
+    return item.coverImage;
+  }
+
+  const cleanId = String(item?.id || '').toLowerCase().trim();
+  const cleanSlug = String(item?.slug || '').toLowerCase().trim();
+  const cleanTitle = String(item?.title || item?.name || '').toLowerCase().trim();
+  const normTitle = cleanTitle.replace(/[+_\-\/\\:.,()]/g, ' ').replace(/\s+/g, ' ').trim();
+
+  // 1. Local custom products cache in browser
+  if (typeof window !== 'undefined') {
+    try {
+      const raw = localStorage.getItem('vaultzet_custom_products');
+      if (raw) {
+        const list = JSON.parse(raw);
+        if (Array.isArray(list)) {
+          const match = list.find((p: any) => {
+            const pId = String(p.id || '').toLowerCase().trim();
+            const pSlug = String(p.slug || '').toLowerCase().trim();
+            const pName = String(p.name || p.title || '').toLowerCase().trim();
+            const normPName = pName.replace(/[+_\-\/\\:.,()]/g, ' ').replace(/\s+/g, ' ').trim();
+            const normPSlug = pSlug.replace(/[+_\-\/\\:.,()]/g, ' ').replace(/\s+/g, ' ').trim();
+            return (
+              (cleanId && (pId === cleanId || pSlug === cleanId)) ||
+              (cleanSlug && (pSlug === cleanSlug || pId === cleanSlug)) ||
+              (normPSlug && (normTitle.includes(normPSlug) || normPSlug.includes(normTitle))) ||
+              (normPName && (normTitle.includes(normPName) || normPName.includes(normTitle)))
+            );
+          });
+          const found = match?.featured_image || match?.thumbnail || match?.image;
+          if (found && !found.includes('photo-1618005182384-a83a8bd57fbe')) {
+            return found;
+          }
+        }
+      }
+    } catch {}
+  }
+
+  // 2. Catalog BUNDLE_PRODUCTS
+  const catalogMatch = BUNDLE_PRODUCTS.find((b) => {
+    const bId = b.id.toLowerCase().trim();
+    const bSlug = b.slug.toLowerCase().trim();
+    const bTitle = b.title.toLowerCase().trim();
+    const normBTitle = bTitle.replace(/[+_\-\/\\:.,()]/g, ' ').replace(/\s+/g, ' ').trim();
+    const normBSlug = bSlug.replace(/[+_\-\/\\:.,()]/g, ' ').replace(/\s+/g, ' ').trim();
+    return (
+      (cleanId && (bId === cleanId || bSlug === cleanId)) ||
+      (cleanSlug && (bSlug === cleanSlug || bId === cleanSlug)) ||
+      (normBSlug && (normTitle.includes(normBSlug) || normBSlug.includes(normTitle))) ||
+      (normBTitle && (normTitle.includes(normBTitle) || normBTitle.includes(normTitle)))
+    );
+  });
+
+  if (catalogMatch?.thumbnail && !catalogMatch.thumbnail.includes('photo-1618005182384-a83a8bd57fbe')) {
+    return catalogMatch.thumbnail;
+  }
+
+  return item?.thumbnail || item?.featured_image || item?.image || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80';
+}
 
 function OrderSuccessContent() {
   const searchParams = useSearchParams();
@@ -408,11 +478,12 @@ function OrderSuccessContent() {
                     className="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 items-start sm:items-center justify-between"
                   >
                     <div className="flex gap-3 items-center min-w-0">
-                      {item.thumbnail && (
+                      {resolveItemImage(item) && (
                         <img
-                          src={item.thumbnail}
+                          src={resolveItemImage(item)}
                           alt={item.title}
                           className="w-14 h-16 object-cover rounded-xl shrink-0 border border-slate-200"
+                          loading="lazy"
                         />
                       )}
                       <div className="min-w-0 space-y-1">
@@ -761,10 +832,7 @@ function OrderSuccessContent() {
                           <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-900 shadow-sm border border-slate-100">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                              src={
-                                item.thumbnail ||
-                                'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80'
-                              }
+                              src={resolveItemImage(item)}
                               alt={item.title}
                               className="w-full h-full object-cover"
                               loading="lazy"

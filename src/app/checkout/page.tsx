@@ -528,13 +528,21 @@ function CheckoutContent() {
                 email: email.trim().toLowerCase() || 'Entering email...',
                 phone,
               },
-              items: allCheckoutItems.map((i) => ({
-                id: i?.product?.id || 'bundle',
-                title: i?.product?.title || 'Viral Reels Bundle',
-                license: i?.license || 'personal',
-                price: Number(i?.price || 0),
-                isFreeBonus: Boolean(i?.isFreeBonus),
-              })),
+              items: allCheckoutItems.map((i) => {
+                const prod = i?.product as any;
+                const thumb = prod?.thumbnail || prod?.featured_image || prod?.image || prod?.coverImage || '';
+                return {
+                  id: prod?.id || 'bundle',
+                  title: prod?.title || prod?.name || 'Viral Reels Bundle',
+                  slug: prod?.slug || '',
+                  thumbnail: thumb,
+                  image: thumb,
+                  featured_image: thumb,
+                  license: i?.license || 'personal',
+                  price: Number(i?.price || 0),
+                  isFreeBonus: Boolean(i?.isFreeBonus),
+                };
+              }),
               orderBump: (orderBumpAdded && activeBumpOffer)
                 ? {
                     id: activeBumpOffer.id || activeBumpOffer.productId || 'order-bump',
@@ -603,13 +611,23 @@ function CheckoutContent() {
         email: email.trim().toLowerCase(),
         phone: phone.trim(),
       },
-      items: allCheckoutItems.map((i) => ({
-        id: i?.product?.id || 'bundle',
-        title: i?.product?.title || 'Viral Reels Bundle',
-        license: i?.license || 'personal',
-        price: Number(i?.price || 0),
-        isFreeBonus: Boolean(i?.isFreeBonus),
-      })),
+      items: allCheckoutItems.map((i) => {
+        const prod = i?.product as any;
+        const thumb = prod?.thumbnail || prod?.featured_image || prod?.image || prod?.coverImage || '';
+        return {
+          id: prod?.id || 'bundle',
+          title: prod?.title || prod?.name || 'Viral Reels Bundle',
+          slug: prod?.slug || '',
+          thumbnail: thumb,
+          image: thumb,
+          featured_image: thumb,
+          license: i?.license || 'personal',
+          price: Number(i?.price || 0),
+          format: prod?.format || 'MP4 Video',
+          resolution: prod?.resolution || '1080P FULL HD',
+          isFreeBonus: Boolean(i?.isFreeBonus),
+        };
+      }),
       orderBump: (orderBumpAdded && activeBumpOffer)
         ? {
             id: activeBumpOffer.id || activeBumpOffer.productId || 'order-bump',

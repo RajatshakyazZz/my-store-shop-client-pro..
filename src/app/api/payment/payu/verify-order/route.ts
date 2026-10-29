@@ -14,58 +14,39 @@ export const runtime = 'nodejs';
 interface ResolvedProductFiles {
   primaryLink: string;
   files: Array<{ id?: string; name: string; file_url: string }>;
+  thumbnail?: string;
+  resolution?: string;
+  format?: string;
 }
 
-async function resolveDriveFilesForProduct(item: { id?: string; title?: string }): Promise<ResolvedProductFiles> {
+async function resolveDriveFilesForProduct(item: { id?: string; title?: string; slug?: string }): Promise<ResolvedProductFiles> {
   const cleanId = String(item.id || '').trim();
+  const cleanSlug = String((item as any).slug || '').trim().toLowerCase();
   const cleanTitle = String(item.title || '').trim().toLowerCase();
 
-  // 1. Check Firestore products collection directly
-  if (db && cleanId) {
+  const getDocThumb = (docData: any): string => {
+    if (!docData) return '';
+    return String(
+      docData.featured_image ||
+      docData.thumbnail ||
+      docData.image ||
+      docData.coverImage ||
+      (Array.isArray(docData.gallery_images) ? docData.gallery_images[0] : '') ||
+      (Array.isArray(docData.images) ? docData.images[0] : '') ||
+      ''
+    ).trim();
+  };
+
+  // 1. Check Firestore products collection directly by ID or Slug
+  if (db && (cleanId || cleanSlug)) {
     try {
-      const snap = await getDoc(doc(db, 'products', cleanId));
-      if (snap.exists()) {
-        const data = snap.data();
-        const filesList: any[] = Array.isArray(data.files) && data.files.length > 0
-          ? data.files
-              .filter((f: any) => f && (f.file_url || f.url))
-              .map((f: any, idx: number) => ({
-                id: f.id || `file-${idx + 1}`,
-                name: f.name || `Drive File ${idx + 1}`,
-                file_url: f.file_url || f.url,
-              }))
-          : [];
-
-        const primaryLink =
-          filesList[0]?.file_url ||
-          data.google_drive_link ||
-          data.googleDriveLink ||
-          '';
-
-        if (filesList.length > 0 || (primaryLink && primaryLink.startsWith('http'))) {
-          return {
-            primaryLink: primaryLink || filesList[0]?.file_url,
-            files:
-              filesList.length > 0
-                ? filesList
-                : [{ name: `${item.title || 'Reels Bundle'} Google Drive Access`, file_url: primaryLink }],
-          };
-        }
-      }
-    } catch (e) {
-      console.warn('Error reading product doc for drive link:', e);
-    }
-  }
-
-  // 2. Search Firestore products collection by title or slug
-  if (db) {
-    try {
-      const snap = await getDocs(collection(db, 'products'));
-      for (const d of snap.docs) {
-        const data = d.data();
-        const matchesName = data.name && data.name.toLowerCase() === cleanTitle;
-        const matchesSlug = data.slug && (data.slug === cleanId || cleanTitle.includes(data.slug));
-        if (matchesName || matchesSlug) {
+      const candidates = [cleanId, cleanSlug, `rb-${cleanSlug}`, cleanId.replace(/^rb-/, '')].filter(Boolean);
+      for (const targetId of candidates) {
+        if (!targetId || targetId === 'bundle') continue;
+        const snap = await getDoc(doc(db, 'products', targetId));
+        if (snap.exists()) {
+          const data = snap.data();
+          const thumb = getDocThumb(data);
           const filesList: any[] = Array.isArray(data.files) && data.files.length > 0
             ? data.files
                 .filter((f: any) => f && (f.file_url || f.url))
@@ -82,15 +63,71 @@ async function resolveDriveFilesForProduct(item: { id?: string; title?: string }
             data.googleDriveLink ||
             '';
 
-          if (filesList.length > 0 || (primaryLink && primaryLink.startsWith('http'))) {
-            return {
-              primaryLink: primaryLink || filesList[0]?.file_url,
-              files:
-                filesList.length > 0
-                  ? filesList
-                  : [{ name: `${data.name || item.title || 'Reels Bundle'} Google Drive Access`, file_url: primaryLink }],
-            };
-          }
+          return {
+            primaryLink: primaryLink || filesList[0]?.file_url || 'https://drive.google.com/drive/folders/vaultworld-master-access',
+            files:
+              filesList.length > 0
+                ? filesList
+                : [{ name: `${data.name || item.title || 'Reels Bundle'} Google Drive Access`, file_url: primaryLink || 'https://drive.google.com' }],
+            thumbnail: thumb,
+            resolution: data.resolution || '1080P FULL HD',
+            format: data.format || 'MP4 Video',
+          };
+        }
+      }
+    } catch (e) {
+      console.warn('Error reading product doc for drive link:', e);
+    }
+  }
+
+  // 2. Search Firestore products collection by title or slug
+  if (db) {
+    try {
+      const snap = await getDocs(collection(db, 'products'));
+      const normCleanTitle = cleanTitle.replace(/[+_\-\/\\:.,()]/g, ' ').replace(/\s+/g, ' ').trim();
+      const normCleanSlug = cleanSlug.replace(/[+_\-\/\\:.,()]/g, ' ').replace(/\s+/g, ' ').trim();
+
+      for (const d of snap.docs) {
+        const data = d.data();
+        const docName = String(data.name || data.title || '').toLowerCase().trim();
+        const docSlug = String(data.slug || '').toLowerCase().trim();
+        const normDocName = docName.replace(/[+_\-\/\\:.,()]/g, ' ').replace(/\s+/g, ' ').trim();
+        const normDocSlug = docSlug.replace(/[+_\-\/\\:.,()]/g, ' ').replace(/\s+/g, ' ').trim();
+
+        const matchesDocId = d.id === cleanId || d.id === cleanSlug || (cleanSlug && d.id.includes(cleanSlug));
+        const matchesExactName = docName && (docName === cleanTitle || cleanTitle.includes(docName) || docName.includes(cleanTitle));
+        const matchesExactSlug = docSlug && (docSlug === cleanId || docSlug === cleanSlug || cleanSlug.includes(docSlug) || cleanTitle.includes(docSlug));
+        const matchesNormName = normDocName && (normDocName === normCleanTitle || normCleanTitle.includes(normDocName) || normDocName.includes(normCleanTitle));
+        const matchesNormSlug = normDocSlug && (normCleanTitle.includes(normDocSlug) || normDocSlug.includes(normCleanTitle) || (normCleanSlug && (normCleanSlug.includes(normDocSlug) || normDocSlug.includes(normCleanSlug))));
+
+        if (matchesDocId || matchesExactName || matchesExactSlug || matchesNormName || matchesNormSlug) {
+          const thumb = getDocThumb(data);
+          const filesList: any[] = Array.isArray(data.files) && data.files.length > 0
+            ? data.files
+                .filter((f: any) => f && (f.file_url || f.url))
+                .map((f: any, idx: number) => ({
+                  id: f.id || `file-${idx + 1}`,
+                  name: f.name || `Drive File ${idx + 1}`,
+                  file_url: f.file_url || f.url,
+                }))
+            : [];
+
+          const primaryLink =
+            filesList[0]?.file_url ||
+            data.google_drive_link ||
+            data.googleDriveLink ||
+            '';
+
+          return {
+            primaryLink: primaryLink || filesList[0]?.file_url || 'https://drive.google.com/drive/folders/vaultworld-master-access',
+            files:
+              filesList.length > 0
+                ? filesList
+                : [{ name: `${data.name || item.title || 'Reels Bundle'} Google Drive Access`, file_url: primaryLink || 'https://drive.google.com' }],
+            thumbnail: thumb,
+            resolution: data.resolution || '1080P FULL HD',
+            format: data.format || 'MP4 Video',
+          };
         }
       }
     } catch (e) {
@@ -102,11 +139,13 @@ async function resolveDriveFilesForProduct(item: { id?: string; title?: string }
   try {
     const pdl = (serverProductLinks as any)?.byId?.[cleanId] ||
       (serverProductLinks as any)?.byId?.[`rb-${cleanId}`] ||
-      (serverProductLinks as any)?.bySlug?.[cleanId];
+      (serverProductLinks as any)?.bySlug?.[cleanId] ||
+      (cleanSlug && (serverProductLinks as any)?.bySlug?.[cleanSlug]);
     if (pdl && pdl.primaryLink && !pdl.primaryLink.includes('/demo-')) {
       return {
         primaryLink: pdl.primaryLink,
         files: pdl.files && pdl.files.length > 0 ? pdl.files : [{ name: `${pdl.title || item.title || 'Reels Bundle'} Google Drive Access`, file_url: pdl.primaryLink }],
+        thumbnail: pdl.thumbnail || '',
       };
     }
   } catch (e) {
@@ -118,8 +157,9 @@ async function resolveDriveFilesForProduct(item: { id?: string; title?: string }
     (b) =>
       b.id === cleanId ||
       b.slug === cleanId ||
+      (cleanSlug && (b.slug === cleanSlug || b.id === cleanSlug)) ||
       b.title.toLowerCase() === cleanTitle ||
-      (cleanTitle && cleanTitle.includes(b.slug))
+      (cleanTitle && (cleanTitle.includes(b.slug) || b.title.toLowerCase().includes(cleanTitle) || cleanTitle.includes(b.title.toLowerCase())))
   );
 
   const matchedLink = matched?.googleDriveLink || 'https://drive.google.com/drive/folders/vaultworld-master-access';
@@ -127,9 +167,12 @@ async function resolveDriveFilesForProduct(item: { id?: string; title?: string }
     ? matched.files
     : [{ name: `${matched?.title || item.title || 'Reels Bundle'} Google Drive Access`, file_url: matchedLink }];
 
+  const matchedThumb = String(matched?.thumbnail || (matched as any)?.featured_image || (matched as any)?.image || '').trim();
+
   return {
     primaryLink: matchedLink,
     files: matchedFiles,
+    thumbnail: matchedThumb,
   };
 }
 
@@ -198,13 +241,26 @@ async function handleVerify(
     const verifiedItems = await Promise.all(
       rawItems.map(async (it: any) => {
         const resolved = await resolveDriveFilesForProduct(it);
+        const resolvedThumb =
+          it.thumbnail ||
+          it.featured_image ||
+          it.image ||
+          it.coverImage ||
+          resolved.thumbnail ||
+          '';
+
         return {
           id: it.id,
           title: it.title,
+          slug: it.slug || (it as any).productSlug || '',
           license: it.license || 'personal',
           googleDriveLink: resolved.primaryLink,
           files: resolved.files,
-          thumbnail: it.thumbnail,
+          thumbnail: resolvedThumb,
+          featured_image: resolvedThumb,
+          image: resolvedThumb,
+          resolution: it.resolution || resolved.resolution || '1080P FULL HD',
+          format: it.format || resolved.format || 'MP4 Video',
         };
       })
     );
@@ -212,10 +268,20 @@ async function handleVerify(
     let resolvedBump: any = null;
     if (storedOrder?.orderBump) {
       const bumpDrive = await resolveDriveFilesForProduct(storedOrder.orderBump);
+      const bumpThumb =
+        storedOrder.orderBump.thumbnail ||
+        storedOrder.orderBump.featured_image ||
+        storedOrder.orderBump.image ||
+        bumpDrive.thumbnail ||
+        '';
+
       resolvedBump = {
         ...storedOrder.orderBump,
         googleDriveLink: bumpDrive.primaryLink || storedOrder.orderBump.googleDriveLink || 'https://drive.google.com/drive/folders/bonus-pack-twisted-world',
         files: bumpDrive.files,
+        thumbnail: bumpThumb,
+        featured_image: bumpThumb,
+        image: bumpThumb,
       };
     }
 
