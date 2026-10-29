@@ -92,12 +92,12 @@ export function sanitizePayload<T>(input: T): T {
 }
 
 const initialTelegram: TelegramConfig = {
-  enabled: false,
+  enabled: true,
   bot_token: '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA',
   admin_chat_ids: '7483268297, 5950203511, 6206169480',
-  new_order_alert: false,
-  product_alert: false,
-  daily_summary_alert: false,
+  new_order_alert: true,
+  product_alert: true,
+  daily_summary_alert: true,
 };
 
 class PortalApiClient {
@@ -2686,49 +2686,127 @@ class PortalApiClient {
   // TELEGRAM BOT & ALERTS
   // ==========================================
   async getTelegramConfig(): Promise<TelegramConfig> {
+    // 1. Try server API route first for cross-device consistency
+    try {
+      const res = await fetch('/api/admin/settings/telegram', { cache: 'no-store' });
+      if (res.ok) {
+        const json = await res.json();
+        if (json?.success && json?.config) {
+          const cfg: TelegramConfig = {
+            ...initialTelegram,
+            ...json.config,
+            enabled: json.config.enabled !== false,
+          };
+          this.saveSettingLocally('telegram', cfg);
+          return cfg;
+        }
+      }
+    } catch {}
+
+    // 2. Direct Firestore read
     if (db) {
       try {
         const snap = await getDoc(doc(db, 'store_settings', 'telegram'));
         if (snap.exists()) {
           const data = snap.data() as TelegramConfig;
-          this.saveSettingLocally('telegram', data);
-          return data;
+          const merged: TelegramConfig = {
+            ...initialTelegram,
+            ...data,
+            enabled: data.enabled !== false,
+          };
+          this.saveSettingLocally('telegram', merged);
+          return merged;
         }
       } catch (e) {
         console.warn('Firestore telegram fetch error, using local cache:', e);
       }
     }
-    return this.getSavedSetting('telegram', initialTelegram);
+
+    // 3. Fallback to localStorage or initialTelegram
+    const local = this.getSavedSetting('telegram', initialTelegram);
+    return {
+      ...initialTelegram,
+      ...local,
+      enabled: local.enabled !== false,
+    };
   }
 
   async updateTelegramConfig(config: TelegramConfig): Promise<TelegramConfig> {
-    const clean = sanitizePayload(config);
+    const clean: TelegramConfig = {
+      ...config,
+      enabled: config.enabled !== false,
+      bot_token: String(config.bot_token || '').trim() || initialTelegram.bot_token,
+      admin_chat_ids: String(config.admin_chat_ids || '').trim() || initialTelegram.admin_chat_ids,
+      new_order_alert: config.new_order_alert !== false,
+      product_alert: config.product_alert !== false,
+      daily_summary_alert: config.daily_summary_alert !== false,
+    };
+
     this.saveSettingLocally('telegram', clean);
+
+    // 1. Send to server API route to ensure server-side persistence & cache sync
+    try {
+      await fetch('/api/admin/settings/telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(clean),
+      });
+    } catch (e) {
+      console.warn('API error saving telegram config:', e);
+    }
+
+    // 2. Direct Firestore write
     if (db) {
       try {
-        await setDoc(doc(db, 'store_settings', 'telegram'), clean, { merge: true });
+        const sanitized = sanitizePayload(clean);
+        await setDoc(doc(db, 'store_settings', 'telegram'), sanitized, { merge: true });
+        await setDoc(
+          doc(db, 'store_settings', 'general'),
+          { telegram: sanitized },
+          { merge: true }
+        );
       } catch (e) {
         console.warn('Firestore updateTelegram error:', e);
       }
     }
+
     await logAdminAction({
       adminEmail: 'admin@vaultzet.com',
       action: 'UPDATE_TELEGRAM_CONFIG',
       module: 'Telegram Alerts',
-      details: `Updated Telegram bot token & admin chat IDs (${clean.admin_chat_ids})`,
+      details: `Updated Telegram bot token & admin chat IDs (${clean.admin_chat_ids}, Status: ${clean.enabled ? 'ACTIVE' : 'DISABLED'})`,
     });
+
     return clean;
   }
 
   async testTelegramAlert(): Promise<{ success: boolean; message: string }> {
     const tg = await this.getTelegramConfig();
-    const token = tg.bot_token?.trim() || '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
-    const rawIds = tg.admin_chat_ids?.trim() || '7483268297, 5950203511, 6206169480';
+    const token = tg.bot_token?.trim() || initialTelegram.bot_token;
+    const rawIds = tg.admin_chat_ids?.trim() || initialTelegram.admin_chat_ids;
     const targetChatIds = rawIds
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean);
 
+    // 1. Try server-side test dispatch first
+    try {
+      const apiRes = await fetch('/api/admin/settings/telegram/test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bot_token: token, admin_chat_ids: targetChatIds.join(',') }),
+      });
+      if (apiRes.ok) {
+        const json = await apiRes.json();
+        if (json.success) {
+          return { success: true, message: json.message };
+        }
+      }
+    } catch (e) {
+      console.warn('Server test dispatch warning, falling back to client fetch:', e);
+    }
+
+    // 2. Direct client fallback dispatch
     const istTime = new Date().toLocaleString('en-IN', {
       timeZone: 'Asia/Kolkata',
       dateStyle: 'medium',

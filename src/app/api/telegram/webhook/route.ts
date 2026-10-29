@@ -5,6 +5,7 @@ import {
   OWNER_CHAT_ID,
   AUTHORIZED_TELEGRAM_ADMINS,
   sendStoreCommandReport,
+  fetchDynamicTelegramConfig,
 } from '@/lib/telegram';
 import {
   isAuthorizedTelegramAdmin,
@@ -17,7 +18,10 @@ import {
 
 async function answerCallbackQuery(callbackQueryId: string, text?: string) {
   try {
-    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/answerCallbackQuery`, {
+    const config = await fetchDynamicTelegramConfig().catch(() => null);
+    const token = (config?.botToken || TELEGRAM_BOT_TOKEN || '').trim();
+    if (!token) return;
+    await fetch(`https://api.telegram.org/bot${token}/answerCallbackQuery`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -34,7 +38,9 @@ async function answerCallbackQuery(callbackQueryId: string, text?: string) {
  * Strictly authorized to configured Admin user IDs (7483268297, 5950203511, and 6206169480)
  */
 export async function POST(request: Request) {
-  if (!TELEGRAM_ALERTS_ENABLED) {
+  const tgConfig = await fetchDynamicTelegramConfig().catch(() => null);
+  const isEnabled = tgConfig ? tgConfig.enabled !== false : TELEGRAM_ALERTS_ENABLED;
+  if (!isEnabled) {
     return NextResponse.json({ ok: true, disabled: true });
   }
   try {
@@ -174,19 +180,25 @@ export async function POST(request: Request) {
  * Registers the Telegram Webhook & Bot Command Menu
  */
 export async function GET(request: Request) {
-  if (!TELEGRAM_ALERTS_ENABLED) {
+  const config = await fetchDynamicTelegramConfig().catch(() => null);
+  const isEnabled = config ? config.enabled !== false : TELEGRAM_ALERTS_ENABLED;
+  if (!isEnabled) {
     return NextResponse.json({
       success: false,
       disabled: true,
-      message: 'Telegram alerts are temporarily disabled.',
+      message: 'Telegram alerts are temporarily disabled in settings.',
     });
   }
   try {
+    const token = (config?.botToken || TELEGRAM_BOT_TOKEN || '').trim();
+    if (!token) {
+      return NextResponse.json({ success: false, error: 'Missing Telegram Bot Token' }, { status: 400 });
+    }
     const host = request.headers.get('host') || (process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL).host : 'vaultworld.shop');
     const protocol = host.includes('localhost') ? 'http' : 'https';
     const webhookUrl = `${protocol}://${host}/api/telegram/webhook`;
 
-    const registerWebhookUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook`;
+    const registerWebhookUrl = `https://api.telegram.org/bot${token}/setWebhook`;
     const webhookPayload: Record<string, any> = {
       url: webhookUrl,
       drop_pending_updates: true,
@@ -205,7 +217,7 @@ export async function GET(request: Request) {
     const webhookResult = await res.json();
 
     // Register bot commands list with Telegram
-    const commandsUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setMyCommands`;
+    const commandsUrl = `https://api.telegram.org/bot${token}/setMyCommands`;
     await fetch(commandsUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

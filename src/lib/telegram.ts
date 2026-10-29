@@ -5,8 +5,17 @@ import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { BUNDLE_PRODUCTS } from '@/data/bundles';
 
-// Master toggle: set to true when ready to re-enable Telegram alerts
-export const TELEGRAM_ALERTS_ENABLED = false;
+// Master toggle: Enabled by default, dynamically synced with store_settings/telegram in Firestore
+export let TELEGRAM_ALERTS_ENABLED = true;
+
+export interface ServerTelegramConfig {
+  enabled: boolean;
+  botToken: string;
+  adminChatIds: string[];
+  newOrderAlert: boolean;
+  productAlert: boolean;
+  dailySummaryAlert: boolean;
+}
 
 export const TELEGRAM_BOT_TOKEN =
   process.env.TELEGRAM_BOT_TOKEN || '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
@@ -24,6 +33,91 @@ const ENV_ADMIN_IDS = [
 export const AUTHORIZED_TELEGRAM_ADMINS: string[] = Array.from(
   new Set([...DEFAULT_ADMIN_IDS, ...ENV_ADMIN_IDS])
 );
+
+let cachedServerTelegramConfig: ServerTelegramConfig | null = null;
+let lastServerTelegramFetch = 0;
+
+export async function fetchDynamicTelegramConfig(force = false): Promise<ServerTelegramConfig> {
+  const now = Date.now();
+  if (!force && cachedServerTelegramConfig && now - lastServerTelegramFetch < 30000) {
+    return cachedServerTelegramConfig;
+  }
+
+  let envAdmins = [
+    ...(process.env.TELEGRAM_ALLOWED_USER_IDS ? process.env.TELEGRAM_ALLOWED_USER_IDS.split(',') : []),
+    process.env.TELEGRAM_CHAT_ID,
+    process.env.TELEGRAM_OWNER_CHAT_ID,
+  ]
+    .map((s) => String(s || '').trim())
+    .filter(Boolean);
+
+  let resolvedConfig: ServerTelegramConfig = {
+    enabled: true,
+    botToken: process.env.TELEGRAM_BOT_TOKEN || '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA',
+    adminChatIds: Array.from(new Set([...DEFAULT_ADMIN_IDS, ...envAdmins])),
+    newOrderAlert: true,
+    productAlert: true,
+    dailySummaryAlert: true,
+  };
+
+  if (db) {
+    try {
+      const snap = await getDoc(doc(db, 'store_settings', 'telegram')).catch(() => null);
+      if (snap && snap.exists()) {
+        const data = snap.data();
+        const customAdmins = String(data.admin_chat_ids || '')
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+
+        const allAdmins = Array.from(
+          new Set([...DEFAULT_ADMIN_IDS, ...envAdmins, ...customAdmins])
+        );
+
+        resolvedConfig = {
+          enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
+          botToken: String(data.bot_token || '').trim() || resolvedConfig.botToken,
+          adminChatIds: allAdmins.length > 0 ? allAdmins : resolvedConfig.adminChatIds,
+          newOrderAlert: typeof data.new_order_alert === 'boolean' ? data.new_order_alert : true,
+          productAlert: typeof data.product_alert === 'boolean' ? data.product_alert : true,
+          dailySummaryAlert: typeof data.daily_summary_alert === 'boolean' ? data.daily_summary_alert : true,
+        };
+      } else {
+        const genSnap = await getDoc(doc(db, 'store_settings', 'general')).catch(() => null);
+        if (genSnap && genSnap.exists()) {
+          const gData = genSnap.data();
+          if (gData.telegram && typeof gData.telegram === 'object') {
+            const t = gData.telegram;
+            const customAdmins = String(t.admin_chat_ids || '')
+              .split(',')
+              .map((s) => s.trim())
+              .filter(Boolean);
+
+            const allAdmins = Array.from(
+              new Set([...DEFAULT_ADMIN_IDS, ...envAdmins, ...customAdmins])
+            );
+
+            resolvedConfig = {
+              enabled: typeof t.enabled === 'boolean' ? t.enabled : true,
+              botToken: String(t.bot_token || '').trim() || resolvedConfig.botToken,
+              adminChatIds: allAdmins.length > 0 ? allAdmins : resolvedConfig.adminChatIds,
+              newOrderAlert: typeof t.new_order_alert === 'boolean' ? t.new_order_alert : true,
+              productAlert: typeof t.product_alert === 'boolean' ? t.product_alert : true,
+              dailySummaryAlert: typeof t.daily_summary_alert === 'boolean' ? t.daily_summary_alert : true,
+            };
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Error reading store_settings/telegram in fetchDynamicTelegramConfig:', err);
+    }
+  }
+
+  TELEGRAM_ALERTS_ENABLED = resolvedConfig.enabled;
+  cachedServerTelegramConfig = resolvedConfig;
+  lastServerTelegramFetch = now;
+  return resolvedConfig;
+}
 
 export type TelegramInlineButton =
   | { text: string; url: string }
@@ -77,20 +171,35 @@ export async function sendTelegramMessage(
   targetChatId?: string,
   replyMarkup?: any
 ): Promise<boolean> {
-  if (!TELEGRAM_ALERTS_ENABLED) {
+  const config = await fetchDynamicTelegramConfig().catch(() => null);
+  const isEnabled = config ? config.enabled !== false : TELEGRAM_ALERTS_ENABLED;
+  if (!isEnabled) {
+    console.log('[Telegram Alert] Suppressed: Telegram alerts are disabled in store settings.');
     return false;
   }
-  // Support both authorized admins: 5950203511 and 6206169480
-  const targets = targetChatId ? [String(targetChatId)] : AUTHORIZED_TELEGRAM_ADMINS;
-  const validTargets = targets.filter((id) => AUTHORIZED_TELEGRAM_ADMINS.includes(id));
+
+  const token = (config?.botToken || TELEGRAM_BOT_TOKEN || '').trim();
+  if (!token) {
+    console.warn('[Telegram Alert] Missing bot token, cannot dispatch message.');
+    return false;
+  }
+
+  const authorizedList =
+    config?.adminChatIds && config.adminChatIds.length > 0
+      ? config.adminChatIds
+      : AUTHORIZED_TELEGRAM_ADMINS;
+
+  const targets = targetChatId ? [String(targetChatId).trim()] : authorizedList;
+  const validTargets = targets.filter(Boolean);
   if (validTargets.length === 0) {
+    console.warn('[Telegram Alert] No valid target chat IDs found.');
     return false;
   }
 
   const results = await Promise.allSettled(
     validTargets.map(async (chatId) => {
       try {
-        const endpoint = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        const endpoint = `https://api.telegram.org/bot${token}/sendMessage`;
         const payload: Record<string, any> = {
           chat_id: chatId,
           text: htmlText,
@@ -136,15 +245,17 @@ export async function editTelegramMessage(
   htmlText: string,
   inlineButtons?: Array<Array<TelegramInlineButton>>
 ): Promise<boolean> {
-  if (!TELEGRAM_ALERTS_ENABLED) {
-    return false;
-  }
-  if (!AUTHORIZED_TELEGRAM_ADMINS.includes(String(chatId))) {
+  const config = await fetchDynamicTelegramConfig().catch(() => null);
+  const isEnabled = config ? config.enabled !== false : TELEGRAM_ALERTS_ENABLED;
+  if (!isEnabled) {
     return false;
   }
 
+  const token = (config?.botToken || TELEGRAM_BOT_TOKEN || '').trim();
+  if (!token) return false;
+
   try {
-    const endpoint = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/editMessageText`;
+    const endpoint = `https://api.telegram.org/bot${token}/editMessageText`;
     const payload: Record<string, any> = {
       chat_id: chatId,
       message_id: messageId,
@@ -187,9 +298,16 @@ export async function answerTelegramCallback(
   text?: string,
   showAlert: boolean = false
 ): Promise<boolean> {
-  if (!TELEGRAM_ALERTS_ENABLED || !callbackQueryId) return false;
+  if (!callbackQueryId) return false;
+  const config = await fetchDynamicTelegramConfig().catch(() => null);
+  const isEnabled = config ? config.enabled !== false : TELEGRAM_ALERTS_ENABLED;
+  if (!isEnabled) return false;
+
+  const token = (config?.botToken || TELEGRAM_BOT_TOKEN || '').trim();
+  if (!token) return false;
+
   try {
-    const endpoint = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/answerCallbackQuery`;
+    const endpoint = `https://api.telegram.org/bot${token}/answerCallbackQuery`;
     const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -346,6 +464,11 @@ ${itemsFormatted}${bumpLine}${reasonLine}
  *    - 1-Click "Send Thank You & Order Summary on WhatsApp" Button
  */
 export async function sendSaleSuccessTelegramAlert(data: OrderAlertData): Promise<boolean> {
+  const config = await fetchDynamicTelegramConfig().catch(() => null);
+  if (config && (config.enabled === false || config.newOrderAlert === false)) {
+    console.log('[Telegram Alert] Order alert suppressed by store setting (new_order_alert is disabled).');
+    return false;
+  }
   const customerName = data.customer?.fullName?.trim() || 'Customer';
   const customerEmail = data.customer?.email?.trim() || 'N/A';
   const customerPhone = data.customer?.phone?.trim() || 'N/A';
@@ -521,6 +644,11 @@ export async function sendProductAddedTelegramAlert(product: {
   resolution?: string;
   googleDriveLink?: string;
 }): Promise<boolean> {
+  const config = await fetchDynamicTelegramConfig().catch(() => null);
+  if (config && (config.enabled === false || config.productAlert === false)) {
+    console.log('[Telegram Alert] Product upload alert suppressed by store setting (product_alert is disabled).');
+    return false;
+  }
   const slug = product.slug || '';
   const productUrl = slug ? `https://vaultworld.shop/product/${slug}` : 'https://vaultworld.shop/shop';
   const categoryStr = (product.categories || ['Viral Reels']).join(', ');
@@ -651,6 +779,14 @@ function isPendingOrAbandonedStatus(status: string): boolean {
 export async function sendStoreCommandReport(
   mode: 'today' | 'orders' | 'pending' | 'night_summary' | 'help'
 ): Promise<boolean> {
+  if (mode === 'night_summary') {
+    const config = await fetchDynamicTelegramConfig().catch(() => null);
+    if (config && (config.enabled === false || config.dailySummaryAlert === false)) {
+      console.log('[Telegram Alert] Night summary alert skipped (daily_summary_alert is disabled).');
+      return false;
+    }
+  }
+
   if (mode === 'help') {
     const helpText = `🤖 <b>VAULTWORLD STORE COMMAND CENTER</b> ⚡
 ━━━━━━━━━━━━━━━━━━━━━━
