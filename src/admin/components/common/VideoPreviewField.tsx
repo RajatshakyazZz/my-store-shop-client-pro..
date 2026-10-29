@@ -101,6 +101,14 @@ export default function VideoPreviewField({
         <p className="text-[11px] text-slate-400 leading-relaxed">{helperText}</p>
       )}
 
+      {/* Format Helper Badges */}
+      <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-slate-400 bg-slate-950/60 p-2 rounded-xl border border-slate-800/80">
+        <span className="font-bold text-amber-400">💡 Best Experience:</span>
+        <span className="px-2 py-0.5 rounded bg-purple-500/15 text-purple-300 border border-purple-500/20 font-semibold">Direct MP4 URL (Full Reels Player with Tap-to-Play)</span>
+        <span className="px-2 py-0.5 rounded bg-blue-500/15 text-blue-300 border border-blue-500/20 font-semibold">Google Drive Link (Cropped & Embedded)</span>
+        <span className="px-2 py-0.5 rounded bg-rose-500/15 text-rose-300 border border-rose-500/20 font-semibold">YouTube Shorts</span>
+      </div>
+
       {/* Video Slots List */}
       <div className="space-y-3">
         {urlList.map((url, idx) => {

@@ -64,7 +64,28 @@ export function parseHostedVideoUrl(rawUrl?: string): ParsedVideoInfo {
     };
   }
 
-  // 3. Vimeo
+  // 3. Dropbox video direct stream
+  if (url.includes('dropbox.com')) {
+    const directDropbox = url.replace(/\?dl=[01]/, '?raw=1').replace(/&dl=[01]/, '&raw=1');
+    const withRaw = directDropbox.includes('?raw=1') ? directDropbox : `${directDropbox}${directDropbox.includes('?') ? '&' : '?'}raw=1`;
+    return {
+      type: 'direct',
+      directUrl: withRaw,
+      label: 'Dropbox Direct MP4',
+    };
+  }
+
+  // 4. Streamable embed
+  const streamableMatch = url.match(/streamable\.com\/([a-zA-Z0-9]+)/);
+  if (streamableMatch && streamableMatch[1]) {
+    return {
+      type: 'vimeo',
+      embedUrl: `https://streamable.com/e/${streamableMatch[1]}?autoplay=1&muted=1`,
+      label: 'Streamable Video',
+    };
+  }
+
+  // 5. Vimeo
   const vimeoMatch = url.match(/(?:vimeo\.com\/)(\d+)/);
   if (vimeoMatch && vimeoMatch[1]) {
     return {
@@ -74,7 +95,7 @@ export function parseHostedVideoUrl(rawUrl?: string): ParsedVideoInfo {
     };
   }
 
-  // 4. Direct video file (MP4, WebM, OGG, MOV, Cloud CDN)
+  // 6. Direct video file (MP4, WebM, OGG, MOV, Cloud CDN)
   if (
     url.match(/\.(mp4|webm|ogg|mov)(\?.*)?$/i) ||
     url.includes('/video/') ||

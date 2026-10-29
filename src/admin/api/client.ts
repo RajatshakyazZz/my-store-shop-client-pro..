@@ -621,7 +621,7 @@ class PortalApiClient {
                 parse_mode: 'HTML',
                 disable_web_page_preview: true,
                 reply_markup: {
-                  inline_keyboard: [[{ text: '🔗 View New Bundle on VaultWorld Store', url: productUrl }]],
+                  inline_keyboard: [[{ text: '🔗 View New Bundle on InstaReel Store', url: productUrl }]],
                 },
               }),
             })
@@ -2841,7 +2841,7 @@ class PortalApiClient {
       timeStyle: 'medium',
     });
 
-    const msg = `⚡🔔 <b>VAULTWORLD STORE — TELEGRAM BOT TEST ALERT</b> 🚀
+    const msg = `⚡🔔 <b>INSTAREEL STORE — TELEGRAM BOT TEST ALERT</b> 🚀
 ━━━━━━━━━━━━━━━━━━━━━━
 ✅ <b>Bot Connection:</b> Active & Verified
 📱 <b>Admin Chat IDs:</b> ${targetChatIds.join(', ')}
@@ -3110,31 +3110,6 @@ class PortalApiClient {
 
     if (db) {
       try {
-        const snap = await getDoc(doc(db, 'store_settings', 'free_bundle_offer'));
-        if (snap.exists()) {
-          const data = snap.data();
-          const minVal = data.min_cart_value != null ? Number(data.min_cart_value) : 149;
-          const freeQty = data.free_bundle_quantity != null ? Number(data.free_bundle_quantity) : 2;
-
-          const merged: FreeBundleOffer = {
-            enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
-            banner_image: data.banner_image || defaultOffer.banner_image,
-            banner_fallback_image: data.banner_fallback_image || defaultOffer.banner_fallback_image,
-            min_cart_value: minVal,
-            free_bundle_quantity: freeQty,
-            headline: data.headline || `Get ${freeQty} of Any Bundle FREE`,
-            subheadline: data.subheadline || `PAY ₹${minVal} OR MORE & PICK ANY ${freeQty} ADDITIONAL REELS BUNDLES AT NO EXTRA COST!`,
-            button_text: data.button_text || `🎁 Claim ${freeQty} Free Bundles on Min. ₹${minVal} Order →`,
-            updated_at: data.updated_at,
-          };
-          if (typeof window !== 'undefined') {
-            try {
-              localStorage.setItem('vaultzet_free_bundle_offer', JSON.stringify(merged));
-            } catch {}
-          }
-          return merged;
-        }
-
         const genSnap = await getDoc(doc(db, 'store_settings', 'general'));
         if (genSnap.exists()) {
           const gData = genSnap.data();
@@ -3161,6 +3136,31 @@ class PortalApiClient {
             }
             return merged;
           }
+        }
+
+        const snap = await getDoc(doc(db, 'store_settings', 'free_bundle_offer')).catch(() => null);
+        if (snap && snap.exists()) {
+          const data = snap.data();
+          const minVal = data.min_cart_value != null ? Number(data.min_cart_value) : 149;
+          const freeQty = data.free_bundle_quantity != null ? Number(data.free_bundle_quantity) : 2;
+
+          const merged: FreeBundleOffer = {
+            enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
+            banner_image: data.banner_image || defaultOffer.banner_image,
+            banner_fallback_image: data.banner_fallback_image || defaultOffer.banner_fallback_image,
+            min_cart_value: minVal,
+            free_bundle_quantity: freeQty,
+            headline: data.headline || `Get ${freeQty} of Any Bundle FREE`,
+            subheadline: data.subheadline || `PAY ₹${minVal} OR MORE & PICK ANY ${freeQty} ADDITIONAL REELS BUNDLES AT NO EXTRA COST!`,
+            button_text: data.button_text || `🎁 Claim ${freeQty} Free Bundles on Min. ₹${minVal} Order →`,
+            updated_at: data.updated_at,
+          };
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('vaultzet_free_bundle_offer', JSON.stringify(merged));
+            } catch {}
+          }
+          return merged;
         }
       } catch (err) {
         console.warn('Direct Firestore read error for free_bundle_offer:', err);
@@ -3199,28 +3199,32 @@ class PortalApiClient {
       console.warn('Network error saving free bundle offer to admin API:', e);
     }
 
-    // 2. Direct Firestore persistence
+    // 2. Direct Firestore persistence (save to store_settings/general first to guarantee permission)
     if (db) {
       try {
         const cleanPayload = sanitizePayload({
           ...merged,
         });
 
-        await setDoc(doc(db, 'store_settings', 'free_bundle_offer'), cleanPayload, { merge: true });
         await setDoc(
           doc(db, 'store_settings', 'general'),
           { free_bundle_offer: cleanPayload },
           { merge: true }
         );
+
+        try {
+          await setDoc(doc(db, 'store_settings', 'free_bundle_offer'), cleanPayload, { merge: true });
+        } catch {}
       } catch (e) {
         console.warn('Firestore write warning for free bundle offer:', e);
       }
     }
 
-    // 3. Save in localStorage
+    // 3. Save in localStorage & broadcast update
     if (typeof window !== 'undefined') {
       try {
         localStorage.setItem('vaultzet_free_bundle_offer', JSON.stringify(merged));
+        window.dispatchEvent(new CustomEvent('vaultzet:offer_updated', { detail: merged }));
       } catch {}
     }
 

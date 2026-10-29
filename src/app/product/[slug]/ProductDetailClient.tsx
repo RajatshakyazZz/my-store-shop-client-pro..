@@ -574,7 +574,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center relative z-10">
               {/* Video Smartphone Mockup / Player Frame */}
               <div className="lg:col-span-5 flex justify-center">
-                <div className="w-full max-w-[270px] sm:max-w-[300px] aspect-[9/16] rounded-[32px] bg-slate-950 border-[3px] border-slate-700/80 shadow-[0_15px_50px_rgba(0,0,0,0.7)] p-2 relative flex flex-col justify-between overflow-hidden">
+                <div className="w-full max-w-[290px] sm:max-w-[320px] aspect-[9/16] rounded-[34px] bg-slate-950 border-[3.5px] border-slate-700/80 shadow-[0_15px_50px_rgba(0,0,0,0.7)] p-2 relative flex flex-col justify-between overflow-hidden">
                   {/* Phone top notch */}
                   <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-slate-950 rounded-full z-30 flex items-center justify-center pointer-events-none border border-slate-800">
                     <div className="w-2.5 h-2.5 rounded-full bg-slate-900 border border-slate-700" />
@@ -582,27 +582,39 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
                   {/* Inner Video Container */}
                   <div className="w-full h-full rounded-[24px] overflow-hidden bg-black relative flex items-center justify-center">
-                    {currentVideo?.type === 'direct' && (
-                      <video
+                    {currentVideo?.type === 'direct' && currentVideo.directUrl && (
+                      <ReelDirectVideoPlayer
                         key={currentVideo.directUrl}
                         src={currentVideo.directUrl}
                         poster={p.thumbnail}
-                        controls
-                        playsInline
-                        preload="metadata"
-                        className="w-full h-full object-cover"
+                        title={p.title}
                       />
                     )}
 
-                    {currentVideo && (currentVideo.type === 'youtube' || currentVideo.type === 'drive' || currentVideo.type === 'vimeo') && (
-                      <iframe
-                        key={currentVideo.embedUrl}
-                        src={currentVideo.embedUrl}
-                        title={`${p.title} Sample Reel Preview #${safeActiveIdx + 1}`}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                        className="w-full h-full border-0"
-                      />
+                    {currentVideo && currentVideo.type === 'drive' && (
+                      <div className="w-full h-full relative overflow-hidden bg-black flex items-center justify-center">
+                        <iframe
+                          key={currentVideo.embedUrl}
+                          src={currentVideo.embedUrl}
+                          title={`${p.title} Sample Reel Preview #${safeActiveIdx + 1}`}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                          className="w-full h-[calc(100%+54px)] -mt-[48px] border-0 scale-[1.02] object-cover"
+                        />
+                      </div>
+                    )}
+
+                    {currentVideo && (currentVideo.type === 'youtube' || currentVideo.type === 'vimeo') && (
+                      <div className="w-full h-full relative overflow-hidden bg-black flex items-center justify-center">
+                        <iframe
+                          key={currentVideo.embedUrl}
+                          src={currentVideo.embedUrl}
+                          title={`${p.title} Sample Reel Preview #${safeActiveIdx + 1}`}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                          className="w-full h-full border-0 object-cover"
+                        />
+                      </div>
                     )}
 
                     {/* Video Badge Overlay */}
@@ -950,8 +962,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           </div>
 
           <a
-            href={`https://wa.me/${((settings.supportWhatsapp || '9142408286').replace(/[^0-9]/g, '').length === 10 ? '91' + (settings.supportWhatsapp || '9142408286').replace(/[^0-9]/g, '') : (settings.supportWhatsapp || '9142408286').replace(/[^0-9]/g, ''))}?text=${encodeURIComponent(
-              `Hi ${settings.storeName || 'VaultWorld'} Support! I have a question regarding: "${p.title}"`
+            href={`https://wa.me/${((settings.supportWhatsapp || '7330482005').replace(/[^0-9]/g, '').length === 10 ? '91' + (settings.supportWhatsapp || '7330482005').replace(/[^0-9]/g, '') : (settings.supportWhatsapp || '7330482005').replace(/[^0-9]/g, ''))}?text=${encodeURIComponent(
+              `Hi ${settings.storeName || 'InstaReel'} Support! I have a question regarding: "${p.title}"`
             )}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -1080,6 +1092,131 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         productId={p.id}
       />
 
+    </div>
+  );
+}
+
+function ReelDirectVideoPlayer({
+  src,
+  poster,
+  title,
+}: {
+  src: string;
+  poster?: string;
+  title: string;
+}) {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [showAnimation, setShowAnimation] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = 0;
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => setIsPlaying(true))
+        .catch(() => {
+          // Autoplay with sound was blocked by browser; fallback to muted autoplay
+          video.muted = true;
+          setIsMuted(true);
+          video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+        });
+    }
+  }, [src]);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play();
+      setIsPlaying(true);
+    } else {
+      video.pause();
+      setIsPlaying(false);
+    }
+    setShowAnimation(true);
+    setTimeout(() => setShowAnimation(false), 600);
+  };
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = !video.muted;
+    setIsMuted(video.muted);
+  };
+
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
+    if (!video || !video.duration) return;
+    setProgress((video.currentTime / video.duration) * 100);
+  };
+
+  return (
+    <div
+      onClick={togglePlay}
+      className="w-full h-full relative cursor-pointer select-none group flex items-center justify-center overflow-hidden bg-black"
+    >
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        playsInline
+        loop
+        preload="auto"
+        onTimeUpdate={handleTimeUpdate}
+        className="w-full h-full object-cover"
+      />
+
+      {/* Animated Play/Pause pulse in center on tap */}
+      {showAnimation && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
+          <div className="w-16 h-16 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white shadow-2xl scale-110 transition-transform duration-300">
+            {isPlaying ? (
+              <Play className="w-8 h-8 fill-white text-white ml-1" />
+            ) : (
+              <Pause className="w-8 h-8 fill-white text-white" />
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Paused state subtle indicator */}
+      {!isPlaying && !showAnimation && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 bg-black/35">
+          <div className="w-14 h-14 rounded-full bg-amber-500/95 text-slate-950 flex items-center justify-center shadow-lg shadow-amber-500/40">
+            <Play className="w-7 h-7 fill-slate-950 ml-1" />
+          </div>
+        </div>
+      )}
+
+      {/* Top Controls: Sound Toggle */}
+      <div className="absolute top-7 right-3 z-30 flex items-center gap-2">
+        <button
+          type="button"
+          onClick={toggleMute}
+          className="w-9 h-9 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-black/80 transition-all cursor-pointer shadow-md"
+          title={isMuted ? 'Unmute sound' : 'Mute sound'}
+        >
+          {isMuted ? (
+            <VolumeX className="w-4 h-4 text-amber-400" />
+          ) : (
+            <Volume2 className="w-4 h-4 text-white" />
+          )}
+        </button>
+      </div>
+
+      {/* Bottom Progress Bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 z-30">
+        <div
+          className="h-full bg-gradient-to-r from-amber-400 to-yellow-400 transition-[width] duration-100"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
     </div>
   );
 }

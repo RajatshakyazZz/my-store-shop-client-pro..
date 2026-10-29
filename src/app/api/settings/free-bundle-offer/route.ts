@@ -11,26 +11,6 @@ export async function GET() {
 
     if (db) {
       try {
-        const snap = await getDoc(doc(db, 'store_settings', 'free_bundle_offer')).catch(() => null);
-        if (snap && snap.exists()) {
-          const data = snap.data();
-          const minVal = data.min_cart_value != null ? Number(data.min_cart_value) : DEFAULT_FREE_BUNDLE_OFFER.minCartValue;
-          const freeQty = data.free_bundle_quantity != null ? Number(data.free_bundle_quantity) : DEFAULT_FREE_BUNDLE_OFFER.freeBundleQuantity;
-
-          offer = {
-            enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
-            bannerImage: data.banner_image || DEFAULT_FREE_BUNDLE_OFFER.bannerImage,
-            bannerFallbackImage: data.banner_fallback_image || DEFAULT_FREE_BUNDLE_OFFER.bannerFallbackImage,
-            minCartValue: minVal,
-            freeBundleQuantity: freeQty,
-            headline: data.headline || `Get ${freeQty} of Any Bundle FREE`,
-            subheadline: data.subheadline || `PAY ₹${minVal} OR MORE & PICK ANY ${freeQty} ADDITIONAL REELS BUNDLES AT NO EXTRA COST!`,
-            buttonText: data.button_text || `🎁 Claim ${freeQty} Free Bundles on Min. ₹${minVal} Order →`,
-            updatedAt: data.updated_at || data.updatedAt,
-          };
-          return NextResponse.json({ success: true, offer });
-        }
-
         const genSnap = await getDoc(doc(db, 'store_settings', 'general')).catch(() => null);
         if (genSnap && genSnap.exists()) {
           const gData = genSnap.data();
@@ -52,6 +32,26 @@ export async function GET() {
             };
             return NextResponse.json({ success: true, offer });
           }
+        }
+
+        const snap = await getDoc(doc(db, 'store_settings', 'free_bundle_offer')).catch(() => null);
+        if (snap && snap.exists()) {
+          const data = snap.data();
+          const minVal = data.min_cart_value != null ? Number(data.min_cart_value) : DEFAULT_FREE_BUNDLE_OFFER.minCartValue;
+          const freeQty = data.free_bundle_quantity != null ? Number(data.free_bundle_quantity) : DEFAULT_FREE_BUNDLE_OFFER.freeBundleQuantity;
+
+          offer = {
+            enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
+            bannerImage: data.banner_image || DEFAULT_FREE_BUNDLE_OFFER.bannerImage,
+            bannerFallbackImage: data.banner_fallback_image || DEFAULT_FREE_BUNDLE_OFFER.bannerFallbackImage,
+            minCartValue: minVal,
+            freeBundleQuantity: freeQty,
+            headline: data.headline || `Get ${freeQty} of Any Bundle FREE`,
+            subheadline: data.subheadline || `PAY ₹${minVal} OR MORE & PICK ANY ${freeQty} ADDITIONAL REELS BUNDLES AT NO EXTRA COST!`,
+            buttonText: data.button_text || `🎁 Claim ${freeQty} Free Bundles on Min. ₹${minVal} Order →`,
+            updatedAt: data.updated_at || data.updatedAt,
+          };
+          return NextResponse.json({ success: true, offer });
         }
       } catch (err) {
         console.warn('Error reading free_bundle_offer in public settings API:', err);

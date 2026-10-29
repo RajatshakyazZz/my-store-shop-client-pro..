@@ -103,10 +103,7 @@ export async function POST(request: Request) {
 
     if (db) {
       try {
-        // Save to dedicated document store_settings/free_bundle_offer
-        await setDoc(doc(db, 'store_settings', 'free_bundle_offer'), payload, { merge: true });
-
-        // Also save nested inside store_settings/general for fallback compatibility
+        // Save to store_settings/general first (guaranteed permitted by firestore.rules)
         await setDoc(
           doc(db, 'store_settings', 'general'),
           {
@@ -114,6 +111,11 @@ export async function POST(request: Request) {
           },
           { merge: true }
         );
+
+        // Also attempt writing to dedicated document in case permitted
+        try {
+          await setDoc(doc(db, 'store_settings', 'free_bundle_offer'), payload, { merge: true });
+        } catch {}
       } catch (err: any) {
         console.error('Error saving free bundle offer to Firestore:', err);
         return NextResponse.json(

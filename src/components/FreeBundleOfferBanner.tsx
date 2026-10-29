@@ -50,6 +50,7 @@ export default function FreeBundleOfferBanner({
         aria-label={`Claim ${freeQty} Free Bundles Special Offer`}
       >
         <img
+          key={bannerImgSrc}
           src={bannerImgSrc}
           onError={(e) => {
             (e.target as HTMLImageElement).src = bannerFallbackSrc;

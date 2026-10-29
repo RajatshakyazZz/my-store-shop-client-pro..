@@ -51,13 +51,35 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    fetchGlobalBumpOffer().then((res) => {
+    fetchGlobalBumpOffer(true).then((res) => {
       setGlobalBumpOffer(res);
     }).catch(() => {});
 
-    fetchFreeBundleOffer().then((res) => {
+    fetchFreeBundleOffer(true).then((res) => {
       setFreeBundleOffer(res);
     }).catch(() => {});
+
+    const handleOfferUpdated = (e: any) => {
+      if (e?.detail) {
+        setFreeBundleOffer((prev) => ({ ...prev, ...e.detail }));
+      } else {
+        fetchFreeBundleOffer(true).then((res) => setFreeBundleOffer(res)).catch(() => {});
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('vaultzet:offer_updated', handleOfferUpdated);
+      const handleStorage = (e: StorageEvent) => {
+        if (e.key === 'vaultzet_free_bundle_offer') {
+          fetchFreeBundleOffer(true).then((res) => setFreeBundleOffer(res)).catch(() => {});
+        }
+      };
+      window.addEventListener('storage', handleStorage);
+      return () => {
+        window.removeEventListener('vaultzet:offer_updated', handleOfferUpdated);
+        window.removeEventListener('storage', handleStorage);
+      };
+    }
   }, []);
 
   const setBuyNowItem = (item: CartItem | null) => {
