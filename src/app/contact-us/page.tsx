@@ -2,17 +2,19 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Mail, Clock, FolderOpen, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Mail, Clock, FolderOpen, ArrowRight, ShieldCheck, Phone, MessageCircle } from 'lucide-react';
 import { useStoreSettings } from '@/context/StoreSettingsContext';
 
 export default function ContactUsPage() {
   const { settings } = useStoreSettings();
 
-  const supportEmail = settings?.supportEmail || 'support.vaultworld.shop@gmail.com';
+  const supportEmail = settings?.supportEmail || 'ztoredigital@gmail.com';
+  const supportPhone = settings?.supportPhone || settings?.supportWhatsapp || '+91 9072850100';
+  const cleanPhone = (settings?.supportWhatsapp || '9072850100').replace(/[^0-9]/g, '').slice(-10);
 
   return (
     <div className="py-12 sm:py-20 bg-slate-50 min-h-[85vh]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         <div className="text-center space-y-3">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-[11px] font-black uppercase text-amber-700 tracking-wider">
@@ -23,44 +25,67 @@ export default function ContactUsPage() {
             Contact Customer Support
           </h1>
           <p className="text-sm text-slate-600 font-medium max-w-md mx-auto leading-relaxed">
-            Need help with your Google Drive download link, payment verification, or bundle access? Our support desk responds within 2–4 hours.
+            Need help with your Google Drive download link, payment verification, or bundle access? Our support desk responds rapidly.
           </p>
         </div>
 
-        {/* 3 Contact Info Cards (Email, Instant Orders, Working Hours) */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {/* Email Us */}
+        {/* Primary Contact Channels Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {/* 1. WhatsApp Support */}
           <a
-            href={`mailto:${supportEmail}`}
-            className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-amber-400/50 transition-all text-center space-y-2.5 block group"
+            href={`https://wa.me/91${cleanPhone}?text=${encodeURIComponent('Hi MYZTORE Support! I need quick assistance regarding my order.')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-5 rounded-3xl bg-white border border-emerald-200/80 shadow-sm hover:shadow-md hover:border-emerald-400 transition-all text-center space-y-2.5 block group"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200/60 flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
+              <MessageCircle className="w-6 h-6" />
+            </div>
+            <h3 className="font-extrabold text-base text-slate-900">WhatsApp Chat</h3>
+            <p className="text-xs font-semibold text-slate-600">
+              +91 {cleanPhone}
+            </p>
+            <span className="inline-block px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase tracking-wider">
+              Chat on WhatsApp &rarr;
+            </span>
+          </a>
+
+          {/* 2. Direct Phone Call */}
+          <a
+            href={`tel:+91${cleanPhone}`}
+            className="p-5 rounded-3xl bg-white border border-amber-200/80 shadow-sm hover:shadow-md hover:border-amber-400 transition-all text-center space-y-2.5 block group"
           >
             <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200/60 flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
+              <Phone className="w-6 h-6" />
+            </div>
+            <h3 className="font-extrabold text-base text-slate-900">Call Support</h3>
+            <p className="text-xs font-semibold text-slate-600">
+              {supportPhone}
+            </p>
+            <span className="inline-block px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase tracking-wider">
+              Call Helpline &rarr;
+            </span>
+          </a>
+
+          {/* 3. Email Support */}
+          <a
+            href={`mailto:${supportEmail}`}
+            className="p-5 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-purple-300 transition-all text-center space-y-2.5 block group"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 border border-purple-200/60 flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
               <Mail className="w-6 h-6" />
             </div>
-            <h3 className="font-extrabold text-base text-slate-900">Email Support</h3>
+            <h3 className="font-extrabold text-base text-slate-900">Email Desk</h3>
             <p className="text-xs font-semibold text-slate-600 break-all">
               {supportEmail}
             </p>
-            <p className="text-[11px] text-amber-600 font-bold pt-1">Direct Email Assistance</p>
+            <span className="inline-block px-2.5 py-1 rounded-full bg-purple-100 text-purple-900 text-[10px] font-black uppercase tracking-wider">
+              Send Email &rarr;
+            </span>
           </a>
 
-          {/* Instant Order Access */}
-          <Link
-            href="/my-order"
-            className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-amber-400/50 transition-all text-center space-y-2.5 block group"
-          >
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200/60 flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
-              <FolderOpen className="w-6 h-6" />
-            </div>
-            <h3 className="font-extrabold text-base text-slate-900">Order Downloads</h3>
-            <p className="text-xs font-semibold text-slate-600">
-              Instant Google Drive Access
-            </p>
-            <p className="text-[11px] text-emerald-600 font-bold pt-1">Self-Service Portal</p>
-          </Link>
-
-          {/* Working Hours */}
-          <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm text-center space-y-2.5">
+          {/* 4. Working Hours */}
+          <div className="p-5 rounded-3xl bg-white border border-slate-200/90 shadow-sm text-center space-y-2.5">
             <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-700 border border-slate-200 flex items-center justify-center mx-auto">
               <Clock className="w-6 h-6" />
             </div>

@@ -691,7 +691,7 @@ export default function ResellerLandingClient({
       {listing.whatsappButtonEnabled !== false && (
         <WhatsAppButton
           isResellerPage={true}
-          phoneNumber={listing.whatsappNumber || '919142408286'}
+          phoneNumber={listing.whatsappNumber || '919072850100'}
           storeName={listing.resellerName ? `${listing.resellerName} • MYZTORE Partner` : 'MYZTORE Support'}
           productTitle={listing.customTitle}
           defaultMessage={`Hi! I am browsing "${listing.customTitle}" on MYZTORE. Can you please assist me?`}

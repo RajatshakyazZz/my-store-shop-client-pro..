@@ -131,8 +131,8 @@ export default function RootLayout({
         ],
         contactPoint: {
           '@type': 'ContactPoint',
-          email: 'support.vaultworld.shop@gmail.com',
-          telephone: '+91-8051017331',
+          email: 'ztoredigital@gmail.com',
+          telephone: '+91-9072850100',
           contactType: 'customer support',
           areaServed: 'IN',
           availableLanguage: ['English', 'Hindi'],

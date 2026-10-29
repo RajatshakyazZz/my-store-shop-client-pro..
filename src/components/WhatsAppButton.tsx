@@ -61,7 +61,7 @@ export default function WhatsAppButton({
   }
 
   // Resolve dynamic phone number: prop > admin settings > fallback
-  const rawPhone = phoneNumber || settings?.supportWhatsapp || '9142408286';
+  const rawPhone = phoneNumber || settings?.supportWhatsapp || '9072850100';
 
   let cleanPhone = rawPhone.replace(/[^0-9]/g, '');
   if (cleanPhone.length === 10) {

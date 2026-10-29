@@ -280,8 +280,8 @@ export default function Footer() {
               Contact Us
             </Link>
             <span className="text-slate-300">•</span>
-            <a href={`mailto:${settings.supportEmail || 'support.vaultworld.shop@gmail.com'}`} className="hover:text-amber-600 transition-colors">
-              {settings.supportEmail || 'support.vaultworld.shop@gmail.com'}
+            <a href={`mailto:${settings.supportEmail || 'ztoredigital@gmail.com'}`} className="hover:text-amber-600 transition-colors">
+              {settings.supportEmail || 'ztoredigital@gmail.com'}
             </a>
           </div>
 

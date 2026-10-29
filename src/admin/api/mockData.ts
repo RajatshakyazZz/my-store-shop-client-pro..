@@ -10194,8 +10194,8 @@ export const initialSiteMode: SiteModeConfig = {
 
 export const initialStoreSetup: StoreSetupConfig = {
   store_name: 'MYZTORE',
-  contact_email: 'support.vaultworld.shop@gmail.com',
-  support_whatsapp: '+91 8051017331',
+  contact_email: 'ztoredigital@gmail.com',
+  support_whatsapp: '+91 9072850100',
   currency: 'INR',
   currency_symbol: '₹',
   price_format: '₹%s',
@@ -10220,7 +10220,7 @@ export const initialMetaPixel: MetaPixelConfig = {
 
 export const initialWhatsappButton: WhatsappButtonConfig = {
   enabled: true,
-  phone_number: '919142408286',
+  phone_number: '919072850100',
   default_message: 'Hi MYZTORE Support! I need quick help regarding my MYZTORE order.',
   position: 'bottom-right',
   show_popup_badge: true,

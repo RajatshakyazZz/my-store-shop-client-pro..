@@ -16,7 +16,7 @@ export default function WhatsappButton() {
 
   const [form, setForm] = useState<WhatsappButtonConfig>({
     enabled: true,
-    phone_number: '919142408286',
+    phone_number: '919072850100',
     default_message: 'Hi MYZTORE Support! I have a question regarding the bundles.',
     position: 'bottom-right',
     show_popup_badge: true,

@@ -36,9 +36,9 @@ const DEFAULT_SETTINGS: StoreSettings = {
   storeName: 'MYZTORE',
   ownerName: 'MYZTORE Team',
   tagline: 'Everything You Need, All in One Place.',
-  supportEmail: 'support.vaultworld.shop@gmail.com',
-  supportPhone: '+91 8051017331',
-  supportWhatsapp: '+91 8051017331',
+  supportEmail: 'ztoredigital@gmail.com',
+  supportPhone: '+91 9072850100',
+  supportWhatsapp: '+91 9072850100',
   currency: 'INR',
   currencySymbol: '₹',
   whatsappButtonEnabled: true,
@@ -71,21 +71,22 @@ function sanitizeLogoUrl(url?: string, fallback = '/logo.webp?v=2'): string {
   return url.trim();
 }
 
-function sanitizeEmail(email?: string, fallback = 'support.vaultworld.shop@gmail.com'): string {
+function sanitizeEmail(email?: string, fallback = 'ztoredigital@gmail.com'): string {
   if (!email || !email.trim()) return fallback;
   if (
     /reelsbundles/i.test(email) ||
     /digonest/i.test(email) ||
-    /rajattracozegaming/i.test(email)
+    /rajattracozegaming/i.test(email) ||
+    /vaultworld/i.test(email)
   ) {
     return fallback;
   }
   return email.trim();
 }
 
-function sanitizePhone(phone?: string, fallback = '+91 8051017331'): string {
+function sanitizePhone(phone?: string, fallback = '+91 9072850100'): string {
   if (!phone || !phone.trim()) return fallback;
-  if (/98765\s*43210/.test(phone)) {
+  if (/98765\s*43210/.test(phone) || /8051017331/.test(phone) || /9142408286/.test(phone)) {
     return fallback;
   }
   return phone.trim();
@@ -140,7 +141,7 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
           waData?.phone_number ||
           parsed.supportPhone ||
           parsed.supportWhatsapp ||
-          '+91 8051017331'
+          '+91 9072850100'
         );
         const resolvedEmail = sanitizeEmail(genData?.contact_email || parsed.supportEmail);
 
@@ -162,7 +163,7 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
         setSettings(cleaned);
       } else if (genData || waData || siteModeData) {
         const resolvedPhone = sanitizePhone(
-          genData?.support_whatsapp || genData?.support_phone || waData?.phone_number || '+91 8051017331'
+          genData?.support_whatsapp || genData?.support_phone || waData?.phone_number || '+91 9072850100'
         );
         const resolvedEmail = sanitizeEmail(genData?.contact_email);
         setSettings((prev) => ({
