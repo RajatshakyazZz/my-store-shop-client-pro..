@@ -77,6 +77,7 @@ export const ProductSchema = z.object({
   reseller_price: z.number().optional(),
   reseller_regular_price: z.number().optional(),
   preview_video_url: z.string().optional(),
+  preview_video_urls: z.array(z.string()).optional(),
   gallery_images: z.array(z.string()).optional(),
   google_drive_link: z.string().optional(),
   tags: z.array(z.string()).optional(),

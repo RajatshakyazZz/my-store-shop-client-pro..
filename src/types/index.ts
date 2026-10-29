@@ -16,6 +16,7 @@ export interface BundleProduct {
   thumbnail: string;
   galleryImages: string[];
   previewVideoUrl?: string;
+  previewVideoUrls?: string[];
   tags: string[];
   isHot?: boolean;
   isTrending?: boolean;

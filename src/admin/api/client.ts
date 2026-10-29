@@ -489,6 +489,7 @@ class PortalApiClient {
         productData.featured_image ||
         'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600',
       preview_video_url: productData.preview_video_url || '',
+      preview_video_urls: productData.preview_video_urls || (productData.preview_video_url ? [productData.preview_video_url] : []),
       gallery_images: productData.gallery_images || [],
       short_description: productData.short_description || '',
       description: productData.description || '',

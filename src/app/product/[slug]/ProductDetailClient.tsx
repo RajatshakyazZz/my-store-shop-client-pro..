@@ -36,6 +36,7 @@ import {
   Play,
   Pause,
   VolumeX,
+  Film,
 } from 'lucide-react';
 import { BUNDLE_PRODUCTS } from '@/data/bundles';
 import { useCart } from '@/context/CartContext';
@@ -47,7 +48,6 @@ import { track } from '@/lib/analytics';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
 import FreeBundleOfferBanner from '@/components/FreeBundleOfferBanner';
 import { parseHostedVideoUrl } from '@/lib/videoUtils';
-import { initialStoreReels } from '@/lib/reels';
 
 interface ProductDetailClientProps {
   product: BundleProduct;
@@ -171,16 +171,29 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const details = getBundleContentDetails(p);
   const relatedBundles = BUNDLE_PRODUCTS.filter((b) => b.id !== p.id && !b.isUpcoming).slice(0, 4);
 
-  // Dedicated Video Preview for "View Samples"
-  const rawVideoUrl =
-    p.previewVideoUrl ||
-    (p as any).preview_video_url ||
-    (p as any).video_url ||
-    (p as any).videoUrl ||
-    initialStoreReels.find((r) => (r.bundleSlug && r.bundleSlug === p.slug) || (r.bundleId && r.bundleId === p.id))?.videoUrl ||
-    '';
-  const parsedVideo = parseHostedVideoUrl(rawVideoUrl);
-  const hasVideoPreview = parsedVideo.type !== 'empty' && parsedVideo.type !== 'unknown';
+  // Dedicated Video Previews for "View Samples" (Multiple Videos Supported, No Cross-Product Fallback)
+  const rawPreviewList: string[] = (
+    Array.isArray(p.previewVideoUrls) && p.previewVideoUrls.length > 0
+      ? p.previewVideoUrls
+      : Array.isArray((p as any).preview_video_urls) && (p as any).preview_video_urls.length > 0
+      ? (p as any).preview_video_urls
+      : p.previewVideoUrl
+      ? [p.previewVideoUrl]
+      : (p as any).preview_video_url
+      ? [(p as any).preview_video_url]
+      : []
+  )
+    .map((u: any) => String(u || '').trim())
+    .filter(Boolean);
+
+  const parsedVideos = rawPreviewList
+    .map((url: string) => parseHostedVideoUrl(url))
+    .filter((v) => v.type !== 'empty' && v.type !== 'unknown');
+
+  const hasVideoPreview = parsedVideos.length > 0;
+  const [activeSampleIdx, setActiveSampleIdx] = useState(0);
+  const safeActiveIdx = activeSampleIdx < parsedVideos.length ? activeSampleIdx : 0;
+  const currentVideo = parsedVideos[safeActiveIdx];
 
   const handleHelpful = (id: string) => {
     setHelpfulMap((prev) => ({
@@ -315,7 +328,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-300 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Play className="w-3 h-3 fill-amber-300 text-amber-300 ml-0.5" />
                 </span>
-                <span>Watch Reel Samples & Video Preview (1080P)</span>
+                <span>
+                  Watch Reel Samples & Video Preview{' '}
+                  {parsedVideos.length > 1 ? `(${parsedVideos.length} Samples)` : '(1080P)'}
+                </span>
                 <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
                   LIVE DEMO
                 </span>
@@ -493,7 +509,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <div className="space-y-1">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[11px] font-extrabold uppercase tracking-wider">
                   <Play className="w-3 h-3 fill-amber-300" />
-                  <span>Official Sample Reel</span>
+                  <span>
+                    Official Sample {parsedVideos.length > 1 ? `Reels (${parsedVideos.length} Available)` : 'Reel'}
+                  </span>
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
                 </div>
                 <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2.5">
@@ -503,7 +521,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   </span>
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-300 font-medium">
-                  Check the real video quality, audio synchronization, and 9:16 vertical reels included in this bundle.
+                  {parsedVideos.length > 1
+                    ? `Watch all ${parsedVideos.length} real sample preview reels below. 100% watermark-free, vertical 9:16 format.`
+                    : 'Check the real video quality, audio synchronization, and 9:16 vertical reels included in this bundle.'}
                 </p>
               </div>
 
@@ -519,6 +539,37 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               </div>
             </div>
 
+            {/* Multiple Samples Selector Bar (if > 1 video) */}
+            {parsedVideos.length > 1 && (
+              <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none relative z-10 pt-1">
+                <span className="text-xs font-bold text-slate-300 shrink-0 flex items-center gap-1.5 mr-1">
+                  <Film className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Select Sample:</span>
+                </span>
+                {parsedVideos.map((vid, idx) => {
+                  const isActive = idx === safeActiveIdx;
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setActiveSampleIdx(idx)}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold flex items-center gap-1.5 shrink-0 transition-all cursor-pointer ${
+                        isActive
+                          ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 shadow-md shadow-amber-500/25 scale-[1.03]'
+                          : 'bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80'
+                      }`}
+                    >
+                      <Play className={`w-3 h-3 ${isActive ? 'fill-slate-950 text-slate-950' : 'fill-slate-400 text-slate-400'}`} />
+                      <span>Sample #{idx + 1}</span>
+                      {isActive && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse ml-0.5" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
             {/* Interactive Video Player & Bundle Insights Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center relative z-10">
               {/* Video Smartphone Mockup / Player Frame */}
@@ -531,9 +582,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
                   {/* Inner Video Container */}
                   <div className="w-full h-full rounded-[24px] overflow-hidden bg-black relative flex items-center justify-center">
-                    {parsedVideo.type === 'direct' && (
+                    {currentVideo?.type === 'direct' && (
                       <video
-                        src={parsedVideo.directUrl}
+                        key={currentVideo.directUrl}
+                        src={currentVideo.directUrl}
                         poster={p.thumbnail}
                         controls
                         playsInline
@@ -542,10 +594,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       />
                     )}
 
-                    {(parsedVideo.type === 'youtube' || parsedVideo.type === 'drive' || parsedVideo.type === 'vimeo') && (
+                    {currentVideo && (currentVideo.type === 'youtube' || currentVideo.type === 'drive' || currentVideo.type === 'vimeo') && (
                       <iframe
-                        src={parsedVideo.embedUrl}
-                        title={`${p.title} Sample Reel Preview`}
+                        key={currentVideo.embedUrl}
+                        src={currentVideo.embedUrl}
+                        title={`${p.title} Sample Reel Preview #${safeActiveIdx + 1}`}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen
                         className="w-full h-full border-0"
@@ -555,7 +608,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     {/* Video Badge Overlay */}
                     <div className="absolute bottom-2.5 left-2.5 right-2.5 pointer-events-none flex items-center justify-between text-[10px] text-white/90 z-20">
                       <span className="px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md border border-white/10 font-bold">
-                        {p.reelCount || 1000}+ Reels
+                        {parsedVideos.length > 1 ? `Sample ${safeActiveIdx + 1} of ${parsedVideos.length}` : `${p.reelCount || 1000}+ Reels`}
                       </span>
                       <span className="px-2 py-0.5 rounded-md bg-emerald-500/80 backdrop-blur-md text-white font-extrabold">
                         No Watermark

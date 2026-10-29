@@ -227,7 +227,30 @@ export function mapFirestoreDocToBundleProduct(data: any): BundleProduct {
       baseProd?.thumbnail ||
       'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600',
     galleryImages,
-    previewVideoUrl: String(data.preview_video_url || data.previewVideoUrl || baseProd?.previewVideoUrl || '').trim(),
+    previewVideoUrls: (() => {
+      const rawUrls: string[] = Array.isArray(data.preview_video_urls) && data.preview_video_urls.length > 0
+        ? data.preview_video_urls
+        : Array.isArray(data.previewVideoUrls) && data.previewVideoUrls.length > 0
+        ? data.previewVideoUrls
+        : typeof data.preview_video_urls === 'string' && data.preview_video_urls.trim()
+        ? data.preview_video_urls.split('\n')
+        : (data.preview_video_url || data.previewVideoUrl)
+        ? [String(data.preview_video_url || data.previewVideoUrl)]
+        : (baseProd?.previewVideoUrls && baseProd.previewVideoUrls.length > 0)
+        ? baseProd.previewVideoUrls
+        : baseProd?.previewVideoUrl
+        ? [baseProd.previewVideoUrl]
+        : [];
+      return rawUrls.map((u: any) => String(u || '').trim()).filter(Boolean);
+    })(),
+    previewVideoUrl: String(
+      (Array.isArray(data.preview_video_urls) && data.preview_video_urls[0]) ||
+      (Array.isArray(data.previewVideoUrls) && data.previewVideoUrls[0]) ||
+      data.preview_video_url ||
+      data.previewVideoUrl ||
+      baseProd?.previewVideoUrl ||
+      ''
+    ).trim(),
     tags,
     isHot: typeof data.is_hot === 'boolean' ? data.is_hot : Boolean(baseProd?.isHot),
     isTrending: typeof data.is_trending === 'boolean' ? data.is_trending : Boolean(baseProd?.isTrending),

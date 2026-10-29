@@ -84,6 +84,7 @@ export default function Products() {
     resolution: '1080P Full HD (9:16)',
     featured_image: '',
     preview_video_url: '',
+    preview_video_urls: [] as string[],
     gallery_images_text: '',
     short_description: '',
     description: '',
@@ -137,6 +138,7 @@ export default function Products() {
     resolution: string;
     featured_image: string;
     preview_video_url: string;
+    preview_video_urls: string[];
     gallery_images_text: string;
     short_description: string;
     description: string;
@@ -177,6 +179,7 @@ export default function Products() {
     resolution: '1080P Full HD',
     featured_image: '',
     preview_video_url: '',
+    preview_video_urls: [] as string[],
     gallery_images_text: '',
     short_description: '',
     description: '',
@@ -242,6 +245,7 @@ export default function Products() {
         resolution: '1080P Full HD (9:16)',
         featured_image: '',
         preview_video_url: '',
+        preview_video_urls: [],
         gallery_images_text: '',
         short_description: '',
         description: '',
@@ -417,7 +421,14 @@ export default function Products() {
       format: prod.format || 'MP4',
       resolution: prod.resolution || '1080P Full HD (9:16)',
       featured_image: prod.featured_image || '',
-      preview_video_url: prod.preview_video_url || '',
+      preview_video_url: prod.preview_video_url || (prod.preview_video_urls?.[0]) || '',
+      preview_video_urls: (Array.isArray(prod.preview_video_urls) && prod.preview_video_urls.length > 0)
+        ? prod.preview_video_urls
+        : (prod as any).previewVideoUrls && Array.isArray((prod as any).previewVideoUrls) && (prod as any).previewVideoUrls.length > 0
+        ? (prod as any).previewVideoUrls
+        : prod.preview_video_url
+        ? [prod.preview_video_url]
+        : [],
       gallery_images_text: (prod.gallery_images || []).join('\n'),
       short_description: prod.short_description || '',
       description: prod.description || '',
@@ -561,7 +572,8 @@ export default function Products() {
       format: editForm.format.trim(),
       resolution: editForm.resolution.trim(),
       featured_image: editForm.featured_image.trim(),
-      preview_video_url: editForm.preview_video_url.trim(),
+      preview_video_urls: (editForm.preview_video_urls || []).map((u) => u.trim()).filter(Boolean),
+      preview_video_url: (editForm.preview_video_urls || []).map((u) => u.trim()).filter(Boolean)[0] || editForm.preview_video_url.trim() || '',
       gallery_images: galleryImages,
       short_description: editForm.short_description.trim(),
       description: editForm.description.trim(),
@@ -729,7 +741,8 @@ export default function Products() {
       featured_image:
         createForm.featured_image.trim() ||
         'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600',
-      preview_video_url: createForm.preview_video_url.trim(),
+      preview_video_urls: (createForm.preview_video_urls || []).map((u) => u.trim()).filter(Boolean),
+      preview_video_url: (createForm.preview_video_urls || []).map((u) => u.trim()).filter(Boolean)[0] || createForm.preview_video_url.trim() || '',
       gallery_images: galleryImages,
       short_description: createForm.short_description.trim(),
       description: createForm.description.trim(),
@@ -1646,12 +1659,22 @@ export default function Products() {
                     helperText="Plays as the main bundle display card across the storefront catalog and product pages."
                   />
 
-                  {/* Dedicated Hosted Video Preview URL with Live Player */}
+                  {/* Dedicated Hosted Video Previews with Multiple Videos & Live Player */}
                   <VideoPreviewField
+                    values={editForm.preview_video_urls}
+                    onChangeUrls={(urls) => setEditForm((prev) => ({
+                      ...prev,
+                      preview_video_urls: urls,
+                      preview_video_url: urls[0] || '',
+                    }))}
                     value={editForm.preview_video_url}
-                    onChange={(url) => setEditForm((prev) => ({ ...prev, preview_video_url: url }))}
-                    label="Dedicated Video Preview URL (View Samples Section)"
-                    helperText="Paste any hosted video URL (Direct MP4, Cloud CDN, Google Drive preview, or YouTube Shorts). This video is embedded directly in the 'View Samples' section on the product page."
+                    onChange={(url) => setEditForm((prev) => ({
+                      ...prev,
+                      preview_video_url: url,
+                      preview_video_urls: [url, ...prev.preview_video_urls.slice(1)],
+                    }))}
+                    label="Dedicated Video Previews (View Samples Section)"
+                    helperText="Add 1 or more hosted video links (Direct MP4, Google Drive preview, or YouTube Shorts). Each video will appear in the 'View Samples' player on this product's page."
                   />
 
                   {/* Gallery Images with ImgBB Upload & Visual Management */}
@@ -2427,12 +2450,22 @@ export default function Products() {
                     helperText="Plays as the main bundle display card across the storefront catalog and product pages."
                   />
 
-                  {/* Dedicated Hosted Video Preview URL with Live Player */}
+                  {/* Dedicated Hosted Video Previews with Multiple Videos & Live Player */}
                   <VideoPreviewField
+                    values={createForm.preview_video_urls}
+                    onChangeUrls={(urls) => setCreateForm((prev) => ({
+                      ...prev,
+                      preview_video_urls: urls,
+                      preview_video_url: urls[0] || '',
+                    }))}
                     value={createForm.preview_video_url}
-                    onChange={(url) => setCreateForm((prev) => ({ ...prev, preview_video_url: url }))}
-                    label="Dedicated Video Preview URL (View Samples Section)"
-                    helperText="Paste any hosted video URL (Direct MP4, Cloud CDN, Google Drive preview, or YouTube Shorts). This video is embedded directly in the 'View Samples' section on the product page."
+                    onChange={(url) => setCreateForm((prev) => ({
+                      ...prev,
+                      preview_video_url: url,
+                      preview_video_urls: [url, ...prev.preview_video_urls.slice(1)],
+                    }))}
+                    label="Dedicated Video Previews (View Samples Section)"
+                    helperText="Add 1 or more hosted video links (Direct MP4, Google Drive preview, or YouTube Shorts). Each video will appear in the 'View Samples' player on this product's page."
                   />
 
                   {/* Gallery Images with ImgBB Upload & Visual Management */}

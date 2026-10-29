@@ -36,7 +36,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/1000-ulti-pulti-duniya-ulti-duniya-reverse-world-ai-reels-bundle-2.png"
     ],
-    "previewVideoUrl": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-1.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -88,7 +89,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/1500-mad-scientist-reels-bundle-4-2.jpg"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-78.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -140,7 +142,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/1500-ai-funny-kids-reels-bundle-4-2.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/ai_animal_jokes_1789030266_3982995980797999061_24509764410.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -192,7 +195,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/500-dr-skeleton-health-reels-bundle-1-2.png"
     ],
-    "previewVideoUrl": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/DR-SKELETON.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -244,7 +248,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/500-ai-baby-dancing-reels-bundle-4-2.png"
     ],
-    "previewVideoUrl": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-3.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -296,7 +301,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/450-ai-health-awareness-reels-bundle-4-2.jpg"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle1.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -349,7 +355,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/500-ai-influencer-girls-reels-bundle-4-2.jpg"
     ],
-    "previewVideoUrl": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/instagram_1772870533472720p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -401,7 +408,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/500-snake-ulti-duniya-reverse-world-ai-reels-bundle-2.png"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1786042855_3957936752362456535_16711909525.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -453,7 +461,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/premanand-ji-maharaj-reels-bundle-4-2.png"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-78.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -501,7 +510,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/1000-rust-restoration-reels-bundle-2-1.png"
     ],
-    "previewVideoUrl": "https://www.buyreels.in/assets/videos/reels/6.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -557,7 +567,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/2500-stickman-animation-reels-bundle-2.png"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/gigglee_toons_1787416995_3969463571233179389_28226841059.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -605,7 +616,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai_monkey_vlogging_reels_bundle-reels-bundle-5-2.png"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-4.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -657,7 +669,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/1200-glass-cutting-asmr-reels-bundle-4-2.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/cb40175ef61549908b6012f4d1d40f23/cb40175ef61549908b6012f4d1d40f23.HD-1080p-2.5Mbps-93083440.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -705,7 +718,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai_miniature_reels_pack_poster-reels-bundle-7-2.png"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/01/BetterBundle.in-Four-fruits-four-faces-one-weirdly-satisfying-moment_480p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -753,7 +767,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/5000-trending-ai-anime-reels-bundle-4-2.png"
     ],
-    "previewVideoUrl": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/instagram_1772842939930720p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -801,7 +816,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/mega-car-reels-bundle-3.jpg"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/06/Story-1-Min-1.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -849,7 +865,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/9000_art_craft_reels_bundle-reels-bundle-5-2.png"
     ],
-    "previewVideoUrl": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/DR-SKELETON.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -902,7 +919,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/3200-ultimate-twisted-world-reel-bundle-reels-bundle-1-2.png"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/01/BetterBundle.in-Cupcake-eats-cake%E2%80%A6-and-enjoys-it-a-little-too-much-%F0%9F%A7%81%F0%9F%98%85-ASMR-AI-Animation_1080p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "HOT",
       "HD",
@@ -950,7 +968,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/600-ai-baby-podcast-bundle-reels-bundle-5-2.png"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/ai_animal_jokes_1789030266_3982995980797999061_24509764410.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -998,7 +1017,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-hulk-reels-bundle-4-2.webp"
     ],
-    "previewVideoUrl": "https://drive.google.com/drive/folders/1tULTw9Q3zng9W0RqWsun3CPmRwfLf4bV",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1050,7 +1070,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/animated_gym_reels_bundle-reels-bundle-7-2.png"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle3.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1098,7 +1119,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai_hindi_story_reels_bundle-reels-bundle-5-2.png"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/0d0437e637b34381b686a9fd761d738c/0d0437e637b34381b686a9fd761d738c.HD-1080p-2.5Mbps-93083435.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1146,7 +1168,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/1000_ai_story_reels_bundle-reels-bundle-7-2.png"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2025/07/WorkLinc.in-1751124780666.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1194,7 +1217,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-cats-reels-bundle-5-2.jpg"
     ],
-    "previewVideoUrl": "https://credibleearning.com/product/35329",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1242,7 +1266,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-dogs-reels-bundle-5-2.jpg"
     ],
-    "previewVideoUrl": "https://brandigodigital.com/wp-content/uploads/2026/02/1-192.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1294,7 +1319,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-funny-reels-bundle-4-2.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/01/BetterBundle.in-Four-fruits-four-faces-one-weirdly-satisfying-moment_480p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1342,7 +1368,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/5000-ai-funny-story-reels-bundle-1-2.png"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/badmash_bandar_2026-08-23_09-27-32_3969802714324662443_80276745034.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1390,7 +1417,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-3d-cartoon-reels-bundle-1-2.png"
     ],
-    "previewVideoUrl": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-34.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1438,7 +1466,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/600-ghibli-style-reels-bundle-5-2.png"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle4.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1486,7 +1515,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/faceless-ai-tech-reels-bundle-4-2.jpg"
     ],
-    "previewVideoUrl": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-23.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1534,7 +1564,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/pubg-bgmi-reels-bundle-2-5-2.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/1c1b0ab01ed741ddb1d8471a27cd21d0/1c1b0ab01ed741ddb1d8471a27cd21d0.HD-1080p-2.5Mbps-91483057.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1582,7 +1613,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/free-fire-reels-bundle-2-5-2.jpg"
     ],
-    "previewVideoUrl": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-11.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1630,7 +1662,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/gym-fitness-reels-bundle-3.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/04830f916c364d48a41ed521e0a806eb/04830f916c364d48a41ed521e0a806eb.HD-1080p-2.5Mbps-93083438.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1682,7 +1715,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/hindi-motivational-reels-bundle-7.jpg"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/06/Story-1-Min-1.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1730,7 +1764,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-motivational-reels-bundle-5-2.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/3db91d46167a4d9a9a13f774702351ee/3db91d46167a4d9a9a13f774702351ee.HD-1080p-2.5Mbps-93083443.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1778,7 +1813,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/satisfying-reels-bundle.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/gigglee_toons_1785564689_3953925385771531496_28226841059.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1826,7 +1862,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/nature-reels-bundle.jpg"
     ],
-    "previewVideoUrl": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/DR2.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1874,7 +1911,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/woodwork-reels-bundle.jpg"
     ],
-    "previewVideoUrl": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-14.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1922,7 +1960,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/travel-tourism-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-3-betterbundle.in_.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -1970,7 +2009,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/funny-fails-reels-bundle-4-2.jpg"
     ],
-    "previewVideoUrl": "https://www.freebiesmockup.com/wp-content/uploads/2026/01/pin_335236766098802502.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2018,7 +2058,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/podcast-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/b8d198cc79bd4e488f6e866768527ad5/b8d198cc79bd4e488f6e866768527ad5.HD-1080p-2.5Mbps-91483054.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2066,7 +2107,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/slowed-reels-bundle-1-1.jpg"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-54.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2114,7 +2156,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/call-of-duty-reels-bundle-1-1.jpg"
     ],
-    "previewVideoUrl": "https://rtmcreator.com/blog/",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2162,7 +2205,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/trick-shots-reels-bundle-1-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/01/Hulk-Ne-Li-Apne-Baadla-hulk-desihulk-aihulk-hulkai-hulkvsredhulk-kawasaki-ai-trendingaihulk_1080p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2210,7 +2254,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/fortnite-reels-bundle-1-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/f7006eec2a644229ba678e63eca5e0e6/f7006eec2a644229ba678e63eca5e0e6.HD-1080p-2.5Mbps-89320744.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2258,7 +2303,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/high-testosterone-reels-bundle-1-1.jpg"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2025/07/WorkLinc.in-1751124794250.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2306,7 +2352,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/aesthetic-girls-reels-bundle-1-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-2-betterbundle.in_.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2354,7 +2401,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/valorant-reels-bundle-1-1.jpg"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-2.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2402,7 +2450,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/calisthenics-reels-bundle-1-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-1-betterbundle.in_.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2450,7 +2499,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-models-reels-bundle-1-1.jpg"
     ],
-    "previewVideoUrl": "https://thedigifyshop.com/wp-content/uploads/2026/05/1381731314.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2498,7 +2548,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/gym-tips-reels-bundle-1-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-4-betterbundle.in_.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2546,7 +2597,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/women-fitness-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1788366077_3975953946883611117_16711909525.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2594,7 +2646,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/basketball-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/aa0dbac015134b8d81194bd94ca5b187/aa0dbac015134b8d81194bd94ca5b187.HD-1080p-7.2Mbps-89320742.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2642,7 +2695,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/girl-dancing-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/01/Hulk-Liya-Panga-Tun-Tun-Sahur-Se-hulk-aihulk-desihulk-hulkvstuntunsahur-ai-tungtungtungsahur_1080p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2690,7 +2744,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/humanity-kindness-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-4.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2738,7 +2793,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/arpit-bala-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2025/07/WorkLinc.in-1751125764421.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2786,7 +2842,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/magic-tricks-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/c2815031646943bda4f522571f7e6e1e/c2815031646943bda4f522571f7e6e1e.HD-1080p-2.5Mbps-91483055.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2834,7 +2891,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/f1-cars-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/8a16b1fadb3b4d47b0a2fda21cc4a820/8a16b1fadb3b4d47b0a2fda21cc4a820.HD-1080p-2.5Mbps-89317244.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2882,7 +2940,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-story-chats-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/715152ed3797491c92fa46d93b9f730a/715152ed3797491c92fa46d93b9f730a.HD-1080p-2.5Mbps-91483053.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2930,7 +2989,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/mega-anime-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1788183006_3975890080589331884_16711909525.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -2978,7 +3038,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/football-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/01/Hulk-Ki-Badla-Hulk-vs-Yellow-Hulk-hulk-desihulk-aihulk-hulkai-hulkvsyellowhulk-lamborghini_1080p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3026,7 +3087,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/craft-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/alexzone310_1785394558_3952496305152321964_46626949812.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3074,7 +3136,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/business-tips-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/ea6497bb29ef48cb8bdb5c9fc2607502/ea6497bb29ef48cb8bdb5c9fc2607502.HD-1080p-2.5Mbps-93083437.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3122,7 +3185,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/attitude-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle2.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3170,7 +3234,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/stock-market-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://trendybundles.shop/cdn/shop/videos/c/vp/25ca9fa5bb0545c5920556b1bcdaa031/25ca9fa5bb0545c5920556b1bcdaa031.SD-480p-0.9Mbps-66786175.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3218,7 +3283,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/athletic-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/06/Story-1-Min-5.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3266,7 +3332,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/trending-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/e88b17865f844fa5ae9f2499c90e0d5b/e88b17865f844fa5ae9f2499c90e0d5b.HD-1080p-2.5Mbps-89317324.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3314,7 +3381,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/anime-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-1.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3362,7 +3430,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/paper-art-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1786042855_3957936752362456535_16711909525.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3410,7 +3479,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/tools-tips-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://videobundlehub.com/wp-content/uploads/2026/07/6bafe9724fea4f12942f2b372e0a7b5b.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3458,7 +3528,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/tools-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/instagram_1772870533472720p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3506,7 +3577,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/zig-sharko-cartoon-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle3.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3554,7 +3626,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/car-luxury-lifestyle-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-3.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3602,7 +3675,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/ai-islamic-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle1.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3650,7 +3724,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/sanatan-dharm-reels-bundle-1.jpg"
     ],
-    "previewVideoUrl": "https://digityl.shop/wp-content/uploads/2026/03/Video-682.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3698,7 +3773,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/universe-reels-bundle-3-1.jpg"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-78.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3746,7 +3822,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/business-growth-motivational-reels-bundle-3-1.jpg"
     ],
-    "previewVideoUrl": "https://www.buyreels.in/assets/videos/reels/6.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3794,7 +3871,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/art-craft-reels-bundle-3-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/01/BetterBundle.in-Food-with-Faces-Eating-Each-Other-Weirdly-Satisfying-ASMR-Snack-Show_1080p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3842,7 +3920,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/ai-health-reels-bundle-3-1.jpg"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-4.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3890,7 +3969,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/ai-tech-reels-bundle-3-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/cb40175ef61549908b6012f4d1d40f23/cb40175ef61549908b6012f4d1d40f23.HD-1080p-2.5Mbps-93083440.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3938,7 +4018,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/ai-fitness-reels-bundle-3-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/01/BetterBundle.in-Four-fruits-four-faces-one-weirdly-satisfying-moment_480p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -3986,7 +4067,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/indian-cricket-reels-bundle-3-1.jpg"
     ],
-    "previewVideoUrl": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/instagram_1772842939930720p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4034,7 +4116,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/mini-car-unboxing-reels-bundle-2-1.png"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/06/Story-1-Min-1.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4082,7 +4165,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/superhero-reels-bundle-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/DR-SKELETON.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4130,7 +4214,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/long-movie-clips-reels-bundle-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/01/BetterBundle.in-Cupcake-eats-cake%E2%80%A6-and-enjoys-it-a-little-too-much-%F0%9F%A7%81%F0%9F%98%85-ASMR-AI-Animation_1080p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4181,7 +4266,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/adult-talks-reels-bundle-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://digityl.shop/wp-content/uploads/2026/03/Video-682.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4229,7 +4315,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/relatable-reels-bundle-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://drive.google.com/drive/folders/1tULTw9Q3zng9W0RqWsun3CPmRwfLf4bV",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4277,7 +4364,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/stoic-mindset-reels-bundle-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/gigglee_toons_1787416995_3969463571233179389_28226841059.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4325,7 +4413,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/aesthetic-ocean-sunset-cloud-reels-bundle-2-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/0d0437e637b34381b686a9fd761d738c/0d0437e637b34381b686a9fd761d738c.HD-1080p-2.5Mbps-93083435.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4373,7 +4462,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/aesthetic-rain-reels-bundle-2-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2025/07/WorkLinc.in-1751124780666.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4421,7 +4511,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/aesthetic-trees-reels-bundle-2-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://credibleearning.com/product/35329",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4469,7 +4560,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/aesthetic-snow-reels-bundle-2-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://brandigodigital.com/wp-content/uploads/2026/02/1-192.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4517,7 +4609,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/cycling-reels-bundle-2-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://www.assetskart.shop/products",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4568,7 +4661,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/aesthetic-couple-reels-bundle-2-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://videobundlehub.com/wp-content/uploads/2026/07/6bafe9724fea4f12942f2b372e0a7b5b.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4616,7 +4710,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/cute-cats-reels-bundle-2-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-34.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4664,7 +4759,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/clash-royale-clash-of-clans-reels-bundle-2-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle4.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4712,7 +4808,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/emotional-reels-bundle-6-1.jpg"
     ],
-    "previewVideoUrl": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-23.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4760,7 +4857,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/domo-ai-reels-bundle-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/1c1b0ab01ed741ddb1d8471a27cd21d0/1c1b0ab01ed741ddb1d8471a27cd21d0.HD-1080p-2.5Mbps-91483057.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4808,7 +4906,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/sigma-male-reels-bundle-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-11.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4860,7 +4959,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/god-reels-bundle-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1786042855_3957936752362456535_16711909525.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4908,7 +5008,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/korean-girl-reels-bundle-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-2.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -4956,7 +5057,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/space-aesthetic-reels-bundle-5-2-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/3db91d46167a4d9a9a13f774702351ee/3db91d46167a4d9a9a13f774702351ee.HD-1080p-2.5Mbps-93083443.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5004,7 +5106,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/800-ai-horror-reels-bundle-2-2-1.png"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/gigglee_toons_1785564689_3953925385771531496_28226841059.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5052,7 +5155,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/500-ai-anime-girl-aesthetic-lifestyle-reels-reels-bundle-5-2-1.png"
     ],
-    "previewVideoUrl": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/DR2.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5100,7 +5204,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/200-ai-patal-lok-narkh-yamraj-reels-reels-bundle-5-2-1.png"
     ],
-    "previewVideoUrl": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-14.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5148,7 +5253,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/500-viral-ai-celebrity-reels-bundle-5-2-1.png"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-3-betterbundle.in_.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5196,7 +5302,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/600_ai_tiny_dancers_reels_bundle-reels-bundle-5-2-1.png"
     ],
-    "previewVideoUrl": "https://www.freebiesmockup.com/wp-content/uploads/2026/01/pin_335236766098802502.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5244,7 +5351,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/600_ai_animal_reels_bundle-reels-bundle-7-2-1.png"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/b8d198cc79bd4e488f6e866768527ad5/b8d198cc79bd4e488f6e866768527ad5.HD-1080p-2.5Mbps-91483054.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5292,7 +5400,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/glowing_motion_graphics_reel_bundle-reels-bundle-4-2-1.png"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-54.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5340,7 +5449,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/1000-hot-webseries-clips-bundle-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://rtmcreator.com/blog/",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5391,7 +5501,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/10000-hot-girls-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/01/Hulk-Ne-Li-Apne-Baadla-hulk-desihulk-aihulk-hulkai-hulkvsredhulk-kawasaki-ai-trendingaihulk_1080p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5447,7 +5558,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/250-baby-food-eating-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-1.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5495,7 +5607,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/dark-aesthetic-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2025/07/WorkLinc.in-1751124794250.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5543,7 +5656,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/dosti-friendship-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-2-betterbundle.in_.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5591,7 +5705,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/camera-tips-photography-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-2.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5639,7 +5754,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/funny-comments-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-1-betterbundle.in_.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5687,7 +5803,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/cringe-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://thedigifyshop.com/wp-content/uploads/2026/05/1381731314.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5735,7 +5852,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/runway-models-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-4-betterbundle.in_.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5783,7 +5901,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/ai-story-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1788366077_3975953946883611117_16711909525.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5831,7 +5950,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/stop-scrolling-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/aa0dbac015134b8d81194bd94ca5b187/aa0dbac015134b8d81194bd94ca5b187.HD-1080p-7.2Mbps-89320742.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5879,7 +5999,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/mafia-cars-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/01/Hulk-Liya-Panga-Tun-Tun-Sahur-Se-hulk-aihulk-desihulk-hulkvstuntunsahur-ai-tungtungtungsahur_1080p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5927,7 +6048,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/mythical-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-4.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -5975,7 +6097,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/retro-bollywood-reels-bundle-4-2-1.jpg"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2025/07/WorkLinc.in-1751125764421.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -6023,7 +6146,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/500-hot-anushka-sen-ai-reels-bundle-1-2-1.png"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/c2815031646943bda4f522571f7e6e1e/c2815031646943bda4f522571f7e6e1e.HD-1080p-2.5Mbps-91483055.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -6075,7 +6199,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/500-ai-indian-glamour-model-reels-bundle-1-2-1.png"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/8a16b1fadb3b4d47b0a2fda21cc4a820/8a16b1fadb3b4d47b0a2fda21cc4a820.HD-1080p-2.5Mbps-89317244.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -6123,7 +6248,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/9000-foreign-models-reels-bundle-pack-1-2-1.png"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/715152ed3797491c92fa46d93b9f730a/715152ed3797491c92fa46d93b9f730a.HD-1080p-2.5Mbps-91483053.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -6171,7 +6297,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/2000-viral-ai-influencer-reel-bundle-reels-bundle-1-2-1.png"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1788183006_3975890080589331884_16711909525.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -6219,7 +6346,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/1000-ai-dog-reels-bundle-1-2-1.png"
     ],
-    "previewVideoUrl": "https://betterbundle.in/wp-content/uploads/2026/01/Hulk-Ki-Badla-Hulk-vs-Yellow-Hulk-hulk-desihulk-aihulk-hulkai-hulkvsyellowhulk-lamborghini_1080p.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -6267,7 +6395,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/thumbnail.png"
     ],
-    "previewVideoUrl": "https://reelsbundles.in/wp-content/uploads/2026/09/alexzone310_1785394558_3952496305152321964_46626949812.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -6315,7 +6444,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/thumbnail.png"
     ],
-    "previewVideoUrl": "https://thesocialgame.in/cdn/shop/videos/c/vp/ea6497bb29ef48cb8bdb5c9fc2607502/ea6497bb29ef48cb8bdb5c9fc2607502.HD-1080p-2.5Mbps-93083437.mp4?v=0",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",
@@ -6363,7 +6493,8 @@ export const BUNDLE_PRODUCTS: BundleProduct[] = [
     "galleryImages": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/billionaire-lifestyle-reels-bundle-5-2.jpg"
     ],
-    "previewVideoUrl": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle2.mp4",
+    "previewVideoUrl": "",
+    "previewVideoUrls": [],
     "tags": [
       "TRENDING",
       "HD",

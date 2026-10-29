@@ -72,7 +72,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/1000-ulti-pulti-duniya-ulti-duniya-reverse-world-ai-reels-bundle-2.png"
     ],
-    "preview_video_url": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-1.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1lXK8icsrN-ggglg53pkZapSixTeBywD4",
     "short_description": "Ulti Duniya Reels Bundle: Explore Hindi reverse-world storytelling with this Ulti Duniya Reels Bundle, also known as the Ulti Pulti Duniya AI Reels Bundle. Review bundle specifications, previews and the selected licen...",
     "description": "Ulti Duniya Reels Bundle: Explore Hindi reverse-world storytelling with this Ulti Duniya Reels Bundle, also known as the Ulti Pulti Duniya AI Reels Bundle. Review bundle specifications, previews and the selected licen...",
@@ -133,7 +134,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/1500-mad-scientist-reels-bundle-4-2.jpg"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-78.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1CVdhGLvj8P3eyylSjtVmYEXn0txZ5twd",
     "short_description": "Mad Scientist Reels Bundle: The Mad Scientist Reels Bundle focuses on quirky AI scientist characters and story-driven scenes. Review bundle specifications, previews and the selected licence before ordering.",
     "description": "Mad Scientist Reels Bundle: The Mad Scientist Reels Bundle focuses on quirky AI scientist characters and story-driven scenes. Review bundle specifications, previews and the selected licence before ordering.",
@@ -194,7 +196,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/1500-ai-funny-kids-reels-bundle-4-2.jpg"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/ai_animal_jokes_1789030266_3982995980797999061_24509764410.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1of_cQj0SqyJcdozmHAvEr05NlllYxVEc",
     "short_description": "AI-styled funny kids and baby moments with playful family-friendly humour Files: MP4 · 9:16 vertical · HD / Full HD (varies by clip). For creators planning niche-focused Reels, Shorts and social posts. Check the liste...",
     "description": "AI-styled funny kids and baby moments with playful family-friendly humour Files: MP4 · 9:16 vertical · HD / Full HD (varies by clip). For creators planning niche-focused Reels, Shorts and social posts. Check the liste...",
@@ -255,7 +258,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/500-dr-skeleton-health-reels-bundle-1-2.png"
     ],
-    "preview_video_url": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/DR-SKELETON.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1vSJ-ViWk_jKwFsh3uTdl2thXpuCexAN-",
     "short_description": "Dr Skeleton Reels Bundle: This Dr Skeleton Reels Bundle features a doctor-skeleton character in health-awareness and medical-style stories. Review bundle specifications, previews and the selected licence before ordering.",
     "description": "Dr Skeleton Reels Bundle: This Dr Skeleton Reels Bundle features a doctor-skeleton character in health-awareness and medical-style stories. Review bundle specifications, previews and the selected licence before ordering.",
@@ -316,7 +320,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/500-ai-baby-dancing-reels-bundle-4-2.png"
     ],
-    "preview_video_url": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-3.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1D-FsxjxkDAZ2-De3X7ovnNlrB5MPZV0f",
     "short_description": "AI Baby Dance Reels Bundle: The AI Baby Dance Reels Bundle brings together cute AI baby dancing and playful movement in a family-friendly entertainment format. Review bundle specifications, previews and the selected l...",
     "description": "AI Baby Dance Reels Bundle: The AI Baby Dance Reels Bundle brings together cute AI baby dancing and playful movement in a family-friendly entertainment format. Review bundle specifications, previews and the selected l...",
@@ -377,7 +382,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/450-ai-health-awareness-reels-bundle-4-2.jpg"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle1.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1Mu-5JCOzb_mRlmS8I5CHvNV1RBm6iZ4c",
     "short_description": "AI Health Awareness Reels Bundle: The AI Health Awareness Reels Bundle focuses on health, wellness and nutrition-themed visual content. Review bundle specifications, previews and the selected licence before ordering.",
     "description": "AI Health Awareness Reels Bundle: The AI Health Awareness Reels Bundle focuses on health, wellness and nutrition-themed visual content. Review bundle specifications, previews and the selected licence before ordering.",
@@ -438,7 +444,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/500-ai-influencer-girls-reels-bundle-4-2.jpg"
     ],
-    "preview_video_url": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/instagram_1772870533472720p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1lXK8icsrN-ggglg53pkZapSixTeBywD4",
     "short_description": "AI Girl Influencer Reels Bundle: This AI Girl Influencer Reels Bundle is the collection listed as AI Influencer Girls Reels Bundle. Review bundle specifications, previews and the selected licence before ordering.",
     "description": "AI Girl Influencer Reels Bundle: This AI Girl Influencer Reels Bundle is the collection listed as AI Influencer Girls Reels Bundle. Review bundle specifications, previews and the selected licence before ordering.",
@@ -499,7 +506,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/500-snake-ulti-duniya-reverse-world-ai-reels-bundle-2.png"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1786042855_3957936752362456535_16711909525.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1CksKkU1ERAuhD9hgBZNP7xP9g068mG-c?usp=sharing",
     "short_description": "Snake Ulti Duniya AI Files: MP4 · 9:16 vertical · 1080p HD. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Snake Ulti Duniya AI Files: MP4 · 9:16 vertical · 1080p HD. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -560,7 +568,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/premanand-ji-maharaj-reels-bundle-4-2.png"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-78.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1K6aLaTQteuVbkETjMNSu-qTBcKNauvty",
     "short_description": "Premanand Ji Maharaj Reels Bundle: The Premanand Ji Maharaj Reels Bundle brings together spiritual discourse, devotional wisdom and inspirational clips as described in the supplied listing. Review bundle specification...",
     "description": "Premanand Ji Maharaj Reels Bundle: The Premanand Ji Maharaj Reels Bundle brings together spiritual discourse, devotional wisdom and inspirational clips as described in the supplied listing. Review bundle specification...",
@@ -621,7 +630,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/1000-rust-restoration-reels-bundle-2-1.png"
     ],
-    "preview_video_url": "https://www.buyreels.in/assets/videos/reels/6.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1OwXW9RMhUzgkef_ONsB_BuBPL0X8EQ9f",
     "short_description": "Rust Restoration Reels Bundle: The Rust Restoration Reels Bundle focuses on rust removal, cleaning, repair, polishing and transformations of old tools or metal objects. Review bundle specifications, previews and the s...",
     "description": "Rust Restoration Reels Bundle: The Rust Restoration Reels Bundle focuses on rust removal, cleaning, repair, polishing and transformations of old tools or metal objects. Review bundle specifications, previews and the s...",
@@ -682,7 +692,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/2500-stickman-animation-reels-bundle-2.png"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/gigglee_toons_1787416995_3969463571233179389_28226841059.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1yuOoZ2f7P3tdj8ubF_J-hLEkts0jXmW3",
     "short_description": "Stickman Animation Reels Bundle: The Stickman Animation Reels Bundle focuses on funny stick-figure scenes, relatable daily-life situations, action and storytelling. Review bundle specifications, previews and the selec...",
     "description": "Stickman Animation Reels Bundle: The Stickman Animation Reels Bundle focuses on funny stick-figure scenes, relatable daily-life situations, action and storytelling. Review bundle specifications, previews and the selec...",
@@ -743,7 +754,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai_monkey_vlogging_reels_bundle-reels-bundle-5-2.png"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-4.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1XJJb-JvApUfR5mVlssZrzC36B1p8ltaU",
     "short_description": "AI Monkey Reels Bundle: The AI Monkey Reels Bundle is listed here as AI Monkey Vlogging Reels Bundle. Review bundle specifications, previews and the selected licence before ordering.",
     "description": "AI Monkey Reels Bundle: The AI Monkey Reels Bundle is listed here as AI Monkey Vlogging Reels Bundle. Review bundle specifications, previews and the selected licence before ordering.",
@@ -804,7 +816,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/1200-glass-cutting-asmr-reels-bundle-4-2.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/cb40175ef61549908b6012f4d1d40f23/cb40175ef61549908b6012f4d1d40f23.HD-1080p-2.5Mbps-93083440.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1zgV15R7qa6qPcY7upFQ6qngLXKzYlyQZ",
     "short_description": "AI Glass Cutting ASMR Reels Bundle: The AI Glass Cutting ASMR Reels Bundle focuses on AI glass-cutting scenes and oddly satisfying short-form visuals. Review bundle specifications, previews and the selected licence be...",
     "description": "AI Glass Cutting ASMR Reels Bundle: The AI Glass Cutting ASMR Reels Bundle focuses on AI glass-cutting scenes and oddly satisfying short-form visuals. Review bundle specifications, previews and the selected licence be...",
@@ -865,7 +878,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai_miniature_reels_pack_poster-reels-bundle-7-2.png"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/01/BetterBundle.in-Four-fruits-four-faces-one-weirdly-satisfying-moment_480p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1lXK8icsrN-ggglg53pkZapSixTeBywD4",
     "short_description": "Mini AI Workers Reels Bundle: The Mini AI Workers Reels Bundle is listed as AI Miniature Reels Bundle – Tiny Workers & Miniature World Videos. Review bundle specifications, previews and the selected licence before ord...",
     "description": "Mini AI Workers Reels Bundle: The Mini AI Workers Reels Bundle is listed as AI Miniature Reels Bundle – Tiny Workers & Miniature World Videos. Review bundle specifications, previews and the selected licence before ord...",
@@ -926,7 +940,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/5000-trending-ai-anime-reels-bundle-4-2.png"
     ],
-    "preview_video_url": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/instagram_1772842939930720p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1GotSOpN8Wg82R0gkxn_ZXc6KbDuk7ANa?usp=drive_link",
     "short_description": "AI Anime Reels Bundle: The AI Anime Reels Bundle is this store’s Trending AI Anime collection, built around AI anime characters and animated scenes. Review bundle specifications, previews and the selected licence befo...",
     "description": "AI Anime Reels Bundle: The AI Anime Reels Bundle is this store’s Trending AI Anime collection, built around AI anime characters and animated scenes. Review bundle specifications, previews and the selected licence befo...",
@@ -987,7 +1002,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/mega-car-reels-bundle-3.jpg"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/06/Story-1-Min-1.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1xyepyNXc_j_ThL0A_vzfqTek5g4BRKJm",
     "short_description": "Car Reels Bundle: The Car Reels Bundle is listed here as Mega Car Reels Bundle. Review bundle specifications, previews and the selected licence before ordering.",
     "description": "Car Reels Bundle: The Car Reels Bundle is listed here as Mega Car Reels Bundle. Review bundle specifications, previews and the selected licence before ordering.",
@@ -1048,7 +1064,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/9000_art_craft_reels_bundle-reels-bundle-5-2.png"
     ],
-    "preview_video_url": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/DR-SKELETON.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1uvX4I50ffSWSI4I0391SHuMA87ap8MEL?usp=share_link",
     "short_description": "Art & Craft Reels Bundle: The Art & Craft Reels Bundle is the 9000+ collection focused on art, craft, DIY and creative-process videos. Review bundle specifications, previews and the selected licence before ordering.",
     "description": "Art & Craft Reels Bundle: The Art & Craft Reels Bundle is the 9000+ collection focused on art, craft, DIY and creative-process videos. Review bundle specifications, previews and the selected licence before ordering.",
@@ -1109,7 +1126,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/3200-ultimate-twisted-world-reel-bundle-reels-bundle-1-2.png"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/01/BetterBundle.in-Cupcake-eats-cake%E2%80%A6-and-enjoys-it-a-little-too-much-%F0%9F%A7%81%F0%9F%98%85-ASMR-AI-Animation_1080p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1zUBkXWAQozA4f28W8AhhFKpg94qLVw3F?usp=sharing",
     "short_description": "Fantasy creatures, twisted worlds and imaginative animated story scenes Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed ...",
     "description": "Fantasy creatures, twisted worlds and imaginative animated story scenes Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed ...",
@@ -1170,7 +1188,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/600-ai-baby-podcast-bundle-reels-bundle-5-2.png"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/ai_animal_jokes_1789030266_3982995980797999061_24509764410.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/13sRBc7fYdv5POO4Gh4SOJJBLacrFXazA",
     "short_description": "Cute AI baby hosts, podcast-style conversations and funny talking-baby scenes Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the l...",
     "description": "Cute AI baby hosts, podcast-style conversations and funny talking-baby scenes Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the l...",
@@ -1231,7 +1250,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-hulk-reels-bundle-4-2.webp"
     ],
-    "preview_video_url": "https://drive.google.com/drive/folders/1tULTw9Q3zng9W0RqWsun3CPmRwfLf4bV",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1Z2CwE7IuC15fIieUqtAv0h6-1zrCtLUD",
     "short_description": "AI action and superhero-style story content a powerful green hero character Files: MP4 · 9:16 vertical · HD / Full HD (varies by reel). For creators planning niche-focused Reels, Shorts and social posts. Check the lis...",
     "description": "AI action and superhero-style story content a powerful green hero character Files: MP4 · 9:16 vertical · HD / Full HD (varies by reel). For creators planning niche-focused Reels, Shorts and social posts. Check the lis...",
@@ -1292,7 +1312,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/animated_gym_reels_bundle-reels-bundle-7-2.png"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle3.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1vBx4tzfMJGCUNlg-78YMbbq6qCqr6CQF",
     "short_description": "Animated exercise demonstrations, gym movements and fitness-focused short videos Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check th...",
     "description": "Animated exercise demonstrations, gym movements and fitness-focused short videos Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check th...",
@@ -1353,7 +1374,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai_hindi_story_reels_bundle-reels-bundle-5-2.png"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/0d0437e637b34381b686a9fd761d738c/0d0437e637b34381b686a9fd761d738c.HD-1080p-2.5Mbps-93083435.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1lbPsLSl_18aMRjS0l3aJXka5in9jhDLe?usp=sharing",
     "short_description": "Hindi kahani and short story videos designed around concise one-minute narratives Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check t...",
     "description": "Hindi kahani and short story videos designed around concise one-minute narratives Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check t...",
@@ -1414,7 +1436,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/1000_ai_story_reels_bundle-reels-bundle-7-2.png"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2025/07/WorkLinc.in-1751124780666.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1G377wwyyilxxaBuDamJZsnR2j8emleN5",
     "short_description": "AI-generated short stories, character moments and narrative visuals Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed deta...",
     "description": "AI-generated short stories, character moments and narrative visuals Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed deta...",
@@ -1475,7 +1498,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-cats-reels-bundle-5-2.jpg"
     ],
-    "preview_video_url": "https://credibleearning.com/product/35329",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1bnJYTUN-rVq1syfZ0gN_5OrYyshbe_Fw",
     "short_description": "Cute and entertaining AI-styled cat videos with expressive pet moments Files: MP4 · 9:16 vertical · 720 × 1280 (HD). For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and lic...",
     "description": "Cute and entertaining AI-styled cat videos with expressive pet moments Files: MP4 · 9:16 vertical · 720 × 1280 (HD). For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and lic...",
@@ -1536,7 +1560,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-dogs-reels-bundle-5-2.jpg"
     ],
-    "preview_video_url": "https://brandigodigital.com/wp-content/uploads/2026/02/1-192.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1VIrNbAvfy-iVRttNRKKdagAW8B1Q2fV_",
     "short_description": "AI-styled dog and pet content cute, funny and shareable moments Files: MP4 · 9:16 vertical · 720 × 1280 (HD). For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license be...",
     "description": "AI-styled dog and pet content cute, funny and shareable moments Files: MP4 · 9:16 vertical · 720 × 1280 (HD). For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license be...",
@@ -1597,7 +1622,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-funny-reels-bundle-4-2.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/01/BetterBundle.in-Four-fruits-four-faces-one-weirdly-satisfying-moment_480p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1RW0s9SkE-yctXnzP88p8NKxGBF9u2hC4",
     "short_description": "AI-generated comedy, funny situations and meme-friendly short videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "AI-generated comedy, funny situations and meme-friendly short videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -1658,7 +1684,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/5000-ai-funny-story-reels-bundle-1-2.png"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/badmash_bandar_2026-08-23_09-27-32_3969802714324662443_80276745034.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1ruIFMzQ7vNv2cm3nPV0AJv_xCcB16nL4",
     "short_description": "AI comedy stories, animated funny characters and entertaining short narratives Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the ...",
     "description": "AI comedy stories, animated funny characters and entertaining short narratives Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the ...",
@@ -1719,7 +1746,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-3d-cartoon-reels-bundle-1-2.png"
     ],
-    "preview_video_url": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-34.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1W4-qvHY3eVqBzT6EDm6CJmP5ENDdSVBh?usp=drive_link",
     "short_description": "3D cartoon characters, animated story scenes and expressive AI-style visual content Files: MP4 · 9:16 vertical · HD / Full HD (verify source files). For creators planning niche-focused Reels, Shorts and social posts. ...",
     "description": "3D cartoon characters, animated story scenes and expressive AI-style visual content Files: MP4 · 9:16 vertical · HD / Full HD (verify source files). For creators planning niche-focused Reels, Shorts and social posts. ...",
@@ -1780,7 +1808,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/600-ghibli-style-reels-bundle-5-2.png"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle4.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1saR2zoFd47npssYG0PnUeY8HMD5Zky5o",
     "short_description": "Warm anime-inspired scenes, whimsical characters and cinematic animated storytelling Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Chec...",
     "description": "Warm anime-inspired scenes, whimsical characters and cinematic animated storytelling Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Chec...",
@@ -1841,7 +1870,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/faceless-ai-tech-reels-bundle-4-2.jpg"
     ],
-    "preview_video_url": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-23.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1QihzRWsY3AupO4suLSDp1VOQIKfb3hXm",
     "short_description": "AI, technology, futuristic concepts and faceless tech-oriented visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "AI, technology, futuristic concepts and faceless tech-oriented visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -1902,7 +1932,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/pubg-bgmi-reels-bundle-2-5-2.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/1c1b0ab01ed741ddb1d8471a27cd21d0/1c1b0ab01ed741ddb1d8471a27cd21d0.HD-1080p-2.5Mbps-91483057.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/10GYoFNhVUcJH0-uCTjV6gbQ9GUFqn1kT",
     "short_description": "PUBG and BGMI battle clips, edits and gaming highlights Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "PUBG and BGMI battle clips, edits and gaming highlights Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -1963,7 +1994,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/free-fire-reels-bundle-2-5-2.jpg"
     ],
-    "preview_video_url": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-11.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1o4MMXlLZ3XxKtovFDMGgT9v7sHiP6c1b",
     "short_description": "Free Fire gaming clips, edits and action-oriented short videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Free Fire gaming clips, edits and action-oriented short videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -2024,7 +2056,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/gym-fitness-reels-bundle-3.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/04830f916c364d48a41ed521e0a806eb/04830f916c364d48a41ed521e0a806eb.HD-1080p-2.5Mbps-93083438.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1n9s_PYqWku13IDw1SwlsnVmH5rfXR_A8",
     "short_description": "✨ Gym & Fitness Reels Bundle includes 2,200+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated fil...",
     "description": "✨ Gym & Fitness Reels Bundle includes 2,200+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated fil...",
@@ -2085,7 +2118,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/hindi-motivational-reels-bundle-7.jpg"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/06/Story-1-Min-1.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1XZ00wKCxPruEpTyDmRxtLzP3GxPG3N1W",
     "short_description": "✨ Hindi Motivational Reels Bundle includes 1,400+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi content with an estimated file siz...",
     "description": "✨ Hindi Motivational Reels Bundle includes 1,400+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi content with an estimated file siz...",
@@ -2146,7 +2180,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-motivational-reels-bundle-5-2.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/3db91d46167a4d9a9a13f774702351ee/3db91d46167a4d9a9a13f774702351ee.HD-1080p-2.5Mbps-93083443.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1kj3D8LqbD-hMOVOD8i0yroA6o3HTdtpp?usp=sharing",
     "short_description": "AI-styled motivation, mindset and success-oriented videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "AI-styled motivation, mindset and success-oriented videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -2207,7 +2242,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/satisfying-reels-bundle.jpg"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/gigglee_toons_1785564689_3953925385771531496_28226841059.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1jzhyjsiKPRWJSZZSsasz4qq8Kq9qapV5",
     "short_description": "✨ Satisfying Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file siz...",
     "description": "✨ Satisfying Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file siz...",
@@ -2268,7 +2304,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/nature-reels-bundle.jpg"
     ],
-    "preview_video_url": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/DR2.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1C01i82juFKh7IvP42VhRwDz4PVcMsbRl",
     "short_description": "✨ Nature Reels Bundle includes 1,000+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size ...",
     "description": "✨ Nature Reels Bundle includes 1,000+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size ...",
@@ -2329,7 +2366,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/woodwork-reels-bundle.jpg"
     ],
-    "preview_video_url": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-14.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1J7byJvBRrULtgysJ9eeXF7pWWtISxsIU",
     "short_description": "✨ Woodwork Reels Bundle includes 1,000+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file siz...",
     "description": "✨ Woodwork Reels Bundle includes 1,000+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file siz...",
@@ -2390,7 +2428,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/travel-tourism-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-3-betterbundle.in_.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1JRQJT6nav8ck4Io20evLRZye3X5bwwbr",
     "short_description": "3,500+ Travel & Tourism Reels Bundle: a themed collection featuring travel destinations, scenic journeys and tourism-focused videos. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "3,500+ Travel & Tourism Reels Bundle: a themed collection featuring travel destinations, scenic journeys and tourism-focused videos. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -2451,7 +2490,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/funny-fails-reels-bundle-4-2.jpg"
     ],
-    "preview_video_url": "https://www.freebiesmockup.com/wp-content/uploads/2026/01/pin_335236766098802502.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1eFbpXREAMtzb4YyLKdZ9s4tx4MrH9w7l",
     "short_description": "Funny fails, unexpected moments and shareable comedy clips Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Funny fails, unexpected moments and shareable comedy clips Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -2512,7 +2552,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/podcast-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/b8d198cc79bd4e488f6e866768527ad5/b8d198cc79bd4e488f6e866768527ad5.HD-1080p-2.5Mbps-91483054.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1SS373xT-XsdvYf21Gd8taTWBLPksq3lt",
     "short_description": "3,100+ Podcast Reels Bundle: a themed collection featuring podcast moments, conversation clips and discussion-led short content. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "3,100+ Podcast Reels Bundle: a themed collection featuring podcast moments, conversation clips and discussion-led short content. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -2573,7 +2614,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/slowed-reels-bundle-1-1.jpg"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-54.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/16T-xOwRrYpNXKsmFnoO16o_K5AE5YZcW",
     "short_description": "1,000+ Slowed Reels Bundle: a themed collection featuring slow-paced mood visuals, atmospheric scenes and aesthetic edits. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "1,000+ Slowed Reels Bundle: a themed collection featuring slow-paced mood visuals, atmospheric scenes and aesthetic edits. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -2634,7 +2676,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/call-of-duty-reels-bundle-1-1.jpg"
     ],
-    "preview_video_url": "https://rtmcreator.com/blog/",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1JNU1nIqzTN3e2gw5d8x4Av9ZuCfb06tw",
     "short_description": "1,700+ Call of Duty Reels Bundle: a themed collection featuring action gaming moments, tactical gameplay and cinematic game edits. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "1,700+ Call of Duty Reels Bundle: a themed collection featuring action gaming moments, tactical gameplay and cinematic game edits. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -2695,7 +2738,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/trick-shots-reels-bundle-1-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/01/Hulk-Ne-Li-Apne-Baadla-hulk-desihulk-aihulk-hulkai-hulkvsredhulk-kawasaki-ai-trendingaihulk_1080p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1fGo03pctv_Eg198z3_eptes0LXHK_Sr3",
     "short_description": "2,500+ Trick Shots Reels Bundle: a themed collection featuring precision sports moments, creative shots and entertaining skill clips. Digital access is provided on the Thank You page and by email after successful paym...",
     "description": "2,500+ Trick Shots Reels Bundle: a themed collection featuring precision sports moments, creative shots and entertaining skill clips. Digital access is provided on the Thank You page and by email after successful paym...",
@@ -2756,7 +2800,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/fortnite-reels-bundle-1-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/f7006eec2a644229ba678e63eca5e0e6/f7006eec2a644229ba678e63eca5e0e6.HD-1080p-2.5Mbps-89320744.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1nblaVctP_v1v0qcqlmggPPFY_iKfg9B4",
     "short_description": "2,000+ Fortnite Reels Bundle: a themed collection featuring battle royale gameplay, colourful gaming moments and short gaming edits. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "2,000+ Fortnite Reels Bundle: a themed collection featuring battle royale gameplay, colourful gaming moments and short gaming edits. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -2817,7 +2862,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/high-testosterone-reels-bundle-1-1.jpg"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2025/07/WorkLinc.in-1751124794250.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1dVJW_jXWA-deq09xPOve3hThm6GeH9-J",
     "short_description": "2,200+ High Testosterone Reels Bundle: a themed collection featuring strength-focused motivation, athletic imagery and masculine fitness edits. Digital access is provided on the Thank You page and by email after succe...",
     "description": "2,200+ High Testosterone Reels Bundle: a themed collection featuring strength-focused motivation, athletic imagery and masculine fitness edits. Digital access is provided on the Thank You page and by email after succe...",
@@ -2878,7 +2924,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/aesthetic-girls-reels-bundle-1-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-2-betterbundle.in_.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/13VgKgjRmMZbfXoHDEp7oR3s4M4GnTyp6",
     "short_description": "1,500+ Aesthetic Girls Reels Bundle: a themed collection featuring lifestyle aesthetics, portrait-led visuals and stylish mood edits. Digital access is provided on the Thank You page and by email after successful paym...",
     "description": "1,500+ Aesthetic Girls Reels Bundle: a themed collection featuring lifestyle aesthetics, portrait-led visuals and stylish mood edits. Digital access is provided on the Thank You page and by email after successful paym...",
@@ -2939,7 +2986,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/valorant-reels-bundle-1-1.jpg"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-2.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/129_QHHY58bk0QSyXSyZYL02gMSoAbb4R",
     "short_description": "3,000+ Valorant Reels Bundle: a themed collection featuring tactical gaming moments, gameplay edits and competitive gaming content. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "3,000+ Valorant Reels Bundle: a themed collection featuring tactical gaming moments, gameplay edits and competitive gaming content. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -3000,7 +3048,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/calisthenics-reels-bundle-1-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-1-betterbundle.in_.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1uM9O1q1pMTR7NnxKaoSDzh-fMDy1dpiW",
     "short_description": "3,000+ Calisthenics Reels Bundle: a themed collection featuring bodyweight training, pull-up movements and athletic skill visuals. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "3,000+ Calisthenics Reels Bundle: a themed collection featuring bodyweight training, pull-up movements and athletic skill visuals. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -3061,7 +3110,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-models-reels-bundle-1-1.jpg"
     ],
-    "preview_video_url": "https://thedigifyshop.com/wp-content/uploads/2026/05/1381731314.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1DAqZZxw2PO8MHCsysTayNNaUurV0vz0s",
     "short_description": "1,500+ AI Models Reels Bundle: a themed collection featuring AI model visuals, fashion-inspired scenes and digital character edits. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "1,500+ AI Models Reels Bundle: a themed collection featuring AI model visuals, fashion-inspired scenes and digital character edits. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -3122,7 +3172,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/gym-tips-reels-bundle-1-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-4-betterbundle.in_.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1-WHmvzyZMcZih1FuwQzPG9hSWoC9AYF5",
     "short_description": "2,500+ Gym Tips Reels Bundle: a themed collection featuring exercise demonstrations, gym technique and workout planning ideas. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "2,500+ Gym Tips Reels Bundle: a themed collection featuring exercise demonstrations, gym technique and workout planning ideas. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -3183,7 +3234,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/women-fitness-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1788366077_3975953946883611117_16711909525.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1-WHmvzyZMcZih1FuwQzPG9hSWoC9AYF5",
     "short_description": "1,500+ Women Fitness Reels Bundle: a themed collection featuring women strength training, athletic gym visuals and fitness motivation. Digital access is provided on the Thank You page and by email after successful pay...",
     "description": "1,500+ Women Fitness Reels Bundle: a themed collection featuring women strength training, athletic gym visuals and fitness motivation. Digital access is provided on the Thank You page and by email after successful pay...",
@@ -3244,7 +3296,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/basketball-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/aa0dbac015134b8d81194bd94ca5b187/aa0dbac015134b8d81194bd94ca5b187.HD-1080p-7.2Mbps-89320742.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/112l3L-WD0ji90I1BRc7yedn4Y4dpWWU4",
     "short_description": "3,000+ Basketball Reels Bundle: a themed collection featuring basketball action, court moments and energetic sports clips. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "3,000+ Basketball Reels Bundle: a themed collection featuring basketball action, court moments and energetic sports clips. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -3305,7 +3358,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/girl-dancing-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/01/Hulk-Liya-Panga-Tun-Tun-Sahur-Se-hulk-aihulk-desihulk-hulkvstuntunsahur-ai-tungtungtungsahur_1080p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/15Pp0qQiJGYZqfZr4J2J-DFs0BPQ-Lzbh",
     "short_description": "1,500+ Girl Dancing Reels Bundle: a themed collection featuring dance performances, rhythmic movement and creative dance edits. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "1,500+ Girl Dancing Reels Bundle: a themed collection featuring dance performances, rhythmic movement and creative dance edits. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -3366,7 +3420,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/humanity-kindness-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-4.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1CBvANc9GOwSbCri3DL-y_GVWFBp3q0C9",
     "short_description": "600+ Humanity & Kindness Reels Bundle: a themed collection featuring kindness, helping others and heartwarming human stories. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "600+ Humanity & Kindness Reels Bundle: a themed collection featuring kindness, helping others and heartwarming human stories. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -3427,7 +3482,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/arpit-bala-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2025/07/WorkLinc.in-1751125764421.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1r8ovSI42eWdAcvNwMqOOq7x6rMnvh6p5",
     "short_description": "600+ Arpit Bala Reels Bundle: a themed collection featuring creator-focused entertainment, comedy moments and conversational clips. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "600+ Arpit Bala Reels Bundle: a themed collection featuring creator-focused entertainment, comedy moments and conversational clips. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -3488,7 +3544,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/magic-tricks-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/c2815031646943bda4f522571f7e6e1e/c2815031646943bda4f522571f7e6e1e.HD-1080p-2.5Mbps-91483055.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1p8xVvq6PR9VgDgrzfmEd9z32R4bye7ym",
     "short_description": "3,500+ Magic Tricks Reels Bundle: a themed collection featuring magic demonstrations, visual illusions and entertaining tricks. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "3,500+ Magic Tricks Reels Bundle: a themed collection featuring magic demonstrations, visual illusions and entertaining tricks. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -3549,7 +3606,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/f1-cars-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/8a16b1fadb3b4d47b0a2fda21cc4a820/8a16b1fadb3b4d47b0a2fda21cc4a820.HD-1080p-2.5Mbps-89317244.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/18H9J4dQM9RYqypGHNo3SJcXwmhaIQRtx",
     "short_description": "1,500+ F1 Cars Reels Bundle: a themed collection featuring open-wheel racing visuals, track action and motorsport edits. Digital access is provided on the Thank You page and by email after successful payment.",
     "description": "1,500+ F1 Cars Reels Bundle: a themed collection featuring open-wheel racing visuals, track action and motorsport edits. Digital access is provided on the Thank You page and by email after successful payment.",
@@ -3610,7 +3668,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/ai-story-chats-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/715152ed3797491c92fa46d93b9f730a/715152ed3797491c92fa46d93b9f730a.HD-1080p-2.5Mbps-91483053.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1hJVNPA3gfW7eBQV8d8jIlBnd58vPeEdi",
     "short_description": "1,100+ AI Story Chats Reels Bundle: a themed collection featuring chat-based AI stories, conversation-led scenes and short storytelling ideas. Digital access is provided on the Thank You page and by email after succes...",
     "description": "1,100+ AI Story Chats Reels Bundle: a themed collection featuring chat-based AI stories, conversation-led scenes and short storytelling ideas. Digital access is provided on the Thank You page and by email after succes...",
@@ -3671,7 +3730,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/mega-anime-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1788183006_3975890080589331884_16711909525.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1vAkSCfTcXPen5pDkwMgUmbAOqGQZxfwF",
     "short_description": "✨ Mega Anime Reels Bundle includes 3,100+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file s...",
     "description": "✨ Mega Anime Reels Bundle includes 3,100+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file s...",
@@ -3732,7 +3792,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/football-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/01/Hulk-Ki-Badla-Hulk-vs-Yellow-Hulk-hulk-desihulk-aihulk-hulkai-hulkvsyellowhulk-lamborghini_1080p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/file/d/1aK2d_F0awcE8kMAnOLozLxzXwPvxpqFL/view",
     "short_description": "✨ Football Reels Bundle includes 100+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size ...",
     "description": "✨ Football Reels Bundle includes 100+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size ...",
@@ -3793,7 +3854,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/craft-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/alexzone310_1785394558_3952496305152321964_46626949812.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1_Q5PqpgLgqMHBarzNVsv_JHA_iC_P0qb",
     "short_description": "✨ Craft Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size of ...",
     "description": "✨ Craft Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size of ...",
@@ -3854,7 +3916,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/business-tips-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/ea6497bb29ef48cb8bdb5c9fc2607502/ea6497bb29ef48cb8bdb5c9fc2607502.HD-1080p-2.5Mbps-93083437.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/19OihxyPDGIludrkNUL-G35tqdY_607tM",
     "short_description": "✨ Business Tips Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file ...",
     "description": "✨ Business Tips Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file ...",
@@ -3915,7 +3978,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/attitude-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle2.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1dsXbUDAfyBsCRd7dRP4G530OZBnA14pU",
     "short_description": "✨ Attitude Reels Bundle includes 100+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size ...",
     "description": "✨ Attitude Reels Bundle includes 100+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size ...",
@@ -3976,7 +4040,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/stock-market-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://trendybundles.shop/cdn/shop/videos/c/vp/25ca9fa5bb0545c5920556b1bcdaa031/25ca9fa5bb0545c5920556b1bcdaa031.SD-480p-0.9Mbps-66786175.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/193sV7W9KGkZPVkVbs4rjFmHEu5Is8qZV",
     "short_description": "✨ Stock Market Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file s...",
     "description": "✨ Stock Market Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file s...",
@@ -4037,7 +4102,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/athletic-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/06/Story-1-Min-5.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1abXzzLDuRm_WGrwGz-Zh5O798-JKvJAd",
     "short_description": "✨ Athletic Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size ...",
     "description": "✨ Athletic Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size ...",
@@ -4098,7 +4164,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/trending-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/e88b17865f844fa5ae9f2499c90e0d5b/e88b17865f844fa5ae9f2499c90e0d5b.HD-1080p-2.5Mbps-89317324.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1U-hv1MG7Uh_ZXMcqsC48EXLSMkkcU2qU",
     "short_description": "✨ Trending Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size ...",
     "description": "✨ Trending Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size ...",
@@ -4159,7 +4226,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/anime-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-1.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1xJE-N3Oi3VCCMmke82obnC1HQwp3615k",
     "short_description": "✨ Anime Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size of ...",
     "description": "✨ Anime Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size of ...",
@@ -4220,7 +4288,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/paper-art-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1786042855_3957936752362456535_16711909525.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1HI2Q3zmom9MkblsgdgT-9sjjtFp5jDY3",
     "short_description": "✨ Paper Art Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size...",
     "description": "✨ Paper Art Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size...",
@@ -4281,7 +4350,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/tools-tips-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://videobundlehub.com/wp-content/uploads/2026/07/6bafe9724fea4f12942f2b372e0a7b5b.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1V43pBAdaa4Xhtzvc5blXkeYMDr7RSa7l",
     "short_description": "✨ Tools Tips Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file siz...",
     "description": "✨ Tools Tips Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file siz...",
@@ -4342,7 +4412,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/tools-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/instagram_1772870533472720p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1_JDuQqRyk5hDe6JiTVHwRx3c51BtHWQu",
     "short_description": "✨ Tools Reels Bundle includes 2,500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size o...",
     "description": "✨ Tools Reels Bundle includes 2,500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size o...",
@@ -4403,7 +4474,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/zig-sharko-cartoon-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle3.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1sDrsT8RnCKR6uLR3oczZmAlT3jwAAoYW",
     "short_description": "✨ Zig & Sharko Cartoon Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimate...",
     "description": "✨ Zig & Sharko Cartoon Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimate...",
@@ -4464,7 +4536,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/car-luxury-lifestyle-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-3.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1hpwetf4zqIs1Yt0R0g8dBREDJ_oN61oW",
     "short_description": "✨ Car & Luxury Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file s...",
     "description": "✨ Car & Luxury Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file s...",
@@ -4525,7 +4598,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/ai-islamic-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle1.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1XfuZBqpSPGmMVwM4TUPn3dzUdW-T3PuC",
     "short_description": "✨ AI Islamic Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file siz...",
     "description": "✨ AI Islamic Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file siz...",
@@ -4586,7 +4660,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/sanatan-dharm-reels-bundle-1.jpg"
     ],
-    "preview_video_url": "https://digityl.shop/wp-content/uploads/2026/03/Video-682.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1awCPTpgpRAYdh7pDs6P5CvLeIG-HCyrl",
     "short_description": "✨ Sanatan Dharm Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi content with an estimated file size of 50...",
     "description": "✨ Sanatan Dharm Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi content with an estimated file size of 50...",
@@ -4647,7 +4722,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/universe-reels-bundle-3-1.jpg"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-78.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1ILhXC3Ey7EPlGBW-ZfCdPXRc7Su5Wl0x",
     "short_description": "✨ Universe Reels Bundle includes 1,000+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file siz...",
     "description": "✨ Universe Reels Bundle includes 1,000+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file siz...",
@@ -4708,7 +4784,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/business-growth-motivational-reels-bundle-3-1.jpg"
     ],
-    "preview_video_url": "https://www.buyreels.in/assets/videos/reels/6.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1mrPzK5Zz9ZbEk6rUDQSRYb52UHG4dsaf",
     "short_description": "✨ Business Growth Motivational Reels Bundle includes 1,000+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with a...",
     "description": "✨ Business Growth Motivational Reels Bundle includes 1,000+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with a...",
@@ -4769,7 +4846,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/art-craft-reels-bundle-3-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/01/BetterBundle.in-Food-with-Faces-Eating-Each-Other-Weirdly-Satisfying-ASMR-Snack-Show_1080p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1_ZOSrPjtftLH7zA3vQkPR8eCOuApUSzk",
     "short_description": "✨ Art & Craft Reels Bundle includes 1,000+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi content with an estimated file size of 1 ...",
     "description": "✨ Art & Craft Reels Bundle includes 1,000+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi content with an estimated file size of 1 ...",
@@ -4830,7 +4908,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/ai-health-reels-bundle-3-1.jpg"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-4.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1lXK8icsrN-ggglg53pkZapSixTeBywD4",
     "short_description": "✨ AI Health Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size...",
     "description": "✨ AI Health Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size...",
@@ -4891,7 +4970,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/ai-tech-reels-bundle-3-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/cb40175ef61549908b6012f4d1d40f23/cb40175ef61549908b6012f4d1d40f23.HD-1080p-2.5Mbps-93083440.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1YKqZJe120qfeXoGIflkgjRC8z4-pdVks",
     "short_description": "✨ AI Tech Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size o...",
     "description": "✨ AI Tech Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file size o...",
@@ -4952,7 +5032,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/ai-fitness-reels-bundle-3-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/01/BetterBundle.in-Four-fruits-four-faces-one-weirdly-satisfying-moment_480p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1lXK8icsrN-ggglg53pkZapSixTeBywD4",
     "short_description": "✨ AI Fitness Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file siz...",
     "description": "✨ AI Fitness Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file siz...",
@@ -5013,7 +5094,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/indian-cricket-reels-bundle-3-1.jpg"
     ],
-    "preview_video_url": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/instagram_1772842939930720p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/19ZOdWVrqXqH3G_RGIVDKIQ_THtAv3zao",
     "short_description": "✨ Indian Cricket Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi content with an estimated file size of 7...",
     "description": "✨ Indian Cricket Reels Bundle includes 500+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi content with an estimated file size of 7...",
@@ -5074,7 +5156,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/mini-car-unboxing-reels-bundle-2-1.png"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/06/Story-1-Min-1.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1lXK8icsrN-ggglg53pkZapSixTeBywD4",
     "short_description": "Mini Car Unboxing Files: MP4 · 1080p HD. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Mini Car Unboxing Files: MP4 · 1080p HD. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -5135,7 +5218,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/superhero-reels-bundle-5-2-1.jpg"
     ],
-    "preview_video_url": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/DR-SKELETON.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/13FHnU5c-OBbf1PbJoX_ecLKi9RXVKi34",
     "short_description": "Superhero-style action, cinematic characters and dramatic visual moments Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before orde...",
     "description": "Superhero-style action, cinematic characters and dramatic visual moments Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before orde...",
@@ -5196,7 +5280,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/long-movie-clips-reels-bundle-5-2-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/01/BetterBundle.in-Cupcake-eats-cake%E2%80%A6-and-enjoys-it-a-little-too-much-%F0%9F%A7%81%F0%9F%98%85-ASMR-AI-Animation_1080p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1pqAW8ayU14D57AQuVlwlsQR6MEo86ndV",
     "short_description": "Cinematic movie scenes and story-driven entertainment clips Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Cinematic movie scenes and story-driven entertainment clips Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -5257,7 +5342,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/adult-talks-reels-bundle-5-2-1.jpg"
     ],
-    "preview_video_url": "https://digityl.shop/wp-content/uploads/2026/03/Video-682.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1Q8ey_u913UoxNAjcAQ_bqcqUYkT-NdrK",
     "short_description": "Conversation, relationship, life-experience and discussion-oriented short videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license bef...",
     "description": "Conversation, relationship, life-experience and discussion-oriented short videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license bef...",
@@ -5318,7 +5404,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/relatable-reels-bundle-5-2-1.jpg"
     ],
-    "preview_video_url": "https://drive.google.com/drive/folders/1tULTw9Q3zng9W0RqWsun3CPmRwfLf4bV",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1Or4h2L72G85tsYC8SCJgLxTXgN3pOy2L",
     "short_description": "Everyday situations, reactions and highly relatable social content Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Everyday situations, reactions and highly relatable social content Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -5379,7 +5466,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/stoic-mindset-reels-bundle-5-2-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/gigglee_toons_1787416995_3969463571233179389_28226841059.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/109C355WAq_1FFadGL66ipVYZOg8IoQUS",
     "short_description": "Stoic philosophy, discipline, wisdom and mindset content Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Stoic philosophy, discipline, wisdom and mindset content Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -5440,7 +5528,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/aesthetic-ocean-sunset-cloud-reels-bundle-2-5-2-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/0d0437e637b34381b686a9fd761d738c/0d0437e637b34381b686a9fd761d738c.HD-1080p-2.5Mbps-93083435.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/16EcQQ0-T8VlqN3Oz4yLUzYzHWFxHZYhD",
     "short_description": "Ocean, sunset, cloud and dreamy nature visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Ocean, sunset, cloud and dreamy nature visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -5501,7 +5590,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/aesthetic-rain-reels-bundle-2-5-2-1.jpg"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2025/07/WorkLinc.in-1751124780666.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/14i0HoZUv1oe38NNiPmt8lBRem037dCbO",
     "short_description": "Rainy scenes, moody visuals and relaxing aesthetic moments Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Rainy scenes, moody visuals and relaxing aesthetic moments Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -5562,7 +5652,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/aesthetic-trees-reels-bundle-2-5-2-1.jpg"
     ],
-    "preview_video_url": "https://credibleearning.com/product/35329",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1TXgXXFJm-9ptbeICP6cfwZu6p0HdaGV-",
     "short_description": "Trees, forests, greenery and calming nature aesthetics Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Trees, forests, greenery and calming nature aesthetics Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -5623,7 +5714,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/aesthetic-snow-reels-bundle-2-5-2-1.jpg"
     ],
-    "preview_video_url": "https://brandigodigital.com/wp-content/uploads/2026/02/1-192.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1wipbO6v0Pfi6EPt1JnNztsHECXi-GX7E",
     "short_description": "Snowy landscapes, winter mood and calm aesthetic visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Snowy landscapes, winter mood and calm aesthetic visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -5684,7 +5776,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/cycling-reels-bundle-2-5-2-1.jpg"
     ],
-    "preview_video_url": "https://www.assetskart.shop/products",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1MAYeihHGT85ZWXWqEdng6vPP5RCpvPfy",
     "short_description": "Cycling, outdoor riding and sports-oriented short videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Cycling, outdoor riding and sports-oriented short videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -5745,7 +5838,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/aesthetic-couple-reels-bundle-2-5-2-1.jpg"
     ],
-    "preview_video_url": "https://videobundlehub.com/wp-content/uploads/2026/07/6bafe9724fea4f12942f2b372e0a7b5b.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/19Keg7QTg-fPPnFr00_2xJy7Nb-dLqNNi",
     "short_description": "Romantic couple aesthetics, love edits and relationship-themed visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Romantic couple aesthetics, love edits and relationship-themed visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -5806,7 +5900,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/cute-cats-reels-bundle-2-5-2-1.jpg"
     ],
-    "preview_video_url": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-34.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1FzX1JR3R7ue-5f32BBj4bnoGK9m8XjB_",
     "short_description": "Cute, adorable and entertaining cat videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Cute, adorable and entertaining cat videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -5867,7 +5962,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/clash-royale-clash-of-clans-reels-bundle-2-5-2-1.jpg"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle4.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1-bD8mfZ18M-78IWKsz-QpoY-1f52L_Yi",
     "short_description": "Clash Royale and Clash of Clans gameplay clips, edits and memorable moments Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before o...",
     "description": "Clash Royale and Clash of Clans gameplay clips, edits and memorable moments Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before o...",
@@ -5928,7 +6024,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/emotional-reels-bundle-6-1.jpg"
     ],
-    "preview_video_url": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-23.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1ymqRm0p1P7v67HFeP6Y9ww4tqm7-WyVt",
     "short_description": "✨ Emotional Reels Bundle includes 1,200+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file si...",
     "description": "✨ Emotional Reels Bundle includes 1,200+ niche-focused vertical videos for faster content planning. 🎬 720p HD MP4 reels for Instagram, Facebook and YouTube Shorts. 📱 Hindi & English content with an estimated file si...",
@@ -5989,7 +6086,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/domo-ai-reels-bundle-5-2-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/1c1b0ab01ed741ddb1d8471a27cd21d0/1c1b0ab01ed741ddb1d8471a27cd21d0.HD-1080p-2.5Mbps-91483057.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1tXuZA2NwHm5WvwAvddkzhsTUMn4nN4-C",
     "short_description": "Stylised AI-generated visual content with a modern experimental look Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Stylised AI-generated visual content with a modern experimental look Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -6050,7 +6148,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/sigma-male-reels-bundle-5-2-1.jpg"
     ],
-    "preview_video_url": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-11.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1yuIaelcfvKommBi5uD7WhRA8HBnt5KbH",
     "short_description": "Attitude, discipline, confidence and mindset-oriented short videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Attitude, discipline, confidence and mindset-oriented short videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -6111,7 +6210,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/god-reels-bundle-5-2-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1786042855_3957936752362456535_16711909525.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1zReKMy4EctgGD2MWsL6SS25qXhQwjlPq",
     "short_description": "Devotional, divine and spiritual short-form videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Devotional, divine and spiritual short-form videos Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -6172,7 +6272,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/korean-girl-reels-bundle-5-2-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-2.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1Gsv266UM7MuF-fjWgpC2smKPvYmh1en_",
     "short_description": "Korean-inspired fashion, beauty and aesthetic lifestyle visuals Files: MP4 · 9:16 vertical · 720 × 1280 (HD). For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license be...",
     "description": "Korean-inspired fashion, beauty and aesthetic lifestyle visuals Files: MP4 · 9:16 vertical · 720 × 1280 (HD). For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license be...",
@@ -6233,7 +6334,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/space-aesthetic-reels-bundle-5-2-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/3db91d46167a4d9a9a13f774702351ee/3db91d46167a4d9a9a13f774702351ee.HD-1080p-2.5Mbps-93083443.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1Ykmi_mcwvChCkcL1hMtEdW6AJAW3reVU",
     "short_description": "Cinematic space, galaxy, universe and atmospheric visual content Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Cinematic space, galaxy, universe and atmospheric visual content Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -6294,7 +6396,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/800-ai-horror-reels-bundle-2-2-1.png"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/gigglee_toons_1785564689_3953925385771531496_28226841059.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1UqLiv-4GDWsef3_VuAkf3misrI9vd4tT",
     "short_description": "Scary AI visuals, creepy characters and cinematic horror-story moments Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed d...",
     "description": "Scary AI visuals, creepy characters and cinematic horror-story moments Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed d...",
@@ -6355,7 +6458,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/500-ai-anime-girl-aesthetic-lifestyle-reels-reels-bundle-5-2-1.png"
     ],
-    "preview_video_url": "https://bundles.digitalceoempire.com/wp-content/uploads/2026/03/DR2.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1GotSOpN8Wg82R0gkxn_ZXc6KbDuk7ANa?usp=drive_link",
     "short_description": "Soft anime girl lifestyle, cozy scenes and aesthetic everyday moments Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed de...",
     "description": "Soft anime girl lifestyle, cozy scenes and aesthetic everyday moments Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed de...",
@@ -6416,7 +6520,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/200-ai-patal-lok-narkh-yamraj-reels-reels-bundle-5-2-1.png"
     ],
-    "preview_video_url": "https://ziplystore.com/wp-content/uploads/2025/05/MSRB-LearnBUX-14.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1sR-kTocZYa70fDAlt1nri1sLSVVbCoEw",
     "short_description": "Yamraj-inspired underworld mythology, dark fantasy and Hindi story visuals Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the list...",
     "description": "Yamraj-inspired underworld mythology, dark fantasy and Hindi story visuals Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the list...",
@@ -6477,7 +6582,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/500-viral-ai-celebrity-reels-bundle-5-2-1.png"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-3-betterbundle.in_.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1szhIza2r97vuxXg8T_fEASUte-BDKrc0",
     "short_description": "AI celebrity-style, entertainment, fashion and glamour-oriented content Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed ...",
     "description": "AI celebrity-style, entertainment, fashion and glamour-oriented content Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed ...",
@@ -6538,7 +6644,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/600_ai_tiny_dancers_reels_bundle-reels-bundle-5-2-1.png"
     ],
-    "preview_video_url": "https://www.freebiesmockup.com/wp-content/uploads/2026/01/pin_335236766098802502.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1o_O5sBBhML79QKJOagwUmlp-6qWk5dFp?usp=sharing",
     "short_description": "Tiny AI dancer characters, magical movement and visually playful dance scenes Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the l...",
     "description": "Tiny AI dancer characters, magical movement and visually playful dance scenes Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the l...",
@@ -6599,7 +6706,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/600_ai_animal_reels_bundle-reels-bundle-7-2-1.png"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/b8d198cc79bd4e488f6e866768527ad5/b8d198cc79bd4e488f6e866768527ad5.HD-1080p-2.5Mbps-91483054.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1lXK8icsrN-ggglg53pkZapSixTeBywD4",
     "short_description": "AI-generated animals, cute pet-style scenes and entertaining animal visuals Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the lis...",
     "description": "AI-generated animals, cute pet-style scenes and entertaining animal visuals Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the lis...",
@@ -6660,7 +6768,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/glowing_motion_graphics_reel_bundle-reels-bundle-4-2-1.png"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-54.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1BhSfthOy9i0K5z-BLDW53v1xAR_nnrKP?usp=drive_link",
     "short_description": "Glowing animation, neon visual loops and motion-graphics content Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed details...",
     "description": "Glowing animation, neon visual loops and motion-graphics content Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed details...",
@@ -6721,7 +6830,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/1000-hot-webseries-clips-bundle-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://rtmcreator.com/blog/",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/17ua0IomCH1ot8D1nlO3kNSGw-NzvUTC1?usp=sharing",
     "short_description": "Short entertainment clips and memorable web-series scenes Files: MP4 · 9:16 vertical · HD / Full HD (varies by clip). For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and li...",
     "description": "Short entertainment clips and memorable web-series scenes Files: MP4 · 9:16 vertical · HD / Full HD (varies by clip). For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and li...",
@@ -6782,7 +6892,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/10000-hot-girls-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/01/Hulk-Ne-Li-Apne-Baadla-hulk-desihulk-aihulk-hulkai-hulkvsredhulk-kawasaki-ai-trendingaihulk_1080p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1DaIU_BeG5NCj6TfbxABFT_ORhJRcjAid",
     "short_description": "Glamour, fashion, lifestyle and aesthetic model-style short videos Files: MP4 · 9:16 vertical · HD / Full HD (varies by clip). For creators planning niche-focused Reels, Shorts and social posts. Check the listed detai...",
     "description": "Glamour, fashion, lifestyle and aesthetic model-style short videos Files: MP4 · 9:16 vertical · HD / Full HD (varies by clip). For creators planning niche-focused Reels, Shorts and social posts. Check the listed detai...",
@@ -6843,7 +6954,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/250-baby-food-eating-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-1.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1lXK8icsrN-ggglg53pkZapSixTeBywD4",
     "short_description": "Cute baby eating, food-reaction and family-friendly short videos Files: MP4 · 9:16 vertical · HD / Full HD (varies by clip). For creators planning niche-focused Reels, Shorts and social posts. Check the listed details...",
     "description": "Cute baby eating, food-reaction and family-friendly short videos Files: MP4 · 9:16 vertical · HD / Full HD (varies by clip). For creators planning niche-focused Reels, Shorts and social posts. Check the listed details...",
@@ -6904,7 +7016,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/dark-aesthetic-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2025/07/WorkLinc.in-1751124794250.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1QOkJHMXKxOG833xPTHbk0Vxr-ng8OK2Y",
     "short_description": "Dark, moody and cinematic aesthetic visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Dark, moody and cinematic aesthetic visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -6965,7 +7078,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/dosti-friendship-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-2-betterbundle.in_.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/17RWTBSDlYDOPAgc74bYYcsrVXB0l_7oO",
     "short_description": "Friendship, dosti, emotional bonds and relatable best-friend moments Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Friendship, dosti, emotional bonds and relatable best-friend moments Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -7026,7 +7140,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/camera-tips-photography-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://digitstore.xyz/wp-content/uploads/2025/07/3d-Cartoon-2.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1URrxhfqB5Uj7oAtx38iFEKFmmqSmg32q",
     "short_description": "Camera techniques, photography tips and creator-focused educational content Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before o...",
     "description": "Camera techniques, photography tips and creator-focused educational content Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before o...",
@@ -7087,7 +7202,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/funny-comments-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-1-betterbundle.in_.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1n5Kmptz2Xsy58yJmtYCDxZUMcvAMmCGj",
     "short_description": "Funny comment reactions, humour edits and shareable comedy content Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Funny comment reactions, humour edits and shareable comedy content Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -7148,7 +7264,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/cringe-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://thedigifyshop.com/wp-content/uploads/2026/05/1381731314.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1_9pvf_-cGy-o73_uUpf_9bszLuHMZGDY",
     "short_description": "Awkward, funny and reaction-friendly viral entertainment clips Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Awkward, funny and reaction-friendly viral entertainment clips Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -7209,7 +7326,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/runway-models-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/02/250-Baby-Food-Eating-AI-Reels-Bundle-4-betterbundle.in_.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/10PTEaF19fN1FeCtD88KKsvOH7G06kEz3",
     "short_description": "Runway fashion, model walks, style visuals and premium fashion content Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Runway fashion, model walks, style visuals and premium fashion content Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -7270,7 +7388,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/ai-story-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1788366077_3975953946883611117_16711909525.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1_9Bc62KBfWmEwAqqCSy3m93zDXaSMRAz",
     "short_description": "Cinematic AI-generated stories with fantasy and narrative visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Cinematic AI-generated stories with fantasy and narrative visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -7331,7 +7450,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/stop-scrolling-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/aa0dbac015134b8d81194bd94ca5b187/aa0dbac015134b8d81194bd94ca5b187.HD-1080p-7.2Mbps-89320742.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1As8EsNnBFVbU3VPU4F6A5UHI4U77Dm0Y",
     "short_description": "Attention-grabbing short videos designed around strong visual hooks and unusual moments Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and lice...",
     "description": "Attention-grabbing short videos designed around strong visual hooks and unusual moments Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and lice...",
@@ -7392,7 +7512,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/mafia-cars-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/01/Hulk-Liya-Panga-Tun-Tun-Sahur-Se-hulk-aihulk-desihulk-hulkvstuntunsahur-ai-tungtungtungsahur_1080p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1SJ8-JFS-kCC58nPL8-CqL1xsi3ATrwGa",
     "short_description": "Dark mafia-style car edits, premium vehicles and luxury automotive visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before or...",
     "description": "Dark mafia-style car edits, premium vehicles and luxury automotive visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before or...",
@@ -7453,7 +7574,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/mythical-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://reelsbundlepro.com/wp-content/uploads/2026/04/250-Baby-Food-Eating-Food-Ai-Reels-4.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1zTU283ItPP2_rsXZW-qhu-d-vg5ACJal",
     "short_description": "Mythical characters, magical worlds and fantasy story visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Mythical characters, magical worlds and fantasy story visuals Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -7514,7 +7636,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/retro-bollywood-reels-bundle-4-2-1.jpg"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2025/07/WorkLinc.in-1751125764421.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1pNpYCJI2VkgwlYcS1Hru5vBb5E1Ho9zM",
     "short_description": "Retro Bollywood cinema, music and nostalgic entertainment edits Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
     "description": "Retro Bollywood cinema, music and nostalgic entertainment edits Files: MP4 · 9:16 vertical. For creators planning niche-focused Reels, Shorts and social posts. Check the listed details and license before ordering.",
@@ -7575,7 +7698,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/500-hot-anushka-sen-ai-reels-bundle-1-2-1.png"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/c2815031646943bda4f522571f7e6e1e/c2815031646943bda4f522571f7e6e1e.HD-1080p-2.5Mbps-91483055.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/u/0/folders/1Y2aHFLb7TlYMwH1EwKPjYZOSa5cqs0Ao",
     "short_description": "AI celebrity-style fashion, beauty, travel and lifestyle themed content inspired by the named public figure Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts...",
     "description": "AI celebrity-style fashion, beauty, travel and lifestyle themed content inspired by the named public figure Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts...",
@@ -7636,7 +7760,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/500-ai-indian-glamour-model-reels-bundle-1-2-1.png"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/8a16b1fadb3b4d47b0a2fda21cc4a820/8a16b1fadb3b4d47b0a2fda21cc4a820.HD-1080p-2.5Mbps-89317244.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1TSbXdYIXyC_ifUhqWNUKvvaY-T0UU2yI?usp=drive_link",
     "short_description": "AI Indian glamour, fashion, model-style and creator-oriented visual content Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the lis...",
     "description": "AI Indian glamour, fashion, model-style and creator-oriented visual content Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the lis...",
@@ -7697,7 +7822,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/9000-foreign-models-reels-bundle-pack-1-2-1.png"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/715152ed3797491c92fa46d93b9f730a/715152ed3797491c92fa46d93b9f730a.HD-1080p-2.5Mbps-91483053.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1TIPCKgYu8iPnXgurqdzwBGfQlUGM2z8a",
     "short_description": "International model, fashion, glamour and lifestyle-oriented reel content Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the liste...",
     "description": "International model, fashion, glamour and lifestyle-oriented reel content Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the liste...",
@@ -7758,7 +7884,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/2000-viral-ai-influencer-reel-bundle-reels-bundle-1-2-1.png"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/nanha_sitara__1788183006_3975890080589331884_16711909525.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1lXK8icsrN-ggglg53pkZapSixTeBywD4",
     "short_description": "AI influencer-style fashion, lifestyle, travel and creator-focused visuals Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the list...",
     "description": "AI influencer-style fashion, lifestyle, travel and creator-focused visuals Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the list...",
@@ -7819,7 +7946,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/1000-ai-dog-reels-bundle-1-2-1.png"
     ],
-    "preview_video_url": "https://betterbundle.in/wp-content/uploads/2026/01/Hulk-Ki-Badla-Hulk-vs-Yellow-Hulk-hulk-desihulk-aihulk-hulkai-hulkvsyellowhulk-lamborghini_1080p.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1pzrBTYK_rbJwxSK2RTVjC9u6OKjHTH3Z",
     "short_description": "Cute AI dog moments, funny pet scenes and shareable canine content Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed detai...",
     "description": "Cute AI dog moments, funny pet scenes and shareable canine content Files: MP4 · 9:16 vertical · HD / Full HD (varies by file). For creators planning niche-focused Reels, Shorts and social posts. Check the listed detai...",
@@ -7880,7 +8008,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/thumbnail.png"
     ],
-    "preview_video_url": "https://reelsbundles.in/wp-content/uploads/2026/09/alexzone310_1785394558_3952496305152321964_46626949812.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1lXK8icsrN-ggglg53pkZapSixTeBywD4",
     "short_description": "One-time access to the current ReelsBundles library with reseller rights.",
     "description": "One-time access to the current ReelsBundles library with reseller rights.",
@@ -7941,7 +8070,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/09/thumbnail.png"
     ],
-    "preview_video_url": "https://thesocialgame.in/cdn/shop/videos/c/vp/ea6497bb29ef48cb8bdb5c9fc2607502/ea6497bb29ef48cb8bdb5c9fc2607502.HD-1080p-2.5Mbps-93083437.mp4?v=0",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1lXK8icsrN-ggglg53pkZapSixTeBywD4",
     "short_description": "One-time access to the current ReelsBundles library for personal use.",
     "description": "One-time access to the current ReelsBundles library for personal use.",
@@ -8002,7 +8132,8 @@ export const initialProducts: Product[] = [
     "gallery_images": [
       "https://reelsbundles.in/wp-content/uploads/2026/10/billionaire-lifestyle-reels-bundle-5-2.jpg"
     ],
-    "preview_video_url": "https://shop.worklinc.com/wp-content/uploads/2026/02/450-Health-Awareness-Ai-Reels-Bundle2.mp4",
+    "preview_video_url": "",
+    "preview_video_urls": [],
     "google_drive_link": "https://drive.google.com/drive/folders/1a05WsTVABvi8r5gcCcgfA9Fx-88DseMc",
     "short_description": "Luxury Lifestyle Reels Bundle: The Luxury Lifestyle Reels Bundle is listed on this store as the Billionaire Lifestyle Reels Bundle. Review bundle specifications, previews and the selected licence before ordering.",
     "description": "Luxury Lifestyle Reels Bundle: The Luxury Lifestyle Reels Bundle is listed on this store as the Billionaire Lifestyle Reels Bundle. Review bundle specifications, previews and the selected licence before ordering.",
