@@ -1,0 +1,155 @@
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+
+export interface FreeBundleOfferConfig {
+  enabled: boolean;
+  bannerImage: string;
+  bannerFallbackImage?: string;
+  minCartValue: number;
+  freeBundleQuantity: number;
+  headline?: string;
+  subheadline?: string;
+  buttonText?: string;
+  updatedAt?: string;
+}
+
+export const DEFAULT_FREE_BUNDLE_OFFER: FreeBundleOfferConfig = {
+  enabled: true,
+  bannerImage: '/banner-free-bundles.png',
+  bannerFallbackImage: 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png',
+  minCartValue: 149,
+  freeBundleQuantity: 2,
+  headline: 'Get 2 of Any Bundle FREE',
+  subheadline: 'PAY ₹149 OR MORE & PICK ANY 2 ADDITIONAL REELS BUNDLES AT NO EXTRA COST!',
+  buttonText: '🎁 Claim 2 Free Bundles on Min. ₹149 Order →',
+};
+
+let cachedOffer: FreeBundleOfferConfig | null = null;
+let lastOfferFetch = 0;
+
+export function getFreeBundleOfferSync(): FreeBundleOfferConfig {
+  if (cachedOffer) return cachedOffer;
+  if (typeof window !== 'undefined') {
+    try {
+      const raw = localStorage.getItem('vaultzet_free_bundle_offer');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') {
+          const loaded: FreeBundleOfferConfig = { ...DEFAULT_FREE_BUNDLE_OFFER, ...parsed };
+          cachedOffer = loaded;
+          return loaded;
+        }
+      }
+    } catch {}
+  }
+  return DEFAULT_FREE_BUNDLE_OFFER;
+}
+
+export async function fetchFreeBundleOffer(force = false): Promise<FreeBundleOfferConfig> {
+  const now = Date.now();
+  if (!force && cachedOffer && now - lastOfferFetch < 60000) {
+    return cachedOffer;
+  }
+
+  // 1. Check local storage first
+  let localData: FreeBundleOfferConfig | null = null;
+  if (typeof window !== 'undefined') {
+    try {
+      const raw = localStorage.getItem('vaultzet_free_bundle_offer');
+      if (raw) {
+        localData = JSON.parse(raw);
+      }
+    } catch {}
+  }
+
+  // 2. Fetch from Firestore (store_settings/free_bundle_offer or store_settings/general)
+  if (db) {
+    try {
+      const snap = await getDoc(doc(db, 'store_settings', 'free_bundle_offer')).catch(() => null);
+      if (snap && snap.exists()) {
+        const data = snap.data();
+        const minVal = data.min_cart_value != null ? Number(data.min_cart_value) : DEFAULT_FREE_BUNDLE_OFFER.minCartValue;
+        const freeQty = data.free_bundle_quantity != null ? Number(data.free_bundle_quantity) : DEFAULT_FREE_BUNDLE_OFFER.freeBundleQuantity;
+
+        cachedOffer = {
+          enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
+          bannerImage: data.banner_image || DEFAULT_FREE_BUNDLE_OFFER.bannerImage,
+          bannerFallbackImage: data.banner_fallback_image || DEFAULT_FREE_BUNDLE_OFFER.bannerFallbackImage,
+          minCartValue: minVal,
+          freeBundleQuantity: freeQty,
+          headline: data.headline || `Get ${freeQty} of Any Bundle FREE`,
+          subheadline: data.subheadline || `PAY ₹${minVal} OR MORE & PICK ANY ${freeQty} ADDITIONAL REELS BUNDLES AT NO EXTRA COST!`,
+          buttonText: data.button_text || `🎁 Claim ${freeQty} Free Bundles on Min. ₹${minVal} Order →`,
+          updatedAt: data.updated_at || data.updatedAt,
+        };
+        lastOfferFetch = now;
+
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('vaultzet_free_bundle_offer', JSON.stringify(cachedOffer));
+          } catch {}
+        }
+        return cachedOffer;
+      }
+
+      // Check general document fallback
+      const genSnap = await getDoc(doc(db, 'store_settings', 'general')).catch(() => null);
+      if (genSnap && genSnap.exists()) {
+        const gData = genSnap.data();
+        if (gData.free_bundle_offer && typeof gData.free_bundle_offer === 'object') {
+          const f = gData.free_bundle_offer;
+          const minVal = f.min_cart_value != null ? Number(f.min_cart_value) : DEFAULT_FREE_BUNDLE_OFFER.minCartValue;
+          const freeQty = f.free_bundle_quantity != null ? Number(f.free_bundle_quantity) : DEFAULT_FREE_BUNDLE_OFFER.freeBundleQuantity;
+
+          cachedOffer = {
+            enabled: typeof f.enabled === 'boolean' ? f.enabled : true,
+            bannerImage: f.banner_image || DEFAULT_FREE_BUNDLE_OFFER.bannerImage,
+            bannerFallbackImage: f.banner_fallback_image || DEFAULT_FREE_BUNDLE_OFFER.bannerFallbackImage,
+            minCartValue: minVal,
+            freeBundleQuantity: freeQty,
+            headline: f.headline || `Get ${freeQty} of Any Bundle FREE`,
+            subheadline: f.subheadline || `PAY ₹${minVal} OR MORE & PICK ANY ${freeQty} ADDITIONAL REELS BUNDLES AT NO EXTRA COST!`,
+            buttonText: f.button_text || `🎁 Claim ${freeQty} Free Bundles on Min. ₹${minVal} Order →`,
+            updatedAt: f.updated_at,
+          };
+          lastOfferFetch = now;
+
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('vaultzet_free_bundle_offer', JSON.stringify(cachedOffer));
+            } catch {}
+          }
+          return cachedOffer;
+        }
+      }
+    } catch (err) {
+      console.warn('Error reading free_bundle_offer from Firestore:', err);
+    }
+  }
+
+  // 3. Fallback to API route if direct Firestore returned null
+  try {
+    const res = await fetch('/api/settings/free-bundle-offer', { cache: 'no-store' });
+    if (res.ok) {
+      const json = await res.json();
+      if (json && json.success && json.offer) {
+        cachedOffer = json.offer;
+        lastOfferFetch = now;
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('vaultzet_free_bundle_offer', JSON.stringify(cachedOffer));
+          } catch {}
+        }
+        return cachedOffer!;
+      }
+    }
+  } catch {}
+
+  if (localData) {
+    cachedOffer = { ...DEFAULT_FREE_BUNDLE_OFFER, ...localData };
+    return cachedOffer;
+  }
+
+  cachedOffer = DEFAULT_FREE_BUNDLE_OFFER;
+  return cachedOffer;
+}

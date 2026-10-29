@@ -8,6 +8,7 @@ import { getResellerListingBySlug } from '@/lib/resellerService';
 import { BUNDLE_PRODUCTS, ORDER_BUMP } from '@/data/bundles';
 import { calculateCouponDiscount } from '@/lib/coupon';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
+import { fetchFreeBundleOffer } from '@/lib/freeBundleOffer';
 
 export const runtime = 'nodejs';
 
@@ -135,8 +136,14 @@ export async function POST(request: Request) {
       };
     } else {
       let expectedCatalogTotal = 0;
+      let freeBonusCount = 0;
+
       if (Array.isArray(items) && items.length > 0) {
+        // Pass 1: compute paid items total
         for (const it of items) {
+          if (it.isFreeBonus || it.price === 0) {
+            continue;
+          }
           const itId = String(it.id || it.slug || '');
           let catalogProd = await fetchCustomProductBySlug(itId);
           if (!catalogProd) {
@@ -151,6 +158,30 @@ export async function POST(request: Request) {
             expectedCatalogTotal += itemPrice * (Number(it.quantity) || 1);
           } else {
             expectedCatalogTotal += Number(it.price || 0) * (Number(it.quantity) || 1);
+          }
+        }
+
+        // Pass 2: check free bonus items against dynamic free bundle offer
+        const freeOfferConfig = await fetchFreeBundleOffer().catch(() => null);
+        const isOfferActive = freeOfferConfig ? freeOfferConfig.enabled !== false : true;
+        const offerThreshold = isOfferActive ? (freeOfferConfig?.minCartValue || 149) : 999999999;
+        const maxFreeBundles = isOfferActive ? (freeOfferConfig?.freeBundleQuantity || 2) : 0;
+
+        for (const it of items) {
+          if (it.isFreeBonus || it.price === 0) {
+            if (isOfferActive && expectedCatalogTotal >= offerThreshold && freeBonusCount < maxFreeBundles) {
+              freeBonusCount++;
+              // Qualified promotional free gift, charges ₹0
+              continue;
+            } else {
+              const itId = String(it.id || it.slug || '');
+              let catalogProd = await fetchCustomProductBySlug(itId);
+              if (!catalogProd) {
+                catalogProd = BUNDLE_PRODUCTS.find((p) => p.id === itId || p.slug === itId) || null;
+              }
+              const itemPrice = catalogProd ? Number(catalogProd.personalPrice) : Number(it.price || 0);
+              expectedCatalogTotal += itemPrice * (Number(it.quantity) || 1);
+            }
           }
         }
       }

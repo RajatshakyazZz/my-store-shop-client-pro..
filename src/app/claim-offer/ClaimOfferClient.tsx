@@ -32,7 +32,12 @@ export default function ClaimOfferClient() {
     freeBundles,
     setIsFreeBundleModalOpen,
     setIsCartOpen,
+    freeBundleOffer,
   } = useCart();
+
+  const isOfferActive = freeBundleOffer?.enabled !== false;
+  const minCart = freeBundleOffer?.minCartValue || 149;
+  const freeQty = freeBundleOffer?.freeBundleQuantity || 2;
 
   const [customProducts, setCustomProducts] = useState<BundleProduct[]>(() => getLocalCustomProductsSync());
   const [searchQuery, setSearchQuery] = useState('');
@@ -84,7 +89,7 @@ export default function ClaimOfferClient() {
     });
   }, [allBundles, searchQuery, selectedCategory]);
 
-  const remainingToQualify = Math.max(0, 149 - subtotal);
+  const remainingToQualify = Math.max(0, minCart - subtotal);
   const claimedCount = freeBundles.length;
 
   return (
@@ -104,11 +109,11 @@ export default function ClaimOfferClient() {
                 <span>Special Promotion</span>
               </div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
-                Add minimum <span className="text-amber-400">₹149</span> value in cart to claim{' '}
-                <span className="text-purple-300">2 free bundles</span>
+                Add minimum <span className="text-amber-400">₹{minCart}</span> value in cart to claim{' '}
+                <span className="text-purple-300">{freeQty} free {freeQty === 1 ? 'bundle' : 'bundles'}</span>
               </h1>
               <p className="text-xs sm:text-sm text-slate-300 max-w-2xl font-medium">
-                Add any bundles to reach ₹149. As soon as your cart reaches ₹149, you will get a popup to unlock and choose any 2 bundles for 100% FREE!
+                Add any bundles to reach ₹{minCart}. As soon as your cart reaches ₹{minCart}, you will get a popup to unlock and choose any {freeQty} bundles for 100% FREE!
               </p>
             </div>
 
@@ -122,7 +127,7 @@ export default function ClaimOfferClient() {
                 >
                   <Sparkles className="w-4 h-4 text-amber-200" />
                   <span>
-                    {claimedCount > 0 ? `Change Free Bundles (${claimedCount}/2)` : '🎉 Claim 2 Free Bundles (₹0)'}
+                    {claimedCount > 0 ? `Change Free Bundles (${claimedCount}/${freeQty})` : `🎉 Claim ${freeQty} Free Bundles (₹0)`}
                   </span>
                 </button>
               ) : (
@@ -300,7 +305,7 @@ export default function ClaimOfferClient() {
                   {/* MANDATORY OFFER LINE REQUIRED BY USER */}
                   <div className="mt-3 p-2.5 rounded-xl bg-[#f8f5ff] border border-[#e8dffd] flex items-center gap-2 text-[11px] font-bold text-[#5126c9] leading-tight">
                     <Gift className="w-3.5 h-3.5 shrink-0 text-[#6e35f5]" />
-                    <span>Add minimum ₹149 value in cart to claim 2 free bundles</span>
+                    <span>Add minimum ₹{minCart} value in cart to claim {freeQty} free {freeQty === 1 ? 'bundle' : 'bundles'}</span>
                   </div>
                 </div>
 
@@ -355,15 +360,15 @@ export default function ClaimOfferClient() {
               <span className="text-slate-300">|</span>
               <span className="text-xs text-[#4e4668] font-bold truncate">
                 {isQualifiedForFreeOffer ? (
-                  <span className="text-emerald-600 font-extrabold">🎉 2 Free Bundles Unlocked!</span>
+                  <span className="text-emerald-600 font-extrabold">🎉 {freeQty} Free Bundles Unlocked!</span>
                 ) : (
-                  <span>Add ₹{remainingToQualify} for 2 Free Bundles</span>
+                  <span>Add ₹{remainingToQualify} for {freeQty} Free Bundles</span>
                 )}
               </span>
             </div>
             {claimedCount > 0 && (
               <p className="text-[11px] text-emerald-700 font-bold mt-0.5">
-                ✓ {claimedCount} of 2 Free Gifts Selected
+                ✓ {claimedCount} of {freeQty} Free Gifts Selected
               </p>
             )}
           </div>
@@ -376,7 +381,7 @@ export default function ClaimOfferClient() {
                   onClick={() => setIsFreeBundleModalOpen(true)}
                   className="px-4 py-2.5 rounded-xl bg-[#ede5ff] text-[#5126c9] font-black text-xs hover:bg-[#e1d5ff] transition-all"
                 >
-                  {claimedCount > 0 ? `Free Gifts (${claimedCount}/2)` : '🎁 Claim 2 Free'}
+                  {claimedCount > 0 ? `Free Gifts (${claimedCount}/${freeQty})` : `🎁 Claim ${freeQty} Free`}
                 </button>
                 <Link
                   href="/checkout"

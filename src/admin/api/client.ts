@@ -51,6 +51,7 @@ import {
   DownloadableFileTokenResponse,
   ReelItem,
   GlobalBumpOffer,
+  FreeBundleOffer,
 } from './types';
 import { db, logAdminAction } from '../lib/firebase';
 import {
@@ -2960,6 +2961,165 @@ class PortalApiClient {
       action: 'UPDATE_BUMP_OFFER',
       module: 'Settings',
       details: `Updated global checkout bump offer: ${merged.title} (₹${merged.price}, Status: ${merged.enabled ? 'ACTIVE' : 'OFF'})`,
+    });
+
+    return merged;
+  }
+
+  // ==========================================
+  // 18. FREE BUNDLE OFFER PROMOTION MANAGEMENT
+  // ==========================================
+  async getFreeBundleOffer(): Promise<FreeBundleOffer> {
+    const defaultOffer: FreeBundleOffer = {
+      enabled: true,
+      banner_image: '/banner-free-bundles.png',
+      banner_fallback_image: 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png',
+      min_cart_value: 149,
+      free_bundle_quantity: 2,
+      headline: 'Get 2 of Any Bundle FREE',
+      subheadline: 'PAY ₹149 OR MORE & PICK ANY 2 ADDITIONAL REELS BUNDLES AT NO EXTRA COST!',
+      button_text: '🎁 Claim 2 Free Bundles on Min. ₹149 Order →',
+    };
+
+    let cached: FreeBundleOffer | null = null;
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem('vaultzet_free_bundle_offer');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') {
+            cached = {
+              ...defaultOffer,
+              ...parsed,
+              min_cart_value: parsed.min_cart_value != null ? Number(parsed.min_cart_value) : (parsed.minCartValue != null ? Number(parsed.minCartValue) : 149),
+              free_bundle_quantity: parsed.free_bundle_quantity != null ? Number(parsed.free_bundle_quantity) : (parsed.freeBundleQuantity != null ? Number(parsed.freeBundleQuantity) : 2),
+            };
+          }
+        }
+      } catch {}
+    }
+
+    if (db) {
+      try {
+        const snap = await getDoc(doc(db, 'store_settings', 'free_bundle_offer'));
+        if (snap.exists()) {
+          const data = snap.data();
+          const minVal = data.min_cart_value != null ? Number(data.min_cart_value) : 149;
+          const freeQty = data.free_bundle_quantity != null ? Number(data.free_bundle_quantity) : 2;
+
+          const merged: FreeBundleOffer = {
+            enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
+            banner_image: data.banner_image || defaultOffer.banner_image,
+            banner_fallback_image: data.banner_fallback_image || defaultOffer.banner_fallback_image,
+            min_cart_value: minVal,
+            free_bundle_quantity: freeQty,
+            headline: data.headline || `Get ${freeQty} of Any Bundle FREE`,
+            subheadline: data.subheadline || `PAY ₹${minVal} OR MORE & PICK ANY ${freeQty} ADDITIONAL REELS BUNDLES AT NO EXTRA COST!`,
+            button_text: data.button_text || `🎁 Claim ${freeQty} Free Bundles on Min. ₹${minVal} Order →`,
+            updated_at: data.updated_at,
+          };
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('vaultzet_free_bundle_offer', JSON.stringify(merged));
+            } catch {}
+          }
+          return merged;
+        }
+
+        const genSnap = await getDoc(doc(db, 'store_settings', 'general'));
+        if (genSnap.exists()) {
+          const gData = genSnap.data();
+          if (gData.free_bundle_offer && typeof gData.free_bundle_offer === 'object') {
+            const f = gData.free_bundle_offer;
+            const minVal = f.min_cart_value != null ? Number(f.min_cart_value) : 149;
+            const freeQty = f.free_bundle_quantity != null ? Number(f.free_bundle_quantity) : 2;
+
+            const merged: FreeBundleOffer = {
+              enabled: typeof f.enabled === 'boolean' ? f.enabled : true,
+              banner_image: f.banner_image || defaultOffer.banner_image,
+              banner_fallback_image: f.banner_fallback_image || defaultOffer.banner_fallback_image,
+              min_cart_value: minVal,
+              free_bundle_quantity: freeQty,
+              headline: f.headline || `Get ${freeQty} of Any Bundle FREE`,
+              subheadline: f.subheadline || `PAY ₹${minVal} OR MORE & PICK ANY ${freeQty} ADDITIONAL REELS BUNDLES AT NO EXTRA COST!`,
+              button_text: f.button_text || `🎁 Claim ${freeQty} Free Bundles on Min. ₹${minVal} Order →`,
+              updated_at: f.updated_at,
+            };
+            if (typeof window !== 'undefined') {
+              try {
+                localStorage.setItem('vaultzet_free_bundle_offer', JSON.stringify(merged));
+              } catch {}
+            }
+            return merged;
+          }
+        }
+      } catch (err) {
+        console.warn('Direct Firestore read error for free_bundle_offer:', err);
+      }
+    }
+
+    if (cached) return cached;
+    return defaultOffer;
+  }
+
+  async updateFreeBundleOffer(data: Partial<FreeBundleOffer>): Promise<FreeBundleOffer> {
+    const existing = await this.getFreeBundleOffer();
+    const min_cart_value = Math.max(1, Number(data.min_cart_value != null ? data.min_cart_value : existing.min_cart_value));
+    const free_bundle_quantity = Math.max(1, Math.min(20, Number(data.free_bundle_quantity != null ? data.free_bundle_quantity : existing.free_bundle_quantity)));
+
+    const merged: FreeBundleOffer = {
+      ...existing,
+      ...data,
+      min_cart_value,
+      free_bundle_quantity,
+      updated_at: new Date().toISOString(),
+    };
+
+    // 1. Send to server API route
+    try {
+      const res = await fetch('/api/admin/settings/free-bundle-offer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(merged),
+      });
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        console.warn('API error saving free bundle offer:', errJson);
+      }
+    } catch (e) {
+      console.warn('Network error saving free bundle offer to admin API:', e);
+    }
+
+    // 2. Direct Firestore persistence
+    if (db) {
+      try {
+        const cleanPayload = sanitizePayload({
+          ...merged,
+        });
+
+        await setDoc(doc(db, 'store_settings', 'free_bundle_offer'), cleanPayload, { merge: true });
+        await setDoc(
+          doc(db, 'store_settings', 'general'),
+          { free_bundle_offer: cleanPayload },
+          { merge: true }
+        );
+      } catch (e) {
+        console.warn('Firestore write warning for free bundle offer:', e);
+      }
+    }
+
+    // 3. Save in localStorage
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('vaultzet_free_bundle_offer', JSON.stringify(merged));
+      } catch {}
+    }
+
+    await logAdminAction({
+      adminEmail: 'admin@vaultzet.com',
+      action: 'UPDATE_FREE_BUNDLE_OFFER',
+      module: 'Commerce',
+      details: `Updated promotional offer: Min ₹${merged.min_cart_value}, ${merged.free_bundle_quantity} Free Bundles (Status: ${merged.enabled ? 'ACTIVE' : 'OFF'})`,
     });
 
     return merged;

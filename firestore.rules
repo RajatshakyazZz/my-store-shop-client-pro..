@@ -86,7 +86,7 @@ rules_version = '2';
 //    - Protection: Read open for storefront; full create, update, delete for admin panel catalog maintenance.
 //
 // 3. store_settings:
-//    - Supported Documents: 'general', 'branding', 'site_mode', 'meta_pixel', 'whatsapp', 'cashfree', 'payu', 'rankmath_seo', 'dnp_meta', 'mmc_analytics', 'litespeed_cache', 'reseller', 'telegram', 'bump_offer'
+//    - Supported Documents: 'general', 'branding', 'site_mode', 'meta_pixel', 'whatsapp', 'cashfree', 'payu', 'rankmath_seo', 'dnp_meta', 'mmc_analytics', 'litespeed_cache', 'reseller', 'telegram', 'bump_offer', 'free_bundle_offer'
 //    - Supports general, branding, SEO, analytics, payment gateway, WhatsApp, and Telegram bot configuration fields
 //    - String fields bounded to prevent resource exhaustion / DoS
 //    - Protection: Deletion strictly denied.
@@ -547,7 +547,14 @@ service cloud.firestore {
         isValidOptionalString(data, 'bump_thumbnail', 1000) &&
         isValidOptionalNumber(data, 'bump_reel_count', 0, 1000000) &&
         isValidOptionalBool(data, 'bump_enabled') &&
-        isValidOptionalString(data, 'bump_mode', 50);
+        isValidOptionalString(data, 'bump_mode', 50) &&
+        isValidOptionalMap(data, 'free_bundle_offer') &&
+        isValidOptionalString(data, 'banner_image', 1000) &&
+        isValidOptionalString(data, 'headline', 300) &&
+        isValidOptionalString(data, 'subheadline', 500) &&
+        isValidOptionalString(data, 'button_text', 200) &&
+        isValidOptionalNumber(data, 'min_cart_value', 0, 1000000) &&
+        isValidOptionalNumber(data, 'free_bundle_quantity', 1, 100);
     }
 
     function isValidCoupon(data) {
@@ -887,7 +894,7 @@ service cloud.firestore {
       allow create, update: if settingId in [
         'general', 'branding', 'site_mode', 'meta_pixel', 'whatsapp', 'cashfree', 'payu',
         'rankmath_seo', 'dnp_meta', 'mmc_analytics', 'litespeed_cache', 'reseller', 'telegram',
-        'bump_offer'
+        'bump_offer', 'free_bundle_offer'
       ] && isValidStoreSetting(request.resource.data);
 
       // Settings documents cannot be deleted

@@ -14,13 +14,23 @@ export default function FreeBundleOfferBanner({
   variant = 'home',
   currentTotal = 0,
 }: FreeBundleOfferBannerProps) {
-  const { setIsFreeBundleModalOpen, freeBundles, subtotal } = useCart();
+  const { setIsFreeBundleModalOpen, freeBundles, subtotal, freeBundleOffer } = useCart();
+
+  // If the admin turned off the promotion, don't show the banner
+  if (freeBundleOffer && freeBundleOffer.enabled === false) {
+    return null;
+  }
+
   const effectiveTotal = currentTotal || subtotal;
-  const isUnlocked = effectiveTotal >= 149;
+  const minCart = freeBundleOffer?.minCartValue || 149;
+  const freeQty = freeBundleOffer?.freeBundleQuantity || 2;
+  const isUnlocked = effectiveTotal >= minCart;
   const claimedCount = freeBundles.length;
 
-  const bannerImgSrc = '/banner-free-bundles.png';
-  const bannerFallbackSrc = 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png';
+  const bannerImgSrc = freeBundleOffer?.bannerImage || '/banner-free-bundles.png';
+  const bannerFallbackSrc =
+    freeBundleOffer?.bannerFallbackImage ||
+    'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png';
 
   const isCheckoutAction = variant === 'checkout' && isUnlocked;
 
@@ -37,14 +47,17 @@ export default function FreeBundleOfferBanner({
         }}
         prefetch={false}
         className="block w-full overflow-hidden relative cursor-pointer"
-        aria-label="Claim 2 Free Bundles Special Offer"
+        aria-label={`Claim ${freeQty} Free Bundles Special Offer`}
       >
         <img
           src={bannerImgSrc}
           onError={(e) => {
             (e.target as HTMLImageElement).src = bannerFallbackSrc;
           }}
-          alt="VaultWorld Neon Reels Bundle Sale - Get 2 Free Bundles on Min ₹149 Payment"
+          alt={
+            freeBundleOffer?.headline ||
+            `VaultWorld Neon Reels Bundle Sale - Get ${freeQty} Free Bundles on Min ₹${minCart} Payment`
+          }
           width={1280}
           height={480}
           loading={variant === 'home' ? 'eager' : 'lazy'}
@@ -64,8 +77,8 @@ export default function FreeBundleOfferBanner({
           <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-slate-950 fill-slate-950 animate-pulse shrink-0" />
           <span className="truncate">
             {claimedCount > 0
-              ? `🎁 Change Claimed Free Bundles (${claimedCount}/2)`
-              : '🎁 Select Your 2 Free Bundles (₹0) Now →'}
+              ? `🎁 Change Claimed Free Bundles (${claimedCount}/${freeQty})`
+              : `🎁 Select Your ${freeQty} Free Bundles (₹0) Now →`}
           </span>
         </button>
       ) : (
@@ -78,8 +91,8 @@ export default function FreeBundleOfferBanner({
           <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-slate-950 fill-slate-950 animate-pulse shrink-0" />
           <span className="truncate">
             {variant === 'checkout'
-              ? `🎁 Add ₹${Math.max(0, 149 - effectiveTotal)} More to Claim 2 Free Bundles →`
-              : '🎁 Claim 2 Free Bundles on Min. ₹149 Order →'}
+              ? `🎁 Add ₹${Math.max(0, minCart - effectiveTotal)} More to Claim ${freeQty} Free Bundles →`
+              : freeBundleOffer?.buttonText || `🎁 Claim ${freeQty} Free Bundles on Min. ₹${minCart} Order →`}
           </span>
           <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3] shrink-0" />
         </Link>

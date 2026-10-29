@@ -53,6 +53,7 @@ function CheckoutContent() {
     setOrderBumpAdded,
     subtotal,
     total,
+    freeBundleOffer,
     freeBundles,
     removeFreeBundle,
     setIsFreeBundleModalOpen,
@@ -201,9 +202,13 @@ function CheckoutContent() {
   const checkoutItems = isBuyNowMode ? (buyNowItem ? [buyNowItem] : []) : items;
   const checkoutSubtotal = isBuyNowMode ? (buyNowItem ? buyNowItem.price : 0) : subtotal;
 
-  // Free bundles eligible if checkoutSubtotal >= 149
-  const freeBonusItems: CartItem[] = (checkoutSubtotal >= 149 && freeBundles.length > 0)
-    ? freeBundles.map((b) => ({
+  const isOfferActive = freeBundleOffer?.enabled !== false;
+  const minCart = isOfferActive ? (freeBundleOffer?.minCartValue || 149) : 999999999;
+  const freeQty = isOfferActive ? (freeBundleOffer?.freeBundleQuantity || 2) : 0;
+
+  // Free bundles eligible if checkoutSubtotal >= minCart and offer is active
+  const freeBonusItems: CartItem[] = (isOfferActive && checkoutSubtotal >= minCart && freeBundles.length > 0)
+    ? freeBundles.slice(0, freeQty).map((b) => ({
         product: b,
         license: 'personal' as LicenseType,
         price: 0,
@@ -1188,10 +1193,10 @@ function CheckoutContent() {
                   )}
 
                   {/* Free Bonus Bundles (Promotional Offer) */}
-                  {checkoutSubtotal >= 149 && freeBundles.length > 0 && (
+                  {isOfferActive && checkoutSubtotal >= minCart && freeBundles.length > 0 && (
                     <div className="space-y-2 pt-2 border-t border-dashed border-[#bce8d5]">
                       <div className="flex items-center justify-between text-[11px] font-black text-[#076647] uppercase tracking-wider">
-                        <span>🎁 Claimed Free Gifts ({freeBundles.length}/2)</span>
+                        <span>🎁 Claimed Free Gifts ({freeBundles.length}/{freeQty})</span>
                         <button
                           type="button"
                           onClick={() => setIsFreeBundleModalOpen(true)}
@@ -1200,7 +1205,7 @@ function CheckoutContent() {
                           Change
                         </button>
                       </div>
-                      {freeBundles.map((fb) => (
+                      {freeBundles.slice(0, freeQty).map((fb) => (
                         <div
                           key={`free-${fb.id}`}
                           className="flex gap-3 items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-[#eefbf4] to-[#f4fcf7] border border-[#bce8d5]"
@@ -1238,12 +1243,12 @@ function CheckoutContent() {
                     </div>
                   )}
 
-                  {/* If qualified but hasn't claimed 2 free bundles */}
-                  {checkoutSubtotal >= 149 && freeBundles.length < 2 && (
+                  {/* If qualified but hasn't claimed all free bundles */}
+                  {isOfferActive && checkoutSubtotal >= minCart && freeBundles.length < freeQty && (
                     <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-400/10 to-amber-500/15 border border-amber-400/40 flex items-center justify-between gap-2 shadow-xs">
                       <div className="text-xs font-bold text-amber-950 flex items-center gap-1.5">
                         <Gift className="w-4 h-4 shrink-0 text-amber-600" />
-                        <span>You unlocked 2 Free Bundles!</span>
+                        <span>You unlocked {freeQty} Free Bundles!</span>
                       </div>
                       <button
                         type="button"

@@ -127,6 +127,19 @@ export const GlobalBumpOfferSchema = z.object({
 });
 export type GlobalBumpOffer = z.infer<typeof GlobalBumpOfferSchema>;
 
+export const FreeBundleOfferSchema = z.object({
+  enabled: z.boolean().default(true),
+  banner_image: z.string().default('/banner-free-bundles.png'),
+  banner_fallback_image: z.string().default('https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png'),
+  min_cart_value: z.number().default(149),
+  free_bundle_quantity: z.number().default(2),
+  headline: z.string().default('Get 2 of Any Bundle FREE'),
+  subheadline: z.string().default('PAY ₹149 OR MORE & PICK ANY 2 ADDITIONAL REELS BUNDLES AT NO EXTRA COST!'),
+  button_text: z.string().default('🎁 Claim 2 Free Bundles on Min. ₹149 Order →'),
+  updated_at: z.string().optional(),
+});
+export type FreeBundleOffer = z.infer<typeof FreeBundleOfferSchema>;
+
 export const CategoryItemSchema = z.object({
   id: z.string().optional(),
   name: z.string(),

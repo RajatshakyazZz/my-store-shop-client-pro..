@@ -28,6 +28,7 @@ import SettingsIntegrations from './pages/SettingsIntegrations';
 import AuditLogs from './pages/AuditLogs';
 import Resellers from './pages/Resellers';
 import BumpOffers from './pages/BumpOffers';
+import FreeBundleOffer from './pages/FreeBundleOffer';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,6 +61,7 @@ export default function AdminApp() {
                     <Route path="customers" element={<Customers />} />
                     <Route path="resellers" element={<Resellers />} />
                     <Route path="bump-offers" element={<BumpOffers />} />
+                    <Route path="free-offer" element={<FreeBundleOffer />} />
                     <Route path="coupons" element={<Coupons />} />
                     <Route path="content" element={<Content />} />
                     <Route path="branding" element={<Branding />} />

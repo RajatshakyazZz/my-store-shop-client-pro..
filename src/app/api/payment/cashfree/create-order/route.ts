@@ -8,6 +8,7 @@ import { getResellerListingBySlug } from '@/lib/resellerService';
 import { BUNDLE_PRODUCTS, ORDER_BUMP } from '@/data/bundles';
 import { calculateCouponDiscount } from '@/lib/coupon';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
+import { fetchFreeBundleOffer } from '@/lib/freeBundleOffer';
 
 export async function POST(request: Request) {
   try {
@@ -165,10 +166,15 @@ export async function POST(request: Request) {
           }
         }
 
-        // Second pass: handle free bonus items (eligible if paidItemsCatalogTotal >= 149, max 2 items)
+        // Second pass: handle free bonus items (eligible if paidItemsCatalogTotal >= offerThreshold, max freeBundleQuantity items)
+        const freeOfferConfig = await fetchFreeBundleOffer().catch(() => null);
+        const isOfferActive = freeOfferConfig ? freeOfferConfig.enabled !== false : true;
+        const offerThreshold = isOfferActive ? (freeOfferConfig?.minCartValue || 149) : 999999999;
+        const maxFreeBundles = isOfferActive ? (freeOfferConfig?.freeBundleQuantity || 2) : 0;
+
         for (const item of items) {
           if (item.isFreeBonus || item.price === 0) {
-            if (paidItemsCatalogTotal >= 149 && freeBonusCount < 2) {
+            if (isOfferActive && paidItemsCatalogTotal >= offerThreshold && freeBonusCount < maxFreeBundles) {
               freeBonusCount++;
               // Qualified promotional free gift, charges ₹0
               continue;

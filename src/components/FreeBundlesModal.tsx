@@ -16,7 +16,12 @@ export default function FreeBundlesModal() {
     claimFreeBundles,
     subtotal,
     isQualifiedForFreeOffer,
+    freeBundleOffer,
   } = useCart();
+
+  const isOfferActive = freeBundleOffer?.enabled !== false;
+  const minCart = freeBundleOffer?.minCartValue || 149;
+  const freeQty = freeBundleOffer?.freeBundleQuantity || 2;
 
   const [customProducts, setCustomProducts] = useState<BundleProduct[]>(() => getLocalCustomProductsSync());
   const [selected, setSelected] = useState<BundleProduct[]>([]);
@@ -41,12 +46,12 @@ export default function FreeBundlesModal() {
   useEffect(() => {
     if (isFreeBundleModalOpen) {
       if (freeBundles.length > 0) {
-        setSelected(freeBundles.slice(0, 2));
+        setSelected(freeBundles.slice(0, freeQty));
       } else {
         setSelected([]);
       }
     }
-  }, [isFreeBundleModalOpen, freeBundles]);
+  }, [isFreeBundleModalOpen, freeBundles, freeQty]);
 
   // Handle ESC key press to close modal
   useEffect(() => {
@@ -90,7 +95,7 @@ export default function FreeBundlesModal() {
     });
   }, [allBundles, searchQuery, activeCategory]);
 
-  if (!isFreeBundleModalOpen) return null;
+  if (!isFreeBundleModalOpen || !isOfferActive) return null;
 
   const handleToggleSelect = (bundle: BundleProduct) => {
     setSelected((prev) => {
@@ -98,9 +103,9 @@ export default function FreeBundlesModal() {
       if (isAlreadySelected) {
         return prev.filter((b) => b.id !== bundle.id);
       }
-      if (prev.length >= 2) {
-        // Replace the second one or show limit
-        return [prev[0], bundle];
+      if (prev.length >= freeQty) {
+        // Replace the last one or show limit
+        return [...prev.slice(0, Math.max(0, freeQty - 1)), bundle];
       }
       return [...prev, bundle];
     });
@@ -153,19 +158,19 @@ export default function FreeBundlesModal() {
                 id="free-bundles-modal-title"
                 className="text-lg sm:text-xl font-black text-slate-950 tracking-[-0.01em] leading-snug"
               >
-                Choose Your 2 Free Gift Bundles
+                Choose Your {freeQty} Free Gift {freeQty === 1 ? 'Bundle' : 'Bundles'}
               </h2>
               <p className="text-xs sm:text-[13px] text-slate-600 font-medium mt-0.5 leading-relaxed">
                 {isQualifiedForFreeOffer
-                  ? `Your cart qualifies (min. ₹149)! Pick any 2 bundles below to add to your order for FREE (₹0).`
-                  : `Your current cart subtotal is ₹${subtotal}. Reach ₹149 to claim these 2 bundles for 100% free!`}
+                  ? `Your cart qualifies (min. ₹${minCart})! Pick any ${freeQty} bundles below to add to your order for FREE (₹0).`
+                  : `Your current cart subtotal is ₹${subtotal}. Reach ₹${minCart} to claim these ${freeQty} bundles for 100% free!`}
               </p>
             </div>
           </div>
 
           {/* Selection Slots Indicator */}
-          <div className="mt-4 grid grid-cols-2 gap-2.5 sm:gap-3">
-            {[0, 1].map((slotIdx) => {
+          <div className={`mt-4 grid gap-2.5 sm:gap-3 ${freeQty === 1 ? 'grid-cols-1' : freeQty <= 3 ? 'grid-cols-2 sm:grid-cols-3' : 'grid-cols-2 sm:grid-cols-4'}`}>
+            {Array.from({ length: freeQty }).map((_, slotIdx) => {
               const item = selected[slotIdx];
               return (
                 <div
@@ -335,12 +340,12 @@ export default function FreeBundlesModal() {
         <div className="p-4 sm:p-5 border-t border-slate-200 bg-slate-50 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="text-xs text-slate-600 text-center sm:text-left">
             <span className="font-extrabold text-slate-950 tabular-nums">
-              {selected.length} of 2
+              {selected.length} of {freeQty}
             </span>{' '}
             free bundles selected.{' '}
-            {selected.length < 2 && (
+            {selected.length < freeQty && (
               <span className="text-amber-800 font-bold">
-                (You can choose {2 - selected.length} more)
+                (You can choose {freeQty - selected.length} more)
               </span>
             )}
           </div>
