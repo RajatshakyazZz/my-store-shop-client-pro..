@@ -22,6 +22,7 @@ import {
   initialLiteSpeed,
   initialCategories,
   initialReels,
+  initialHeaderOffer,
 } from './mockData';
 import {
   DailySummary,
@@ -52,6 +53,7 @@ import {
   ReelItem,
   GlobalBumpOffer,
   FreeBundleOffer,
+  HeaderOfferConfig,
 } from './types';
 import { db, logAdminAction } from '../lib/firebase';
 import {
@@ -3287,6 +3289,135 @@ class PortalApiClient {
       action: 'UPDATE_FREE_BUNDLE_OFFER',
       module: 'Commerce',
       details: `Updated promotional offer: Min ₹${merged.min_cart_value}, ${merged.free_bundle_quantity} Free Bundles (Status: ${merged.enabled ? 'ACTIVE' : 'OFF'})`,
+    });
+
+    return merged;
+  }
+
+  // ==========================================
+  // 24. HEADER OFFER BANNER CUSTOMIZATION
+  // ==========================================
+  async getHeaderOffer(): Promise<HeaderOfferConfig> {
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem('vaultzet_header_offer');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') {
+            return { ...initialHeaderOffer, ...parsed };
+          }
+        }
+      } catch {}
+    }
+
+    if (typeof window !== 'undefined') {
+      try {
+        const res = await fetch('/api/admin/settings/header-offer', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-store',
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.offer) {
+            const mapped = { ...initialHeaderOffer, ...data.offer };
+            this.saveSettingLocally('header_offer', mapped);
+            localStorage.setItem('vaultzet_header_offer', JSON.stringify(mapped));
+            return mapped;
+          }
+        }
+      } catch (e) {
+        console.warn('API /api/admin/settings/header-offer fetch error, falling back to Firestore/local:', e);
+      }
+    }
+
+    if (db) {
+      try {
+        const [snap, genSnap] = await Promise.all([
+          getDoc(doc(db, 'store_settings', 'header_offer')).catch(() => null),
+          getDoc(doc(db, 'store_settings', 'general')).catch(() => null),
+        ]);
+
+        let data: any = null;
+        if (snap && snap.exists()) {
+          data = snap.data();
+        } else if (genSnap && genSnap.exists() && genSnap.data()?.header_offer) {
+          data = genSnap.data().header_offer;
+        }
+
+        if (data) {
+          const mapped: HeaderOfferConfig = {
+            ...initialHeaderOffer,
+            ...data,
+            enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
+            show_badge: typeof data.show_badge === 'boolean' ? data.show_badge : true,
+            show_coupon: typeof data.show_coupon === 'boolean' ? data.show_coupon : true,
+            allow_dismiss: typeof data.allow_dismiss === 'boolean' ? data.allow_dismiss : true,
+          };
+          this.saveSettingLocally('header_offer', mapped);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('vaultzet_header_offer', JSON.stringify(mapped));
+          }
+          return mapped;
+        }
+      } catch (err) {
+        console.warn('Firestore header_offer fetch error:', err);
+      }
+    }
+
+    return this.getSavedSetting('header_offer', initialHeaderOffer);
+  }
+
+  async updateHeaderOffer(data: Partial<HeaderOfferConfig>): Promise<HeaderOfferConfig> {
+    const existing = await this.getHeaderOffer();
+    const merged: HeaderOfferConfig = {
+      ...existing,
+      ...data,
+      updated_at: new Date().toISOString(),
+    };
+
+    const clean = sanitizePayload(merged);
+    this.saveSettingLocally('header_offer', clean);
+
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('vaultzet_header_offer', JSON.stringify(merged));
+        window.dispatchEvent(new CustomEvent('vaultzet:header_offer_updated', { detail: merged }));
+      } catch {}
+    }
+
+    // 1. Post to admin server API route
+    if (typeof window !== 'undefined') {
+      try {
+        await fetch('/api/admin/settings/header-offer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(clean),
+        });
+      } catch (apiErr) {
+        console.warn('Network error saving header offer to API route:', apiErr);
+      }
+    }
+
+    // 2. Direct Firestore persistence
+    if (db) {
+      try {
+        await setDoc(
+          doc(db, 'store_settings', 'general'),
+          { header_offer: clean, updated_at: new Date().toISOString() },
+          { merge: true }
+        );
+        await setDoc(doc(db, 'store_settings', 'header_offer'), clean, { merge: true }).catch(() => null);
+      } catch (e) {
+        console.warn('Firestore direct write warning for header offer:', e);
+      }
+    }
+
+    await logAdminAction({
+      adminEmail: 'ztoredigital@gmail.com',
+      action: 'UPDATE_HEADER_OFFER',
+      module: 'Marketing',
+      details: `Updated Header Offer Bar: Code: ${merged.coupon_code}, Enabled: ${merged.enabled ? 'YES' : 'NO'}, Highlight: "${merged.highlight_text}"`,
     });
 
     return merged;

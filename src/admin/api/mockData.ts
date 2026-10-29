@@ -10326,3 +10326,20 @@ export const initialLiteSpeed: LiteSpeedConfig = {
   cdn_status: 'ACTIVE',
   last_purge_time: new Date().toISOString(),
 };
+
+export const initialHeaderOffer: HeaderOfferConfig = {
+  enabled: true,
+  show_badge: true,
+  badge_emoji: '🔥',
+  badge_text: 'EXCLUSIVE OFFER',
+  prefix_text: '🔥 Mega Sale: ',
+  text_regular: 'Flat ',
+  highlight_text: '20% Extra Discount',
+  suffix_text: ' on All Reels Bundles! ✨',
+  show_coupon: true,
+  coupon_label: 'CODE',
+  coupon_code: 'OFF20',
+  allow_dismiss: true,
+  redirect_url: '',
+  bg_gradient: 'luxury_red',
+};

@@ -48,6 +48,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
       group: 'COMMERCE',
       items: [
         { name: 'Products & Files', href: '/products', icon: Package },
+        { name: 'Header Offer Bar', href: '/header-offer', icon: Sparkles, badge: 'Top Bar' },
         { name: 'Bump Offers', href: '/bump-offers', icon: Sparkles, badge: 'Offers' },
         { name: 'Free Bundle Offer', href: '/free-offer', icon: Gift, badge: 'Promo' },
         { name: 'Orders & Delivery', href: '/orders', icon: ShoppingCart },

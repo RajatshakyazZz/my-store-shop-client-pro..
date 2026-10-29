@@ -10,6 +10,7 @@ import { BUNDLE_PRODUCTS } from '@/data/bundles';
 import { getAllCatalogBundles, getLocalCustomProductsSync, fetchCustomProducts } from '@/lib/customProducts';
 import { filterBundlesByQuery } from '@/lib/search';
 import { BundleProduct } from '@/types';
+import { HeaderOfferConfig, getHeaderOfferSync, fetchHeaderOffer } from '@/lib/headerOffer';
 
 export default function Header() {
   const pathname = usePathname();
@@ -21,8 +22,25 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isResellerRoute, setIsResellerRoute] = useState(false);
+  const [headerOffer, setHeaderOffer] = useState<HeaderOfferConfig>(() => getHeaderOfferSync());
   const [isCouponBannerVisible, setIsCouponBannerVisible] = useState(true);
   const [isCopied, setIsCopied] = useState(false);
+
+  // Sync header offer from Cloud Firestore & listen for admin real-time updates
+  useEffect(() => {
+    fetchHeaderOffer().then((res) => {
+      if (res) setHeaderOffer(res);
+    }).catch(() => {});
+
+    const handleOfferUpdated = (e: Event) => {
+      const customEvt = e as CustomEvent<HeaderOfferConfig>;
+      if (customEvt.detail) {
+        setHeaderOffer(customEvt.detail);
+      }
+    };
+    window.addEventListener('vaultzet:header_offer_updated', handleOfferUpdated);
+    return () => window.removeEventListener('vaultzet:header_offer_updated', handleOfferUpdated);
+  }, []);
 
   // Check if coupon banner was previously dismissed in the current session
   useEffect(() => {
@@ -43,8 +61,9 @@ export default function Header() {
 
   const handleCopyCoupon = () => {
     if (typeof window !== 'undefined') {
-      navigator.clipboard?.writeText('OFF20');
-      sessionStorage.setItem('vaultzet_applied_coupon', 'OFF20');
+      const promoCode = headerOffer?.coupon_code || 'OFF20';
+      navigator.clipboard?.writeText(promoCode);
+      sessionStorage.setItem('vaultzet_applied_coupon', promoCode);
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     }
@@ -174,64 +193,113 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-[0_2px_10px_rgba(20,10,50,0.02)]">
-      {/* Top Promotional Coupon Header Bar ("OFF20" for 20% Off on all products) */}
-      {isCouponBannerVisible && (
-        <div className="relative bg-gradient-to-r from-[#1a0507] via-[#2d0a0f] to-[#140305] border-b border-red-500/20 text-white overflow-hidden">
+      {/* Top Promotional Coupon Header Bar (Fully synced with Admin Panel /asdf/header-offer) */}
+      {isCouponBannerVisible && headerOffer.enabled && (
+        <div
+          className={`relative ${
+            (headerOffer.bg_gradient &&
+              {
+                pure_dark: 'bg-gradient-to-r from-[#09090b] via-[#18181b] to-[#09090b] border-b border-white/10',
+                neon_ruby: 'bg-gradient-to-r from-[#38090f] via-[#540d16] to-[#26050a] border-b border-red-500/40',
+                golden_amber: 'bg-gradient-to-r from-[#1f1605] via-[#2e2008] to-[#1a1203] border-b border-amber-500/30',
+                emerald_deals: 'bg-gradient-to-r from-[#041a0e] via-[#092a18] to-[#04140a] border-b border-emerald-500/30',
+              }[headerOffer.bg_gradient]) ||
+            'bg-gradient-to-r from-[#1a0507] via-[#2d0a0f] to-[#140305] border-b border-red-500/20'
+          } text-white overflow-hidden`}
+        >
           {/* Subtle diagonal ambient glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_80%_at_50%_-20%,rgba(239,68,68,0.25),rgba(255,255,255,0))] pointer-events-none" />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                headerOffer.bg_gradient === 'pure_dark'
+                  ? 'radial-gradient(ellipse 70% 80% at 50% -20%, rgba(255,255,255,0.08), rgba(255,255,255,0))'
+                  : headerOffer.bg_gradient === 'golden_amber'
+                  ? 'radial-gradient(ellipse 70% 80% at 50% -20%, rgba(245,158,11,0.25), rgba(255,255,255,0))'
+                  : headerOffer.bg_gradient === 'emerald_deals'
+                  ? 'radial-gradient(ellipse 70% 80% at 50% -20%, rgba(16,185,129,0.25), rgba(255,255,255,0))'
+                  : 'radial-gradient(ellipse 70% 80% at 50% -20%, rgba(239,68,68,0.25), rgba(255,255,255,0))',
+            }}
+          />
 
           <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-2.5 relative flex items-center justify-between gap-2 text-xs">
             {/* Left: Red Sparkle + Offer Pill */}
-            <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 z-10">
-              <span className="w-5 h-5 rounded-full bg-red-500/20 text-rose-300 flex items-center justify-center shrink-0">
-                <Sparkles className="w-3.5 h-3.5 fill-rose-400 text-rose-300" />
-              </span>
-              <span className="px-2 sm:px-2.5 py-0.5 rounded-full border border-red-400/40 bg-red-500/20 text-[10px] font-black uppercase tracking-wider text-rose-200 shadow-2xs flex items-center gap-1">
-                <span>🔥</span>
-                <span>EXCLUSIVE OFFER</span>
-              </span>
-            </div>
+            {headerOffer.show_badge && (
+              <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 z-10">
+                <span className="w-5 h-5 rounded-full bg-red-500/20 text-rose-300 flex items-center justify-center shrink-0">
+                  <Sparkles className="w-3.5 h-3.5 fill-rose-400 text-rose-300" />
+                </span>
+                <span className="px-2 sm:px-2.5 py-0.5 rounded-full border border-red-400/40 bg-red-500/20 text-[10px] font-black uppercase tracking-wider text-rose-200 shadow-2xs flex items-center gap-1">
+                  <span>{headerOffer.badge_emoji || '🔥'}</span>
+                  <span>{headerOffer.badge_text || 'EXCLUSIVE OFFER'}</span>
+                </span>
+              </div>
+            )}
 
             {/* Center: Offer Notice */}
             <div className="flex-1 overflow-hidden px-1 text-center min-w-0">
-              <div className="animate-diwali-ltr font-bold text-[11px] sm:text-xs md:text-[13px] text-white tracking-wide">
-                <span>🔥 Mega Sale: </span>
-                <span>Flat </span>
-                <span className="text-rose-300 font-extrabold underline decoration-rose-400/50">20% Extra Discount</span>
-                <span> on All Reels Bundles! ✨</span>
-              </div>
+              {headerOffer.redirect_url ? (
+                <Link
+                  href={headerOffer.redirect_url}
+                  className="animate-diwali-ltr font-bold text-[11px] sm:text-xs md:text-[13px] text-white tracking-wide hover:opacity-90 transition-opacity inline-block"
+                >
+                  {headerOffer.prefix_text && <span>{headerOffer.prefix_text}</span>}
+                  {headerOffer.text_regular && <span>{headerOffer.text_regular}</span>}
+                  {headerOffer.highlight_text && (
+                    <span className="text-rose-300 font-extrabold underline decoration-rose-400/50">
+                      {headerOffer.highlight_text}
+                    </span>
+                  )}
+                  {headerOffer.suffix_text && <span>{headerOffer.suffix_text}</span>}
+                </Link>
+              ) : (
+                <div className="animate-diwali-ltr font-bold text-[11px] sm:text-xs md:text-[13px] text-white tracking-wide">
+                  {headerOffer.prefix_text && <span>{headerOffer.prefix_text}</span>}
+                  {headerOffer.text_regular && <span>{headerOffer.text_regular}</span>}
+                  {headerOffer.highlight_text && (
+                    <span className="text-rose-300 font-extrabold underline decoration-rose-400/50">
+                      {headerOffer.highlight_text}
+                    </span>
+                  )}
+                  {headerOffer.suffix_text && <span>{headerOffer.suffix_text}</span>}
+                </div>
+              )}
             </div>
 
             {/* Right: Coupon Badge with Copy Action + Close */}
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 z-10">
-              <button
-                type="button"
-                onClick={handleCopyCoupon}
-                className="px-2.5 sm:px-3 py-1 rounded-lg bg-white hover:bg-slate-50 border border-white/90 text-slate-900 shadow-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer select-none group"
-                title="Click to copy code and auto-apply discount"
-              >
-                <span className="text-[9px] sm:text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
-                  CODE
-                </span>
-                <span className="text-xs font-black text-red-950 tracking-wider">
-                  {isCopied ? 'COPIED!' : 'OFF20'}
-                </span>
-                {isCopied ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                ) : (
-                  <Copy className="w-3.5 h-3.5 text-red-600 group-hover:scale-110 transition-transform shrink-0" />
-                )}
-              </button>
+              {headerOffer.show_coupon && (
+                <button
+                  type="button"
+                  onClick={handleCopyCoupon}
+                  className="px-2.5 sm:px-3 py-1 rounded-lg bg-white hover:bg-slate-50 border border-white/90 text-slate-900 shadow-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer select-none group"
+                  title="Click to copy code and auto-apply discount"
+                >
+                  <span className="text-[9px] sm:text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
+                    {headerOffer.coupon_label || 'CODE'}
+                  </span>
+                  <span className="text-xs font-black text-red-950 tracking-wider">
+                    {isCopied ? 'COPIED!' : (headerOffer.coupon_code || 'OFF20')}
+                  </span>
+                  {isCopied ? (
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  ) : (
+                    <Copy className="w-3.5 h-3.5 text-red-600 group-hover:scale-110 transition-transform shrink-0" />
+                  )}
+                </button>
+              )}
 
-              <button
-                type="button"
-                onClick={handleDismissCoupon}
-                className="w-6 h-6 rounded-md hover:bg-white/15 text-white/70 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
-                aria-label="Dismiss coupon bar"
-                title="Dismiss"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
+              {headerOffer.allow_dismiss && (
+                <button
+                  type="button"
+                  onClick={handleDismissCoupon}
+                  className="w-6 h-6 rounded-md hover:bg-white/15 text-white/70 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                  aria-label="Dismiss coupon bar"
+                  title="Dismiss"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
           </div>
         </div>

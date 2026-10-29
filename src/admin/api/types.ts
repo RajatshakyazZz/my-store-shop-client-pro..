@@ -490,3 +490,21 @@ export interface TelegramConfig {
   last_test_status?: string;
   last_test_at?: string;
 }
+
+export interface HeaderOfferConfig {
+  enabled: boolean;
+  show_badge: boolean;
+  badge_emoji: string;
+  badge_text: string;
+  prefix_text: string;
+  text_regular: string;
+  highlight_text: string;
+  suffix_text: string;
+  show_coupon: boolean;
+  coupon_label: string;
+  coupon_code: string;
+  allow_dismiss: boolean;
+  redirect_url?: string;
+  bg_gradient?: string;
+  updated_at?: string;
+}

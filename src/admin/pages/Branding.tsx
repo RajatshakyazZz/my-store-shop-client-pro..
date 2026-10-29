@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Palette, Save, Play, Sparkles } from 'lucide-react';
+import { Palette, Save, Play, Sparkles, ArrowRight } from 'lucide-react';
 import { portalApi } from '../api/client';
 import { StoreBranding } from '../api/types';
 import { useToast } from '../context/ToastContext';
@@ -59,6 +60,33 @@ export default function Branding() {
           Customize brand logos, vibrant gradients, and live storefront themes.
         </p>
       </div>
+
+      {/* Top Header Offer Banner Shortcut */}
+      <Link
+        to="/header-offer"
+        className="p-4 rounded-2xl bg-gradient-to-r from-red-950/40 via-slate-900 to-slate-900 border border-red-500/30 flex items-center justify-between gap-4 hover:border-red-500/60 transition-all group"
+      >
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-10 h-10 rounded-xl bg-red-600/20 text-rose-300 border border-red-500/30 flex items-center justify-center shrink-0">
+            <Sparkles className="w-5 h-5 fill-rose-400 text-rose-300" />
+          </div>
+          <div className="min-w-0">
+            <div className="text-xs font-bold text-white flex items-center gap-2">
+              <span>Top Header Promotional Offer Bar</span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-500/20 text-rose-300 border border-red-500/30">
+                New Feature
+              </span>
+            </div>
+            <div className="text-[11px] text-slate-400 mt-0.5 truncate">
+              Storefront ke sabse upar ka Exclusive Offer, 20% Off Sale Text, Coupon Code aur Close button customize karein.
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 text-xs font-bold text-red-400 group-hover:text-red-300 shrink-0">
+          <span>Customize Offer Bar</span>
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </div>
+      </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
