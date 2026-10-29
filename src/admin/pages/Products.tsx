@@ -37,6 +37,7 @@ import { useToast } from '../context/ToastContext';
 import DataTable, { Column } from '../components/common/DataTable';
 import ImageUploadField from '../components/common/ImageUploadField';
 import GalleryImageManager from '../components/common/GalleryImageManager';
+import VideoPreviewField from '../components/common/VideoPreviewField';
 
 export default function Products() {
   const queryClient = useQueryClient();
@@ -1645,23 +1646,13 @@ export default function Products() {
                     helperText="Plays as the main bundle display card across the storefront catalog and product pages."
                   />
 
-                  {/* Preview Video URL */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center justify-between">
-                      <span>Video Preview URL (YouTube Shorts, YouTube Video, or Direct MP4)</span>
-                      <span className="text-[10px] text-purple-400">Plays when buyer clicks "View Preview"</span>
-                    </label>
-                    <div className="flex items-center rounded-xl bg-slate-950 border border-slate-800 focus-within:border-purple-500 px-3 py-2.5">
-                      <Video className="w-4 h-4 text-rose-400 mr-2 shrink-0" />
-                      <input
-                        type="url"
-                        value={editForm.preview_video_url}
-                        onChange={(e) => setEditForm((prev) => ({ ...prev, preview_video_url: e.target.value }))}
-                        placeholder="https://www.youtube.com/shorts/... or https://domain.com/video.mp4"
-                        className="w-full bg-transparent text-xs text-white placeholder-slate-600 focus:outline-none"
-                      />
-                    </div>
-                  </div>
+                  {/* Dedicated Hosted Video Preview URL with Live Player */}
+                  <VideoPreviewField
+                    value={editForm.preview_video_url}
+                    onChange={(url) => setEditForm((prev) => ({ ...prev, preview_video_url: url }))}
+                    label="Dedicated Video Preview URL (View Samples Section)"
+                    helperText="Paste any hosted video URL (Direct MP4, Cloud CDN, Google Drive preview, or YouTube Shorts). This video is embedded directly in the 'View Samples' section on the product page."
+                  />
 
                   {/* Gallery Images with ImgBB Upload & Visual Management */}
                   <GalleryImageManager
@@ -2436,23 +2427,13 @@ export default function Products() {
                     helperText="Plays as the main bundle display card across the storefront catalog and product pages."
                   />
 
-                  {/* Preview Video URL */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center justify-between">
-                      <span>Video Preview URL (YouTube Shorts, YouTube Video, or Direct MP4)</span>
-                      <span className="text-[10px] text-purple-400">Plays when buyer clicks "View Preview"</span>
-                    </label>
-                    <div className="flex items-center rounded-xl bg-slate-950 border border-slate-800 focus-within:border-purple-500 px-3 py-2.5">
-                      <Video className="w-4 h-4 text-rose-400 mr-2 shrink-0" />
-                      <input
-                        type="url"
-                        value={createForm.preview_video_url}
-                        onChange={(e) => setCreateForm((prev) => ({ ...prev, preview_video_url: e.target.value }))}
-                        placeholder="https://www.youtube.com/shorts/... or https://domain.com/video.mp4"
-                        className="w-full bg-transparent text-xs text-white placeholder-slate-600 focus:outline-none"
-                      />
-                    </div>
-                  </div>
+                  {/* Dedicated Hosted Video Preview URL with Live Player */}
+                  <VideoPreviewField
+                    value={createForm.preview_video_url}
+                    onChange={(url) => setCreateForm((prev) => ({ ...prev, preview_video_url: url }))}
+                    label="Dedicated Video Preview URL (View Samples Section)"
+                    helperText="Paste any hosted video URL (Direct MP4, Cloud CDN, Google Drive preview, or YouTube Shorts). This video is embedded directly in the 'View Samples' section on the product page."
+                  />
 
                   {/* Gallery Images with ImgBB Upload & Visual Management */}
                   <GalleryImageManager

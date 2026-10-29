@@ -33,6 +33,9 @@ import {
   MessageCircle,
   Clock,
   Download,
+  Play,
+  Pause,
+  VolumeX,
 } from 'lucide-react';
 import { BUNDLE_PRODUCTS } from '@/data/bundles';
 import { useCart } from '@/context/CartContext';
@@ -43,6 +46,8 @@ import { getBundleContentDetails } from '@/lib/bundleContent';
 import { track } from '@/lib/analytics';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
 import FreeBundleOfferBanner from '@/components/FreeBundleOfferBanner';
+import { parseHostedVideoUrl } from '@/lib/videoUtils';
+import { initialStoreReels } from '@/lib/reels';
 
 interface ProductDetailClientProps {
   product: BundleProduct;
@@ -166,6 +171,17 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const details = getBundleContentDetails(p);
   const relatedBundles = BUNDLE_PRODUCTS.filter((b) => b.id !== p.id && !b.isUpcoming).slice(0, 4);
 
+  // Dedicated Video Preview for "View Samples"
+  const rawVideoUrl =
+    p.previewVideoUrl ||
+    (p as any).preview_video_url ||
+    (p as any).video_url ||
+    (p as any).videoUrl ||
+    initialStoreReels.find((r) => (r.bundleSlug && r.bundleSlug === p.slug) || (r.bundleId && r.bundleId === p.id))?.videoUrl ||
+    '';
+  const parsedVideo = parseHostedVideoUrl(rawVideoUrl);
+  const hasVideoPreview = parsedVideo.type !== 'empty' && parsedVideo.type !== 'unknown';
+
   const handleHelpful = (id: string) => {
     setHelpfulMap((prev) => ({
       ...prev,
@@ -288,6 +304,22 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   </button>
                 ))}
               </div>
+            )}
+
+            {/* Watch Sample Reel Video Button (Scrolls to View Samples Section) */}
+            {hasVideoPreview && (
+              <a
+                href="#view-samples"
+                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 hover:from-slate-900 hover:to-slate-800 text-amber-300 border border-amber-500/40 font-extrabold text-xs flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.01] active:scale-[0.99] group cursor-pointer"
+              >
+                <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-300 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Play className="w-3 h-3 fill-amber-300 text-amber-300 ml-0.5" />
+                </span>
+                <span>Watch Reel Samples & Video Preview (1080P)</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+                  LIVE DEMO
+                </span>
+              </a>
             )}
 
             {/* Clean Trust Reassurance Strip */}
@@ -445,6 +477,170 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           </div>
 
         </section>
+
+        {/* SECTION: VIEW SAMPLES (DEDICATED REEL SAMPLES & VIDEO PREVIEW) */}
+        {hasVideoPreview && (
+          <section
+            id="view-samples"
+            className="bg-gradient-to-br from-slate-950 via-[#0d1222] to-slate-950 rounded-2xl sm:rounded-3xl border border-amber-500/30 p-5 sm:p-8 shadow-[0_12px_40px_rgba(0,0,0,0.35)] text-white space-y-6 relative overflow-hidden [contain:layout_style]"
+          >
+            {/* Ambient glow backgrounds */}
+            <div className="absolute -top-32 -right-32 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+
+            {/* Header banner */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-5 relative z-10">
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[11px] font-extrabold uppercase tracking-wider">
+                  <Play className="w-3 h-3 fill-amber-300" />
+                  <span>Official Sample Reel</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2.5">
+                  <span>View Samples Before You Buy</span>
+                  <span className="text-[11px] px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold hidden sm:inline-block">
+                    {p.resolution || '1080P'} Full HD
+                  </span>
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-300 font-medium">
+                  Check the real video quality, audio synchronization, and 9:16 vertical reels included in this bundle.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => buyNow(p, 'personal')}
+                  className="w-full sm:w-auto py-3 px-5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-amber-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                >
+                  <Zap className="w-4 h-4 fill-slate-950" />
+                  <span>Buy This Bundle — ₹{activePrice}.00</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Interactive Video Player & Bundle Insights Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center relative z-10">
+              {/* Video Smartphone Mockup / Player Frame */}
+              <div className="lg:col-span-5 flex justify-center">
+                <div className="w-full max-w-[270px] sm:max-w-[300px] aspect-[9/16] rounded-[32px] bg-slate-950 border-[3px] border-slate-700/80 shadow-[0_15px_50px_rgba(0,0,0,0.7)] p-2 relative flex flex-col justify-between overflow-hidden">
+                  {/* Phone top notch */}
+                  <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-slate-950 rounded-full z-30 flex items-center justify-center pointer-events-none border border-slate-800">
+                    <div className="w-2.5 h-2.5 rounded-full bg-slate-900 border border-slate-700" />
+                  </div>
+
+                  {/* Inner Video Container */}
+                  <div className="w-full h-full rounded-[24px] overflow-hidden bg-black relative flex items-center justify-center">
+                    {parsedVideo.type === 'direct' && (
+                      <video
+                        src={parsedVideo.directUrl}
+                        poster={p.thumbnail}
+                        controls
+                        playsInline
+                        preload="metadata"
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+
+                    {(parsedVideo.type === 'youtube' || parsedVideo.type === 'drive' || parsedVideo.type === 'vimeo') && (
+                      <iframe
+                        src={parsedVideo.embedUrl}
+                        title={`${p.title} Sample Reel Preview`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        className="w-full h-full border-0"
+                      />
+                    )}
+
+                    {/* Video Badge Overlay */}
+                    <div className="absolute bottom-2.5 left-2.5 right-2.5 pointer-events-none flex items-center justify-between text-[10px] text-white/90 z-20">
+                      <span className="px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md border border-white/10 font-bold">
+                        {p.reelCount || 1000}+ Reels
+                      </span>
+                      <span className="px-2 py-0.5 rounded-md bg-emerald-500/80 backdrop-blur-md text-white font-extrabold">
+                        No Watermark
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Details: Specifications & Instant Guarantee */}
+              <div className="lg:col-span-7 space-y-4">
+                <div className="space-y-2">
+                  <span className="text-xs font-black uppercase tracking-wider text-amber-400">
+                    What You See is What You Get
+                  </span>
+                  <h3 className="text-lg sm:text-xl font-black text-white leading-snug">
+                    Every Reel Rendered in 100% Crisp Quality, Ready to Publish
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                    Download and publish these reels straight to Instagram, YouTube Shorts, or Facebook without any editing required. All videos come fully compiled with engaging visuals, high retention pacing, and sound.
+                  </p>
+                </div>
+
+                {/* Feature Bullets */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>Zero Watermark / Logo</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400">
+                      100% clean video files ready to put your own logo or brand name.
+                    </p>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>9:16 Vertical HD Format</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400">
+                      Perfect 1080x1920 dimension optimized for maximum reach and engagement.
+                    </p>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>Trending Audio Included</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400">
+                      Syncs seamlessly with current trending algorithms across social networks.
+                    </p>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>Instant Google Drive Access</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400">
+                      Download link opens instantly upon payment completion and is emailed.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Quick Action Footer inside sample section */}
+                <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => buyNow(p, 'personal')}
+                    className="w-full sm:w-auto py-3 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <Zap className="w-4 h-4 fill-slate-950" />
+                    <span>Instant Checkout — ₹{activePrice}.00</span>
+                  </button>
+                  <span className="text-[11px] text-slate-400 flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>One-time payment • Lifetime access</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* SECTION 1: HOW IT WORKS (3 Simple Steps) */}
         <section className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-5">

@@ -38,7 +38,7 @@ export interface BundleProduct {
 
 export interface ProductBumpOfferConfig {
   enabled: boolean;
-  mode: 'custom' | 'disabled' | 'default';
+  mode: 'custom' | 'ready_made' | 'disabled' | 'default';
   bumpType?: 'store_product' | 'custom';
   productId?: string;
   productSlug?: string;

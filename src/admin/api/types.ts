@@ -96,7 +96,7 @@ export const ProductSchema = z.object({
   bump_offer: z
     .object({
       enabled: z.boolean().default(true),
-      mode: z.enum(['custom', 'disabled', 'default']).default('default'),
+      mode: z.enum(['custom', 'ready_made', 'disabled', 'default']).default('default'),
       product_id: z.string().optional(),
       product_slug: z.string().optional(),
       title: z.string().optional(),
