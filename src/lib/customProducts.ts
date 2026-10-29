@@ -2,6 +2,7 @@ import { BundleProduct } from '@/types';
 import { db } from '@/lib/firebase';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { BUNDLE_PRODUCTS } from '@/data/bundles';
+import { isLegacyScrapedVideoUrl } from '@/lib/videoUtils';
 
 // Helper to reliably detect and filter out demo, placeholder, deleted, or dummy test bundles
 export function isDemoOrInvalidBundle(p: any): boolean {
@@ -49,6 +50,30 @@ export function isDemoOrInvalidBundle(p: any): boolean {
   }
 
   return false;
+}
+
+// Purge legacy scraped preview video links from browser localStorage cache
+if (typeof window !== 'undefined') {
+  try {
+    const videoCleanKey = 'vaultzet_video_cleaned_v3';
+    if (localStorage.getItem(videoCleanKey) !== 'true') {
+      const raw = localStorage.getItem('vaultzet_custom_products');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          const cleanedList = parsed.map((item: any) => ({
+            ...item,
+            preview_video_url: isLegacyScrapedVideoUrl(item.preview_video_url) ? '' : (item.preview_video_url || ''),
+            previewVideoUrl: isLegacyScrapedVideoUrl(item.previewVideoUrl) ? '' : (item.previewVideoUrl || ''),
+            preview_video_urls: (item.preview_video_urls || []).filter((u: string) => !isLegacyScrapedVideoUrl(u)),
+            previewVideoUrls: (item.previewVideoUrls || []).filter((u: string) => !isLegacyScrapedVideoUrl(u)),
+          }));
+          localStorage.setItem('vaultzet_custom_products', JSON.stringify(cleanedList));
+        }
+      }
+      localStorage.setItem(videoCleanKey, 'true');
+    }
+  } catch {}
 }
 
 export function mapFirestoreDocToBundleProduct(data: any): BundleProduct {
@@ -241,16 +266,21 @@ export function mapFirestoreDocToBundleProduct(data: any): BundleProduct {
         : baseProd?.previewVideoUrl
         ? [baseProd.previewVideoUrl]
         : [];
-      return rawUrls.map((u: any) => String(u || '').trim()).filter(Boolean);
+      return rawUrls
+        .map((u: any) => String(u || '').trim())
+        .filter((u: string) => Boolean(u) && !isLegacyScrapedVideoUrl(u));
     })(),
-    previewVideoUrl: String(
-      (Array.isArray(data.preview_video_urls) && data.preview_video_urls[0]) ||
-      (Array.isArray(data.previewVideoUrls) && data.previewVideoUrls[0]) ||
-      data.preview_video_url ||
-      data.previewVideoUrl ||
-      baseProd?.previewVideoUrl ||
-      ''
-    ).trim(),
+    previewVideoUrl: (() => {
+      const single = String(
+        (Array.isArray(data.preview_video_urls) && data.preview_video_urls[0]) ||
+        (Array.isArray(data.previewVideoUrls) && data.previewVideoUrls[0]) ||
+        data.preview_video_url ||
+        data.previewVideoUrl ||
+        baseProd?.previewVideoUrl ||
+        ''
+      ).trim();
+      return isLegacyScrapedVideoUrl(single) ? '' : single;
+    })(),
     tags,
     isHot: typeof data.is_hot === 'boolean' ? data.is_hot : Boolean(baseProd?.isHot),
     isTrending: typeof data.is_trending === 'boolean' ? data.is_trending : Boolean(baseProd?.isTrending),

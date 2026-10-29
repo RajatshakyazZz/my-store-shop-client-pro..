@@ -65,6 +65,7 @@ import {
   query,
   orderBy,
 } from 'firebase/firestore';
+import { isLegacyScrapedVideoUrl } from '@/lib/videoUtils';
 
 /**
  * Recursively strips undefined keys and normalizes payloads so Firestore setDoc/updateDoc
@@ -211,20 +212,26 @@ class PortalApiClient {
       try {
         const rawLocal = JSON.parse(localStorage.getItem('vaultzet_custom_products') || '[]');
         if (Array.isArray(rawLocal)) {
-          localCustomProds = rawLocal.filter((p: any) => {
-            const title = String(p.name || p.title || '').trim();
-            const slug = String(p.slug || '').trim().toLowerCase();
-            return (
-              title &&
-              title !== 'Reels Bundle' &&
-              title !== 'New Reels Bundle' &&
-              title !== '[DELETED]' &&
-              !title.toLowerCase().startsWith('demo') &&
-              !title.toLowerCase().startsWith('test') &&
-              !slug.startsWith('test-') &&
-              !slug.startsWith('demo-')
-            );
-          });
+          localCustomProds = rawLocal
+            .filter((p: any) => {
+              const title = String(p.name || p.title || '').trim();
+              const slug = String(p.slug || '').trim().toLowerCase();
+              return (
+                title &&
+                title !== 'Reels Bundle' &&
+                title !== 'New Reels Bundle' &&
+                title !== '[DELETED]' &&
+                !title.toLowerCase().startsWith('demo') &&
+                !title.toLowerCase().startsWith('test') &&
+                !slug.startsWith('test-') &&
+                !slug.startsWith('demo-')
+              );
+            })
+            .map((p: any) => ({
+              ...p,
+              preview_video_url: isLegacyScrapedVideoUrl(p.preview_video_url) ? '' : (p.preview_video_url || ''),
+              preview_video_urls: (p.preview_video_urls || []).filter((u: string) => !isLegacyScrapedVideoUrl(u)),
+            }));
           if (localCustomProds.length !== rawLocal.length) {
             try {
               localStorage.setItem('vaultzet_custom_products', JSON.stringify(localCustomProds));
@@ -270,6 +277,13 @@ class PortalApiClient {
           safeOverride.files[0].file_url.includes('/demo-')
         ) {
           delete safeOverride.files;
+        }
+
+        if (safeOverride.preview_video_url && isLegacyScrapedVideoUrl(safeOverride.preview_video_url)) {
+          safeOverride.preview_video_url = '';
+        }
+        if (Array.isArray(safeOverride.preview_video_urls)) {
+          safeOverride.preview_video_urls = safeOverride.preview_video_urls.filter((u: string) => !isLegacyScrapedVideoUrl(u));
         }
 
         return { ...p, ...safeOverride };
@@ -335,10 +349,23 @@ class PortalApiClient {
                       },
                     ];
 
+              const rawPreviewUrls = (Array.isArray(data.preview_video_urls) && data.preview_video_urls.length > 0)
+                ? data.preview_video_urls
+                : (data.previewVideoUrls && Array.isArray(data.previewVideoUrls) && data.previewVideoUrls.length > 0)
+                ? data.previewVideoUrls
+                : data.preview_video_url
+                ? [data.preview_video_url]
+                : [];
+              const cleanPreviewUrls = rawPreviewUrls
+                .map((u: any) => String(u || '').trim())
+                .filter((u: string) => Boolean(u) && !isLegacyScrapedVideoUrl(u));
+
               const prodObj = {
                 id: id.startsWith('rb-') ? id : `rb-${canonicalSlug}`,
                 ...data,
                 slug: data.slug || canonicalSlug,
+                preview_video_url: cleanPreviewUrls[0] || '',
+                preview_video_urls: cleanPreviewUrls,
                 google_drive_link: cleanDrive,
                 googleDriveLink: cleanDrive,
                 files: filesList,

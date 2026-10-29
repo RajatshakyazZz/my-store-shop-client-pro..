@@ -38,6 +38,7 @@ import DataTable, { Column } from '../components/common/DataTable';
 import ImageUploadField from '../components/common/ImageUploadField';
 import GalleryImageManager from '../components/common/GalleryImageManager';
 import VideoPreviewField from '../components/common/VideoPreviewField';
+import { isLegacyScrapedVideoUrl } from '@/lib/videoUtils';
 
 export default function Products() {
   const queryClient = useQueryClient();
@@ -407,6 +408,17 @@ export default function Products() {
       google_drive_link: rawProdBump?.google_drive_link || rawProdBump?.googleDriveLink || '',
     };
 
+    const rawPreviewUrls = (Array.isArray(prod.preview_video_urls) && prod.preview_video_urls.length > 0)
+      ? prod.preview_video_urls
+      : (prod as any).previewVideoUrls && Array.isArray((prod as any).previewVideoUrls) && (prod as any).previewVideoUrls.length > 0
+      ? (prod as any).previewVideoUrls
+      : prod.preview_video_url
+      ? [prod.preview_video_url]
+      : [];
+    const cleanPreviewUrls = rawPreviewUrls
+      .map((u: any) => String(u || '').trim())
+      .filter((u: string) => Boolean(u) && !isLegacyScrapedVideoUrl(u));
+
     setEditForm({
       name: prod.name || '',
       slug: prod.slug || '',
@@ -421,14 +433,8 @@ export default function Products() {
       format: prod.format || 'MP4',
       resolution: prod.resolution || '1080P Full HD (9:16)',
       featured_image: prod.featured_image || '',
-      preview_video_url: prod.preview_video_url || (prod.preview_video_urls?.[0]) || '',
-      preview_video_urls: (Array.isArray(prod.preview_video_urls) && prod.preview_video_urls.length > 0)
-        ? prod.preview_video_urls
-        : (prod as any).previewVideoUrls && Array.isArray((prod as any).previewVideoUrls) && (prod as any).previewVideoUrls.length > 0
-        ? (prod as any).previewVideoUrls
-        : prod.preview_video_url
-        ? [prod.preview_video_url]
-        : [],
+      preview_video_url: cleanPreviewUrls[0] || '',
+      preview_video_urls: cleanPreviewUrls,
       gallery_images_text: (prod.gallery_images || []).join('\n'),
       short_description: prod.short_description || '',
       description: prod.description || '',

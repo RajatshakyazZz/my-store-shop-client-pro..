@@ -5,13 +5,36 @@ export interface ParsedVideoInfo {
   label: string;
 }
 
+export const LEGACY_DUMMY_DOMAINS = [
+  'shop.worklinc.com',
+  'betterbundle.in',
+  'reelsbundlepro.com',
+  'thesocialgame.in',
+  'rtmcreator.com',
+  'buyreels.in',
+  'videobundlehub.com',
+  'digitstore.xyz',
+  'digitalceoempire.com',
+  'brandigodigital.com',
+  'ziplystore.com',
+  'thedigifyshop.com',
+  'freebiesmockup.com',
+  'credibleearning.com',
+];
+
+export function isLegacyScrapedVideoUrl(rawUrl?: string): boolean {
+  if (!rawUrl) return false;
+  const lower = rawUrl.toLowerCase().trim();
+  return LEGACY_DUMMY_DOMAINS.some((domain) => lower.includes(domain));
+}
+
 /**
  * Parses any hosted video URL (Direct MP4, Google Drive, YouTube, Vimeo)
  * and returns safe embed/direct streaming information.
  */
 export function parseHostedVideoUrl(rawUrl?: string): ParsedVideoInfo {
   const url = (rawUrl || '').trim();
-  if (!url) {
+  if (!url || isLegacyScrapedVideoUrl(url)) {
     return { type: 'empty', label: 'No video link' };
   }
 
