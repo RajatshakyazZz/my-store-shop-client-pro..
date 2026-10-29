@@ -22,7 +22,6 @@ import {
   initialLiteSpeed,
   initialCategories,
   initialReels,
-  initialHeaderOffer,
 } from './mockData';
 import {
   DailySummary,
@@ -53,7 +52,6 @@ import {
   ReelItem,
   GlobalBumpOffer,
   FreeBundleOffer,
-  HeaderOfferConfig,
 } from './types';
 import { db, logAdminAction } from '../lib/firebase';
 import {
@@ -95,9 +93,9 @@ export function sanitizePayload<T>(input: T): T {
 }
 
 const initialTelegram: TelegramConfig = {
-  enabled: false,
-  bot_token: '',
-  admin_chat_ids: '',
+  enabled: true,
+  bot_token: '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA',
+  admin_chat_ids: '7483268297, 5950203511, 6206169480',
   new_order_alert: true,
   product_alert: true,
   daily_summary_alert: true,
@@ -577,9 +575,9 @@ class PortalApiClient {
         (typeof process !== 'undefined' &&
           ((process.env as any).NEXT_PUBLIC_TELEGRAM_BOT_TOKEN ||
             (process.env as any).TELEGRAM_BOT_TOKEN)) ||
-        '';
-      let targetChatIds: string[] = [];
-      let alertEnabled = false;
+        '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
+      let targetChatIds = ['7483268297', '5950203511', '6206169480'];
+      let alertEnabled = true;
 
       try {
         const tg = await this.getTelegramConfig();
@@ -592,15 +590,36 @@ class PortalApiClient {
         }
       } catch {}
 
-      if (alertEnabled && targetChatIds.length > 0) {
-        const istTime = new Date().toLocaleString('en-IN', {
-          timeZone: 'Asia/Kolkata',
-          dateStyle: 'medium',
-          timeStyle: 'medium',
-        });
-        const siteOrigin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop');
-        const productUrl = `${siteOrigin}/product/${newProduct.slug}`;
-        const telegramText = `🚀📦 <b>NEW PRODUCT UPLOADED TO STORE!</b> ✨🔥
+      if (alertEnabled) {
+        // 1. Dispatch via server API
+        fetch('/api/telegram/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event: 'product_added',
+            data: {
+              name: newProduct.name,
+              slug: newProduct.slug,
+              price: newProduct.price,
+              regular_price: newProduct.regular_price,
+              categories: newProduct.categories,
+              reel_count: newProduct.reel_count,
+              resolution: newProduct.resolution,
+              googleDriveLink: newProduct.google_drive_link,
+            },
+          }),
+        }).catch((e) => console.warn('Telegram notify API error:', e));
+
+        // 2. Direct Bot dispatch fallback
+        if (targetChatIds.length > 0) {
+          const istTime = new Date().toLocaleString('en-IN', {
+            timeZone: 'Asia/Kolkata',
+            dateStyle: 'medium',
+            timeStyle: 'medium',
+          });
+          const siteOrigin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop');
+          const productUrl = `${siteOrigin}/product/${newProduct.slug}`;
+          const telegramText = `🚀📦 <b>NEW PRODUCT UPLOADED TO STORE!</b> ✨🔥
 ━━━━━━━━━━━━━━━━━━━━━━
 
 🏷️ <b>Bundle Name:</b> <b>${newProduct.name}</b>
@@ -612,23 +631,24 @@ class PortalApiClient {
 🕒 <b>Uploaded At (IST):</b> ${istTime}
 ━━━━━━━━━━━━━━━━━━━━━━`;
 
-        await Promise.allSettled(
-          targetChatIds.map((chatId) =>
-            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                chat_id: chatId,
-                text: telegramText,
-                parse_mode: 'HTML',
-                disable_web_page_preview: true,
-                reply_markup: {
-                  inline_keyboard: [[{ text: '🔗 View New Bundle on InstaReel Store', url: productUrl }]],
-                },
-              }),
-            })
-          )
-        );
+          await Promise.allSettled(
+            targetChatIds.map((chatId) =>
+              fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  chat_id: chatId,
+                  text: telegramText,
+                  parse_mode: 'HTML',
+                  disable_web_page_preview: true,
+                  reply_markup: {
+                    inline_keyboard: [[{ text: '🔗 View New Bundle on VaultWorld Store', url: productUrl }]],
+                  },
+                }),
+              })
+            )
+          );
+        }
       }
     } catch (tgErr) {
       console.warn('Telegram product upload alert error:', tgErr);
@@ -2230,7 +2250,7 @@ class PortalApiClient {
     }
 
     await logAdminAction({
-      adminEmail: 'ztoredigital@gmail.com',
+      adminEmail: 'admin@vaultworld.shop',
       action: 'UPDATE_STORE_SETUP',
       module: 'Store Setup',
       details: `Updated store name: "${clean.store_name}", email: "${clean.contact_email}", phone: "${clean.support_whatsapp}"`,
@@ -2305,7 +2325,7 @@ class PortalApiClient {
     }
 
     await logAdminAction({
-      adminEmail: 'ztoredigital@gmail.com',
+      adminEmail: 'admin@vaultworld.shop',
       action: 'UPDATE_META_PIXEL',
       module: 'Meta Pixel',
       details: `Updated Pixel ID: ${clean.pixel_id}`,
@@ -2367,7 +2387,7 @@ class PortalApiClient {
       }
     }
     await logAdminAction({
-      adminEmail: 'ztoredigital@gmail.com',
+      adminEmail: 'admin@vaultworld.shop',
       action: 'UPDATE_WHATSAPP',
       module: 'WhatsApp Button',
       details: `Updated support phone to ${clean.phone_number}`,
@@ -2433,13 +2453,13 @@ class PortalApiClient {
   }
 
   // ==========================================
-  // 16. SETTINGS & INTEGRATIONS (Razorpay Gateway)
+  // 16. SETTINGS & INTEGRATIONS (PayU Gateway)
   // ==========================================
-  async getRazorpayConfig(): Promise<PgBridgeConfig> {
+  async getPayUConfig(): Promise<PgBridgeConfig> {
     // 1. First attempt to fetch from server-side admin settings API (reads Firestore directly)
     if (typeof window !== 'undefined') {
       try {
-        const res = await fetch('/api/admin/settings/razorpay', {
+        const res = await fetch('/api/admin/settings/payu', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           cache: 'no-store',
@@ -2447,105 +2467,76 @@ class PortalApiClient {
         if (res.ok) {
           const data = await res.json();
           if (data.success && data.config) {
-            const keyId = data.config.key_id || data.config.razorpay_key_id || data.config.merchant_key || '';
-            const keySecret = data.config.key_secret || data.config.razorpay_key_secret || data.config.merchant_salt || '';
             const mapped: PgBridgeConfig = {
               enabled: typeof data.config.enabled === 'boolean' ? data.config.enabled : true,
-              key_id: keyId,
-              key_secret: keySecret,
-              razorpay_key_id: keyId,
-              razorpay_key_secret: keySecret,
-              merchant_key: keyId,
-              merchant_salt: keySecret,
-              app_id: keyId,
-              secret_key: keySecret,
+              merchant_key: data.config.merchant_key || '',
+              merchant_salt: data.config.merchant_salt || '',
+              app_id: data.config.merchant_key || '',
+              secret_key: data.config.merchant_salt || '',
               environment: data.config.environment || 'PRODUCTION',
-              return_url: data.config.return_url || '',
+              return_url: data.config.return_url || 'https://vaultworld.shop/api/payment/payu/return',
             };
-            this.saveSettingLocally('razorpay', mapped);
             this.saveSettingLocally('payu', mapped);
             return mapped;
           }
         }
       } catch (apiErr) {
-        console.warn('API /api/admin/settings/razorpay fetch error, falling back to Firestore/local:', apiErr);
+        console.warn('API /api/admin/settings/payu fetch error, falling back to Firestore/local:', apiErr);
       }
     }
 
-    // 2. Direct client Firestore query (store_settings/general, store_settings/razorpay, store_settings/payu)
+    // 2. Direct client Firestore query (store_settings/general, store_settings/payu, store_settings/cashfree)
     if (db) {
       try {
-        const [genSnap, rzpSnap, payuSnap] = await Promise.all([
+        const [genSnap, payuSnap, cfSnap] = await Promise.all([
           getDoc(doc(db, 'store_settings', 'general')).catch(() => null),
-          getDoc(doc(db, 'store_settings', 'razorpay')).catch(() => null),
           getDoc(doc(db, 'store_settings', 'payu')).catch(() => null),
+          getDoc(doc(db, 'store_settings', 'cashfree')).catch(() => null),
         ]);
 
         let data: any = null;
-        if (genSnap && genSnap.exists() && (genSnap.data()?.key_id || genSnap.data()?.razorpay_key_id || genSnap.data()?.merchant_key)) {
+        if (genSnap && genSnap.exists() && (genSnap.data()?.merchant_key || genSnap.data()?.app_id)) {
           data = genSnap.data();
-        } else if (rzpSnap && rzpSnap.exists()) {
-          data = rzpSnap.data();
         } else if (payuSnap && payuSnap.exists()) {
           data = payuSnap.data();
+        } else if (cfSnap && cfSnap.exists()) {
+          data = cfSnap.data();
         } else if (genSnap && genSnap.exists()) {
           data = genSnap.data();
         }
 
         if (data) {
-          const keyId = data.key_id || data.razorpay_key_id || data.merchant_key || data.app_id || '';
-          const keySecret = data.key_secret || data.razorpay_key_secret || data.merchant_salt || data.secret_key || '';
           const mapped: PgBridgeConfig = {
             enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
-            key_id: keyId,
-            key_secret: keySecret,
-            razorpay_key_id: keyId,
-            razorpay_key_secret: keySecret,
-            merchant_key: keyId,
-            merchant_salt: keySecret,
-            app_id: keyId,
-            secret_key: keySecret,
+            merchant_key: data.merchant_key || data.app_id || '',
+            merchant_salt: data.merchant_salt || data.secret_key || '',
+            app_id: data.merchant_key || data.app_id || '',
+            secret_key: data.merchant_salt || data.secret_key || '',
             environment: data.environment === 'TEST' || data.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
-            return_url: data.return_url || '',
+            return_url: data.return_url || 'https://vaultworld.shop/api/payment/payu/return',
           };
-          this.saveSettingLocally('razorpay', mapped);
           this.saveSettingLocally('payu', mapped);
           return mapped;
         }
       } catch (e) {
-        console.warn('Firestore direct razorpay fetch error, using local cache:', e);
+        console.warn('Firestore direct payu fetch error, using local cache:', e);
       }
     }
 
-    return this.getSavedSetting('razorpay', this.getSavedSetting('payu', initialPgBridge));
+    return this.getSavedSetting('payu', initialPgBridge);
   }
 
-  async updateRazorpayConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
-    const keyId = config.key_id || config.razorpay_key_id || config.merchant_key || config.app_id || '';
-    const keySecret = config.key_secret || config.razorpay_key_secret || config.merchant_salt || config.secret_key || '';
-
-    const clean: any = sanitizePayload({
-      ...config,
-      key_id: keyId,
-      key_secret: keySecret,
-      razorpay_key_id: keyId,
-      razorpay_key_secret: keySecret,
-      merchant_key: keyId,
-      merchant_salt: keySecret,
-      app_id: keyId,
-      secret_key: keySecret,
-      gateway: 'razorpay',
-    });
-
-    this.saveSettingLocally('razorpay', clean);
+  async updatePayUConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
+    const clean = sanitizePayload(config);
     this.saveSettingLocally('payu', clean);
+    this.saveSettingLocally('cashfree', clean);
 
     let apiSucceeded = false;
 
     // 1. Post to server-side admin settings API (persists to Firestore store_settings/general securely)
     if (typeof window !== 'undefined') {
       try {
-        const res = await fetch('/api/admin/settings/razorpay', {
+        const res = await fetch('/api/admin/settings/payu', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(clean),
@@ -2554,10 +2545,10 @@ class PortalApiClient {
         if (res.ok && data.success) {
           apiSucceeded = true;
         } else {
-          console.warn('Server API error saving Razorpay config:', data.error);
+          console.warn('Server API error saving PayU config:', data.error);
         }
       } catch (apiErr) {
-        console.warn('Network error saving Razorpay config to API route:', apiErr);
+        console.warn('Network error saving PayU config to API route:', apiErr);
       }
     }
 
@@ -2570,62 +2561,37 @@ class PortalApiClient {
         console.warn('Firestore direct write to store_settings/general warning:', e);
       }
 
-      // Also attempt secondary doc in parallel
+      // Also attempt secondary docs in parallel without failing
       Promise.allSettled([
-        setDoc(doc(db, 'store_settings', 'razorpay'), clean, { merge: true }),
         setDoc(doc(db, 'store_settings', 'payu'), clean, { merge: true }),
+        setDoc(doc(db, 'store_settings', 'cashfree'), clean, { merge: true }),
       ]).catch(() => null);
     }
 
     await logAdminAction({
-      adminEmail: 'ztoredigital@gmail.com',
-      action: 'UPDATE_RAZORPAY_CONFIG',
+      adminEmail: 'admin@vaultworld.shop',
+      action: 'UPDATE_PAYU_CONFIG',
       module: 'Payments',
-      details: `Updated Razorpay Gateway credentials (Env: ${clean.environment || 'PRODUCTION'}) in Cloud Database`,
+      details: `Updated PayU Gateway credentials (Env: ${clean.environment || 'PRODUCTION'}) in Cloud Database`,
     });
 
     return clean;
   }
 
-  async testRazorpayConfig(keyId: string, keySecret: string): Promise<{ success: boolean; message: string }> {
-    try {
-      const res = await fetch('/api/admin/settings/razorpay', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          test: true,
-          key_id: keyId,
-          key_secret: keySecret,
-        }),
-      });
-      return await res.json();
-    } catch (err: any) {
-      return { success: false, message: err.message || 'Failed to connect to verification API.' };
-    }
-  }
-
-  async getPayUConfig(): Promise<PgBridgeConfig> {
-    return this.getRazorpayConfig();
-  }
-
-  async updatePayUConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
-    return this.updateRazorpayConfig(config);
-  }
-
   async getCashfreeConfig(): Promise<PgBridgeConfig> {
-    return this.getRazorpayConfig();
+    return this.getPayUConfig();
   }
 
   async updateCashfreeConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
-    return this.updateRazorpayConfig(config);
+    return this.updatePayUConfig(config);
   }
 
   async getPgBridgeConfig(): Promise<PgBridgeConfig> {
-    return this.getRazorpayConfig();
+    return this.getPayUConfig();
   }
 
   async updatePgBridgeConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
-    return this.updateRazorpayConfig(config);
+    return this.updatePayUConfig(config);
   }
 
   async getDnpMetaConfig(): Promise<DnpMetaConfig> {
@@ -2897,7 +2863,7 @@ class PortalApiClient {
       timeStyle: 'medium',
     });
 
-    const msg = `⚡🔔 <b>INSTAREEL STORE — TELEGRAM BOT TEST ALERT</b> 🚀
+    const msg = `⚡🔔 <b>VAULTWORLD STORE — TELEGRAM BOT TEST ALERT</b> 🚀
 ━━━━━━━━━━━━━━━━━━━━━━
 ✅ <b>Bot Connection:</b> Active & Verified
 📱 <b>Admin Chat IDs:</b> ${targetChatIds.join(', ')}
@@ -3289,135 +3255,6 @@ class PortalApiClient {
       action: 'UPDATE_FREE_BUNDLE_OFFER',
       module: 'Commerce',
       details: `Updated promotional offer: Min ₹${merged.min_cart_value}, ${merged.free_bundle_quantity} Free Bundles (Status: ${merged.enabled ? 'ACTIVE' : 'OFF'})`,
-    });
-
-    return merged;
-  }
-
-  // ==========================================
-  // 24. HEADER OFFER BANNER CUSTOMIZATION
-  // ==========================================
-  async getHeaderOffer(): Promise<HeaderOfferConfig> {
-    if (typeof window !== 'undefined') {
-      try {
-        const raw = localStorage.getItem('vaultzet_header_offer');
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (parsed && typeof parsed === 'object') {
-            return { ...initialHeaderOffer, ...parsed };
-          }
-        }
-      } catch {}
-    }
-
-    if (typeof window !== 'undefined') {
-      try {
-        const res = await fetch('/api/admin/settings/header-offer', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          cache: 'no-store',
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && data.offer) {
-            const mapped = { ...initialHeaderOffer, ...data.offer };
-            this.saveSettingLocally('header_offer', mapped);
-            localStorage.setItem('vaultzet_header_offer', JSON.stringify(mapped));
-            return mapped;
-          }
-        }
-      } catch (e) {
-        console.warn('API /api/admin/settings/header-offer fetch error, falling back to Firestore/local:', e);
-      }
-    }
-
-    if (db) {
-      try {
-        const [snap, genSnap] = await Promise.all([
-          getDoc(doc(db, 'store_settings', 'header_offer')).catch(() => null),
-          getDoc(doc(db, 'store_settings', 'general')).catch(() => null),
-        ]);
-
-        let data: any = null;
-        if (snap && snap.exists()) {
-          data = snap.data();
-        } else if (genSnap && genSnap.exists() && genSnap.data()?.header_offer) {
-          data = genSnap.data().header_offer;
-        }
-
-        if (data) {
-          const mapped: HeaderOfferConfig = {
-            ...initialHeaderOffer,
-            ...data,
-            enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
-            show_badge: typeof data.show_badge === 'boolean' ? data.show_badge : true,
-            show_coupon: typeof data.show_coupon === 'boolean' ? data.show_coupon : true,
-            allow_dismiss: typeof data.allow_dismiss === 'boolean' ? data.allow_dismiss : true,
-          };
-          this.saveSettingLocally('header_offer', mapped);
-          if (typeof window !== 'undefined') {
-            localStorage.setItem('vaultzet_header_offer', JSON.stringify(mapped));
-          }
-          return mapped;
-        }
-      } catch (err) {
-        console.warn('Firestore header_offer fetch error:', err);
-      }
-    }
-
-    return this.getSavedSetting('header_offer', initialHeaderOffer);
-  }
-
-  async updateHeaderOffer(data: Partial<HeaderOfferConfig>): Promise<HeaderOfferConfig> {
-    const existing = await this.getHeaderOffer();
-    const merged: HeaderOfferConfig = {
-      ...existing,
-      ...data,
-      updated_at: new Date().toISOString(),
-    };
-
-    const clean = sanitizePayload(merged);
-    this.saveSettingLocally('header_offer', clean);
-
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage.setItem('vaultzet_header_offer', JSON.stringify(merged));
-        window.dispatchEvent(new CustomEvent('vaultzet:header_offer_updated', { detail: merged }));
-      } catch {}
-    }
-
-    // 1. Post to admin server API route
-    if (typeof window !== 'undefined') {
-      try {
-        await fetch('/api/admin/settings/header-offer', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(clean),
-        });
-      } catch (apiErr) {
-        console.warn('Network error saving header offer to API route:', apiErr);
-      }
-    }
-
-    // 2. Direct Firestore persistence
-    if (db) {
-      try {
-        await setDoc(
-          doc(db, 'store_settings', 'general'),
-          { header_offer: clean, updated_at: new Date().toISOString() },
-          { merge: true }
-        );
-        await setDoc(doc(db, 'store_settings', 'header_offer'), clean, { merge: true }).catch(() => null);
-      } catch (e) {
-        console.warn('Firestore direct write warning for header offer:', e);
-      }
-    }
-
-    await logAdminAction({
-      adminEmail: 'ztoredigital@gmail.com',
-      action: 'UPDATE_HEADER_OFFER',
-      module: 'Marketing',
-      details: `Updated Header Offer Bar: Code: ${merged.coupon_code}, Enabled: ${merged.enabled ? 'YES' : 'NO'}, Highlight: "${merged.highlight_text}"`,
     });
 
     return merged;

@@ -35,25 +35,10 @@ export async function POST(request: Request) {
     }
 
     if (!token) {
-      token = (process.env.TELEGRAM_BOT_TOKEN || '').trim();
+      token = process.env.TELEGRAM_BOT_TOKEN || '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
     }
-
-    if (!token) {
-      return NextResponse.json(
-        { success: false, error: 'Telegram Bot Token is missing. Please enter your Bot Token first.' },
-        { status: 400, headers: CORS_HEADERS }
-      );
-    }
-
     if (!rawIds) {
-      rawIds = (process.env.TELEGRAM_CHAT_ID || process.env.TELEGRAM_OWNER_CHAT_ID || '').trim();
-    }
-
-    if (!rawIds) {
-      return NextResponse.json(
-        { success: false, error: 'Admin Chat ID is missing. Please enter at least one Telegram Chat ID.' },
-        { status: 400, headers: CORS_HEADERS }
-      );
+      rawIds = '7483268297, 5950203511, 6206169480';
     }
 
     const targetChatIds = rawIds
@@ -67,7 +52,7 @@ export async function POST(request: Request) {
       timeStyle: 'medium',
     });
 
-    const msg = `⚡🔔 <b>MYZTORE — TELEGRAM BOT TEST ALERT</b> 🚀
+    const msg = `⚡🔔 <b>VAULTWORLD STORE — TELEGRAM BOT TEST ALERT</b> 🚀
 ━━━━━━━━━━━━━━━━━━━━━━
 ✅ <b>Bot Connection:</b> Active & Verified
 📱 <b>Admin Chat IDs:</b> ${targetChatIds.join(', ')}
@@ -106,6 +91,7 @@ export async function POST(request: Request) {
     if (successCount > 0) {
       const statusText = `Verified (${successCount}/${targetChatIds.length} chats)`;
       const timestamp = new Date().toISOString();
+      const note = errors.length > 0 ? ` (Note: ${errors.join('; ')} — users must click /start on @Vault_World_bot to receive messages)` : '';
 
       if (db) {
         try {
@@ -123,7 +109,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: true,
-          message: `Test alert sent successfully to ${successCount} admin chat(s)!`,
+          message: `Test alert sent successfully to ${successCount} admin chat(s)!${note}`,
           status: statusText,
           timestamp,
         },

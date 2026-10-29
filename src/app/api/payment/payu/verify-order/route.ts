@@ -64,7 +64,7 @@ async function resolveDriveFilesForProduct(item: { id?: string; title?: string; 
             '';
 
           return {
-            primaryLink: primaryLink || filesList[0]?.file_url || 'https://drive.google.com/drive/folders/myztore-master-access',
+            primaryLink: primaryLink || filesList[0]?.file_url || 'https://drive.google.com/drive/folders/vaultworld-master-access',
             files:
               filesList.length > 0
                 ? filesList
@@ -119,7 +119,7 @@ async function resolveDriveFilesForProduct(item: { id?: string; title?: string; 
             '';
 
           return {
-            primaryLink: primaryLink || filesList[0]?.file_url || 'https://drive.google.com/drive/folders/myztore-master-access',
+            primaryLink: primaryLink || filesList[0]?.file_url || 'https://drive.google.com/drive/folders/vaultworld-master-access',
             files:
               filesList.length > 0
                 ? filesList
@@ -283,6 +283,67 @@ async function handleVerify(
         featured_image: bumpThumb,
         image: bumpThumb,
       };
+    }
+
+    // Server-side instant Telegram Sale Alert (Guaranteed delivery on successful payment verification)
+    const isTelegramSent = storedOrder?.telegram_alert_sent === true;
+    if (!isTelegramSent) {
+      const alertPayload: any = {
+        orderNumber: orderId,
+        customer: {
+          fullName: storedOrder?.customer?.fullName || 'Customer',
+          email: storedOrder?.customer?.email || 'N/A',
+          phone: storedOrder?.customer?.phone || 'N/A',
+        },
+        items: verifiedItems,
+        orderBump: resolvedBump,
+        totalAmount: Number(storedOrder?.totalAmount || 0),
+        paymentStatus: 'PAID',
+        paymentMethod: storedOrder?.paymentMethod || 'PayU India (UPI / Cards)',
+      };
+
+      try {
+        if (storedOrder?.reseller_id) {
+          try {
+            const profile = await getResellerProfile(storedOrder.reseller_id);
+            const wallet = await getResellerWallet(storedOrder.reseller_id);
+            await sendResellerSaleTelegramAlert({
+              orderNumber: orderId,
+              resellerId: storedOrder.reseller_id,
+              resellerUid: profile?.resellerUid || storedOrder.reseller_uid || 'RSL-VAULTZET',
+              resellerName: profile?.displayName || storedOrder.reseller_name || 'Reseller',
+              resellerEmail: profile?.email || '',
+              resellerPhone: profile?.phone || '',
+              productTitle: verifiedItems?.[0]?.title || 'Viral Reels Bundle',
+              totalAmount: Number(storedOrder.totalAmount || 0),
+              basePrice: Number(
+                storedOrder.base_price_snapshot ||
+                  (Number(storedOrder.totalAmount || 0) - Number(storedOrder.reseller_earning || 0))
+              ),
+              resellerEarning: Number(storedOrder.reseller_earning || 0),
+              customer: alertPayload.customer,
+              availableBalance: wallet?.availableBalance ?? Number(storedOrder.reseller_earning || 0),
+              totalEarned: wallet?.totalEarned ?? Number(storedOrder.reseller_earning || 0),
+            });
+          } catch (rErr) {
+            console.warn('[PayU Verify] Fallback to standard telegram alert:', rErr);
+            await sendSaleSuccessTelegramAlert(alertPayload);
+          }
+        } else {
+          await sendSaleSuccessTelegramAlert(alertPayload);
+        }
+
+        if (db) {
+          try {
+            await updateDoc(doc(db, 'orders', orderId), {
+              telegram_alert_sent: true,
+              telegram_alert_sent_at: new Date().toISOString(),
+            });
+          } catch {}
+        }
+      } catch (tgErr) {
+        console.warn('[PayU Verify] Error dispatching sale Telegram alert:', tgErr);
+      }
     }
 
     const eligibleForBrowserEvent = !isClientFired;
