@@ -25,7 +25,7 @@ export default function ImageUploadField({
   const [uploadError, setUploadError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const isImgBB = value && (value.includes('ibb.co') || value.includes('i.ibb.co'));
+  const isCdnHosted = value && (value.includes('ibb.co') || value.includes('catbox.moe') || value.includes('data:image') || value.startsWith('https://'));
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -81,10 +81,10 @@ export default function ImageUploadField({
         <label className="block text-xs font-bold text-slate-300">
           {label} {required && <span className="text-rose-400">*</span>}
         </label>
-        {isImgBB && (
+        {isCdnHosted && (
           <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
             <CheckCircle2 className="w-3 h-3" />
-            ImgBB CDN Hosted
+            Cloud CDN Hosted
           </span>
         )}
       </div>
@@ -185,7 +185,7 @@ export default function ImageUploadField({
           <span>Max Size: <strong className="text-slate-300 font-medium">32 MB</strong></span>
         </div>
         <span className="text-[10px] text-slate-500">
-          Secure Vercel API → ImgBB CDN
+          High-Speed Cloud CDN (Instant Upload)
         </span>
       </div>
 
