@@ -1110,12 +1110,12 @@ function CheckoutContent() {
                       {isProcessing ? (
                         <span className="flex items-center gap-2">
                           <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>Connecting PayU Gateway...</span>
+                          <span>Connecting Razorpay Gateway...</span>
                         </span>
                       ) : (
                         <>
                           <Lock className="w-4 h-4 text-white" />
-                          <span>Pay ₹{checkoutTotal}.00 via PayU (Instant Access)</span>
+                          <span>Pay ₹{checkoutTotal}.00 via Razorpay (Instant Access)</span>
                         </>
                       )}
                     </button>
@@ -1187,7 +1187,7 @@ function CheckoutContent() {
                 </div>
               )}
 
-              {/* 3. PayU Payment Gateway Card */}
+              {/* 3. Razorpay Payment Gateway Card */}
               <div className="rounded-3xl p-6 bg-white border border-slate-200/90 shadow-sm space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">

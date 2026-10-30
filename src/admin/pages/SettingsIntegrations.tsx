@@ -94,10 +94,7 @@ export default function SettingsIntegrations() {
         merchant_key: pgConfig.merchant_key || pgConfig.app_id || '',
         merchant_salt: pgConfig.merchant_salt || pgConfig.secret_key || '',
         environment: pgConfig.environment === 'TEST' || pgConfig.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
-        return_url: (pgConfig.return_url || 'https://vaultworld.shop/api/payment/payu/return')
-          .replace('api/payment/cashfree/return', 'api/payment/payu/return')
-          .replace('store.vaultzet.shop', 'vaultworld.shop')
-          .replace('vaultzet.shop', 'vaultworld.shop'),
+        return_url: (pgConfig.return_url || '/api/payment/razorpay/verify-order'),
       });
     }
   }, [pgConfig]);
@@ -143,15 +140,15 @@ export default function SettingsIntegrations() {
     onSuccess: () => {
       addToast({
         type: 'success',
-        title: 'PayU Saved to Cloud Database 🚀',
-        message: 'PayU credentials saved to Firestore! Live across all mobile devices, laptops & storefront checkout.',
+        title: 'Razorpay Saved to Cloud Database 🚀',
+        message: 'Razorpay credentials saved to Firestore! Live across all mobile devices, laptops & storefront checkout.',
       });
       queryClient.invalidateQueries({ queryKey: ['pg-bridge'] });
     },
     onError: (err: any) => {
       addToast({
         type: 'error',
-        title: 'Failed to update PayU Config',
+        title: 'Failed to update Razorpay Config',
         message: err.message,
       });
     },
@@ -336,13 +333,13 @@ export default function SettingsIntegrations() {
       addToast({
         type: 'warning',
         title: 'Missing Credentials',
-        message: 'Please enter your PayU Merchant Key and Salt first.',
+        message: 'Please enter your Razorpay Key ID and Key Secret first.',
       });
       return;
     }
     addToast({
       type: 'info',
-      title: 'PayU Test Check',
+      title: 'Razorpay Test Check',
       message: `Environment: ${pgForm.environment || 'PRODUCTION'}. Ready for checkout.`,
     });
   };
@@ -413,7 +410,7 @@ export default function SettingsIntegrations() {
       {/* Tabs - Touch-scrollable & edge-to-edge on mobile */}
       <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto admin-touch-scroll admin-no-scrollbar -mx-3.5 px-3.5 sm:mx-0 sm:px-0">
         {[
-          { id: 'pg', label: 'PayU Gateway', icon: CreditCard, color: 'text-purple-400' },
+          { id: 'pg', label: 'Razorpay Gateway', icon: CreditCard, color: 'text-purple-400' },
           { id: 'telegram', label: 'Telegram Alerts & Bot', icon: Send, color: 'text-sky-400' },
           { id: 'meta', label: 'DNP Meta CAPI', icon: Radio, color: 'text-blue-400' },
           { id: 'analytics', label: 'MMC Analytics', icon: Users, color: 'text-emerald-400' },
@@ -439,7 +436,7 @@ export default function SettingsIntegrations() {
         })}
       </div>
 
-      {/* TAB 1: PAYU PAYMENT GATEWAY */}
+      {/* TAB 1: RAZORPAY PAYMENT GATEWAY */}
       {activeTab === 'pg' && pgForm && (
         <div className="space-y-6">
           <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-6">
@@ -636,7 +633,7 @@ export default function SettingsIntegrations() {
                 className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold shadow-md shadow-purple-600/20 transition-all disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
-                <span>{updatePgMutation.isPending ? 'Saving...' : 'Save PayU Gateway Config'}</span>
+                <span>{updatePgMutation.isPending ? 'Saving...' : 'Save Razorpay Gateway Config'}</span>
               </button>
             </div>
           </div>
