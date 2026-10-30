@@ -6,7 +6,7 @@ import StoreLayoutShell from '@/components/StoreLayoutShell';
 import AnalyticsTracker from '@/components/AnalyticsTracker';
 import MetaPixelTracker from '@/components/MetaPixelTracker';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vaultworld.shop';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.ztoredigital.com';
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || '';
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || 'G-7RMXL2RZ4J';
 const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION || 'googlef90de30240e3b03b';
@@ -24,15 +24,15 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'VaultWorld Store | Buy Viral Reels Bundles in India – 222,000+ Ready-to-Post Reels',
-    template: '%s | VaultWorld Store',
+    default: 'Ztore Digital | Buy Viral Reels Bundles in India – 222,000+ Ready-to-Post Reels',
+    template: '%s | Ztore Digital',
   },
   description:
     'Download 222,000+ viral ready-to-post vertical reels bundles for Instagram Reels, YouTube Shorts & Facebook across 129+ niches. Zero watermarks, commercial & reseller rights, and instant Google Drive access.',
   keywords: [
-    'vaultworld',
-    'vaultworld store',
-    'vaultzet',
+    'ztore digital',
+    'ztoredigital',
+    'ztore digital store',
     'viral reels bundle',
     'ai reels bundle',
     'instagram reels bundle india',
@@ -44,9 +44,9 @@ export const metadata: Metadata = {
     'digital products resell india',
     'watermark free reels download',
   ],
-  authors: [{ name: 'VaultWorld Store', url: SITE_URL }],
-  creator: 'VaultWorld Store',
-  publisher: 'VaultWorld Store',
+  authors: [{ name: 'Ztore Digital', url: SITE_URL }],
+  creator: 'Ztore Digital',
+  publisher: 'Ztore Digital',
   alternates: {
     canonical: SITE_URL,
   },
@@ -65,29 +65,30 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_IN',
     url: SITE_URL,
-    siteName: 'VaultWorld Store',
-    title: 'VaultWorld Store | 222,000+ Viral Reels Bundles – Instant Download',
+    siteName: 'Ztore Digital',
+    title: 'Ztore Digital | 222,000+ Viral Reels Bundles – Instant Download',
     description:
       'Over 222,000+ vertical HD reels across 129+ niches with zero watermarks & full commercial rights. Instant Google Drive delivery.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'VaultWorld Store | Viral Reels Bundles – Instant Google Drive Access',
+    title: 'Ztore Digital | Viral Reels Bundles – Instant Google Drive Access',
     description:
       'Grow faster on Instagram & YouTube Shorts with 222,000+ ready-to-post HD reels bundles.',
   },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'VaultWorld Store',
+    title: 'Ztore Digital',
   },
   icons: {
     icon: [
-      { url: '/favicon.ico?v=2', sizes: 'any' },
-      { url: '/logo.webp?v=2', type: 'image/webp' },
+      { url: '/favicon.ico?v=3', sizes: 'any' },
+      { url: '/favicon.png?v=3', type: 'image/png' },
+      { url: '/logo.png?v=3', type: 'image/png' },
     ],
-    shortcut: '/favicon.ico?v=2',
-    apple: '/logo.png?v=2',
+    shortcut: '/favicon.ico?v=3',
+    apple: '/apple-icon.png?v=3',
   },
   verification: {
     google: GSC_VERIFICATION,
@@ -110,7 +111,7 @@ export default function RootLayout({
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
         url: SITE_URL,
-        name: 'VaultWorld Store',
+        name: 'Ztore Digital',
         description:
           'India’s #1 marketplace for ready-to-post viral Instagram Reels & YouTube Shorts bundles with instant Google Drive delivery.',
         potentialAction: {
@@ -122,17 +123,17 @@ export default function RootLayout({
       {
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
-        name: 'VaultWorld Store',
+        name: 'Ztore Digital',
         url: SITE_URL,
-        logo: `${SITE_URL}/logo.webp`,
+        logo: `${SITE_URL}/logo.png`,
         sameAs: [
-          'https://instagram.com/vaultworld.shop',
-          'https://youtube.com/@vaultworld',
+          'https://instagram.com/ztoredigital',
+          'https://youtube.com/@ztoredigital',
         ],
         contactPoint: {
           '@type': 'ContactPoint',
-          email: 'support.vaultworld.shop@gmail.com',
-          telephone: '+91-8051017331',
+          email: 'ztoredigital@gmail.com',
+          telephone: '+91-88072-81600',
           contactType: 'customer support',
           areaServed: 'IN',
           availableLanguage: ['English', 'Hindi'],

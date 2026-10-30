@@ -33,24 +33,26 @@ const DEFAULT_SITE_MODE: SiteModeData = {
 };
 
 const DEFAULT_SETTINGS: StoreSettings = {
-  storeName: 'VaultWorld Store',
-  ownerName: 'VaultWorld Team',
+  storeName: 'Ztore Digital',
+  ownerName: 'Ztore Digital Team',
   tagline: 'Everything You Need, All in One Place.',
-  supportEmail: 'support.vaultworld.shop@gmail.com',
-  supportPhone: '+91 8051017331',
-  supportWhatsapp: '+91 8051017331',
+  supportEmail: 'ztoredigital@gmail.com',
+  supportPhone: '+91 88072 81600',
+  supportWhatsapp: '+91 88072 81600',
   currency: 'INR',
   currencySymbol: '₹',
+  logoUrl: '/logo.png',
+  primaryColor: '#dc2626',
   whatsappButtonEnabled: true,
-  whatsappDefaultMessage: 'Hi VaultWorld Support! I need quick help regarding my VaultWorld Store order.',
-  whatsappPopupText: 'Need help? Chat on WhatsApp',
+  whatsappDefaultMessage: 'Hi Ztore Digital Support! I need quick help regarding my order.',
+  whatsappPopupText: 'Need Instant Help? Chat directly with our support team on WhatsApp.',
   siteMode: DEFAULT_SITE_MODE,
 };
 
-function sanitizeStoreName(name?: string, fallback = 'VaultWorld Store'): string {
+function sanitizeStoreName(name?: string, fallback = 'Ztore Digital'): string {
   if (!name || !name.trim()) return fallback;
-  if (/reels\s*bundles?/i.test(name) || /digonest/i.test(name) || /vaultzet/i.test(name)) {
-    return 'VaultWorld Store';
+  if (/reels\s*bundles?/i.test(name) || /digonest/i.test(name) || /vaultzet/i.test(name) || /vaultworld/i.test(name)) {
+    return 'Ztore Digital';
   }
   return name.trim();
 }
@@ -63,19 +65,20 @@ function sanitizeTagline(tagline?: string, fallback = 'Everything You Need, All 
   return tagline.trim();
 }
 
-function sanitizeLogoUrl(url?: string, fallback = '/logo.webp?v=2'): string {
+function sanitizeLogoUrl(url?: string, fallback = '/logo.png?v=3'): string {
   if (!url || !url.trim()) return fallback;
-  if (/vaultzet/i.test(url)) {
-    return '/logo.webp?v=2';
+  if (/vaultzet/i.test(url) || /vaultworld/i.test(url)) {
+    return '/logo.png?v=3';
   }
   return url.trim();
 }
 
-function sanitizeEmail(email?: string, fallback = 'support.vaultworld.shop@gmail.com'): string {
+function sanitizeEmail(email?: string, fallback = 'ztoredigital@gmail.com'): string {
   if (!email || !email.trim()) return fallback;
   if (
     /reelsbundles/i.test(email) ||
     /digonest/i.test(email) ||
+    /vaultworld/i.test(email) ||
     /rajattracozegaming/i.test(email)
   ) {
     return fallback;
@@ -83,9 +86,9 @@ function sanitizeEmail(email?: string, fallback = 'support.vaultworld.shop@gmail
   return email.trim();
 }
 
-function sanitizePhone(phone?: string, fallback = '+91 8051017331'): string {
+function sanitizePhone(phone?: string, fallback = '+91 88072 81600'): string {
   if (!phone || !phone.trim()) return fallback;
-  if (/98765\s*43210/.test(phone)) {
+  if (/98765\s*43210/.test(phone) || /8051017331/.test(phone) || /9142408286/.test(phone)) {
     return fallback;
   }
   return phone.trim();
@@ -140,7 +143,7 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
           waData?.phone_number ||
           parsed.supportPhone ||
           parsed.supportWhatsapp ||
-          '+91 8051017331'
+          '+91 88072 81600'
         );
         const resolvedEmail = sanitizeEmail(genData?.contact_email || parsed.supportEmail);
 
@@ -162,7 +165,7 @@ export function StoreSettingsProvider({ children }: { children: React.ReactNode 
         setSettings(cleaned);
       } else if (genData || waData || siteModeData) {
         const resolvedPhone = sanitizePhone(
-          genData?.support_whatsapp || genData?.support_phone || waData?.phone_number || '+91 8051017331'
+          genData?.support_whatsapp || genData?.support_phone || waData?.phone_number || '+91 88072 81600'
         );
         const resolvedEmail = sanitizeEmail(genData?.contact_email);
         setSettings((prev) => ({

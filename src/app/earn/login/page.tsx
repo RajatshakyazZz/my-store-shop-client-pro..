@@ -57,10 +57,10 @@ function LoginContent() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-8 sm:py-12 pb-24">
-      <div className="w-full max-w-md bg-white rounded-3xl border border-purple-100 shadow-xl overflow-hidden">
+      <div className="w-full max-w-md bg-white rounded-3xl border border-red-100 shadow-xl overflow-hidden">
         
         {/* Banner */}
-        <div className="p-6 sm:p-8 pb-6 bg-gradient-to-br from-[#6734f7] via-[#942bf6] to-[#ec288d] text-white text-center">
+        <div className="p-6 sm:p-8 pb-6 bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white text-center">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-[10px] font-black uppercase tracking-wider mb-2.5">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Reseller Partner Portal</span>
@@ -76,7 +76,7 @@ function LoginContent() {
               type="button"
               onClick={() => { setMode('password'); setError(null); }}
               className={`py-2 rounded-xl transition-all ${
-                mode === 'password' ? 'bg-white text-[#162048] shadow-xs' : 'text-white/80 hover:text-white'
+                mode === 'password' ? 'bg-white text-slate-900 shadow-xs' : 'text-white/80 hover:text-white'
               }`}
             >
               Email & Password
@@ -85,7 +85,7 @@ function LoginContent() {
               type="button"
               onClick={() => { setMode('uid'); setError(null); }}
               className={`py-2 rounded-xl transition-all ${
-                mode === 'uid' ? 'bg-white text-[#162048] shadow-xs' : 'text-white/80 hover:text-white'
+                mode === 'uid' ? 'bg-white text-slate-900 shadow-xs' : 'text-white/80 hover:text-white'
               }`}
             >
               Sync via Reseller UID
@@ -121,7 +121,7 @@ function LoginContent() {
                     placeholder="yourname@gmail.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 font-medium"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 font-medium"
                   />
                 </div>
               </div>
@@ -132,7 +132,7 @@ function LoginContent() {
                   <button
                     type="button"
                     onClick={handleForgot}
-                    className="text-[11px] font-bold text-[#6734f7] hover:underline"
+                    className="text-[11px] font-bold text-red-600 hover:underline"
                   >
                     Forgot?
                   </button>
@@ -145,7 +145,7 @@ function LoginContent() {
                     placeholder="Your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 font-medium"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 font-medium"
                   />
                 </div>
               </div>
@@ -161,7 +161,7 @@ function LoginContent() {
                   placeholder="e.g. RSL-8K4M2P9X"
                   value={uidInput}
                   onChange={(e) => setUidInput(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm font-mono focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 uppercase"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm font-mono focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 uppercase"
                 />
               </div>
               <p className="text-[11px] text-gray-500 font-medium">
@@ -173,7 +173,7 @@ function LoginContent() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#6734f7] via-[#942bf6] to-[#ec288d] text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
+            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-red-500/25 hover:shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
           >
             {isLoading ? <span>Connecting...</span> : (
               <>
@@ -187,7 +187,7 @@ function LoginContent() {
             <span className="text-xs text-gray-500">Don&apos;t have a reseller account? </span>
             <Link
               href={`/earn/signup${redirectUrl ? `?redirect=${encodeURIComponent(redirectUrl)}` : ''}`}
-              className="text-xs font-black text-[#6734f7] hover:underline"
+              className="text-xs font-black text-red-600 hover:underline"
             >
               Sign Up Free
             </Link>

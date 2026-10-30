@@ -41,14 +41,14 @@ export default function CategoryGrid() {
         {/* Outer Section Card Wrapper */}
         <div className="rounded-[28px] sm:rounded-[34px] bg-white border border-slate-200/90 p-4 sm:p-6 space-y-5 shadow-[0_12px_40px_rgba(15,23,42,0.03)]">
           
-          {/* Midnight Slate & Imperial Gold Header Banner */}
-          <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-amber-500/35 px-5 py-4 sm:px-6 sm:py-5 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[0_14px_35px_rgba(0,0,0,0.3)]">
+          {/* Midnight Slate & Vibrant Red Header Banner */}
+          <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-red-500/35 px-5 py-4 sm:px-6 sm:py-5 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[0_14px_35px_rgba(0,0,0,0.3)]">
             {/* Decorative translucent glow on right */}
-            <div className="absolute -right-10 -bottom-16 w-52 h-52 rounded-full bg-amber-500/10 blur-xl pointer-events-none" />
+            <div className="absolute -right-10 -bottom-16 w-52 h-52 rounded-full bg-red-500/10 blur-xl pointer-events-none" />
 
             <div className="flex items-stretch gap-3.5 relative z-10">
-              {/* Amber vertical bar indicator on left */}
-              <div className="w-[4px] bg-gradient-to-b from-amber-400 to-yellow-500 rounded-full shrink-0 my-0.5 shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
+              {/* Red vertical bar indicator on left */}
+              <div className="w-[4px] bg-gradient-to-b from-red-500 to-rose-500 rounded-full shrink-0 my-0.5 shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
               <div>
                 <h2 className="text-xl sm:text-[25px] font-black text-white tracking-tight leading-tight">
                   Discover Reels for Every Niche
@@ -62,7 +62,7 @@ export default function CategoryGrid() {
             <Link
               href="/shop"
               prefetch={false}
-              className="relative z-10 px-4 py-2 rounded-full bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-xs font-extrabold transition-colors shrink-0 flex items-center gap-1.5"
+              className="relative z-10 px-4 py-2 rounded-full bg-red-500/15 hover:bg-red-500/25 text-red-200 border border-red-500/30 text-xs font-extrabold transition-colors shrink-0 flex items-center gap-1.5"
             >
               <span>View All Categories</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -76,24 +76,24 @@ export default function CategoryGrid() {
                 key={cat.slug}
                 href={`/shop?cat=${cat.slug}`}
                 prefetch={false}
-                className="py-5 px-4 rounded-[20px] bg-slate-50/70 border border-slate-200/90 shadow-[0_2px_10px_rgba(15,23,42,0.02)] hover:shadow-[0_10px_25px_rgba(245,158,11,0.12)] hover:-translate-y-0.5 transition-all text-center flex flex-col items-center justify-center group relative"
+                className="py-5 px-4 rounded-[20px] bg-slate-50/70 border border-slate-200/90 shadow-[0_2px_10px_rgba(15,23,42,0.02)] hover:shadow-[0_10px_25px_rgba(239,68,68,0.15)] hover:border-red-300 hover:-translate-y-0.5 transition-all text-center flex flex-col items-center justify-center group relative"
               >
                 {cat.is_custom && (
-                  <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-50 text-amber-900 border border-amber-200/60 shadow-2xs">
+                  <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-red-50 text-red-900 border border-red-200/60 shadow-2xs">
                     New
                   </span>
                 )}
                 {/* Pastel Icon Box */}
                 <div
                   style={{
-                    backgroundColor: cat.bg || '#fef3c7',
-                    color: (cat as any).iconColor || '#b45309',
+                    backgroundColor: cat.bg || '#fef2f2',
+                    color: (cat as any).iconColor || '#dc2626',
                   }}
                   className="w-11 h-11 rounded-[14px] flex items-center justify-center text-lg font-bold mb-2.5 group-hover:scale-105 transition-transform"
                 >
                   {cat.icon || '✨'}
                 </div>
-                <h3 className="font-extrabold text-[14px] sm:text-[15px] text-slate-900 group-hover:text-amber-600 transition-colors leading-snug">
+                <h3 className="font-extrabold text-[14px] sm:text-[15px] text-slate-900 group-hover:text-red-600 transition-colors leading-snug">
                   {cat.name}
                 </h3>
                 <p className="text-[11px] font-semibold text-slate-500 mt-0.5">

@@ -53,16 +53,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setAdmin(parsed);
         } catch {
           setAdmin({
-            name: 'VaultWorld Administrator',
-            email: 'support.vaultworld.shop@gmail.com',
+            name: 'Ztore Digital Administrator',
+            email: 'ztoredigital@gmail.com',
             role: 'SuperAdmin',
             source: 'portal-key',
           });
         }
       } else {
         setAdmin({
-          name: 'VaultWorld Administrator',
-          email: 'support.vaultworld.shop@gmail.com',
+          name: 'Ztore Digital Administrator',
+          email: 'ztoredigital@gmail.com',
           role: 'SuperAdmin',
           source: 'portal-key',
         });
@@ -92,8 +92,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if ((configuredPassword && pass === configuredPassword) || pass === 'vaultworld@2026' || pass === 'vaultzet@2026') {
       const profile: AdminProfile = {
-        name: 'VaultWorld Administrator',
-        email: 'support.vaultworld.shop@gmail.com',
+        name: 'Ztore Digital Administrator',
+        email: 'ztoredigital@gmail.com',
         role: 'SuperAdmin',
         source: 'portal-key',
       };
@@ -123,8 +123,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await portalApi.verifyKey(key);
       if (res.valid) {
         const profile: AdminProfile = {
-          name: res.user || 'VaultWorld Administrator',
-          email: 'support.vaultworld.shop@gmail.com',
+          name: res.user || 'Ztore Digital Administrator',
+          email: 'ztoredigital@gmail.com',
           role: (res.role as AdminRole) || 'SuperAdmin',
           source: 'portal-key',
         };

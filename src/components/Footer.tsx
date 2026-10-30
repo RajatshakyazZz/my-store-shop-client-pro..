@@ -51,13 +51,13 @@ export default function Footer() {
       title: 'Instant Access',
       subtitle: 'Get files after payment',
       icon: Zap,
-      bg: 'bg-amber-100/80 text-amber-700',
+      bg: 'bg-red-100/80 text-red-700',
     },
     {
       title: 'High Quality',
       subtitle: 'Curated 1080P reels',
       icon: Sparkles,
-      bg: 'bg-yellow-100/80 text-yellow-800',
+      bg: 'bg-rose-100/80 text-rose-800',
     },
     {
       title: 'Regular Updates',
@@ -67,7 +67,7 @@ export default function Footer() {
     },
     {
       title: 'Secure Checkout',
-      subtitle: 'Verified PayU Gateway',
+      subtitle: 'Verified Razorpay Gateway',
       icon: ShieldCheck,
       bg: 'bg-emerald-100/80 text-emerald-700',
     },
@@ -75,7 +75,7 @@ export default function Footer() {
       title: 'Creator Friendly',
       subtitle: 'Ready to post & monetize',
       icon: Heart,
-      bg: 'bg-amber-100/80 text-amber-700',
+      bg: 'bg-red-100/80 text-red-700',
     },
   ];
 
@@ -83,7 +83,6 @@ export default function Footer() {
     { label: 'Home', href: '/' },
     { label: 'All Bundles', href: '/shop' },
     { label: 'Reels Feed', href: '/reels' },
-    { label: 'Resell & Earn', href: '/earn' },
     { label: 'AI Reels', href: '/category/ai-reels' },
     { label: 'Motivational', href: '/category/motivation-reels' },
     { label: 'Cart', href: '#cart' },
@@ -133,20 +132,18 @@ export default function Footer() {
             {/* Brand Left Column */}
             <div className="lg:col-span-5 space-y-3">
               <Link href="/" prefetch={false} className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-full bg-black border border-amber-500/30 overflow-hidden flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0">
+                <div className="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center shadow-md shadow-red-500/25 shrink-0 select-none">
                   <img
-                    src="/logo.webp?v=2"
-                    alt="VaultWorld Store Logo"
+                    src="/logo.png"
+                    alt={settings.storeName || 'Ztore Digital'}
                     width={44}
                     height={44}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </div>
                 <div>
                   <span className="font-extrabold text-lg text-slate-900 tracking-tight block">
-                    {settings.storeName || 'VaultWorld Store'}
+                    {settings.storeName || 'Ztore Digital'}
                   </span>
                   <span className="text-[11px] font-semibold text-slate-500 block">
                     {settings.tagline || 'Everything You Need, All in One Place.'}
@@ -154,7 +151,7 @@ export default function Footer() {
                 </div>
               </Link>
               <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed max-w-sm">
-                Premium ready-to-use reels bundles for creators, pages and digital businesses by {settings.storeName || 'VaultWorld Store'}.
+                Premium ready-to-use reels bundles for creators, pages and digital businesses by {settings.storeName || 'Ztore Digital'}.
               </p>
             </div>
 
@@ -176,24 +173,24 @@ export default function Footer() {
                       key={link.label}
                       type="button"
                       onClick={() => setIsCartOpen(true)}
-                      className="p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 shadow-sm flex items-center justify-between group transition-all text-left"
+                      className="p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-red-400 shadow-sm flex items-center justify-between group transition-all text-left"
                     >
-                      <span className="text-xs sm:text-sm font-extrabold text-slate-800 group-hover:text-amber-600 transition-colors">
+                      <span className="text-xs sm:text-sm font-extrabold text-slate-800 group-hover:text-red-600 transition-colors">
                         {link.label}
                       </span>
-                      <ArrowRight className="w-3.5 h-3.5 text-amber-600 group-hover:translate-x-0.5 transition-transform" />
+                      <ArrowRight className="w-3.5 h-3.5 text-red-600 group-hover:translate-x-0.5 transition-transform" />
                     </button>
                   ) : (
                     <Link
                       key={link.label}
                       href={link.href}
                       prefetch={false}
-                      className="p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 shadow-sm flex items-center justify-between group transition-all"
+                      className="p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-red-400 shadow-sm flex items-center justify-between group transition-all"
                     >
-                      <span className="text-xs sm:text-sm font-extrabold text-slate-800 group-hover:text-amber-600 transition-colors">
+                      <span className="text-xs sm:text-sm font-extrabold text-slate-800 group-hover:text-red-600 transition-colors">
                         {link.label}
                       </span>
-                      <ArrowRight className="w-3.5 h-3.5 text-amber-600 group-hover:translate-x-0.5 transition-transform" />
+                      <ArrowRight className="w-3.5 h-3.5 text-red-600 group-hover:translate-x-0.5 transition-transform" />
                     </Link>
                   )
                 )}
@@ -202,16 +199,16 @@ export default function Footer() {
 
           </div>
 
-          {/* "Want a high-converting digital store like VaultWorld Store?" WhatsApp CTA Banner */}
-          <div className="relative rounded-2xl sm:rounded-3xl bg-slate-950 border border-amber-500/20 p-4 sm:p-6 shadow-xl overflow-hidden">
-            {/* Ambient gold glow in the background */}
-            <div className="pointer-events-none absolute -top-16 left-1/3 w-80 h-32 bg-amber-500/10 rounded-full blur-3xl" />
+          {/* "Want a high-converting digital store like Ztore Digital?" WhatsApp CTA Banner */}
+          <div className="relative rounded-2xl sm:rounded-3xl bg-slate-950 border border-red-500/20 p-4 sm:p-6 shadow-xl overflow-hidden">
+            {/* Ambient red glow in the background */}
+            <div className="pointer-events-none absolute -top-16 left-1/3 w-80 h-32 bg-red-500/10 rounded-full blur-3xl" />
 
             <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-4">
               
               {/* Left Side: Brand Icon + Text */}
               <div className="flex items-center gap-3.5 sm:gap-4">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-black border border-amber-500/30 flex items-center justify-center shrink-0 shadow-lg overflow-hidden p-1">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-black border border-red-500/30 flex items-center justify-center shrink-0 shadow-lg overflow-hidden p-1">
                   <img
                     src="/vaultzet-logo.jpg"
                     alt="Vaultzet"
@@ -222,7 +219,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <h4 className="text-sm sm:text-base font-extrabold text-white tracking-tight flex flex-wrap items-center gap-2">
-                    <span>Want a high-converting digital store like VaultWorld Store?</span>
+                    <span>Want a high-converting digital store like {settings.storeName || 'Ztore Digital'}?</span>
                     <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                       Designed by Vaultzet
                     </span>
@@ -233,9 +230,9 @@ export default function Footer() {
                 </div>
               </div>
 
-              {/* Right Side: Glowing Amber WhatsApp CTA Button */}
+              {/* Right Side: Glowing Red WhatsApp CTA Button */}
               <a
-                href={`https://wa.me/917895317940?text=${encodeURIComponent('Hi Vaultzet, I want to build a high-converting digital store like VaultWorld Store.')}`}
+                href={`https://wa.me/917895317940?text=${encodeURIComponent('Hi Vaultzet, I want to build a high-converting digital store like ' + (settings.storeName || 'Ztore Digital'))}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => {
@@ -244,9 +241,9 @@ export default function Footer() {
                     phone: '7895317940',
                   });
                 }}
-                className="w-full md:w-auto inline-flex items-center justify-center gap-3 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-xs sm:text-sm shadow-[0_0_24px_rgba(245,158,11,0.35)] hover:shadow-[0_0_32px_rgba(245,158,11,0.55)] hover:scale-[1.02] active:scale-[0.98] transition-all shrink-0 cursor-pointer"
+                className="w-full md:w-auto inline-flex items-center justify-center gap-3 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs sm:text-sm shadow-[0_0_24px_rgba(239,68,68,0.35)] hover:shadow-[0_0_32px_rgba(239,68,68,0.55)] hover:scale-[1.02] active:scale-[0.98] transition-all shrink-0 cursor-pointer"
               >
-                <div className="w-5 h-5 rounded-full bg-black/80 border border-amber-500/30 flex items-center justify-center overflow-hidden shrink-0 p-0.5">
+                <div className="w-5 h-5 rounded-full bg-black/80 border border-red-500/30 flex items-center justify-center overflow-hidden shrink-0 p-0.5">
                   <img
                     src="/vaultzet-logo.jpg"
                     alt="Vaultzet"
@@ -256,7 +253,7 @@ export default function Footer() {
                   />
                 </div>
                 <span>Build Your Own Store</span>
-                <ArrowRight className="w-4 h-4 text-slate-950 stroke-[2.5]" />
+                <ArrowRight className="w-4 h-4 text-white stroke-[2.5]" />
               </a>
 
             </div>
@@ -264,23 +261,23 @@ export default function Footer() {
 
           {/* Legal Links Bar with Mail */}
           <div className="pt-6 border-t border-slate-200/80 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-semibold text-slate-600">
-            <Link href="/privacy-policy" prefetch={false} className="hover:text-amber-600 transition-colors">
+            <Link href="/privacy-policy" prefetch={false} className="hover:text-red-600 transition-colors">
               Privacy Policy
             </Link>
             <span className="text-slate-300">•</span>
-            <Link href="/terms-and-conditions" prefetch={false} className="hover:text-amber-600 transition-colors">
+            <Link href="/terms-and-conditions" prefetch={false} className="hover:text-red-600 transition-colors">
               Terms &amp; Conditions
             </Link>
             <span className="text-slate-300">•</span>
-            <Link href="/refund-policy" prefetch={false} className="hover:text-amber-600 transition-colors">
+            <Link href="/refund-policy" prefetch={false} className="hover:text-red-600 transition-colors">
               Refund &amp; Cancellation Policy
             </Link>
             <span className="text-slate-300">•</span>
-            <Link href="/shipping-policy" prefetch={false} className="hover:text-amber-600 transition-colors">
+            <Link href="/shipping-policy" prefetch={false} className="hover:text-red-600 transition-colors">
               Shipping &amp; Delivery Policy
             </Link>
             <span className="text-slate-300">•</span>
-            <Link href="/contact-us" prefetch={false} className="hover:text-amber-600 transition-colors">
+            <Link href="/contact-us" prefetch={false} className="hover:text-red-600 transition-colors">
               Contact Us
             </Link>
             <span className="text-slate-300">•</span>
@@ -291,19 +288,19 @@ export default function Footer() {
                   window.dispatchEvent(new CustomEvent('vaultworld:open_cookie_consent'));
                 }
               }}
-              className="hover:text-amber-600 transition-colors text-xs font-semibold cursor-pointer underline-offset-2 hover:underline"
+              className="hover:text-red-600 transition-colors text-xs font-semibold cursor-pointer underline-offset-2 hover:underline"
             >
               Cookie Preferences
             </button>
             <span className="text-slate-300">•</span>
-            <a href={`mailto:${settings.supportEmail || 'support.vaultworld.shop@gmail.com'}`} className="hover:text-amber-600 transition-colors">
-              {settings.supportEmail || 'support.vaultworld.shop@gmail.com'}
+            <a href={`mailto:${settings.supportEmail || 'ztoredigital@gmail.com'}`} className="hover:text-red-600 transition-colors">
+              {settings.supportEmail || 'ztoredigital@gmail.com'}
             </a>
           </div>
 
           {/* Bottom Copyright Row */}
           <div className="pt-4 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-2 text-xs text-slate-500 font-medium">
-            <p>© {new Date().getFullYear()} {settings.storeName || 'VaultWorld Store'}. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} {settings.storeName || 'Ztore Digital'}. All rights reserved.</p>
             <span className="hidden sm:inline text-slate-300">•</span>
             <p className="flex items-center gap-1.5 font-semibold text-slate-600">
               <span>Designed by</span>
@@ -311,7 +308,7 @@ export default function Footer() {
                 href="https://wa.me/917895317940?text=Hi%20Vaultzet%2C%20I%20want%20to%20build%20a%20high-converting%20digital%20store%20like%20this."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-slate-900 hover:text-amber-600 transition-colors font-extrabold"
+                className="inline-flex items-center gap-1 text-slate-900 hover:text-red-600 transition-colors font-extrabold"
               >
                 <img
                   src="/vaultzet-logo.jpg"

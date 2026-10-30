@@ -4,7 +4,7 @@ rules_version = '2';
 // Assumed Data Model & Architecture
 // ===============================================================
 //
-// Application: VaultWorld Store (vaultworld.shop) & Reseller Network
+// Application: Ztore Digital & Reseller Network
 // Context:
 //   - Customer Storefront: Guest checkout and order tracking
 //   - Admin Panel (/asdf): Full store management across products, categories, coupons, reels, settings, and orders
@@ -906,7 +906,7 @@ service cloud.firestore {
 
       // Only recognized setting docs can be saved with bounded sizes
       allow create, update: if settingId in [
-        'general', 'branding', 'site_mode', 'meta_pixel', 'whatsapp', 'cashfree', 'payu',
+        'general', 'branding', 'site_mode', 'meta_pixel', 'whatsapp', 'cashfree', 'payu', 'razorpay',
         'rankmath_seo', 'dnp_meta', 'mmc_analytics', 'litespeed_cache', 'reseller', 'telegram',
         'bump_offer', 'free_bundle_offer', 'growth_proofs', 'earning_proofs'
       ] && isValidStoreSetting(request.resource.data);

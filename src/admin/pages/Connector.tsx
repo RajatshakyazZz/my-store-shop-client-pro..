@@ -79,7 +79,7 @@ export default function Connector() {
             Portal Connector Engine
           </h1>
           <p className="text-sm text-slate-400 mt-1">
-            Status, server compatibility, and atomic auto-updater for VaultWorld cloud connector.
+            Status, server compatibility, and atomic auto-updater for Ztore Digital cloud connector.
           </p>
         </div>
 
@@ -126,7 +126,7 @@ export default function Connector() {
 
             <div>
               <div className="flex items-center gap-3">
-                <h3 className="text-lg font-black text-white">{status?.plugin_name || 'VaultWorld Portal Connector'}</h3>
+                <h3 className="text-lg font-black text-white">{status?.plugin_name || 'Ztore Digital Portal Connector'}</h3>
                 <span
                   className={`px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider border ${
                     isUpToDate

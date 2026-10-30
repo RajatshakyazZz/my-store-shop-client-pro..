@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { ShieldCheck, Lock, Eye, Database, Server, UserCheck, AlertTriangle } from 'lucide-react';
 import PolicyContactInfo from '@/components/PolicyContactInfo';
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztoredigital.com').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | VaultWorld Store',
-  description: 'Official Privacy Policy of VaultWorld Store. Details our adherence to the Digital Personal Data Protection Act (DPDP Act 2023) and RBI payment security rules.',
+  title: 'Privacy Policy | Ztore Digital',
+  description: 'Official Privacy Policy of Ztore Digital. Details our adherence to the Digital Personal Data Protection Act (DPDP Act 2023) and RBI payment security rules.',
   alternates: {
     canonical: `${siteUrl}/privacy-policy`,
   },
@@ -29,7 +29,7 @@ export default function PrivacyPolicyPage() {
             Privacy Policy &amp; Data Protection
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 font-medium">
-            Effective Date: October 2026 • Last Revised: October 30, 2026 • Platform: vaultworld.shop
+            Effective Date: October 2026 • Last Revised: October 30, 2026 • Platform: ztoredigital.com
           </p>
         </div>
 
@@ -44,7 +44,7 @@ export default function PrivacyPolicyPage() {
             </h3>
           </div>
           <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-normal">
-            <strong>VaultWorld Store never collects, captures, views, or stores your sensitive banking or payment card details.</strong> All transactions (UPI, Credit/Debit Cards, Net Banking) are conducted through bank-grade 256-bit encrypted sessions directly on the servers of Reserve Bank of India (RBI) authorized payment aggregators (Cashfree Payments, Razorpay Software, PayU India). Your card CVV, expiry dates, net banking passwords, and UPI PINs are processed exclusively on certified, PCI-DSS Level 1 compliant infrastructure.
+            <strong>Ztore Digital never collects, captures, views, or stores your sensitive banking or payment card details.</strong> All transactions (UPI, Credit/Debit Cards, Net Banking) are conducted through bank-grade 256-bit encrypted sessions directly on the servers of Reserve Bank of India (RBI) authorized payment aggregators (Cashfree Payments, Razorpay Software, PayU India). Your card CVV, expiry dates, net banking passwords, and UPI PINs are processed exclusively on certified, PCI-DSS Level 1 compliant infrastructure.
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export default function PrivacyPolicyPage() {
               <span>Introduction &amp; Regulatory Framework</span>
             </h2>
             <p>
-              At <strong>VaultWorld Store</strong> (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;), protecting the personal privacy and data of our customers and visitors (&quot;you&quot;, &quot;user&quot;, &quot;buyer&quot;) is a paramount priority. This Privacy Policy sets forth our practices regarding the collection, storage, use, and disclosure of information when you interact with our website (<strong>vaultworld.shop</strong>).
+              At <strong>Ztore Digital</strong> (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;), protecting the personal privacy and data of our customers and visitors (&quot;you&quot;, &quot;user&quot;, &quot;buyer&quot;) is a paramount priority. This Privacy Policy sets forth our practices regarding the collection, storage, use, and disclosure of information when you interact with our website (<strong>ztoredigital.com</strong>).
             </p>
             <p>
               This document is prepared in strict accordance with:
@@ -168,7 +168,7 @@ export default function PrivacyPolicyPage() {
               <span>Cookies &amp; Tracking Technologies</span>
             </h2>
             <p>
-              VaultWorld Store uses standard browser cookies, local storage, and analytical tags to provide a seamless user experience:
+              Ztore Digital uses standard browser cookies, local storage, and analytical tags to provide a seamless user experience:
             </p>
             <ul className="list-disc pl-5 space-y-1 text-slate-600 font-medium">
               <li><strong>Essential Session Cookies:</strong> Maintain your cart selections, applied discount codes, and checkout state.</li>
@@ -223,7 +223,7 @@ export default function PrivacyPolicyPage() {
               <span>Protection of Minors</span>
             </h2>
             <p>
-              VaultWorld Store is not directed towards children under the age of 18. We do not knowingly collect personal data from minors. If you are a parent or guardian and become aware that your child has provided us with personal data without your consent, please contact us immediately to have the information expunged.
+              Ztore Digital is not directed towards children under the age of 18. We do not knowingly collect personal data from minors. If you are a parent or guardian and become aware that your child has provided us with personal data without your consent, please contact us immediately to have the information expunged.
             </p>
           </section>
 
@@ -243,17 +243,17 @@ export default function PrivacyPolicyPage() {
 
         {/* Footer Navigation Back to Store */}
         <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-2">
-          <Link href="/" className="hover:text-amber-600 transition-colors">
-            ← Return to VaultWorld Store Home
+          <Link href="/" className="hover:text-red-600 transition-colors">
+            ← Return to Ztore Digital Home
           </Link>
           <div className="flex gap-4">
-            <Link href="/terms-and-conditions" className="hover:text-amber-600 transition-colors">
+            <Link href="/terms-and-conditions" className="hover:text-red-600 transition-colors">
               Terms &amp; Conditions
             </Link>
-            <Link href="/refund-policy" className="hover:text-amber-600 transition-colors">
+            <Link href="/refund-policy" className="hover:text-red-600 transition-colors">
               Refund Policy
             </Link>
-            <Link href="/shipping-policy" className="hover:text-amber-600 transition-colors">
+            <Link href="/shipping-policy" className="hover:text-red-600 transition-colors">
               Shipping &amp; Delivery
             </Link>
           </div>

@@ -17,7 +17,7 @@ export async function GET(request: Request) {
   const isLocalhost = url.host.includes('localhost');
   const baseUrl = isLocalhost
     ? `${url.protocol}//${url.host}`
-    : (url.origin && !url.origin.includes('0.0.0.0') ? url.origin : (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vaultworld.shop'));
+    : (url.origin && !url.origin.includes('0.0.0.0') ? url.origin : (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.ztoredigital.com'));
 
   if (!orderId) {
     return NextResponse.redirect(`${baseUrl}/checkout?error=missing_order_id`);

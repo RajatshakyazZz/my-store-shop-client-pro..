@@ -2450,13 +2450,13 @@ class PortalApiClient {
   }
 
   // ==========================================
-  // 16. SETTINGS & INTEGRATIONS (PayU Gateway)
+  // 16. SETTINGS & INTEGRATIONS (Razorpay Gateway)
   // ==========================================
-  async getPayUConfig(): Promise<PgBridgeConfig> {
+  async getRazorpayConfig(): Promise<PgBridgeConfig> {
     // 1. First attempt to fetch from server-side admin settings API (reads Firestore directly)
     if (typeof window !== 'undefined') {
       try {
-        const res = await fetch('/api/admin/settings/payu', {
+        const res = await fetch('/api/admin/settings/razorpay', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           cache: 'no-store',
@@ -2466,113 +2466,130 @@ class PortalApiClient {
           if (data.success && data.config) {
             const mapped: PgBridgeConfig = {
               enabled: typeof data.config.enabled === 'boolean' ? data.config.enabled : true,
-              merchant_key: data.config.merchant_key || '',
-              merchant_salt: data.config.merchant_salt || '',
-              app_id: data.config.merchant_key || '',
-              secret_key: data.config.merchant_salt || '',
+              key_id: data.config.key_id || data.config.merchant_key || data.config.app_id || '',
+              key_secret: data.config.key_secret || data.config.merchant_salt || data.config.secret_key || '',
+              merchant_key: data.config.key_id || data.config.merchant_key || data.config.app_id || '',
+              merchant_salt: data.config.key_secret || data.config.merchant_salt || data.config.secret_key || '',
+              app_id: data.config.key_id || data.config.app_id || '',
+              secret_key: data.config.key_secret || data.config.secret_key || '',
               environment: data.config.environment || 'PRODUCTION',
-              return_url: data.config.return_url || 'https://vaultworld.shop/api/payment/payu/return',
+              return_url: data.config.return_url || '',
             };
+            this.saveSettingLocally('razorpay', mapped);
             this.saveSettingLocally('payu', mapped);
             return mapped;
           }
         }
       } catch (apiErr) {
-        console.warn('API /api/admin/settings/payu fetch error, falling back to Firestore/local:', apiErr);
+        console.warn('API /api/admin/settings/razorpay fetch error, falling back to Firestore/local:', apiErr);
       }
     }
 
-    // 2. Direct client Firestore query (store_settings/general, store_settings/payu, store_settings/cashfree)
+    // 2. Direct client Firestore query (store_settings/general, store_settings/razorpay, store_settings/payu)
     if (db) {
       try {
-        const [genSnap, payuSnap, cfSnap] = await Promise.all([
+        const [genSnap, rzpSnap, payuSnap] = await Promise.all([
           getDoc(doc(db, 'store_settings', 'general')).catch(() => null),
+          getDoc(doc(db, 'store_settings', 'razorpay')).catch(() => null),
           getDoc(doc(db, 'store_settings', 'payu')).catch(() => null),
-          getDoc(doc(db, 'store_settings', 'cashfree')).catch(() => null),
         ]);
 
         let data: any = null;
-        if (genSnap && genSnap.exists() && (genSnap.data()?.merchant_key || genSnap.data()?.app_id)) {
+        if (rzpSnap && rzpSnap.exists()) {
+          data = rzpSnap.data();
+        } else if (genSnap && genSnap.exists() && (genSnap.data()?.razorpay_key_id || genSnap.data()?.key_id)) {
           data = genSnap.data();
         } else if (payuSnap && payuSnap.exists()) {
           data = payuSnap.data();
-        } else if (cfSnap && cfSnap.exists()) {
-          data = cfSnap.data();
         } else if (genSnap && genSnap.exists()) {
           data = genSnap.data();
         }
 
         if (data) {
+          const key_id = data.razorpay_key_id || data.key_id || data.merchant_key || data.app_id || '';
+          const key_secret = data.razorpay_key_secret || data.key_secret || data.merchant_salt || data.secret_key || '';
           const mapped: PgBridgeConfig = {
             enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
-            merchant_key: data.merchant_key || data.app_id || '',
-            merchant_salt: data.merchant_salt || data.secret_key || '',
-            app_id: data.merchant_key || data.app_id || '',
-            secret_key: data.merchant_salt || data.secret_key || '',
-            environment: data.environment === 'TEST' || data.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
-            return_url: data.return_url || 'https://vaultworld.shop/api/payment/payu/return',
+            key_id,
+            key_secret,
+            merchant_key: key_id,
+            merchant_salt: key_secret,
+            app_id: key_id,
+            secret_key: key_secret,
+            environment: data.environment === 'TEST' || data.environment === 'SANDBOX' || key_id.startsWith('rzp_test_') ? 'TEST' : 'PRODUCTION',
+            return_url: data.return_url || '',
           };
+          this.saveSettingLocally('razorpay', mapped);
           this.saveSettingLocally('payu', mapped);
           return mapped;
         }
       } catch (e) {
-        console.warn('Firestore direct payu fetch error, using local cache:', e);
+        console.warn('Firestore direct razorpay fetch error, using local cache:', e);
       }
     }
 
-    return this.getSavedSetting('payu', initialPgBridge);
+    return this.getSavedSetting('razorpay', this.getSavedSetting('payu', initialPgBridge));
   }
 
-  async updatePayUConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
-    const clean = sanitizePayload(config);
+  async updateRazorpayConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
+    const key_id = config.key_id || config.merchant_key || config.app_id || '';
+    const key_secret = config.key_secret || config.merchant_salt || config.secret_key || '';
+    const clean: PgBridgeConfig = {
+      ...sanitizePayload(config),
+      key_id,
+      key_secret,
+      merchant_key: key_id,
+      merchant_salt: key_secret,
+      app_id: key_id,
+      secret_key: key_secret,
+    };
+
+    this.saveSettingLocally('razorpay', clean);
     this.saveSettingLocally('payu', clean);
-    this.saveSettingLocally('cashfree', clean);
 
-    let apiSucceeded = false;
-
-    // 1. Post to server-side admin settings API (persists to Firestore store_settings/general securely)
+    // 1. Post to server-side admin settings API (persists to Firestore store_settings/general & razorpay securely)
     if (typeof window !== 'undefined') {
       try {
-        const res = await fetch('/api/admin/settings/payu', {
+        await fetch('/api/admin/settings/razorpay', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(clean),
         });
-        const data = await res.json();
-        if (res.ok && data.success) {
-          apiSucceeded = true;
-        } else {
-          console.warn('Server API error saving PayU config:', data.error);
-        }
       } catch (apiErr) {
-        console.warn('Network error saving PayU config to API route:', apiErr);
+        console.warn('Network error saving Razorpay config to API route:', apiErr);
       }
     }
 
-    // 2. Direct client Firestore persistence (save to store_settings/general as primary universally allowed doc)
+    // 2. Direct client Firestore persistence
     if (db) {
       try {
         await setDoc(doc(db, 'store_settings', 'general'), clean, { merge: true });
-        apiSucceeded = true;
       } catch (e) {
         console.warn('Firestore direct write to store_settings/general warning:', e);
       }
 
-      // Also attempt secondary docs in parallel without failing
       Promise.allSettled([
+        setDoc(doc(db, 'store_settings', 'razorpay'), clean, { merge: true }),
         setDoc(doc(db, 'store_settings', 'payu'), clean, { merge: true }),
-        setDoc(doc(db, 'store_settings', 'cashfree'), clean, { merge: true }),
       ]).catch(() => null);
     }
 
     await logAdminAction({
-      adminEmail: 'admin@vaultworld.shop',
-      action: 'UPDATE_PAYU_CONFIG',
+      adminEmail: 'ztoredigital@gmail.com',
+      action: 'UPDATE_RAZORPAY_CONFIG',
       module: 'Payments',
-      details: `Updated PayU Gateway credentials (Env: ${clean.environment || 'PRODUCTION'}) in Cloud Database`,
+      details: `Updated Razorpay Gateway credentials (Env: ${clean.environment || 'PRODUCTION'}) in Cloud Database`,
     });
 
     return clean;
+  }
+
+  async getPayUConfig(): Promise<PgBridgeConfig> {
+    return this.getRazorpayConfig();
+  }
+
+  async updatePayUConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
+    return this.updateRazorpayConfig(config);
   }
 
   async getCashfreeConfig(): Promise<PgBridgeConfig> {

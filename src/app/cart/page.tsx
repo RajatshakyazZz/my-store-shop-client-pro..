@@ -77,7 +77,7 @@ export default function CartPage() {
             ========================================================================= */}
         <div className="rounded-[24px] bg-gradient-to-r from-[#fbfaff] via-[#f7f4ff] to-[#ffffff] border border-[#ece7f6] p-6 sm:p-7 md:p-8 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="space-y-1.5">
-            <span className="inline-block px-3 py-1 rounded-full text-[10.5px] font-black uppercase tracking-wider text-[#6e35f5] bg-[#ede4fd] border border-[#ded2fc]">
+            <span className="inline-block px-3 py-1 rounded-full text-[10.5px] font-black uppercase tracking-wider text-red-700 bg-red-50 border border-red-200">
               YOUR CART
             </span>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-[#171e43] tracking-tight">
@@ -92,10 +92,10 @@ export default function CartPage() {
           <div className="flex items-center gap-2 sm:gap-3 self-start md:self-center shrink-0">
             {/* Step 1: Active Cart */}
             <div className="flex flex-col items-center">
-              <span className="w-7 h-7 rounded-full bg-[#6e35f5] text-white font-black text-xs flex items-center justify-center shadow-sm">
+              <span className="w-7 h-7 rounded-full bg-red-600 text-white font-black text-xs flex items-center justify-center shadow-sm">
                 1
               </span>
-              <span className="text-[11px] font-bold text-[#6e35f5] mt-1">Cart</span>
+              <span className="text-[11px] font-bold text-red-600 mt-1">Cart</span>
             </div>
 
             {/* Line */}
@@ -130,10 +130,10 @@ export default function CartPage() {
             ========================================================================= */}
         {items.length === 0 ? (
           <div className="rounded-[24px] bg-white border border-[#ece7f6] p-10 sm:p-14 text-center shadow-sm space-y-4 max-w-lg mx-auto my-8">
-            <div className="w-16 h-16 rounded-2xl bg-[#f2ecfd] text-[#6e35f5] flex items-center justify-center mx-auto text-2xl font-bold shadow-sm">
+            <div className="w-16 h-16 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center mx-auto text-2xl font-bold shadow-sm">
               ▶
             </div>
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-bold text-[#6e35f5] bg-[#ede4fd]">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-bold text-red-700 bg-red-50 border border-red-200">
               Nothing here yet
             </span>
             <h2 className="text-xl sm:text-2xl font-black text-[#171e43]">
@@ -145,7 +145,7 @@ export default function CartPage() {
             <div className="pt-2">
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#6e35f5] hover:bg-[#5b27e0] text-white font-bold text-sm shadow-md transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold text-sm shadow-md transition-colors"
               >
                 <span>Explore Bundles</span>
                 <ArrowRight className="w-4 h-4" />
@@ -167,7 +167,7 @@ export default function CartPage() {
 
               <Link
                 href="/shop"
-                className="text-xs sm:text-sm font-bold text-[#6e35f5] hover:text-[#5825d8] transition-colors inline-flex items-center gap-1"
+                className="text-xs sm:text-sm font-bold text-red-600 hover:text-red-700 transition-colors inline-flex items-center gap-1"
               >
                 <span>Continue Shopping</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -219,7 +219,7 @@ export default function CartPage() {
                           <div className="min-w-0 pr-2">
                             <Link
                               href={`/product/${item.product.slug}`}
-                              className="font-bold text-sm text-[#171e43] hover:text-[#6e35f5] transition-colors line-clamp-2 leading-snug"
+                              className="font-bold text-sm text-[#171e43] hover:text-red-600 transition-colors line-clamp-2 leading-snug"
                             >
                               {item.product.title}
                             </Link>
@@ -357,11 +357,11 @@ export default function CartPage() {
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value)}
                         placeholder="Coupon code"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm bg-white focus:outline-none focus:border-[#6e35f5]"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm bg-white focus:outline-none focus:border-red-500"
                       />
                       <button
                         type="submit"
-                        className="px-4 py-2.5 rounded-xl border border-purple-200 text-[#6e35f5] font-bold text-xs bg-purple-50/70 hover:bg-purple-100 transition-colors shrink-0"
+                        className="px-4 py-2.5 rounded-xl border border-red-200 text-red-600 font-bold text-xs bg-red-50/70 hover:bg-red-100 transition-colors shrink-0"
                       >
                         Apply coupon
                       </button>
@@ -410,7 +410,7 @@ export default function CartPage() {
                     <span className="text-sm font-black text-[#171e43] uppercase tracking-wider">
                       TOTAL
                     </span>
-                    <span className="text-2xl font-black text-[#6e35f5]">
+                    <span className="text-2xl font-black text-red-600">
                       ₹{total}.00
                     </span>
                   </div>
@@ -420,7 +420,7 @@ export default function CartPage() {
                 <div className="pt-2">
                   <Link
                     href="/checkout"
-                    className="w-full py-3.5 rounded-xl bg-[#6e35f5] hover:bg-[#5b27e0] text-white font-bold text-sm tracking-wide shadow-md shadow-purple-500/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-extrabold text-sm tracking-wide shadow-md shadow-red-500/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
                   >
                     <span>Proceed to checkout</span>
                   </Link>
@@ -435,8 +435,8 @@ export default function CartPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
               {/* Badge 1: Instant Access */}
               <div className="rounded-2xl bg-white border border-[#ece7f6] p-4 flex items-center gap-3.5 shadow-sm">
-                <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
-                  <Zap className="w-5 h-5 fill-amber-500" />
+                <div className="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                  <Zap className="w-5 h-5 fill-red-500" />
                 </div>
                 <div>
                   <h4 className="font-bold text-xs text-[#171e43]">Instant Access</h4>
@@ -448,7 +448,7 @@ export default function CartPage() {
 
               {/* Badge 2: Secure Checkout */}
               <div className="rounded-2xl bg-white border border-[#ece7f6] p-4 flex items-center gap-3.5 shadow-sm">
-                <div className="w-10 h-10 rounded-xl bg-purple-50 text-[#6e35f5] flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
                   <Lock className="w-5 h-5" />
                 </div>
                 <div>

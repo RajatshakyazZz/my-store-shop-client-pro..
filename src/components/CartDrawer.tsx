@@ -73,7 +73,7 @@ export default function CartDrawer() {
         <div className="flex-1 overflow-y-auto p-5 pb-16 space-y-4">
           {items.length === 0 && !orderBumpAdded ? (
             <div className="text-center py-16 space-y-4">
-              <div className="w-16 h-16 mx-auto rounded-full bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-600 text-2xl">
+              <div className="w-16 h-16 mx-auto rounded-full bg-red-50 border border-red-200/60 flex items-center justify-center text-red-600 text-2xl">
                 🛒
               </div>
               <h4 className="font-bold text-lg text-slate-950">Your cart is empty</h4>
@@ -83,7 +83,7 @@ export default function CartDrawer() {
               <Link
                 href="/shop"
                 onClick={() => setIsCartOpen(false)}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-black shadow-md shadow-amber-500/20 hover:from-amber-400 hover:to-yellow-400 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-red-600 to-rose-600 text-white font-black shadow-md shadow-red-500/20 hover:from-red-700 hover:to-rose-700 transition-colors"
               >
                 Browse All Bundles →
               </Link>
@@ -115,7 +115,7 @@ export default function CartDrawer() {
                           <span
                             className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
                               item.license === 'reseller'
-                                ? 'bg-amber-100 text-amber-900 border border-amber-200'
+                                ? 'bg-red-100 text-red-900 border border-red-200'
                                 : 'bg-slate-100 text-slate-800 border border-slate-200'
                             }`}
                           >
@@ -193,26 +193,26 @@ export default function CartDrawer() {
                       ))}
                     </div>
                   ) : isQualifiedForFreeOffer ? (
-                    <div className="p-3 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-emerald-500/10 border border-amber-300/60 flex items-center justify-between gap-2 mt-3">
-                      <div className="flex items-center gap-2 text-xs font-black text-amber-900">
-                        <Gift className="w-4 h-4 shrink-0 text-amber-600" />
+                    <div className="p-3 rounded-2xl bg-gradient-to-r from-red-500/10 via-rose-500/5 to-emerald-500/10 border border-red-300/60 flex items-center justify-between gap-2 mt-3">
+                      <div className="flex items-center gap-2 text-xs font-black text-red-900">
+                        <Gift className="w-4 h-4 shrink-0 text-red-600" />
                         <span>🎉 {offerMaxQuantity} Free Bundles Unlocked!</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => setIsFreeBundleModalOpen(true)}
-                        className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 text-xs font-black hover:opacity-95 shadow-sm cursor-pointer"
+                        className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-black hover:opacity-95 shadow-sm cursor-pointer"
                       >
                         Select Now
                       </button>
                     </div>
                   ) : subtotal > 0 ? (
-                    <div className="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/80 flex items-center justify-between text-xs text-amber-900 font-bold mt-3">
+                    <div className="p-2.5 rounded-xl bg-red-50/70 border border-red-200/80 flex items-center justify-between text-xs text-red-900 font-bold mt-3">
                       <span>Add ₹{Math.max(1, offerMinCart - subtotal)} more to claim {offerMaxQuantity} Free Bundles!</span>
                       <Link
                         href="/claim-offer"
                         onClick={() => setIsCartOpen(false)}
-                        className="underline hover:text-amber-700 shrink-0 font-extrabold"
+                        className="underline hover:text-red-700 shrink-0 font-extrabold"
                       >
                         View Offer
                       </Link>
@@ -223,9 +223,9 @@ export default function CartDrawer() {
 
               {/* Order Bump In-Cart Offer */}
               {isBumpEnabled && (
-                <div className="p-3.5 rounded-2xl border-2 border-dashed border-amber-300 bg-amber-50/60 mt-4 relative">
-                  <div className="flex items-center gap-1.5 text-amber-800 text-[11px] font-extrabold uppercase tracking-wider mb-1.5">
-                    <Zap className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                <div className="p-3.5 rounded-2xl border-2 border-dashed border-red-300 bg-red-50/60 mt-4 relative">
+                  <div className="flex items-center gap-1.5 text-red-800 text-[11px] font-extrabold uppercase tracking-wider mb-1.5">
+                    <Zap className="w-3.5 h-3.5 fill-red-500 text-red-500" />
                     Exclusive 1-Click Order Bump
                   </div>
                   <div className="flex gap-3 items-center">
@@ -259,7 +259,7 @@ export default function CartDrawer() {
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
                         orderBumpAdded
                           ? 'bg-green-600 text-white shadow-sm'
-                          : 'bg-white border border-amber-300 text-amber-900 hover:bg-amber-100'
+                          : 'bg-white border border-red-300 text-red-900 hover:bg-red-100'
                       }`}
                     >
                       {orderBumpAdded ? '✓ Added' : `+ Add ₹${bumpPrice}`}
@@ -283,16 +283,16 @@ export default function CartDrawer() {
                   )}
                   <div className="flex justify-between text-sm sm:text-base font-extrabold text-slate-950 pt-2 border-t border-slate-200">
                     <span>Total Amount</span>
-                    <span className="text-xl font-black text-amber-700">₹{total}.00</span>
+                    <span className="text-xl font-black text-red-600">₹{total}.00</span>
                   </div>
                 </div>
 
                 <Link
                   href="/checkout"
                   onClick={() => setIsCartOpen(false)}
-                  className="w-full py-4 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-amber-500/25 active:scale-[0.99] transition-all cursor-pointer"
+                  className="w-full py-4 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-red-500/25 active:scale-[0.99] transition-all cursor-pointer"
                 >
-                  <Lock className="w-4 h-4 fill-slate-950/20" />
+                  <Lock className="w-4 h-4 fill-white/20" />
                   <span>Pay Now • Instant Checkout (₹{total})</span>
                   <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                 </Link>
@@ -304,7 +304,7 @@ export default function CartDrawer() {
                   </span>
                   <span>•</span>
                   <span className="flex items-center gap-1">
-                    <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" />
+                    <Zap className="w-3.5 h-3.5 text-red-500 fill-red-500 shrink-0" />
                     Zero Delay Access
                   </span>
                 </div>

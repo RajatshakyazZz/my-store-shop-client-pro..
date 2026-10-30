@@ -57,11 +57,11 @@ export async function POST(request: Request) {
       event_time: Math.floor(Date.now() / 1000),
       event_id: `test_admin_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
       action_source: 'website',
-      event_source_url: 'https://www.vaultworld.shop',
+      event_source_url: 'https://www.ztoredigital.com',
       user_data: {
         client_ip_address: clientIp,
         client_user_agent: clientUserAgent,
-        em: [sha256('admin.test@vaultworld.shop')],
+        em: [sha256('admin.test@ztoredigital.com')],
         ph: [sha256('919999999999')],
       },
       custom_data: {
