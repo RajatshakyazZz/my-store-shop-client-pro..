@@ -74,6 +74,7 @@ export default function WhatsAppButton({
   const effectiveDefaultMessage = defaultMessage || settings?.whatsappDefaultMessage;
 
   // Determine intelligent positioning based on current route
+  const isProductPage = pathname?.startsWith('/product/');
   const hasMobileBottomNav =
     !pathname?.startsWith('/r/') &&
     pathname !== '/r' &&
@@ -82,8 +83,11 @@ export default function WhatsAppButton({
     !pathname?.includes('/checkout') &&
     !pathname?.includes('/order-success');
 
-  // If MobileBottomNav is rendered, float at bottom-20 on mobile; otherwise bottom-6
-  const defaultPosition = hasMobileBottomNav
+  // If on product page, float above both MobileBottomNav AND the sticky Buy Now bar (bottom-36 on mobile)
+  // If only MobileBottomNav is rendered, float at bottom-20 on mobile; otherwise bottom-6
+  const defaultPosition = isProductPage
+    ? 'bottom-36 right-4 sm:bottom-6 sm:right-6'
+    : hasMobileBottomNav
     ? 'bottom-20 right-4 sm:bottom-6 sm:right-6'
     : 'bottom-20 md:bottom-6 right-4 sm:right-6';
 

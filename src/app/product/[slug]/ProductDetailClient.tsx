@@ -222,7 +222,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   };
 
   return (
-    <div className="bg-[#fcfbfe] min-h-screen text-[#1a1725] pb-28 sm:pb-16 antialiased">
+    <div className="bg-[#fcfbfe] min-h-screen text-[#1a1725] pb-44 sm:pb-16 antialiased">
       {/* Top Container */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-3 sm:pt-6 space-y-6 sm:space-y-10">
         
@@ -1039,8 +1039,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
       </div>
 
-      {/* MOBILE STICKY BOTTOM BAR */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-slate-950/95 backdrop-blur-md border-t border-red-500/25 px-4 py-2.5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] shadow-[0_-8px_30px_rgba(0,0,0,0.5)]">
+      {/* MOBILE STICKY BOTTOM BAR (Positioned nicely above MobileBottomNav on small screens) */}
+      <div className="fixed bottom-[74px] left-2.5 right-2.5 z-40 sm:hidden bg-slate-950/95 backdrop-blur-xl border border-red-500/30 rounded-2xl px-3.5 py-2.5 shadow-[0_-8px_30px_rgba(0,0,0,0.6)]">
         <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
           {/* Price */}
           <div className="flex flex-col shrink-0">
@@ -1058,26 +1058,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           <div className="flex items-center gap-1.5 flex-1 justify-end">
             <button
               type="button"
-              onClick={() => {
-                if (isAuthenticated) {
-                  router.push(`/earn/create/${p.id}`);
-                } else {
-                  setIsAuthModalOpen(true);
-                }
-              }}
-              className="py-2.5 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-red-500/30 text-rose-300 font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-transform cursor-pointer shrink-0"
-              title="Resell this bundle and earn margin"
-            >
-              <Briefcase className="w-3.5 h-3.5 text-rose-400" />
-              <span>Resell</span>
-            </button>
-            <button
-              type="button"
               onClick={() => buyNow(p, 'personal')}
-              className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:via-rose-500 hover:to-red-600 text-white font-black text-sm shadow-md shadow-red-600/30 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:via-rose-500 hover:to-red-600 text-white font-black text-sm shadow-md shadow-red-600/30 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              <Zap className="w-3.5 h-3.5 fill-white" />
-              <span>Buy Now</span>
+              <Zap className="w-4 h-4 fill-white" />
+              <span>Buy Now — ₹{activePrice}</span>
             </button>
           </div>
         </div>
