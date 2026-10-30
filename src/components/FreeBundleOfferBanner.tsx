@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { sanitizeOfferBannerUrl } from '@/lib/freeBundleOffer';
 
 interface FreeBundleOfferBannerProps {
   variant?: 'home' | 'checkout' | 'product';
@@ -17,26 +18,29 @@ export default function FreeBundleOfferBanner({
   const { setIsFreeBundleModalOpen, freeBundles, subtotal, freeBundleOffer } = useCart();
 
   // If the admin turned off the promotion, don't show the banner
-  if (freeBundleOffer && freeBundleOffer.enabled === false) {
+  if (!freeBundleOffer || freeBundleOffer.enabled === false) {
     return null;
   }
 
+  // Only render if a custom banner image has been uploaded from the Admin Panel
+  const bannerImgSrc = sanitizeOfferBannerUrl(freeBundleOffer.bannerImage);
+  if (!bannerImgSrc) {
+    // No hardcoded Vaultzet banners allowed. Only displays when uploaded from Admin Panel!
+    return null;
+  }
+
+  const bannerFallbackSrc = sanitizeOfferBannerUrl(freeBundleOffer.bannerFallbackImage);
   const effectiveTotal = currentTotal || subtotal;
   const minCart = freeBundleOffer?.minCartValue || 149;
   const freeQty = freeBundleOffer?.freeBundleQuantity || 2;
   const isUnlocked = effectiveTotal >= minCart;
   const claimedCount = freeBundles.length;
 
-  const bannerImgSrc = freeBundleOffer?.bannerImage || '/banner-free-bundles.png';
-  const bannerFallbackSrc =
-    freeBundleOffer?.bannerFallbackImage ||
-    'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png';
-
   const isCheckoutAction = variant === 'checkout' && isUnlocked;
 
   const content = (
     <div className="w-full flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden border border-amber-500/30 bg-slate-950 shadow-[0_12px_36px_rgba(245,158,11,0.15)] group transition-all">
-      {/* 1. Image Banner */}
+      {/* 1. Image Banner Uploaded from Admin Panel */}
       <Link
         href={isCheckoutAction ? '#' : '/claim-offer'}
         onClick={(e) => {
@@ -53,11 +57,15 @@ export default function FreeBundleOfferBanner({
           key={bannerImgSrc}
           src={bannerImgSrc}
           onError={(e) => {
-            (e.target as HTMLImageElement).src = bannerFallbackSrc;
+            if (bannerFallbackSrc) {
+              (e.target as HTMLImageElement).src = bannerFallbackSrc;
+            } else {
+              (e.target as HTMLImageElement).style.display = 'none';
+            }
           }}
           alt={
             freeBundleOffer?.headline ||
-            `VaultWorld Neon Reels Bundle Sale - Get ${freeQty} Free Bundles on Min ₹${minCart} Payment`
+            `Special Offer - Get ${freeQty} Free Bundles on Min ₹${minCart} Order`
           }
           width={1280}
           height={480}

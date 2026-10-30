@@ -3101,10 +3101,22 @@ class PortalApiClient {
   // 18. FREE BUNDLE OFFER PROMOTION MANAGEMENT
   // ==========================================
   async getFreeBundleOffer(): Promise<FreeBundleOffer> {
+    const cleanOfferBanner = (img?: string) => {
+      if (!img) return '';
+      const trimmed = String(img).trim();
+      if (
+        trimmed === '/banner-free-bundles.png' ||
+        trimmed.includes('Vaultzet-Neon-Reels-Bundle-Sale')
+      ) {
+        return '';
+      }
+      return trimmed;
+    };
+
     const defaultOffer: FreeBundleOffer = {
       enabled: true,
-      banner_image: '/banner-free-bundles.png',
-      banner_fallback_image: 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png',
+      banner_image: '',
+      banner_fallback_image: '',
       min_cart_value: 149,
       free_bundle_quantity: 2,
       headline: 'Get 2 of Any Bundle FREE',
@@ -3122,6 +3134,8 @@ class PortalApiClient {
             cached = {
               ...defaultOffer,
               ...parsed,
+              banner_image: cleanOfferBanner(parsed.banner_image || parsed.bannerImage),
+              banner_fallback_image: cleanOfferBanner(parsed.banner_fallback_image || parsed.bannerFallbackImage),
               min_cart_value: parsed.min_cart_value != null ? Number(parsed.min_cart_value) : (parsed.minCartValue != null ? Number(parsed.minCartValue) : 149),
               free_bundle_quantity: parsed.free_bundle_quantity != null ? Number(parsed.free_bundle_quantity) : (parsed.freeBundleQuantity != null ? Number(parsed.freeBundleQuantity) : 2),
             };
@@ -3142,8 +3156,8 @@ class PortalApiClient {
 
             const merged: FreeBundleOffer = {
               enabled: typeof f.enabled === 'boolean' ? f.enabled : true,
-              banner_image: f.banner_image || defaultOffer.banner_image,
-              banner_fallback_image: f.banner_fallback_image || defaultOffer.banner_fallback_image,
+              banner_image: cleanOfferBanner(f.banner_image),
+              banner_fallback_image: cleanOfferBanner(f.banner_fallback_image),
               min_cart_value: minVal,
               free_bundle_quantity: freeQty,
               headline: f.headline || `Get ${freeQty} of Any Bundle FREE`,
@@ -3168,8 +3182,8 @@ class PortalApiClient {
 
           const merged: FreeBundleOffer = {
             enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
-            banner_image: data.banner_image || defaultOffer.banner_image,
-            banner_fallback_image: data.banner_fallback_image || defaultOffer.banner_fallback_image,
+            banner_image: cleanOfferBanner(data.banner_image),
+            banner_fallback_image: cleanOfferBanner(data.banner_fallback_image),
             min_cart_value: minVal,
             free_bundle_quantity: freeQty,
             headline: data.headline || `Get ${freeQty} of Any Bundle FREE`,

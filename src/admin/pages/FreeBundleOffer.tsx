@@ -24,8 +24,8 @@ import ImageUploadField from '../components/common/ImageUploadField';
 
 const DEFAULT_FORM: FreeBundleOffer = {
   enabled: true,
-  banner_image: '/banner-free-bundles.png',
-  banner_fallback_image: 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png',
+  banner_image: '',
+  banner_fallback_image: '',
   min_cart_value: 149,
   free_bundle_quantity: 2,
   headline: 'Get 2 of Any Bundle FREE',
@@ -49,7 +49,16 @@ export default function FreeBundleOfferPage() {
 
   useEffect(() => {
     if (offerConfig) {
-      setForm(offerConfig);
+      const cleanImg =
+        offerConfig.banner_image === '/banner-free-bundles.png' ||
+        offerConfig.banner_image?.includes('Vaultzet-Neon-Reels-Bundle-Sale')
+          ? ''
+          : (offerConfig.banner_image || '');
+      setForm({
+        ...offerConfig,
+        banner_image: cleanImg,
+        banner_fallback_image: '',
+      });
     }
   }, [offerConfig]);
 
@@ -226,57 +235,9 @@ export default function FreeBundleOfferPage() {
               label="Banner Image URL / Upload from Gallery"
               value={form.banner_image}
               onChange={(url) => setForm({ ...form, banner_image: url })}
-              placeholder="https://... or upload from your device gallery"
-              helperText="Upload a new promotional banner from your phone/laptop gallery, or paste a CDN image URL."
-              required
+              placeholder="Upload from device gallery or paste image URL..."
+              helperText="Upload your custom store promotional banner. When uploaded, this banner will appear on your Home, Shop, and Product pages. If empty, no hardcoded banner will show."
             />
-
-            {/* Quick Presets */}
-            <div className="pt-2">
-              <span className={`text-xs font-bold block mb-2 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                Quick Banner Presets:
-              </span>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() =>
-                    setForm({
-                      ...form,
-                      banner_image: '/banner-free-bundles.png',
-                      banner_fallback_image: 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png',
-                    })
-                  }
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                    form.banner_image === '/banner-free-bundles.png'
-                      ? 'bg-amber-500/15 border-amber-500/40 text-amber-500 font-bold'
-                      : isLight
-                      ? 'border-slate-200 hover:bg-slate-100 text-slate-600'
-                      : 'border-slate-800 hover:bg-slate-800 text-slate-400'
-                  }`}
-                >
-                  Local High-Res (/banner-free-bundles.png)
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setForm({
-                      ...form,
-                      banner_image: 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png',
-                    })
-                  }
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                    form.banner_image === 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png'
-                      ? 'bg-amber-500/15 border-amber-500/40 text-amber-500 font-bold'
-                      : isLight
-                      ? 'border-slate-200 hover:bg-slate-100 text-slate-600'
-                      : 'border-slate-800 hover:bg-slate-800 text-slate-400'
-                  }`}
-                >
-                  CDN Backup (Neon Sale Banner)
-                </button>
-              </div>
-            </div>
           </div>
 
           {/* 3. Offer Threshold & Bundle Quantity Card */}
@@ -470,17 +431,22 @@ export default function FreeBundleOfferPage() {
               }`}
             >
               {/* Banner Image Preview */}
-              <div className="w-full relative aspect-[16/6] bg-slate-900 overflow-hidden">
-                <img
-                  src={form.banner_image || '/banner-free-bundles.png'}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src =
-                      form.banner_fallback_image ||
-                      'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png';
-                  }}
-                  alt={form.headline || 'Promotional Offer Banner'}
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-full relative aspect-[16/6] bg-slate-900 overflow-hidden flex items-center justify-center">
+                {form.banner_image ? (
+                  <img
+                    src={form.banner_image}
+                    alt={form.headline || 'Promotional Offer Banner'}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center text-slate-500 p-4 text-center">
+                    <Sparkles className="w-8 h-8 text-amber-500/50 mb-1" />
+                    <span className="text-xs font-bold text-slate-300">No Custom Banner Uploaded</span>
+                    <span className="text-[11px] text-slate-500 mt-0.5">
+                      Upload your store banner above to display here and on your storefront.
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Shimmering Amber Gold CTA Button */}

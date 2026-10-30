@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { DEFAULT_FREE_BUNDLE_OFFER, FreeBundleOfferConfig } from '@/lib/freeBundleOffer';
+import { DEFAULT_FREE_BUNDLE_OFFER, FreeBundleOfferConfig, sanitizeOfferBannerUrl } from '@/lib/freeBundleOffer';
 
 export const runtime = 'nodejs';
 
@@ -21,8 +21,8 @@ export async function GET() {
 
             offer = {
               enabled: typeof f.enabled === 'boolean' ? f.enabled : true,
-              bannerImage: f.banner_image || DEFAULT_FREE_BUNDLE_OFFER.bannerImage,
-              bannerFallbackImage: f.banner_fallback_image || DEFAULT_FREE_BUNDLE_OFFER.bannerFallbackImage,
+              bannerImage: sanitizeOfferBannerUrl(f.banner_image),
+              bannerFallbackImage: sanitizeOfferBannerUrl(f.banner_fallback_image),
               minCartValue: minVal,
               freeBundleQuantity: freeQty,
               headline: f.headline || `Get ${freeQty} of Any Bundle FREE`,
@@ -42,8 +42,8 @@ export async function GET() {
 
           offer = {
             enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
-            bannerImage: data.banner_image || DEFAULT_FREE_BUNDLE_OFFER.bannerImage,
-            bannerFallbackImage: data.banner_fallback_image || DEFAULT_FREE_BUNDLE_OFFER.bannerFallbackImage,
+            bannerImage: sanitizeOfferBannerUrl(data.banner_image),
+            bannerFallbackImage: sanitizeOfferBannerUrl(data.banner_fallback_image),
             minCartValue: minVal,
             freeBundleQuantity: freeQty,
             headline: data.headline || `Get ${freeQty} of Any Bundle FREE`,

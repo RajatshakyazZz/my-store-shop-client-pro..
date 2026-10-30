@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { DEFAULT_FREE_BUNDLE_OFFER, FreeBundleOfferConfig } from '@/lib/freeBundleOffer';
+import { DEFAULT_FREE_BUNDLE_OFFER, FreeBundleOfferConfig, sanitizeOfferBannerUrl } from '@/lib/freeBundleOffer';
 
 export const runtime = 'nodejs';
 
@@ -29,8 +29,8 @@ export async function GET() {
 
           offer = {
             enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
-            bannerImage: data.banner_image || DEFAULT_FREE_BUNDLE_OFFER.bannerImage,
-            bannerFallbackImage: data.banner_fallback_image || DEFAULT_FREE_BUNDLE_OFFER.bannerFallbackImage,
+            bannerImage: sanitizeOfferBannerUrl(data.banner_image),
+            bannerFallbackImage: sanitizeOfferBannerUrl(data.banner_fallback_image),
             minCartValue: minVal,
             freeBundleQuantity: freeQty,
             headline: data.headline || `Get ${freeQty} of Any Bundle FREE`,
@@ -51,8 +51,8 @@ export async function GET() {
 
             offer = {
               enabled: typeof f.enabled === 'boolean' ? f.enabled : true,
-              bannerImage: f.banner_image || DEFAULT_FREE_BUNDLE_OFFER.bannerImage,
-              bannerFallbackImage: f.banner_fallback_image || DEFAULT_FREE_BUNDLE_OFFER.bannerFallbackImage,
+              bannerImage: sanitizeOfferBannerUrl(f.banner_image),
+              bannerFallbackImage: sanitizeOfferBannerUrl(f.banner_fallback_image),
               minCartValue: minVal,
               freeBundleQuantity: freeQty,
               headline: f.headline || `Get ${freeQty} of Any Bundle FREE`,
@@ -79,8 +79,8 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     const enabled = typeof body.enabled === 'boolean' ? body.enabled : true;
-    const banner_image = String(body.banner_image || body.bannerImage || DEFAULT_FREE_BUNDLE_OFFER.bannerImage).trim();
-    const banner_fallback_image = String(body.banner_fallback_image || body.bannerFallbackImage || DEFAULT_FREE_BUNDLE_OFFER.bannerFallbackImage).trim();
+    const banner_image = sanitizeOfferBannerUrl(body.banner_image || body.bannerImage);
+    const banner_fallback_image = sanitizeOfferBannerUrl(body.banner_fallback_image || body.bannerFallbackImage);
     const min_cart_value = Math.max(1, Number(body.min_cart_value != null ? body.min_cart_value : (body.minCartValue != null ? body.minCartValue : 149)));
     const free_bundle_quantity = Math.max(1, Math.min(20, Number(body.free_bundle_quantity != null ? body.free_bundle_quantity : (body.freeBundleQuantity != null ? body.freeBundleQuantity : 2))));
 
