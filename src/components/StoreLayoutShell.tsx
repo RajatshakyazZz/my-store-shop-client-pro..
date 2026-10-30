@@ -55,7 +55,7 @@ function StoreLayoutInner({ children }: { children: React.ReactNode }) {
     <ResellerAuthProvider>
       <CartProvider>
         {isMounted && isMaintenance && isAdminLoggedIn && (
-          <div className="bg-red-600 text-white px-4 py-2 text-xs font-black text-center sticky top-0 z-[9999] shadow-md flex items-center justify-center gap-2">
+          <div className="bg-amber-500 text-slate-950 px-4 py-2 text-xs font-black text-center sticky top-0 z-[9999] shadow-md flex items-center justify-center gap-2">
             <span>⚠️ MAINTENANCE MODE IS ACTIVE: Public visitors currently see the maintenance gate. You are viewing as Administrator.</span>
             <a
               href="/asdf/site-mode"

@@ -284,6 +284,18 @@ export default function Footer() {
               Contact Us
             </Link>
             <span className="text-slate-300">•</span>
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.dispatchEvent(new CustomEvent('vaultworld:open_cookie_consent'));
+                }
+              }}
+              className="hover:text-amber-600 transition-colors text-xs font-semibold cursor-pointer underline-offset-2 hover:underline"
+            >
+              Cookie Preferences
+            </button>
+            <span className="text-slate-300">•</span>
             <a href={`mailto:${settings.supportEmail || 'support.vaultworld.shop@gmail.com'}`} className="hover:text-amber-600 transition-colors">
               {settings.supportEmail || 'support.vaultworld.shop@gmail.com'}
             </a>
