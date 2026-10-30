@@ -1,4 +1,4 @@
-// Premium Interactive Telegram Bot Admin Panel for ZTORE
+// Premium Interactive Telegram Bot Admin Panel for Ztore Digital
 // Supporting Persistent 5-Row Footer Keyboard (ReplyKeyboardMarkup),
 // Contextual Inline Dashboards (InlineKeyboardMarkup), Multi-Step Search Flows,
 // Real-Time Database Queries, and Strict Admin Authorization.
@@ -1285,7 +1285,7 @@ export async function renderSettingsMenu(
 
   const text = `⚙️ <b>BOT & SYSTEM SETTINGS</b>
 ━━━━━━━━━━━━━━━━━━
-• Application: <b>ZTORE Digital Reseller Network</b>
+• Application: <b>Ztore Digital Reseller Network</b>
 • Bot API Endpoint: <code>https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN.slice(0, 10)}...</code>
 • Authorized Administrator User IDs:
 ${AUTHORIZED_TELEGRAM_ADMINS.map((id, idx) => `  ${idx + 1}. <code>${id}</code>`).join('\n')}
@@ -1757,7 +1757,7 @@ export async function handleAdminPanelCallback(
   if (action === 'notif:test') {
     const start = Date.now();
     await sendTelegramMessage(
-      `🧪 <b>LIVE TEST ALERT SUCCESSFUL</b>\n━━━━━━━━━━━━━━━━━━\nVerified test dispatch from ZTORE Bot to Admin Chat <code>${chatId}</code>.\nTimestamp: ${getIstTimestamp()} IST.`,
+      `🧪 <b>LIVE TEST ALERT SUCCESSFUL</b>\n━━━━━━━━━━━━━━━━━━\nVerified test dispatch from Ztore Digital Bot to Admin Chat <code>${chatId}</code>.\nTimestamp: ${getIstTimestamp()} IST.`,
       undefined,
       chatId
     );
@@ -1781,8 +1781,8 @@ export async function handleAdminPanelCallback(
       const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getMe`);
       const data = await res.json();
       const latency = Date.now() - start;
-      const botName = data.result?.first_name || 'ZTORE Bot';
-      const botUser = data.result?.username || 'ZTORE_Bot';
+      const botName = data.result?.first_name || 'Ztore Digital Bot';
+      const botUser = data.result?.username || 'Ztore Digital_Bot';
       const text = `🧪 <b>TELEGRAM BOT CONNECTION: 200 OK</b>
 ━━━━━━━━━━━━━━━━━━
 • Bot Name: <b>${escapeHtml(botName)}</b>
@@ -1902,7 +1902,7 @@ export async function handleAdminPanelMessage(
   }
 
   // Unrecognized text - show polite welcome with persistent footer attached
-  const helpText = `👋 <b>ZTORE Reseller Admin Bot</b>
+  const helpText = `👋 <b>Ztore Digital Reseller Admin Bot</b>
 ━━━━━━━━━━━━━━━━━━
 Use the persistent 5-row button menu at the bottom of your screen to navigate, or tap any command below:
 

@@ -55,15 +55,15 @@ export default function EarnLandingPage() {
     },
     {
       q: 'Do I have to deliver files or handle Google Drive links myself?',
-      a: 'Zero manual work! ZTORE handles everything. The moment payment is verified, the customer gets instant access to the Google Drive links on their screen and via email. You never have to host, upload, or email anything.',
+      a: 'Zero manual work! Ztore Digital handles everything. The moment payment is verified, the customer gets instant access to the Google Drive links on their screen and via email. You never have to host, upload, or email anything.',
     },
     {
       q: 'Is there any joining fee, deposit, or monthly charge?',
-      a: 'No. ZTORE Partner Program is 100% free to join. There are zero upfront costs, zero monthly platform fees, and zero hidden charges.',
+      a: 'No. Ztore Digital Partner Program is 100% free to join. There are zero upfront costs, zero monthly platform fees, and zero hidden charges.',
     },
     {
       q: 'How much can I charge for each bundle?',
-      a: 'You have complete pricing freedom! ZTORE has a minimum base price (e.g. ₹299). You can set your resale price to ₹499, ₹699, or ₹999. Every single rupee above the base price is 100% your net profit.',
+      a: 'You have complete pricing freedom! Ztore Digital has a minimum base price (e.g. ₹299). You can set your resale price to ₹499, ₹699, or ₹999. Every single rupee above the base price is 100% your net profit.',
     },
     {
       q: 'Where can I share and promote my reseller links?',
@@ -91,7 +91,7 @@ export default function EarnLandingPage() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
             </span>
-            <span>ZTORE Official Partner Program &bull; ₹0 Joining Fee</span>
+            <span>Ztore Digital Official Partner Program &bull; ₹0 Joining Fee</span>
           </div>
 
           {/* Main Title */}
@@ -219,7 +219,7 @@ export default function EarnLandingPage() {
 
               <div className="text-[11px] text-rose-200/80 font-medium flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-green-400 shrink-0" />
-                <span>Example: ZTORE Base ₹299 + Your ₹{marginPerBundle} Markup = Buyer pays ₹{299 + marginPerBundle}</span>
+                <span>Example: Ztore Digital Base ₹299 + Your ₹{marginPerBundle} Markup = Buyer pays ₹{299 + marginPerBundle}</span>
               </div>
             </div>
 
@@ -270,7 +270,7 @@ export default function EarnLandingPage() {
             <span>Simple 4-Step Process</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-black text-[#111836]">
-            How ZTORE Reselling Works
+            How Ztore Digital Reselling Works
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 font-medium">
             No packaging, no courier delays, no inventory storage. Everything runs 100% digitally in 4 simple steps.
@@ -318,7 +318,7 @@ export default function EarnLandingPage() {
             </div>
             <h3 className="text-base font-black text-[#162048]">Instant UPI Cashout</h3>
             <p className="text-xs text-slate-500 leading-relaxed font-medium">
-              When a buyer purchases, ZTORE delivers the files automatically. Your markup is credited to your wallet & can be withdrawn to UPI anytime!
+              When a buyer purchases, Ztore Digital delivers the files automatically. Your markup is credited to your wallet & can be withdrawn to UPI anytime!
             </p>
           </div>
         </div>
@@ -330,7 +330,7 @@ export default function EarnLandingPage() {
       <section className="px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto pb-20">
         <div className="rounded-3xl bg-white border border-red-100 shadow-sm p-6 sm:p-8 space-y-6">
           <div className="text-center max-w-xl mx-auto space-y-1">
-            <span className="text-[10px] font-black uppercase tracking-wider text-[#dc2626]">Why ZTORE Reselling Wins</span>
+            <span className="text-[10px] font-black uppercase tracking-wider text-[#dc2626]">Why Ztore Digital Reselling Wins</span>
             <h2 className="text-xl sm:text-3xl font-black text-[#162048]">
               Compare with Traditional Dropshipping
             </h2>
@@ -342,7 +342,7 @@ export default function EarnLandingPage() {
                 <tr className="border-b border-red-100 text-slate-400 font-extrabold uppercase text-[10px]">
                   <th className="py-3 px-3">Business Factor</th>
                   <th className="py-3 px-3 text-red-500">Traditional Physical Dropshipping</th>
-                  <th className="py-3 px-3 text-green-700 bg-green-50/60 rounded-t-xl">ZTORE Digital Reselling</th>
+                  <th className="py-3 px-3 text-green-700 bg-green-50/60 rounded-t-xl">Ztore Digital Reselling</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-purple-50">
@@ -513,7 +513,7 @@ export default function EarnLandingPage() {
               Ready to Start Earning Today?
             </h2>
             <p className="text-xs sm:text-sm text-white/90 font-medium leading-relaxed">
-              Join 1,400+ Indian creators, marketers, and students making consistent daily income with ZTORE reseller links.
+              Join 1,400+ Indian creators, marketers, and students making consistent daily income with Ztore Digital reseller links.
             </p>
             <div className="pt-2">
               <Link

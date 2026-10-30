@@ -483,7 +483,7 @@ export default function SettingsIntegrations() {
                   </span>
                 </div>
                 <p className="text-xs text-slate-400 mt-1">
-                  Primary payment engine powering UPI (PhonePe, GPay, Paytm, CRED), Cards & NetBanking on ZTORE via Razorpay India.
+                  Primary payment engine powering UPI (PhonePe, GPay, Paytm, CRED), Cards & NetBanking on Ztore Digital via Razorpay India.
                 </p>
               </div>
 
@@ -982,7 +982,7 @@ export default function SettingsIntegrations() {
                   type="text"
                   value={mmcForm.tracking_id || ''}
                   onChange={(e) => setMmcForm({ ...mmcForm, tracking_id: e.target.value })}
-                  placeholder="e.g. MMC-ZTORE-01"
+                  placeholder="e.g. MMC-Ztore Digital-01"
                   className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono"
                 />
               </div>

@@ -808,7 +808,7 @@ export default function ResellerLandingBuilder({
                   <div>
                     <h4 className="text-xs font-black text-emerald-950">WhatsApp Customer Chat Button</h4>
                     <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed font-medium">
-                      Control the floating WhatsApp widget on your landing page. You can customize your own contact number, use ZTORE support, or remove it completely.
+                      Control the floating WhatsApp widget on your landing page. You can customize your own contact number, use Ztore Digital support, or remove it completely.
                     </p>
                   </div>
                 </div>
@@ -862,7 +862,7 @@ export default function ResellerLandingBuilder({
                         />
                       </div>
                       <p className="text-[10px] text-slate-500 mt-1.5 font-medium leading-relaxed">
-                        💡 <strong>Smart Fallback:</strong> If you leave this empty, buyers will be connected to the ZTORE 24/7 Store Support desk (<strong className="text-slate-800">+91 9072850100</strong>) who will assist the customer and close the sale for you!
+                        💡 <strong>Smart Fallback:</strong> If you leave this empty, buyers will be connected to the Ztore Digital 24/7 Store Support desk (<strong className="text-slate-800">+91 9072850100</strong>) who will assist the customer and close the sale for you!
                       </p>
                     </div>
                   </div>
@@ -900,7 +900,7 @@ export default function ResellerLandingBuilder({
                 {/* Header Badge */}
                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
                   <span className="text-[10px] text-white/60 font-bold">⚡ Instant Google Drive Download</span>
-                  <span className="text-[10px] font-bold text-rose-400">ZTORE Verified</span>
+                  <span className="text-[10px] font-bold text-rose-400">Ztore Digital Verified</span>
                 </div>
 
                 {/* Media & Badge */}
@@ -998,7 +998,7 @@ export default function ResellerLandingBuilder({
 
                 {/* Seller Disclosure */}
                 <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 text-[9px] text-center text-white/40">
-                  Authorized ZTORE Reseller Listing • Instant Cloud Delivery
+                  Authorized Ztore Digital Reseller Listing • Instant Cloud Delivery
                 </div>
 
                 {/* Floating WhatsApp Live Preview Badge */}
@@ -1009,7 +1009,7 @@ export default function ResellerLandingBuilder({
                       <span>WhatsApp Chat Badge: Active</span>
                     </span>
                     <span className="text-[10px] text-white/60">
-                      {whatsappNumber ? `+91 ${whatsappNumber}` : 'ZTORE (+91 9072850100)'}
+                      {whatsappNumber ? `+91 ${whatsappNumber}` : 'Ztore Digital (+91 9072850100)'}
                     </span>
                   </div>
                 )}

@@ -12,7 +12,7 @@ interface MaintenanceGateProps {
 
 export default function MaintenanceGate({
   message = 'Our store is undergoing scheduled performance upgrades. We will be back online shortly!',
-  storeName = 'ZTORE',
+  storeName = 'Ztore Digital',
   supportEmail = 'ztoredigital@gmail.com',
 }: MaintenanceGateProps) {
   const [isChecking, setIsChecking] = useState(false);

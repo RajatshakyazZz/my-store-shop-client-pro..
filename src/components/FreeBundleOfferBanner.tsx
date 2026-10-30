@@ -57,7 +57,7 @@ export default function FreeBundleOfferBanner({
           }}
           alt={
             freeBundleOffer?.headline ||
-            `ZTORE Neon Reels Bundle Sale - Get ${freeQty} Free Bundles on Min ₹${minCart} Payment`
+            `Ztore Digital Neon Reels Bundle Sale - Get ${freeQty} Free Bundles on Min ₹${minCart} Payment`
           }
           width={1280}
           height={480}

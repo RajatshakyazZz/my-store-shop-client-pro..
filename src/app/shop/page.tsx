@@ -180,7 +180,7 @@ function ShopContent() {
   const itemListJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'ZTORE Reels Bundles',
+    name: 'Ztore Digital Reels Bundles',
     numberOfItems: filteredBundles.length,
     itemListElement: paginatedBundles.map((b, idx) => ({
       '@type': 'ListItem',

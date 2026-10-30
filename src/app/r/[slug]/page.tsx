@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: ResellerPageProps): Promise<M
 
   if (!listing || listing.status === 'archived') {
     return {
-      title: 'Product Not Found | ZTORE',
+      title: 'Product Not Found | Ztore Digital',
       description: 'The requested product listing is currently unavailable.',
       robots: { index: false, follow: false },
     };
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: ResellerPageProps): Promise<M
 
   if (listing.status !== 'active') {
     return {
-      title: `${listing.customTitle} (Unavailable) | ZTORE`,
+      title: `${listing.customTitle} (Unavailable) | Ztore Digital`,
       description: 'This product listing is temporarily paused by the seller.',
       robots: { index: false, follow: false },
     };
@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: ResellerPageProps): Promise<M
       url: canonicalUrl,
       title,
       description,
-      siteName: 'ZTORE',
+      siteName: 'Ztore Digital',
       images: [
         {
           url: imageUrl,

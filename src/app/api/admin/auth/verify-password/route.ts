@@ -35,7 +35,7 @@ export async function POST(request: Request) {
           success: true,
           token: 'vaultworld_admin_token',
           admin: {
-            name: 'ZTORE Administrator',
+            name: 'Ztore Digital Administrator',
             email: 'ztoredigital@gmail.com',
             role: 'SuperAdmin',
           },

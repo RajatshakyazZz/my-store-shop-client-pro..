@@ -185,7 +185,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
           <div>
             <h2 className="text-xl font-black text-[#162048]">Step 1: Confirm Base Product</h2>
             <p className="text-xs text-slate-500 mt-1">
-              Verify the underlying reels bundle. ZTORE automatically handles secure file delivery to your buyers.
+              Verify the underlying reels bundle. Ztore Digital automatically handles secure file delivery to your buyers.
             </p>
           </div>
 
@@ -535,7 +535,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
               {/* WhatsApp */}
               <a
                 href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                  `Check out ${createdListing.customTitle} on ZTORE!\nInstant Download: ${shareUrl}`
+                  `Check out ${createdListing.customTitle} on Ztore Digital!\nInstant Download: ${shareUrl}`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"

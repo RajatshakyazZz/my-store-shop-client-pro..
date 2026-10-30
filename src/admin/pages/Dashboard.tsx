@@ -179,7 +179,7 @@ export default function Dashboard() {
             Store Performance Overview
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 font-medium mt-0.5">
-            Real-time sales, fulfillment, and revenue metrics for ZTORE
+            Real-time sales, fulfillment, and revenue metrics for Ztore Digital
           </p>
         </div>
 

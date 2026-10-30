@@ -145,7 +145,7 @@ export default function ResellerLayout({ children }: { children: React.ReactNode
                   </div>
                   <div className="min-w-0 flex-1">
                     <h4 className="text-xs font-black text-[#162048] truncate">
-                      {profile?.displayName || 'ZTORE Reseller'}
+                      {profile?.displayName || 'Ztore Digital Reseller'}
                     </h4>
                     <p className="text-[11px] text-slate-400 truncate">{user?.email}</p>
                   </div>

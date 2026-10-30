@@ -39,7 +39,7 @@ export const BUILTIN_COUPONS: Record<string, CouponRule> = {
     amount: 20,
     is_active: true,
     expiry_date: '2026-12-31',
-    description: '20% off ZTORE launch discount',
+    description: '20% off Ztore Digital launch discount',
   },
   FLAT50: {
     code: 'FLAT50',

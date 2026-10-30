@@ -100,7 +100,7 @@ const PRESETS = [
 
 const GRADIENT_THEMES: Record<string, { label: string; class: string; border: string; highlight: string; glow: string }> = {
   luxury_red: {
-    label: 'Luxury Velvet Red (ZTORE Default)',
+    label: 'Luxury Velvet Red (Ztore Digital Default)',
     class: 'bg-gradient-to-r from-[#1a0507] via-[#2d0a0f] to-[#140305]',
     border: 'border-red-500/20',
     highlight: 'text-rose-300 decoration-rose-400/50',

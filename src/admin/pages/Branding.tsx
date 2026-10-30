@@ -17,7 +17,7 @@ export default function Branding() {
   });
 
   const [form, setForm] = useState<StoreBranding>({
-    store_name: 'ZTORE',
+    store_name: 'Ztore Digital',
     tagline: 'Premium Reels for Your Growth',
     logo_url: '/logo.png',
     favicon_url: '/favicon.ico',

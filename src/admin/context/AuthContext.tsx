@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setAdmin(parsed);
         } catch {
           setAdmin({
-            name: 'ZTORE Administrator',
+            name: 'Ztore Digital Administrator',
             email: 'ztoredigital@gmail.com',
             role: 'SuperAdmin',
             source: 'portal-key',
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       } else {
         setAdmin({
-          name: 'ZTORE Administrator',
+          name: 'Ztore Digital Administrator',
           email: 'ztoredigital@gmail.com',
           role: 'SuperAdmin',
           source: 'portal-key',
@@ -97,7 +97,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const data = await res.json();
         if (data.success) {
           const profile: AdminProfile = data.admin || {
-            name: 'ZTORE Administrator',
+            name: 'Ztore Digital Administrator',
             email: 'ztoredigital@gmail.com',
             role: 'SuperAdmin',
             source: 'portal-key',
@@ -137,7 +137,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       cleanPass === 'vaultzet@2026'
     ) {
       const profile: AdminProfile = {
-        name: 'ZTORE Administrator',
+        name: 'Ztore Digital Administrator',
         email: 'ztoredigital@gmail.com',
         role: 'SuperAdmin',
         source: 'portal-key',
@@ -168,7 +168,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await portalApi.verifyKey(key);
       if (res.valid) {
         const profile: AdminProfile = {
-          name: res.user || 'ZTORE Administrator',
+          name: res.user || 'Ztore Digital Administrator',
           email: 'ztoredigital@gmail.com',
           role: (res.role as AdminRole) || 'SuperAdmin',
           source: 'portal-key',

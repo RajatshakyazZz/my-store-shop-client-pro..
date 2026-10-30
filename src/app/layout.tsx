@@ -24,8 +24,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'ZTORE | Buy Viral Reels Bundles in India – 222,000+ Ready-to-Post Reels',
-    template: '%s | ZTORE',
+    default: 'Ztore Digital | Buy Viral Reels Bundles in India – 222,000+ Ready-to-Post Reels',
+    template: '%s | Ztore Digital',
   },
   description:
     'Download 222,000+ viral ready-to-post vertical reels bundles for Instagram Reels, YouTube Shorts & Facebook across 129+ niches. Zero watermarks, commercial & reseller rights, and instant Google Drive access.',
@@ -44,9 +44,9 @@ export const metadata: Metadata = {
     'digital products resell india',
     'watermark free reels download',
   ],
-  authors: [{ name: 'ZTORE', url: SITE_URL }],
-  creator: 'ZTORE',
-  publisher: 'ZTORE',
+  authors: [{ name: 'Ztore Digital', url: SITE_URL }],
+  creator: 'Ztore Digital',
+  publisher: 'Ztore Digital',
   alternates: {
     canonical: SITE_URL,
   },
@@ -65,21 +65,21 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_IN',
     url: SITE_URL,
-    siteName: 'ZTORE',
-    title: 'ZTORE | 222,000+ Viral Reels Bundles – Instant Download',
+    siteName: 'Ztore Digital',
+    title: 'Ztore Digital | 222,000+ Viral Reels Bundles – Instant Download',
     description:
       'Over 222,000+ vertical HD reels across 129+ niches with zero watermarks & full commercial rights. Instant Google Drive delivery.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ZTORE | Viral Reels Bundles – Instant Google Drive Access',
+    title: 'Ztore Digital | Viral Reels Bundles – Instant Google Drive Access',
     description:
       'Grow faster on Instagram & YouTube Shorts with 222,000+ ready-to-post HD reels bundles.',
   },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'ZTORE',
+    title: 'Ztore Digital',
   },
   icons: {
     icon: [
@@ -110,7 +110,7 @@ export default function RootLayout({
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
         url: SITE_URL,
-        name: 'ZTORE',
+        name: 'Ztore Digital',
         description:
           'India’s #1 marketplace for ready-to-post viral Instagram Reels & YouTube Shorts bundles with instant Google Drive delivery.',
         potentialAction: {
@@ -122,7 +122,7 @@ export default function RootLayout({
       {
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
-        name: 'ZTORE',
+        name: 'Ztore Digital',
         url: SITE_URL,
         logo: `${SITE_URL}/logo.webp`,
         sameAs: [],
