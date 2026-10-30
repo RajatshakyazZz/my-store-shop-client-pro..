@@ -268,12 +268,16 @@ export default function Footer() {
               Privacy Policy
             </Link>
             <span className="text-slate-300">•</span>
-            <Link href="/refund-policy" prefetch={false} className="hover:text-amber-600 transition-colors">
-              Refund Policy
+            <Link href="/terms-and-conditions" prefetch={false} className="hover:text-amber-600 transition-colors">
+              Terms &amp; Conditions
             </Link>
             <span className="text-slate-300">•</span>
-            <Link href="/terms-and-conditions" prefetch={false} className="hover:text-amber-600 transition-colors">
-              Terms & Conditions
+            <Link href="/refund-policy" prefetch={false} className="hover:text-amber-600 transition-colors">
+              Refund &amp; Cancellation Policy
+            </Link>
+            <span className="text-slate-300">•</span>
+            <Link href="/shipping-policy" prefetch={false} className="hover:text-amber-600 transition-colors">
+              Shipping &amp; Delivery Policy
             </Link>
             <span className="text-slate-300">•</span>
             <Link href="/contact-us" prefetch={false} className="hover:text-amber-600 transition-colors">
