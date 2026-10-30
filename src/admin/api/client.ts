@@ -96,8 +96,8 @@ export function sanitizePayload<T>(input: T): T {
 
 const initialTelegram: TelegramConfig = {
   enabled: true,
-  bot_token: '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA',
-  admin_chat_ids: '7483268297, 5950203511, 6206169480',
+  bot_token: '',
+  admin_chat_ids: '',
   new_order_alert: true,
   product_alert: true,
   daily_summary_alert: true,
@@ -576,9 +576,8 @@ class PortalApiClient {
       let botToken =
         (typeof process !== 'undefined' &&
           ((process.env as any).NEXT_PUBLIC_TELEGRAM_BOT_TOKEN ||
-            (process.env as any).TELEGRAM_BOT_TOKEN)) ||
-        '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
-      let targetChatIds = ['7483268297', '5950203511', '6206169480'];
+            (process.env as any).TELEGRAM_BOT_TOKEN)) || '';
+      let targetChatIds: string[] = [];
       let alertEnabled = true;
 
       try {
@@ -592,7 +591,7 @@ class PortalApiClient {
         }
       } catch {}
 
-      if (alertEnabled) {
+      if (alertEnabled && botToken && targetChatIds.length > 0) {
         // 1. Dispatch via server API
         fetch('/api/telegram/notify', {
           method: 'POST',
@@ -613,15 +612,14 @@ class PortalApiClient {
         }).catch((e) => console.warn('Telegram notify API error:', e));
 
         // 2. Direct Bot dispatch fallback
-        if (targetChatIds.length > 0) {
-          const istTime = new Date().toLocaleString('en-IN', {
-            timeZone: 'Asia/Kolkata',
-            dateStyle: 'medium',
-            timeStyle: 'medium',
-          });
-          const siteOrigin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop');
-          const productUrl = `${siteOrigin}/product/${newProduct.slug}`;
-          const telegramText = `🚀📦 <b>NEW PRODUCT UPLOADED TO STORE!</b> ✨🔥
+        const istTime = new Date().toLocaleString('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          dateStyle: 'medium',
+          timeStyle: 'medium',
+        });
+        const siteOrigin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || '');
+        const productUrl = `${siteOrigin}/product/${newProduct.slug}`;
+        const telegramText = `🚀📦 <b>NEW PRODUCT UPLOADED TO STORE!</b> ✨🔥
 ━━━━━━━━━━━━━━━━━━━━━━
 
 🏷️ <b>Bundle Name:</b> <b>${newProduct.name}</b>
@@ -633,29 +631,27 @@ class PortalApiClient {
 🕒 <b>Uploaded At (IST):</b> ${istTime}
 ━━━━━━━━━━━━━━━━━━━━━━`;
 
-          await Promise.allSettled(
-            targetChatIds.map((chatId) =>
-              fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  chat_id: chatId,
-                  text: telegramText,
-                  parse_mode: 'HTML',
-                  disable_web_page_preview: true,
-                  reply_markup: {
-                    inline_keyboard: [[{ text: '🔗 View New Bundle on VaultWorld Store', url: productUrl }]],
-                  },
-                }),
-              })
-            )
-          );
-        }
+        await Promise.allSettled(
+          targetChatIds.map((chatId) =>
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                chat_id: chatId,
+                text: telegramText,
+                parse_mode: 'HTML',
+                disable_web_page_preview: true,
+                reply_markup: {
+                  inline_keyboard: [[{ text: '🔗 View New Bundle on Store', url: productUrl }]],
+                },
+              }),
+            })
+          )
+        );
       }
     } catch (tgErr) {
       console.warn('Telegram product upload alert error:', tgErr);
     }
-
     await logAdminAction({
       adminEmail: 'admin@vaultzet.com',
       action: 'CREATE_PRODUCT',
@@ -2834,12 +2830,19 @@ class PortalApiClient {
 
   async testTelegramAlert(): Promise<{ success: boolean; message: string }> {
     const tg = await this.getTelegramConfig();
-    const token = tg.bot_token?.trim() || initialTelegram.bot_token;
-    const rawIds = tg.admin_chat_ids?.trim() || initialTelegram.admin_chat_ids;
+    const token = tg.bot_token?.trim() || '';
+    const rawIds = tg.admin_chat_ids?.trim() || '';
     const targetChatIds = rawIds
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean);
+
+    if (!token || targetChatIds.length === 0) {
+      return {
+        success: false,
+        message: 'Please configure Bot Token and at least one Admin Chat ID in settings first.',
+      };
+    }
 
     // 1. Try server-side test dispatch first
     try {
@@ -2865,7 +2868,7 @@ class PortalApiClient {
       timeStyle: 'medium',
     });
 
-    const msg = `⚡🔔 <b>VAULTWORLD STORE — TELEGRAM BOT TEST ALERT</b> 🚀
+    const msg = `⚡🔔 <b>ZTORE DIGITAL STORE — TELEGRAM BOT TEST ALERT</b> 🚀
 ━━━━━━━━━━━━━━━━━━━━━━
 ✅ <b>Bot Connection:</b> Active & Verified
 📱 <b>Admin Chat IDs:</b> ${targetChatIds.join(', ')}

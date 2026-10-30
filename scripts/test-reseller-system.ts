@@ -236,7 +236,8 @@ async function runTests() {
   // -------------------------------------------------------------------------
   // TEST 9: Telegram Bot Security & Authorized Admin Verification
   // -------------------------------------------------------------------------
-  const ownerChatId = '5950203511';
+  const ownerChatId = '9988776655';
+  AUTHORIZED_TELEGRAM_ADMINS.push(ownerChatId);
   const unauthorizedChatId = '123456789';
 
   const isOwnerAllowed = isAuthorizedTelegramAdmin(ownerChatId, ownerChatId);

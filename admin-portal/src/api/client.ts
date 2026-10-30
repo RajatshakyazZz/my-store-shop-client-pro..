@@ -380,17 +380,33 @@ class PortalApiClient {
       }
     }
 
-    // Dispatch Instant Telegram Alert to Owner (Chat ID: 5950203511)
+    // Dispatch Instant Telegram Alert to Admins if configured in store settings
     try {
-      const botToken = '8995964034:AAHo5Sy8ziH00VzNvY8G33oAAc2m9ZT77jQ';
-      const ownerChatId = '5950203511';
-      const istTime = new Date().toLocaleString('en-IN', {
-        timeZone: 'Asia/Kolkata',
-        dateStyle: 'medium',
-        timeStyle: 'medium',
-      });
-      const productUrl = `https://vaultzet.shop/product/${newProduct.slug}`;
-      const telegramText = `🚀📦 <b>NEW PRODUCT UPLOADED TO STORE!</b> ✨🔥
+      let botToken = '';
+      let targetChatIds: string[] = [];
+
+      if (db) {
+        try {
+          const snap = await getDoc(doc(db, 'store_settings', 'telegram'));
+          if (snap.exists()) {
+            const data = snap.data();
+            botToken = String(data.bot_token || '').trim();
+            targetChatIds = String(data.admin_chat_ids || '')
+              .split(',')
+              .map((s: string) => s.trim())
+              .filter(Boolean);
+          }
+        } catch {}
+      }
+
+      if (botToken && targetChatIds.length > 0) {
+        const istTime = new Date().toLocaleString('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          dateStyle: 'medium',
+          timeStyle: 'medium',
+        });
+        const productUrl = `/product/${newProduct.slug}`;
+        const telegramText = `🚀📦 <b>NEW PRODUCT UPLOADED TO STORE!</b> ✨🔥
 ━━━━━━━━━━━━━━━━━━━━━━
 
 🏷️ <b>Bundle Name:</b> <b>${newProduct.name}</b>
@@ -402,19 +418,22 @@ class PortalApiClient {
 🕒 <b>Uploaded At (IST):</b> ${istTime}
 ━━━━━━━━━━━━━━━━━━━━━━`;
 
-      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: ownerChatId,
-          text: telegramText,
-          parse_mode: 'HTML',
-          disable_web_page_preview: true,
-          reply_markup: {
-            inline_keyboard: [[{ text: '🔗 View New Bundle on Vaultzet Store', url: productUrl }]],
-          },
-        }),
-      });
+        for (const chatId of targetChatIds) {
+          await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: chatId,
+              text: telegramText,
+              parse_mode: 'HTML',
+              disable_web_page_preview: true,
+              reply_markup: {
+                inline_keyboard: [[{ text: '🔗 View New Bundle on Store', url: productUrl }]],
+              },
+            }),
+          }).catch(() => {});
+        }
+      }
     } catch (tgErr) {
       console.warn('Telegram product upload alert error:', tgErr);
     }

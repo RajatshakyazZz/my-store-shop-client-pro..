@@ -17,7 +17,7 @@ import { ResellerProfile, WithdrawalRequest } from '@/types/reseller';
 
 export { AUTHORIZED_TELEGRAM_ADMINS };
 
-// Allowed Telegram User IDs (Owner / Admin: 5950203511 and 6206169480)
+// Allowed Telegram Admin User IDs (dynamically loaded from store settings)
 export function getAuthorizedTelegramUserIds(): string[] {
   const envList = process.env.TELEGRAM_ALLOWED_USER_IDS
     ? process.env.TELEGRAM_ALLOWED_USER_IDS.split(',').map((s) => s.trim())

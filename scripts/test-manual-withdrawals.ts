@@ -346,7 +346,11 @@ async function runTests() {
 
   // Test interactive action handlers from Telegram
   // 1. View request
-  const viewRes = await handleTelegramWithdrawalView('5950203511', undefined, req1.id);
+  const testAdmin1 = '9988776655';
+  const testAdmin2 = '9988776656';
+  AUTHORIZED_TELEGRAM_ADMINS.push(testAdmin1, testAdmin2);
+
+  const viewRes = await handleTelegramWithdrawalView(testAdmin1, undefined, req1.id);
   testAssert(typeof viewRes === 'boolean', '10E: handleTelegramWithdrawalView renders full detail view');
 
   // 2. Unauthorized callback blocked
@@ -359,9 +363,9 @@ async function runTests() {
   );
   testAssert(unauthRes === true, '10F: Unauthorized Telegram user callback strictly intercepted and denied');
 
-  // 3. Authorized callback allowed (5950203511 and 6206169480)
-  testAssert(isAuthorizedTelegramAdmin('5950203511') === true, '10G: Whitelisted admin 5950203511 recognized');
-  testAssert(isAuthorizedTelegramAdmin('6206169480') === true, '10H: Whitelisted admin 6206169480 recognized');
+  // 3. Authorized callback allowed
+  testAssert(isAuthorizedTelegramAdmin(testAdmin1) === true, '10G: Configured admin 1 recognized');
+  testAssert(isAuthorizedTelegramAdmin(testAdmin2) === true, '10H: Configured admin 2 recognized');
 
   // ---------------------------------------------------------------------------
   // SUMMARY

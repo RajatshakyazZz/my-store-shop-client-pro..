@@ -18,7 +18,8 @@ export function sanitizeOfferBannerUrl(url?: string): string {
   const trimmed = String(url).trim();
   if (
     trimmed === '/banner-free-bundles.png' ||
-    trimmed.includes('Vaultzet-Neon-Reels-Bundle-Sale')
+    trimmed.includes('Vaultzet-Neon-Reels-Bundle-Sale') ||
+    trimmed.toLowerCase().includes('vaultzet')
   ) {
     return '';
   }
@@ -40,11 +41,20 @@ export function isMegaAllAccessBundle(item: any): boolean {
     id.startsWith('plan-') ||
     id.includes('all-bundles') ||
     id.includes('all_bundles') ||
+    id.includes('all-access') ||
+    id.includes('all_access') ||
+    id.includes('mega-bundle') ||
     slug.includes('all-bundles') ||
+    slug.includes('all-access') ||
+    slug.includes('mega-bundle') ||
     slug === 'all-bundles-personal-use' ||
     slug === 'all-bundles-reseller-rights' ||
     title.includes('all bundles') ||
     title.includes('all-access') ||
+    title.includes('all access') ||
+    title.includes('mega bundle') ||
+    (title.includes('all') && title.includes('personal')) ||
+    (title.includes('all') && title.includes('reseller')) ||
     catSlug === 'all-access' ||
     Boolean(item.isAllAccess)
   );
