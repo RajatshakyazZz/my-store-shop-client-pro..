@@ -205,7 +205,7 @@ export async function createPayUPaymentPayload(
     .replace(/[^a-zA-Z0-9\s]/g, '') || 'Customer';
   const cleanEmail = (params.customer.email || 'customer@gmail.com').trim().toLowerCase().slice(0, 80);
   const cleanPhone = (params.customer.phone || '9999999999').replace(/\D/g, '').slice(-10);
-  const cleanProductInfo = (params.productInfo || 'MYZTORE Digital Bundle')
+  const cleanProductInfo = (params.productInfo || 'ZTORE Digital Bundle')
     .trim()
     .slice(0, 100)
     .replace(/[^a-zA-Z0-9\s_-]/g, ' ') || 'Digital Bundle';

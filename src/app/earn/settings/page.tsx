@@ -275,7 +275,7 @@ export default function ResellerSettingsPage() {
         <div className="p-6 rounded-3xl bg-white border border-red-100 shadow-xs space-y-2 text-xs">
           <h3 className="font-bold text-[#162048]">Reseller Policy & Payout Terms</h3>
           <p className="text-gray-500 text-[11px] leading-relaxed">
-            MYZTORE operates on a transparent gross-margin payout policy. You set your custom resale price above the official base price and receive 100% of that margin upon verified customer payment. Payouts are made directly to your provided UPI or Bank account with minimum ₹200 threshold.
+            ZTORE operates on a transparent gross-margin payout policy. You set your custom resale price above the official base price and receive 100% of that margin upon verified customer payment. Payouts are made directly to your provided UPI or Bank account with minimum ₹200 threshold.
           </p>
         </div>
 

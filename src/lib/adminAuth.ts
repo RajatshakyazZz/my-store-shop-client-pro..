@@ -29,7 +29,7 @@ export function isAuthorizedAdmin(request: Request): boolean {
   const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
   const isAuthorizedHost =
     isLocalhost ||
-    host.includes('myztore.shop') ||
+    host.includes('ztore.shop') ||
     host.includes('vaultworld.shop') ||
     host.includes('vaultzet.shop') ||
     host.includes('adminp.vaultzet.shop') ||
@@ -39,7 +39,7 @@ export function isAuthorizedAdmin(request: Request): boolean {
     !origin ||
     origin.includes('localhost') ||
     origin.includes('127.0.0.1') ||
-    origin.includes('myztore.shop') ||
+    origin.includes('ztore.shop') ||
     origin.includes('vaultworld.shop') ||
     origin.includes('vaultzet.shop') ||
     origin.includes('adminp.vaultzet.shop') ||
@@ -50,7 +50,7 @@ export function isAuthorizedAdmin(request: Request): boolean {
     referer.includes('/admin') ||
     referer.includes('/asdf') ||
     referer.includes('localhost') ||
-    referer.includes('myztore.shop') ||
+    referer.includes('ztore.shop') ||
     referer.includes('vaultworld.shop') ||
     referer.includes('vaultzet.shop') ||
     referer.includes('adminp.vaultzet.shop') ||

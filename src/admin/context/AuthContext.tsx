@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setAdmin(parsed);
         } catch {
           setAdmin({
-            name: 'MYZTORE Administrator',
+            name: 'ZTORE Administrator',
             email: 'ztoredigital@gmail.com',
             role: 'SuperAdmin',
             source: 'portal-key',
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       } else {
         setAdmin({
-          name: 'MYZTORE Administrator',
+          name: 'ZTORE Administrator',
           email: 'ztoredigital@gmail.com',
           role: 'SuperAdmin',
           source: 'portal-key',
@@ -97,7 +97,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const data = await res.json();
         if (data.success) {
           const profile: AdminProfile = data.admin || {
-            name: 'MYZTORE Administrator',
+            name: 'ZTORE Administrator',
             email: 'ztoredigital@gmail.com',
             role: 'SuperAdmin',
             source: 'portal-key',
@@ -128,16 +128,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         (process.env.NEXT_PUBLIC_ADMIN_PASSWORD ||
           (process.env as any).ADMIN_PASSWORD ||
           (process.env as any).VITE_ADMIN_PASSWORD)) ||
-      'myztore@2026';
+      'ztore@2026';
 
     if (
       (configuredPassword && cleanPass === configuredPassword) ||
-      cleanPass === 'myztore@2026' ||
+      cleanPass === 'ztore@2026' ||
       cleanPass === 'vaultworld@2026' ||
       cleanPass === 'vaultzet@2026'
     ) {
       const profile: AdminProfile = {
-        name: 'MYZTORE Administrator',
+        name: 'ZTORE Administrator',
         email: 'ztoredigital@gmail.com',
         role: 'SuperAdmin',
         source: 'portal-key',
@@ -168,7 +168,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await portalApi.verifyKey(key);
       if (res.valid) {
         const profile: AdminProfile = {
-          name: res.user || 'MYZTORE Administrator',
+          name: res.user || 'ZTORE Administrator',
           email: 'ztoredigital@gmail.com',
           role: (res.role as AdminRole) || 'SuperAdmin',
           source: 'portal-key',

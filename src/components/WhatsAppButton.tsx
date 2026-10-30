@@ -70,7 +70,7 @@ export default function WhatsAppButton({
     cleanPhone = '91' + cleanPhone.slice(1);
   }
 
-  const effectiveStoreName = storeName || settings?.storeName || 'MYZTORE';
+  const effectiveStoreName = storeName || settings?.storeName || 'ZTORE';
   const effectiveDefaultMessage = defaultMessage || settings?.whatsappDefaultMessage;
 
   // Determine intelligent positioning based on current route
@@ -133,7 +133,7 @@ export default function WhatsAppButton({
   const QUICK_PROMPTS = [
     { label: '⚡ How to download reels after purchase?', text: 'Hi! How do I get Google Drive access immediately after paying?' },
     { label: '📦 Is commercial & resale license included?', text: 'Hi! Can I resell or post these reels on Instagram/YouTube without copyright issues?' },
-    { label: '🤝 Help me with Resell & Earn setup', text: 'Hi! I want to earn with MYZTORE Resell & Earn. How do I start?' },
+    { label: '🤝 Help me with Resell & Earn setup', text: 'Hi! I want to earn with ZTORE Resell & Earn. How do I start?' },
   ];
 
   return (

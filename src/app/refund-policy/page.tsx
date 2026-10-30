@@ -14,7 +14,7 @@ export default function RefundPolicyPage() {
 
           <h2 className="text-lg font-bold text-[#182247]">1. Nature of Digital Products</h2>
           <p>
-            All products sold on MYZTORE are downloadable digital goods (video reels files, bundles, and media packs) delivered instantaneously via cloud storage links (Google Drive).
+            All products sold on ZTORE are downloadable digital goods (video reels files, bundles, and media packs) delivered instantaneously via cloud storage links (Google Drive).
           </p>
 
           <h2 className="text-lg font-bold text-[#182247]">2. Refund Policy</h2>

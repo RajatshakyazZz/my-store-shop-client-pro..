@@ -20,12 +20,12 @@ export async function POST(request: Request) {
     const configuredPassword = (
       process.env.ADMIN_PASSWORD ||
       process.env.NEXT_PUBLIC_ADMIN_PASSWORD ||
-      'myztore@2026'
+      'ztore@2026'
     ).trim();
 
     const isValid =
       (configuredPassword && pass === configuredPassword) ||
-      pass === 'myztore@2026' ||
+      pass === 'ztore@2026' ||
       pass === 'vaultworld@2026' ||
       pass === 'vaultzet@2026';
 
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
           success: true,
           token: 'vaultworld_admin_token',
           admin: {
-            name: 'MYZTORE Administrator',
+            name: 'ZTORE Administrator',
             email: 'ztoredigital@gmail.com',
             role: 'SuperAdmin',
           },

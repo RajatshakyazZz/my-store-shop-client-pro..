@@ -15,7 +15,7 @@ export default function StoreSetup() {
   });
 
   const [form, setForm] = useState<StoreSetupConfig>({
-    store_name: 'MYZTORE',
+    store_name: 'ZTORE',
     contact_email: 'ztoredigital@gmail.com',
     support_whatsapp: '+91 9072850100',
     currency: 'INR',

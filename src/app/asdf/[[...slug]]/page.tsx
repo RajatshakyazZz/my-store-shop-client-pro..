@@ -4,8 +4,8 @@ import AdminClientView from './AdminClientView';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'MYZTORE Command Center | Admin Portal',
-  description: 'MYZTORE Management & Command Center',
+  title: 'ZTORE Command Center | Admin Portal',
+  description: 'ZTORE Management & Command Center',
   robots: {
     index: false,
     follow: false,

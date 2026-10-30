@@ -6,7 +6,7 @@ import StoreLayoutShell from '@/components/StoreLayoutShell';
 import AnalyticsTracker from '@/components/AnalyticsTracker';
 import MetaPixelTracker from '@/components/MetaPixelTracker';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://myztore.shop';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://ztore.shop';
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || '';
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || '';
 const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION || '';
@@ -24,14 +24,14 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'MYZTORE | Buy Viral Reels Bundles in India – 222,000+ Ready-to-Post Reels',
-    template: '%s | MYZTORE',
+    default: 'ZTORE | Buy Viral Reels Bundles in India – 222,000+ Ready-to-Post Reels',
+    template: '%s | ZTORE',
   },
   description:
     'Download 222,000+ viral ready-to-post vertical reels bundles for Instagram Reels, YouTube Shorts & Facebook across 129+ niches. Zero watermarks, commercial & reseller rights, and instant Google Drive access.',
   keywords: [
-    'myztore',
-    'myztore store',
+    'ztore',
+    'ztore store',
     'vaultzet',
     'viral reels bundle',
     'ai reels bundle',
@@ -44,9 +44,9 @@ export const metadata: Metadata = {
     'digital products resell india',
     'watermark free reels download',
   ],
-  authors: [{ name: 'MYZTORE', url: SITE_URL }],
-  creator: 'MYZTORE',
-  publisher: 'MYZTORE',
+  authors: [{ name: 'ZTORE', url: SITE_URL }],
+  creator: 'ZTORE',
+  publisher: 'ZTORE',
   alternates: {
     canonical: SITE_URL,
   },
@@ -65,21 +65,21 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_IN',
     url: SITE_URL,
-    siteName: 'MYZTORE',
-    title: 'MYZTORE | 222,000+ Viral Reels Bundles – Instant Download',
+    siteName: 'ZTORE',
+    title: 'ZTORE | 222,000+ Viral Reels Bundles – Instant Download',
     description:
       'Over 222,000+ vertical HD reels across 129+ niches with zero watermarks & full commercial rights. Instant Google Drive delivery.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MYZTORE | Viral Reels Bundles – Instant Google Drive Access',
+    title: 'ZTORE | Viral Reels Bundles – Instant Google Drive Access',
     description:
       'Grow faster on Instagram & YouTube Shorts with 222,000+ ready-to-post HD reels bundles.',
   },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'MYZTORE',
+    title: 'ZTORE',
   },
   icons: {
     icon: [
@@ -110,7 +110,7 @@ export default function RootLayout({
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
         url: SITE_URL,
-        name: 'MYZTORE',
+        name: 'ZTORE',
         description:
           'India’s #1 marketplace for ready-to-post viral Instagram Reels & YouTube Shorts bundles with instant Google Drive delivery.',
         potentialAction: {
@@ -122,7 +122,7 @@ export default function RootLayout({
       {
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
-        name: 'MYZTORE',
+        name: 'ZTORE',
         url: SITE_URL,
         logo: `${SITE_URL}/logo.webp`,
         sameAs: [],

@@ -13,7 +13,7 @@ export default function HomePage() {
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'MYZTORE',
+    name: 'ZTORE',
     url: siteUrl,
     logo: `${siteUrl}/icon.png`,
     description: "India's leading marketplace for viral ready-to-post vertical reels bundles with commercial rights.",
@@ -32,7 +32,7 @@ export default function HomePage() {
   const websiteJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'MYZTORE',
+    name: 'ZTORE',
     url: siteUrl,
     potentialAction: {
       '@type': 'SearchAction',

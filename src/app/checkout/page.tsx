@@ -693,7 +693,7 @@ function CheckoutContent() {
         key: data.key_id,
         amount: data.amount,
         currency: data.currency || 'INR',
-        name: 'MYZTORE',
+        name: 'ZTORE',
         description: allCheckoutItems[0]?.product?.title || 'Viral Reels Bundle - Instant Download',
         image: '/logo.png',
         order_id: data.razorpay_order_id,

@@ -185,7 +185,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
           <div>
             <h2 className="text-xl font-black text-[#162048]">Step 1: Confirm Base Product</h2>
             <p className="text-xs text-slate-500 mt-1">
-              Verify the underlying reels bundle. MYZTORE automatically handles secure file delivery to your buyers.
+              Verify the underlying reels bundle. ZTORE automatically handles secure file delivery to your buyers.
             </p>
           </div>
 
@@ -415,7 +415,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
           {/* Realistic Landing Preview Box */}
           <div className="rounded-2xl border-2 border-red-200 overflow-hidden shadow-sm bg-white">
             <div className="p-3 bg-red-50 border-b border-red-100 flex items-center justify-between text-[11px] text-gray-500">
-              <span className="font-bold">Landing URL: https://myztore.shop/r/your-slug</span>
+              <span className="font-bold">Landing URL: https://ztore.shop/r/your-slug</span>
               <span className="text-green-600 font-bold flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>SSL Secured</span>
@@ -535,7 +535,7 @@ export default function CreateListingWizard({ params }: CreateListingPageProps) 
               {/* WhatsApp */}
               <a
                 href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                  `Check out ${createdListing.customTitle} on MYZTORE!\nInstant Download: ${shareUrl}`
+                  `Check out ${createdListing.customTitle} on ZTORE!\nInstant Download: ${shareUrl}`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"

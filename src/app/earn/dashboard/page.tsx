@@ -90,7 +90,7 @@ export default function ResellerDashboardOverview() {
           <div className="flex items-center gap-2 flex-wrap">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-pink-300 text-[10px] font-black uppercase tracking-wider">
               <Sparkles className="w-3 h-3" />
-              <span>MYZTORE Verified Partner</span>
+              <span>ZTORE Verified Partner</span>
             </div>
             {profile?.resellerUid && (
               <span className="font-mono text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">

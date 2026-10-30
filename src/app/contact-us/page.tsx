@@ -33,7 +33,7 @@ export default function ContactUsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {/* 1. WhatsApp Support */}
           <a
-            href={`https://wa.me/91${cleanPhone}?text=${encodeURIComponent('Hi MYZTORE Support! I need quick assistance regarding my order.')}`}
+            href={`https://wa.me/91${cleanPhone}?text=${encodeURIComponent('Hi ZTORE Support! I need quick assistance regarding my order.')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="p-5 rounded-3xl bg-white border border-emerald-200/80 shadow-sm hover:shadow-md hover:border-emerald-400 transition-all text-center space-y-2.5 block group"

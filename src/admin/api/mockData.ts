@@ -10175,7 +10175,7 @@ export const initialContent: ContentItem[] = [
 ];
 
 export const initialBranding: StoreBranding = {
-  store_name: 'MYZTORE',
+  store_name: 'ZTORE',
   tagline: 'Premium Reels for Your Growth',
   logo_url: '/logo.png',
   favicon_url: '/favicon.ico',
@@ -10193,7 +10193,7 @@ export const initialSiteMode: SiteModeConfig = {
 };
 
 export const initialStoreSetup: StoreSetupConfig = {
-  store_name: 'MYZTORE',
+  store_name: 'ZTORE',
   contact_email: 'ztoredigital@gmail.com',
   support_whatsapp: '+91 9072850100',
   currency: 'INR',
@@ -10221,7 +10221,7 @@ export const initialMetaPixel: MetaPixelConfig = {
 export const initialWhatsappButton: WhatsappButtonConfig = {
   enabled: true,
   phone_number: '919072850100',
-  default_message: 'Hi MYZTORE Support! I need quick help regarding my MYZTORE order.',
+  default_message: 'Hi ZTORE Support! I need quick help regarding my ZTORE order.',
   position: 'bottom-right',
   show_popup_badge: true,
   popup_text: 'Need help? Chat on WhatsApp',
@@ -10247,13 +10247,13 @@ export const initialPlugins: WpPlugin[] = [
     version: '2.0.0',
     active: true,
     has_update: false,
-    description: 'High-speed real-time Firestore database sync for MYZTORE',
+    description: 'High-speed real-time Firestore database sync for ZTORE',
   },
 ];
 
 export const initialThemes: WpTheme[] = [
   {
-    name: 'MYZTORE Modern Dark Store',
+    name: 'ZTORE Modern Dark Store',
     slug: 'vaultworld-dark',
     version: '1.0.0',
     active: true,
@@ -10263,7 +10263,7 @@ export const initialThemes: WpTheme[] = [
 ];
 
 export const initialConnectorStatus: ConnectorStatus = {
-  plugin_name: 'MYZTORE Cloud Engine',
+  plugin_name: 'ZTORE Cloud Engine',
   current_version: '2.0.0',
   latest_version: '2.0.0',
   update_available: false,
@@ -10314,7 +10314,7 @@ export const initialRankMath: RankMathConfig = {
     seo_analysis: true,
   },
   global_title_separator: '|',
-  homepage_meta_title: 'MYZTORE | 220,000+ Viral Reels Bundles & Reseller Rights',
+  homepage_meta_title: 'ZTORE | 220,000+ Viral Reels Bundles & Reseller Rights',
   homepage_meta_description: 'Download 220,000+ viral AI Reels, Spiritual, Aesthetic & Motivation bundles. Instant Google Drive access & Reseller Rights.',
 };
 

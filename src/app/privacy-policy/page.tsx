@@ -5,8 +5,8 @@ import PolicyContactInfo from '@/components/PolicyContactInfo';
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | MYZTORE',
-  description: 'Privacy Policy for MYZTORE. Learn how we handle your information securely.',
+  title: 'Privacy Policy | ZTORE',
+  description: 'Privacy Policy for ZTORE. Learn how we handle your information securely.',
   alternates: {
     canonical: `${siteUrl}/privacy-policy`,
   },
@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
 
           <h2 className="text-lg font-bold text-[#182247]">1. Information We Collect</h2>
           <p>
-            When you purchase a digital reels bundle from MYZTORE, we collect only the necessary details required to deliver your order:
+            When you purchase a digital reels bundle from ZTORE, we collect only the necessary details required to deliver your order:
           </p>
           <ul className="list-disc pl-5 space-y-2">
             <li><strong className="text-slate-800">Full Name:</strong> To address and identify your order.</li>
