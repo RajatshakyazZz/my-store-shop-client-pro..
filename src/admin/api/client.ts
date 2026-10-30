@@ -47,6 +47,7 @@ import {
   RankMathConfig,
   LiteSpeedConfig,
   TelegramConfig,
+  ImgbbConfig,
   OrderSyncParams,
   DownloadableFileTokenResponse,
   ReelItem,
@@ -1699,10 +1700,10 @@ class PortalApiClient {
     title?: string;
     size?: number;
   }> {
-    const validExtensions = ['.png', '.jpg', '.jpeg'];
+    const validExtensions = ['.png', '.jpg', '.jpeg', '.webp'];
     const fileName = file.name ? file.name.toLowerCase() : '';
     const hasValidExt = validExtensions.some((ext) => fileName.endsWith(ext));
-    const validMimes = ['image/png', 'image/jpeg', 'image/pjpeg', 'image/jpg'];
+    const validMimes = ['image/png', 'image/jpeg', 'image/pjpeg', 'image/jpg', 'image/webp'];
     const hasValidMime = validMimes.includes(file.type.toLowerCase());
 
     if (!hasValidExt || !hasValidMime) {
@@ -1713,27 +1714,172 @@ class PortalApiClient {
       throw new Error('Image size exceeds 32 MB limit.');
     }
 
-    const formData = new FormData();
-    formData.append('image', file);
+    // 1. Client-side Canvas Image Compression:
+    // Automatically downsizes 5-15 MB camera photos to <=1920px (under ~600KB)
+    // Ensures instant upload, zero network hang, and stays well within Vercel's 4.5MB limit
+    let uploadPayloadFile: File = file;
+    if (typeof window !== 'undefined' && file.size > 600 * 1024) {
+      try {
+        uploadPayloadFile = await new Promise<File>((resolve) => {
+          const img = new Image();
+          const objUrl = URL.createObjectURL(file);
 
-    const response = await fetch('/api/admin/upload-image', {
-      method: 'POST',
-      body: formData,
-    });
+          img.onload = () => {
+            URL.revokeObjectURL(objUrl);
+            const MAX_DIM = 1920;
+            let { width, height } = img;
 
-    const data = await response.json().catch(() => ({}));
+            if (width <= MAX_DIM && height <= MAX_DIM && file.size < 1.2 * 1024 * 1024) {
+              resolve(file);
+              return;
+            }
 
-    if (!response.ok || !data.success) {
-      throw new Error(data.error || `Upload failed with status ${response.status}`);
+            if (width > MAX_DIM || height > MAX_DIM) {
+              if (width > height) {
+                height = Math.round((height * MAX_DIM) / width);
+                width = MAX_DIM;
+              } else {
+                width = Math.round((width * MAX_DIM) / height);
+                height = MAX_DIM;
+              }
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+              resolve(file);
+              return;
+            }
+
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const isPng = file.type === 'image/png';
+            const outputMime = isPng && file.size < 1024 * 1024 ? 'image/png' : 'image/jpeg';
+            const ext = outputMime === 'image/jpeg' ? '.jpg' : '.png';
+            const baseName = (file.name || 'image').replace(/\.[^/.]+$/, '');
+
+            canvas.toBlob(
+              (blob) => {
+                if (!blob) {
+                  resolve(file);
+                  return;
+                }
+                resolve(
+                  new File([blob], `${baseName}${ext}`, {
+                    type: outputMime,
+                    lastModified: Date.now(),
+                  })
+                );
+              },
+              outputMime,
+              0.88
+            );
+          };
+
+          img.onerror = () => {
+            URL.revokeObjectURL(objUrl);
+            resolve(file);
+          };
+
+          img.src = objUrl;
+        });
+      } catch (compressionErr) {
+        console.warn('Canvas optimization skipped:', compressionErr);
+      }
     }
 
-    return {
-      url: data.url,
-      display_url: data.display_url,
-      thumb_url: data.thumb_url,
-      title: data.title,
-      size: data.size,
-    };
+    // 2. Resolve ImgBB API key for client-side direct upload fallback
+    let clientApiKey = '';
+    try {
+      const cfg = await this.getImgbbConfig();
+      if (cfg && cfg.api_key) {
+        clientApiKey = cfg.api_key.trim();
+      }
+    } catch {}
+
+    // 3. STRATEGY A: Direct browser-to-ImgBB upload (if client has API key)
+    // Direct browser upload connects directly to ImgBB CDN, avoiding Vercel serverless limits
+    if (clientApiKey) {
+      try {
+        const directController = new AbortController();
+        const directTimer = setTimeout(() => directController.abort(), 12000);
+
+        const directForm = new FormData();
+        directForm.append('image', uploadPayloadFile);
+        const cleanName = (uploadPayloadFile.name || 'bundle').replace(/[^a-zA-Z0-9_-]/g, '_');
+        directForm.append('name', cleanName);
+
+        const directRes = await fetch(`https://api.imgbb.com/1/upload?key=${encodeURIComponent(clientApiKey)}`, {
+          method: 'POST',
+          body: directForm,
+          signal: directController.signal,
+        });
+
+        clearTimeout(directTimer);
+
+        if (directRes.ok) {
+          const directData = await directRes.json().catch(() => ({}));
+          if (directData?.success && directData?.data) {
+            const up = directData.data;
+            return {
+              url: up.url || up.display_url,
+              display_url: up.display_url,
+              thumb_url: up.thumb?.url || null,
+              title: up.title || uploadPayloadFile.name,
+              size: up.size || uploadPayloadFile.size,
+            };
+          }
+        }
+      } catch (directErr: any) {
+        console.warn('Direct ImgBB client upload failed, proceeding to server proxy:', directErr);
+      }
+    }
+
+    // 4. STRATEGY B: Server-side proxy /api/admin/upload-image
+    const serverController = new AbortController();
+    const serverTimer = setTimeout(() => serverController.abort(), 12000); // 12s hard client timeout
+
+    try {
+      const formData = new FormData();
+      formData.append('image', uploadPayloadFile);
+
+      const response = await fetch('/api/admin/upload-image', {
+        method: 'POST',
+        body: formData,
+        signal: serverController.signal,
+      });
+
+      clearTimeout(serverTimer);
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || !data.success) {
+        if (data.code === 'MISSING_IMGBB_KEY' || !clientApiKey) {
+          throw new Error(
+            'ImgBB API Key is not configured. Please go to Admin Settings > Integrations > ImgBB CDN to save your key, or add IMGBB_API_KEY in Vercel.'
+          );
+        }
+        throw new Error(data.error || `Upload failed with status ${response.status}`);
+      }
+
+      return {
+        url: data.url,
+        display_url: data.display_url,
+        thumb_url: data.thumb_url,
+        title: data.title,
+        size: data.size,
+      };
+    } catch (serverErr: any) {
+      clearTimeout(serverTimer);
+      if (serverErr.name === 'AbortError') {
+        throw new Error(
+          'Upload timed out after 12 seconds. Please check your network or verify your ImgBB API key in Admin Settings.'
+        );
+      }
+      throw serverErr;
+    }
   }
 
   async uploadMedia(file: File): Promise<{ url: string; id: string }> {
@@ -2606,6 +2752,120 @@ class PortalApiClient {
 
   async updatePgBridgeConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
     return this.updatePayUConfig(config);
+  }
+
+  async getImgbbConfig(): Promise<ImgbbConfig> {
+    if (db) {
+      try {
+        const snap = await getDoc(doc(db, 'store_settings', 'imgbb')).catch(() => null);
+        if (snap && snap.exists()) {
+          const data = snap.data();
+          const key = String(data.api_key || data.key || '').trim();
+          if (key) {
+            return {
+              api_key: key,
+              configured: true,
+              enabled: true,
+              source: 'database_imgbb',
+            };
+          }
+        }
+
+        const genSnap = await getDoc(doc(db, 'store_settings', 'general')).catch(() => null);
+        if (genSnap && genSnap.exists()) {
+          const genData = genSnap.data();
+          const key = String(genData.imgbb_api_key || genData.imgbb?.api_key || '').trim();
+          if (key) {
+            return {
+              api_key: key,
+              configured: true,
+              enabled: true,
+              source: 'database_general',
+            };
+          }
+        }
+      } catch (e) {
+        console.warn('Error reading ImgBB config from Firestore:', e);
+      }
+    }
+
+    try {
+      const res = await fetch('/api/admin/settings/imgbb');
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.config) {
+          return json.config;
+        }
+      }
+    } catch {}
+
+    const envKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY || '';
+    return {
+      api_key: envKey,
+      configured: Boolean(envKey),
+      enabled: true,
+      source: envKey ? 'env' : 'none',
+    };
+  }
+
+  async updateImgbbConfig(config: { api_key: string }): Promise<ImgbbConfig> {
+    const apiKey = (config.api_key || '').trim();
+    const payload = {
+      api_key: apiKey,
+      imgbb_api_key: apiKey,
+      configured: Boolean(apiKey),
+      enabled: true,
+      updated_at: new Date().toISOString(),
+    };
+
+    if (db) {
+      try {
+        await Promise.allSettled([
+          setDoc(doc(db, 'store_settings', 'imgbb'), payload, { merge: true }),
+          setDoc(
+            doc(db, 'store_settings', 'general'),
+            { imgbb_api_key: apiKey, updated_at: new Date().toISOString() },
+            { merge: true }
+          ),
+        ]);
+      } catch (e) {
+        console.warn('Error saving ImgBB config to Firestore:', e);
+      }
+    }
+
+    try {
+      await fetch('/api/admin/settings/imgbb', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ api_key: apiKey }),
+      });
+    } catch {}
+
+    await logAdminAction({
+      adminEmail: 'ztoredigital@gmail.com',
+      action: 'UPDATE_IMGBB_CONFIG',
+      module: 'Media CDN',
+      details: apiKey ? 'Updated and synced ImgBB API key in cloud database' : 'Cleared ImgBB API key',
+    });
+
+    return {
+      api_key: apiKey,
+      configured: Boolean(apiKey),
+      enabled: true,
+    };
+  }
+
+  async testImgbbConfig(api_key: string): Promise<{ success: boolean; message: string; url?: string }> {
+    const res = await fetch('/api/admin/settings/imgbb/test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ api_key }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || 'Failed to verify ImgBB key with server');
+    }
+    return data;
   }
 
   async getDnpMetaConfig(): Promise<DnpMetaConfig> {

@@ -437,6 +437,13 @@ export type PayUConfig = RazorpayConfig;
 export type CashfreeConfig = RazorpayConfig;
 export type PgBridgeConfig = RazorpayConfig;
 
+export interface ImgbbConfig {
+  api_key: string;
+  configured: boolean;
+  enabled?: boolean;
+  source?: string;
+}
+
 export interface DnpMetaConfig {
   enabled: boolean;
   meta_pixel_id: string;

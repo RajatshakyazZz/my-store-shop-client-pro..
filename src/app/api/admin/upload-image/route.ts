@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 export const runtime = 'nodejs';
-// Allow up to 60s for large 32MB image uploads
-export const maxDuration = 60;
+export const maxDuration = 15;
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -15,23 +16,48 @@ export async function OPTIONS() {
 }
 
 // Allowed file extensions & MIME types (Strictly .PNG and .JPG/.JPEG as requested)
-const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg'];
-const ALLOWED_MIME_TYPES = ['image/png', 'image/jpeg', 'image/pjpeg', 'image/jpg'];
+const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp'];
+const ALLOWED_MIME_TYPES = ['image/png', 'image/jpeg', 'image/pjpeg', 'image/jpg', 'image/webp'];
 // Max file size allowed: 32 MB (ImgBB limit)
 const MAX_FILE_SIZE = 32 * 1024 * 1024;
 
 export async function POST(request: Request) {
   try {
-    // 1. Verify ImgBB API key from environment variables (NEVER exposed to frontend)
-    const apiKey = process.env.IMGBB_API_KEY?.trim();
+    // 1. Resolve ImgBB API key from env vars or Firestore database
+    let apiKey = (
+      process.env.IMGBB_API_KEY ||
+      process.env.IMGBB_KEY ||
+      process.env.NEXT_PUBLIC_IMGBB_API_KEY ||
+      process.env.IMGBB_SECRET ||
+      ''
+    ).trim();
+
+    if (!apiKey && db) {
+      try {
+        const snap = await getDoc(doc(db, 'store_settings', 'imgbb')).catch(() => null);
+        if (snap && snap.exists()) {
+          apiKey = (snap.data().api_key || snap.data().key || '').trim();
+        }
+        if (!apiKey) {
+          const genSnap = await getDoc(doc(db, 'store_settings', 'general')).catch(() => null);
+          if (genSnap && genSnap.exists()) {
+            apiKey = (genSnap.data().imgbb_api_key || genSnap.data().imgbb?.api_key || '').trim();
+          }
+        }
+      } catch (dbErr) {
+        console.warn('Could not read ImgBB key from database:', dbErr);
+      }
+    }
+
     if (!apiKey) {
       return NextResponse.json(
         {
           success: false,
           error:
-            'ImgBB API Key is not configured. Please add IMGBB_API_KEY in your Vercel Project Settings > Environment Variables (or .env.local).',
+            'ImgBB API Key is not configured. Go to Admin Settings > Integrations > ImgBB CDN to save your key, or add IMGBB_API_KEY in Vercel.',
+          code: 'MISSING_IMGBB_KEY',
         },
-        { status: 500, headers: CORS_HEADERS }
+        { status: 400, headers: CORS_HEADERS }
       );
     }
 
@@ -93,19 +119,35 @@ export async function POST(request: Request) {
       imgbbPayload.append('name', sanitizedBaseName);
     }
 
-    // 8. Upload to ImgBB securely
+    // 8. Upload to ImgBB with strict 9s timeout (prevents Vercel 10s Hobby timeout)
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 45000); // 45s timeout
+    const timeoutId = setTimeout(() => controller.abort(), 9000);
 
-    const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${encodeURIComponent(apiKey)}`, {
-      method: 'POST',
-      body: imgbbPayload,
-      signal: controller.signal,
-    });
+    let imgbbResponse: Response;
+    try {
+      imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${encodeURIComponent(apiKey)}`, {
+        method: 'POST',
+        body: imgbbPayload,
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeoutId);
+    }
 
-    clearTimeout(timeoutId);
-
-    const data = await imgbbResponse.json();
+    const responseText = await imgbbResponse.text();
+    let data: any = {};
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `ImgBB returned an invalid response (HTTP ${imgbbResponse.status}). Try direct client upload or verify your key.`,
+          code: 'IMGBB_INVALID_RESPONSE',
+        },
+        { status: 502, headers: CORS_HEADERS }
+      );
+    }
 
     if (!imgbbResponse.ok || !data.success) {
       const errorMsg =
@@ -122,7 +164,6 @@ export async function POST(request: Request) {
     }
 
     // 9. Successfully uploaded to ImgBB!
-    // Return direct image URLs
     const uploadedData = data.data;
     const directImageUrl = uploadedData.url || uploadedData.display_url;
 
@@ -142,7 +183,11 @@ export async function POST(request: Request) {
   } catch (err: any) {
     if (err.name === 'AbortError') {
       return NextResponse.json(
-        { success: false, error: 'Upload timed out. Please try with a smaller image or check network.' },
+        {
+          success: false,
+          error: 'ImgBB upload timed out after 9s. Please use direct browser upload or check network.',
+          code: 'UPLOAD_TIMEOUT',
+        },
         { status: 504, headers: CORS_HEADERS }
       );
     }
