@@ -21,6 +21,7 @@ import { fetchCustomProducts, getAllCatalogBundles, getLocalCustomProductsSync }
 import { optimizeImageUrl } from '@/lib/imageOptimized';
 import { BundleProduct } from '@/types';
 import FreeBundleOfferBanner from '@/components/FreeBundleOfferBanner';
+import { isMegaAllAccessBundle } from '@/lib/freeBundleOffer';
 
 export default function ClaimOfferClient() {
   const {
@@ -60,7 +61,7 @@ export default function ClaimOfferClient() {
   const categories = useMemo(() => {
     const set = new Set<string>();
     allBundles.forEach((b) => {
-      if (b.category && b.categorySlug !== 'all-access' && !b.id.startsWith('plan-')) {
+      if (b.category && !isMegaAllAccessBundle(b)) {
         set.add(b.category);
       }
     });
@@ -71,8 +72,8 @@ export default function ClaimOfferClient() {
   const eligibleBundles = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     return allBundles.filter((b) => {
-      // Exclude All-Access plans from regular items list
-      if (b.id.startsWith('plan-') || b.categorySlug === 'all-access') {
+      // Exclude All-Access Mega Bundles (Personal or Reseller) from regular items list
+      if (isMegaAllAccessBundle(b)) {
         return false;
       }
       const matchesSearch =

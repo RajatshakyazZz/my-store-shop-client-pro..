@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { BundleProduct, CartItem, LicenseType } from '@/types';
 import { ORDER_BUMP } from '@/data/bundles';
 import { fetchGlobalBumpOffer, GlobalBumpOfferConfig } from '@/lib/bumpOffer';
-import { fetchFreeBundleOffer, getFreeBundleOfferSync, FreeBundleOfferConfig } from '@/lib/freeBundleOffer';
+import { fetchFreeBundleOffer, getFreeBundleOfferSync, FreeBundleOfferConfig, isMegaAllAccessBundle } from '@/lib/freeBundleOffer';
 import { useRouter } from 'next/navigation';
 import { track } from '@/lib/analytics';
 
@@ -115,7 +115,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (savedFree && savedFree !== '[]') {
         const parsedFree = JSON.parse(savedFree);
         if (Array.isArray(parsedFree) && parsedFree.length > 0) {
-          setFreeBundles(parsedFree.slice(0, 2));
+          const safeFree = parsedFree.filter((b: any) => !isMegaAllAccessBundle(b));
+          setFreeBundles(safeFree.slice(0, 2));
         }
       }
 
@@ -169,7 +170,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [subtotal, freeBundles.length, isOfferActive, offerMinCart, offerMaxQuantity]);
 
   const claimFreeBundles = (bundles: BundleProduct[]) => {
-    const capped = bundles.slice(0, offerMaxQuantity || 2);
+    const safeBundles = bundles.filter((b) => !isMegaAllAccessBundle(b));
+    const capped = safeBundles.slice(0, offerMaxQuantity || 2);
     setFreeBundles(capped);
     try {
       localStorage.setItem('vaultzet_free_bundles_v2', JSON.stringify(capped));

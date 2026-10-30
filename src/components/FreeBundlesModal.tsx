@@ -7,6 +7,7 @@ import { BUNDLE_PRODUCTS } from '@/data/bundles';
 import { fetchCustomProducts, getAllCatalogBundles, getLocalCustomProductsSync } from '@/lib/customProducts';
 import { optimizeImageUrl } from '@/lib/imageOptimized';
 import { BundleProduct } from '@/types';
+import { isMegaAllAccessBundle } from '@/lib/freeBundleOffer';
 
 export default function FreeBundlesModal() {
   const {
@@ -46,7 +47,7 @@ export default function FreeBundlesModal() {
   useEffect(() => {
     if (isFreeBundleModalOpen) {
       if (freeBundles.length > 0) {
-        setSelected(freeBundles.slice(0, freeQty));
+        setSelected(freeBundles.filter((b) => !isMegaAllAccessBundle(b)).slice(0, freeQty));
       } else {
         setSelected([]);
       }
@@ -68,7 +69,7 @@ export default function FreeBundlesModal() {
   const categories = useMemo(() => {
     const set = new Set<string>();
     allBundles.forEach((b) => {
-      if (b.category) set.add(b.category);
+      if (b.category && !isMegaAllAccessBundle(b)) set.add(b.category);
     });
     return ['all', ...Array.from(set).slice(0, 7)];
   }, [allBundles]);
@@ -77,8 +78,8 @@ export default function FreeBundlesModal() {
   const filteredBundles = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     return allBundles.filter((bundle) => {
-      // Exclude All-Access master bundles from free individual bundle selection
-      if (bundle.id.startsWith('plan-') || bundle.categorySlug === 'all-access') {
+      // Strictly exclude All-Access Mega Bundles (Personal or Reseller) from free selection
+      if (isMegaAllAccessBundle(bundle)) {
         return false;
       }
       const matchesSearch =
@@ -98,6 +99,7 @@ export default function FreeBundlesModal() {
   if (!isFreeBundleModalOpen || !isOfferActive) return null;
 
   const handleToggleSelect = (bundle: BundleProduct) => {
+    if (isMegaAllAccessBundle(bundle)) return;
     setSelected((prev) => {
       const isAlreadySelected = prev.some((b) => b.id === bundle.id);
       if (isAlreadySelected) {

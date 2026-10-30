@@ -8,7 +8,7 @@ import { getResellerListingBySlug } from '@/lib/resellerService';
 import { BUNDLE_PRODUCTS, ORDER_BUMP } from '@/data/bundles';
 import { calculateCouponDiscount } from '@/lib/coupon';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
-import { fetchFreeBundleOffer } from '@/lib/freeBundleOffer';
+import { fetchFreeBundleOffer, isMegaAllAccessBundle } from '@/lib/freeBundleOffer';
 
 export async function POST(request: Request) {
   try {
@@ -174,7 +174,8 @@ export async function POST(request: Request) {
 
         for (const item of items) {
           if (item.isFreeBonus || item.price === 0) {
-            if (isOfferActive && paidItemsCatalogTotal >= offerThreshold && freeBonusCount < maxFreeBundles) {
+            const isMega = isMegaAllAccessBundle(item);
+            if (!isMega && isOfferActive && paidItemsCatalogTotal >= offerThreshold && freeBonusCount < maxFreeBundles) {
               freeBonusCount++;
               // Qualified promotional free gift, charges ₹0
               continue;

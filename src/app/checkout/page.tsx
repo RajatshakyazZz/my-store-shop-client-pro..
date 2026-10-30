@@ -33,6 +33,7 @@ import {
 import { track } from '@/lib/analytics';
 import { resolveBundleSlug } from '@/lib/bundleResolver';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
+import { isMegaAllAccessBundle } from '@/lib/freeBundleOffer';
 
 
 function CheckoutContent() {
@@ -205,14 +206,17 @@ function CheckoutContent() {
   const minCart = isOfferActive ? (freeBundleOffer?.minCartValue || 149) : 999999999;
   const freeQty = isOfferActive ? (freeBundleOffer?.freeBundleQuantity || 2) : 0;
 
-  // Free bundles eligible if checkoutSubtotal >= minCart and offer is active
+  // Free bundles eligible if checkoutSubtotal >= minCart and offer is active (strictly excluding mega all-access bundles)
   const freeBonusItems: CartItem[] = (isOfferActive && checkoutSubtotal >= minCart && freeBundles.length > 0)
-    ? freeBundles.slice(0, freeQty).map((b) => ({
-        product: b,
-        license: 'personal' as LicenseType,
-        price: 0,
-        isFreeBonus: true,
-      }))
+    ? freeBundles
+        .filter((b) => !isMegaAllAccessBundle(b))
+        .slice(0, freeQty)
+        .map((b) => ({
+          product: b,
+          license: 'personal' as LicenseType,
+          price: 0,
+          isFreeBonus: true,
+        }))
     : [];
 
   const allCheckoutItems: CartItem[] = [...checkoutItems, ...freeBonusItems];

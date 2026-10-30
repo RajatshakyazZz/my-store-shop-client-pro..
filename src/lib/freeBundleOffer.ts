@@ -25,6 +25,31 @@ export function sanitizeOfferBannerUrl(url?: string): string {
   return trimmed;
 }
 
+/**
+ * Checks whether a bundle is a master All-Access / Mega Bundle (Personal or Reseller).
+ * Mega bundles must NEVER be claimable as promotional ₹0 free gifts.
+ */
+export function isMegaAllAccessBundle(item: any): boolean {
+  if (!item) return false;
+  const id = String(item.id || item.productId || '').toLowerCase();
+  const slug = String(item.slug || '').toLowerCase();
+  const title = String(item.title || item.name || '').toLowerCase();
+  const catSlug = String(item.categorySlug || '').toLowerCase();
+
+  return (
+    id.startsWith('plan-') ||
+    id.includes('all-bundles') ||
+    id.includes('all_bundles') ||
+    slug.includes('all-bundles') ||
+    slug === 'all-bundles-personal-use' ||
+    slug === 'all-bundles-reseller-rights' ||
+    title.includes('all bundles') ||
+    title.includes('all-access') ||
+    catSlug === 'all-access' ||
+    Boolean(item.isAllAccess)
+  );
+}
+
 export const DEFAULT_FREE_BUNDLE_OFFER: FreeBundleOfferConfig = {
   enabled: true,
   bannerImage: '',
