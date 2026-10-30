@@ -26,6 +26,7 @@ import {
   Gift,
 } from 'lucide-react';
 import { useResellerAuth } from '@/context/ResellerAuthContext';
+import EarningProofSection from '@/components/EarningProofSection';
 
 export default function EarnLandingPage() {
   const router = useRouter();
@@ -453,6 +454,13 @@ export default function EarnLandingPage() {
           </div>
         </div>
       </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* REAL RESELLER EARNING PROOFS SHOWCASE */}
+      {/* ------------------------------------------------------------- */}
+      <div className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto my-12">
+        <EarningProofSection showResellCta={false} className="rounded-3xl border border-slate-800 shadow-xl" />
+      </div>
 
       {/* ------------------------------------------------------------- */}
       {/* FREQUENTLY ASKED QUESTIONS ACCORDION */}

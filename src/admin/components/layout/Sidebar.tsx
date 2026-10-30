@@ -22,6 +22,8 @@ import {
   Play,
   Sparkles,
   Gift,
+  TrendingUp,
+  DollarSign,
   X,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -50,6 +52,8 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
         { name: 'Products & Files', href: '/products', icon: Package },
         { name: 'Bump Offers', href: '/bump-offers', icon: Sparkles, badge: 'Offers' },
         { name: 'Free Bundle Offer', href: '/free-offer', icon: Gift, badge: 'Promo' },
+        { name: 'Growth Proofs', href: '/growth-proofs', icon: TrendingUp, badge: '3D' },
+        { name: 'Earning Proofs', href: '/earning-proofs', icon: DollarSign, badge: 'Proofs' },
         { name: 'Orders & Delivery', href: '/orders', icon: ShoppingCart },
         { name: 'Customers', href: '/customers', icon: Users },
         { name: 'Resellers & Payouts', href: '/resellers', icon: Users, badge: 'Live' },

@@ -486,3 +486,45 @@ export interface TelegramConfig {
   last_test_status?: string;
   last_test_at?: string;
 }
+
+// ==========================================
+// 19. SOCIAL PROOF & SHOWCASE TYPES
+// ==========================================
+export interface AdminGrowthProofItem {
+  id: string;
+  image: string;
+  title: string;
+  followers?: string;
+  metric?: string;
+  tag?: string;
+}
+
+export interface AdminGrowthProofsConfig {
+  enabled: boolean;
+  badge: string;
+  headline: string;
+  subheadline: string;
+  autoplay: boolean;
+  autoplayInterval: number;
+  items: AdminGrowthProofItem[];
+  updatedAt?: string;
+}
+
+export interface AdminEarningProofItem {
+  id: string;
+  image: string;
+  amount: string;
+  tag: string;
+  caption: string;
+  date?: string;
+}
+
+export interface AdminEarningProofsConfig {
+  enabled: boolean;
+  badge: string;
+  headline: string;
+  subheadline: string;
+  items: AdminEarningProofItem[];
+  updatedAt?: string;
+}
+

@@ -52,6 +52,8 @@ import {
   ReelItem,
   GlobalBumpOffer,
   FreeBundleOffer,
+  AdminGrowthProofsConfig,
+  AdminEarningProofsConfig,
 } from './types';
 import { db, logAdminAction } from '../lib/firebase';
 import {
@@ -3269,6 +3271,246 @@ class PortalApiClient {
       action: 'UPDATE_FREE_BUNDLE_OFFER',
       module: 'Commerce',
       details: `Updated promotional offer: Min ₹${merged.min_cart_value}, ${merged.free_bundle_quantity} Free Bundles (Status: ${merged.enabled ? 'ACTIVE' : 'OFF'})`,
+    });
+
+    return merged;
+  }
+
+  // ==========================================
+  // 19. GROWTH PROOFS (3D INSTAGRAM SHOWCASE)
+  // ==========================================
+  async getGrowthProofs(): Promise<AdminGrowthProofsConfig> {
+    const defaultVal: AdminGrowthProofsConfig = {
+      enabled: true,
+      badge: 'REAL GROWTH PROOF',
+      headline: 'Real Growth By Our Bundle Users',
+      subheadline: 'These creators acquired our bundles, scaled to 100K+ followers, and monetize daily.',
+      autoplay: true,
+      autoplayInterval: 4000,
+      items: [
+        {
+          id: 'gp-1',
+          image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=700&auto=format&fit=crop&q=80',
+          title: '@viral.animation_',
+          followers: '170K Followers',
+          metric: '+120K in 30 Days',
+          tag: 'AI Animation',
+        },
+        {
+          id: 'gp-2',
+          image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=700&auto=format&fit=crop&q=80',
+          title: '@aigrowth_hub',
+          followers: '240K Followers',
+          metric: '18M+ Monthly Views',
+          tag: 'AI Reels',
+        },
+        {
+          id: 'gp-3',
+          image: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=700&auto=format&fit=crop&q=80',
+          title: '@dailyreels_creator',
+          followers: '310K Followers',
+          metric: '+185K in 45 Days',
+          tag: 'Trending Niche',
+        },
+      ],
+    };
+
+    let cached: AdminGrowthProofsConfig | null = null;
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem('vaultzet_growth_proofs');
+        if (raw) cached = JSON.parse(raw);
+      } catch {}
+    }
+
+    try {
+      const res = await fetch('/api/admin/settings/growth-proofs', { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.config) {
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('vaultzet_growth_proofs', JSON.stringify(data.config));
+            } catch {}
+          }
+          return data.config;
+        }
+      }
+    } catch {}
+
+    if (db) {
+      try {
+        const snap = await getDoc(doc(db, 'store_settings', 'growth_proofs')).catch(() => null);
+        if (snap && snap.exists()) {
+          const cfg = { ...defaultVal, ...snap.data() } as AdminGrowthProofsConfig;
+          return cfg;
+        }
+        const genSnap = await getDoc(doc(db, 'store_settings', 'general')).catch(() => null);
+        if (genSnap && genSnap.exists()) {
+          const gData = genSnap.data();
+          if (gData.growth_proofs && typeof gData.growth_proofs === 'object') {
+            return { ...defaultVal, ...gData.growth_proofs };
+          }
+        }
+      } catch {}
+    }
+
+    return cached || defaultVal;
+  }
+
+  async updateGrowthProofs(data: Partial<AdminGrowthProofsConfig>): Promise<AdminGrowthProofsConfig> {
+    const existing = await this.getGrowthProofs();
+    const merged: AdminGrowthProofsConfig = {
+      ...existing,
+      ...data,
+      updatedAt: new Date().toISOString(),
+    };
+
+    try {
+      await fetch('/api/admin/settings/growth-proofs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(merged),
+      });
+    } catch {}
+
+    if (db) {
+      try {
+        const cleanPayload = sanitizePayload(merged);
+        await setDoc(doc(db, 'store_settings', 'general'), { growth_proofs: cleanPayload }, { merge: true });
+        try {
+          await setDoc(doc(db, 'store_settings', 'growth_proofs'), cleanPayload, { merge: true });
+        } catch {}
+      } catch {}
+    }
+
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('vaultzet_growth_proofs', JSON.stringify(merged));
+        window.dispatchEvent(new CustomEvent('vaultzet:growth_proofs_updated', { detail: merged }));
+      } catch {}
+    }
+
+    await logAdminAction({
+      adminEmail: 'admin@vaultzet.com',
+      action: 'UPDATE_GROWTH_PROOFS',
+      module: 'Commerce',
+      details: `Updated Growth Proofs: ${merged.items?.length || 0} screenshots (Status: ${merged.enabled ? 'ACTIVE' : 'OFF'})`,
+    });
+
+    return merged;
+  }
+
+  // ==========================================
+  // 20. EARNING PROOFS (PAYMENT RECEIPTS SHOWCASE)
+  // ==========================================
+  async getEarningProofs(): Promise<AdminEarningProofsConfig> {
+    const defaultVal: AdminEarningProofsConfig = {
+      enabled: true,
+      badge: '💰 VERIFIED EARNINGS & PAYOUTS',
+      headline: 'Real Creator & Reseller Earnings',
+      subheadline: 'Genuine payment screenshots, UPI receipts and wallet payouts from our resellers and digital creators.',
+      items: [
+        {
+          id: 'ep-1',
+          image: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=700&auto=format&fit=crop&q=80',
+          amount: '₹28,450',
+          tag: 'UPI Received',
+          caption: 'Rahul Verma — Weekly profit reselling AI reels to client pages',
+          date: 'Yesterday',
+        },
+        {
+          id: 'ep-2',
+          image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=700&auto=format&fit=crop&q=80',
+          amount: '₹42,200',
+          tag: 'Bank Transfer',
+          caption: 'Priya Sharma — 10x ROI in first month with Reseller Rights',
+          date: '3 days ago',
+        },
+      ],
+    };
+
+    let cached: AdminEarningProofsConfig | null = null;
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem('vaultzet_earning_proofs');
+        if (raw) cached = JSON.parse(raw);
+      } catch {}
+    }
+
+    try {
+      const res = await fetch('/api/admin/settings/earning-proofs', { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.config) {
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('vaultzet_earning_proofs', JSON.stringify(data.config));
+            } catch {}
+          }
+          return data.config;
+        }
+      }
+    } catch {}
+
+    if (db) {
+      try {
+        const snap = await getDoc(doc(db, 'store_settings', 'earning_proofs')).catch(() => null);
+        if (snap && snap.exists()) {
+          const cfg = { ...defaultVal, ...snap.data() } as AdminEarningProofsConfig;
+          return cfg;
+        }
+        const genSnap = await getDoc(doc(db, 'store_settings', 'general')).catch(() => null);
+        if (genSnap && genSnap.exists()) {
+          const gData = genSnap.data();
+          if (gData.earning_proofs && typeof gData.earning_proofs === 'object') {
+            return { ...defaultVal, ...gData.earning_proofs };
+          }
+        }
+      } catch {}
+    }
+
+    return cached || defaultVal;
+  }
+
+  async updateEarningProofs(data: Partial<AdminEarningProofsConfig>): Promise<AdminEarningProofsConfig> {
+    const existing = await this.getEarningProofs();
+    const merged: AdminEarningProofsConfig = {
+      ...existing,
+      ...data,
+      updatedAt: new Date().toISOString(),
+    };
+
+    try {
+      await fetch('/api/admin/settings/earning-proofs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(merged),
+      });
+    } catch {}
+
+    if (db) {
+      try {
+        const cleanPayload = sanitizePayload(merged);
+        await setDoc(doc(db, 'store_settings', 'general'), { earning_proofs: cleanPayload }, { merge: true });
+        try {
+          await setDoc(doc(db, 'store_settings', 'earning_proofs'), cleanPayload, { merge: true });
+        } catch {}
+      } catch {}
+    }
+
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('vaultzet_earning_proofs', JSON.stringify(merged));
+        window.dispatchEvent(new CustomEvent('vaultzet:earning_proofs_updated', { detail: merged }));
+      } catch {}
+    }
+
+    await logAdminAction({
+      adminEmail: 'admin@vaultzet.com',
+      action: 'UPDATE_EARNING_PROOFS',
+      module: 'Commerce',
+      details: `Updated Earning Proofs: ${merged.items?.length || 0} screenshots (Status: ${merged.enabled ? 'ACTIVE' : 'OFF'})`,
     });
 
     return merged;
