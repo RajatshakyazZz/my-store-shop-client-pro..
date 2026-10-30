@@ -192,12 +192,25 @@ export default function RootLayout({
               'ad_personalization': 'denied',
               'wait_for_update': 500
             });
-            gtag('consent', 'update', {
-              'ad_storage': 'granted',
-              'analytics_storage': 'granted',
-              'ad_user_data': 'granted',
-              'ad_personalization': 'granted'
-            });
+            try {
+              var consent = localStorage.getItem('vaultworld_cookie_consent');
+              if (consent === 'accepted') {
+                gtag('consent', 'update', {
+                  'ad_storage': 'granted',
+                  'analytics_storage': 'granted',
+                  'ad_user_data': 'granted',
+                  'ad_personalization': 'granted'
+                });
+              } else if (consent === 'custom') {
+                var prefs = JSON.parse(localStorage.getItem('vaultworld_cookie_preferences') || '{}');
+                gtag('consent', 'update', {
+                  'ad_storage': prefs.marketing ? 'granted' : 'denied',
+                  'analytics_storage': prefs.analytics ? 'granted' : 'denied',
+                  'ad_user_data': prefs.marketing ? 'granted' : 'denied',
+                  'ad_personalization': prefs.marketing ? 'granted' : 'denied'
+                });
+              }
+            } catch(e) {}
           `}
         </Script>
 

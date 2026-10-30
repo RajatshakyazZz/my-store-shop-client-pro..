@@ -162,7 +162,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           {/* Section 5 */}
-          <section className="space-y-3">
+          <section id="cookies" className="space-y-3 scroll-mt-24">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
               <span className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-700 font-black text-xs flex items-center justify-center">5</span>
               <span>Cookies &amp; Tracking Technologies</span>
