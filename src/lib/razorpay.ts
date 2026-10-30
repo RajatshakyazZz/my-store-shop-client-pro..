@@ -209,6 +209,88 @@ export async function createRazorpayOrder(params: CreateRazorpayOrderParams): Pr
 }
 
 /**
+ * Creates an official Razorpay Hosted Payment Link (rzp.io)
+ * POST https://api.razorpay.com/v1/payment_links
+ * Provides an automatic zero-failure fallback if in-app iframe domain whitelisting is pending.
+ */
+export async function createRazorpayPaymentLink(params: {
+  orderId: string;
+  orderAmount: number;
+  customer: {
+    fullName: string;
+    email: string;
+    phone: string;
+  };
+  productInfo?: string;
+  callbackUrl?: string;
+  notes?: Record<string, string>;
+}): Promise<{
+  id: string;
+  short_url: string;
+  status: string;
+}> {
+  const creds = await getRazorpayCredentials();
+
+  if (!creds.keyId || !creds.keySecret) {
+    throw new Error('Razorpay credentials missing');
+  }
+
+  const amountInPaise = Math.round(Number(params.orderAmount) * 100);
+  const authHeader = `Basic ${Buffer.from(`${creds.keyId}:${creds.keySecret}`).toString('base64')}`;
+
+  const cleanPhone = String(params.customer.phone || '').replace(/\D/g, '');
+  const formattedPhone = cleanPhone.length === 10 ? `+91${cleanPhone}` : (cleanPhone.startsWith('91') ? `+${cleanPhone}` : `+91${cleanPhone}`);
+
+  const payload: Record<string, any> = {
+    amount: amountInPaise,
+    currency: 'INR',
+    accept_partial: false,
+    description: (params.productInfo || 'Ztore Digital Reels Bundle').slice(0, 100),
+    customer: {
+      name: params.customer.fullName || 'Customer',
+      email: params.customer.email,
+      contact: formattedPhone,
+    },
+    notify: {
+      sms: false,
+      email: false,
+    },
+    reminder_enable: false,
+    notes: {
+      order_id: params.orderId,
+      orderNumber: params.orderId,
+      ...(params.notes || {}),
+    },
+  };
+
+  if (params.callbackUrl) {
+    payload.callback_url = params.callbackUrl;
+    payload.callback_method = 'get';
+  }
+
+  const response = await fetch('https://api.razorpay.com/v1/payment_links', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: authHeader,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    console.warn('[Razorpay Payment Link Warning]', data);
+    throw new Error(data.error?.description || data.error?.message || 'Failed to create payment link');
+  }
+
+  return {
+    id: data.id,
+    short_url: data.short_url,
+    status: data.status,
+  };
+}
+
+/**
  * Validates Razorpay Payment Signature using HMAC-SHA256
  * Signature = HMAC_SHA256(order_id + "|" + payment_id, secret)
  */

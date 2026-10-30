@@ -38,13 +38,14 @@ export async function POST(request: Request) {
       }
     }
 
-    if (event === 'payment.captured' || event === 'order.paid') {
+    if (event === 'payment.captured' || event === 'order.paid' || event === 'payment_link.paid') {
       const paymentEntity = body?.payload?.payment?.entity;
       const orderEntity = body?.payload?.order?.entity;
+      const plinkEntity = body?.payload?.payment_link?.entity;
 
       const rzpOrderId = paymentEntity?.order_id || orderEntity?.id;
-      const rzpPaymentId = paymentEntity?.id;
-      const notes = paymentEntity?.notes || orderEntity?.notes || {};
+      const rzpPaymentId = paymentEntity?.id || plinkEntity?.payment_id;
+      const notes = paymentEntity?.notes || orderEntity?.notes || plinkEntity?.notes || {};
 
       let orderNumber = String(notes.orderNumber || notes.order_id || '').trim();
 

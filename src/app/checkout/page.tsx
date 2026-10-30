@@ -738,23 +738,41 @@ function CheckoutContent() {
         await checkPaymentStatus();
       }, 2500);
 
+      const cleanPhoneDigits = phone.trim().replace(/\D/g, '');
+      const formattedPrefillPhone = cleanPhoneDigits.length === 10
+        ? `+91${cleanPhoneDigits}`
+        : cleanPhoneDigits.startsWith('91')
+        ? `+${cleanPhoneDigits}`
+        : `+91${cleanPhoneDigits}`;
+
+      const logoAbsoluteUrl = typeof window !== 'undefined'
+        ? `${window.location.origin}/logo.png`
+        : 'https://myztore.in/logo.png';
+
       const options = {
         key: data.key_id,
         amount: data.amount,
         currency: data.currency || 'INR',
         name: settings.storeName || 'Ztore Digital',
         description: (orderPayload.items?.[0]?.title || 'Viral Reels Bundle').slice(0, 100),
-        image: '/logo.png',
+        image: logoAbsoluteUrl,
         order_id: data.razorpay_order_id,
         prefill: {
           name: fullName.trim(),
           email: email.trim().toLowerCase(),
-          contact: phone.trim(),
+          contact: formattedPrefillPhone,
+        },
+        notes: {
+          order_id: String(orderNumber),
+          customer_name: fullName.trim(),
+          customer_email: email.trim().toLowerCase(),
         },
         theme: {
           color: '#dc2626', // Attractive Red theme matching Ztore Digital
         },
         modal: {
+          confirm_close: true,
+          backdropclose: false,
           ondismiss: async () => {
             if (isRedirecting) return;
             // Immediate check before giving up in case customer paid on phone and closed modal
@@ -764,6 +782,9 @@ function CheckoutContent() {
               setIsProcessing(false);
             }
           },
+        },
+        retry: {
+          enabled: true,
         },
         handler: async (response: any) => {
           stopPolling();
@@ -801,6 +822,15 @@ function CheckoutContent() {
         const wasPaid = await checkPaymentStatus();
         if (!wasPaid) {
           stopPolling();
+          const errorDesc = String(resp.error?.description || '').toLowerCase();
+          const isDomainBlocked = errorDesc.includes('does not match registered website') || errorDesc.includes('website does not match');
+
+          // If domain whitelisting is blocking in-app modal, seamless instant fallback to official Razorpay hosted link
+          if (isDomainBlocked && data.payment_link_url) {
+            window.location.href = data.payment_link_url;
+            return;
+          }
+
           setIsProcessing(false);
           setErrorMessage(resp.error?.description || 'Payment was unsuccessful or cancelled. Please try again.');
         }

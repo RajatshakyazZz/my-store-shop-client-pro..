@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createRazorpayOrder, getRazorpayCredentials } from '@/lib/razorpay';
+import { createRazorpayOrder, createRazorpayPaymentLink, getRazorpayCredentials } from '@/lib/razorpay';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { sendAbandonedOrPendingTelegramAlert } from '@/lib/telegram';
@@ -240,11 +240,43 @@ export async function POST(request: Request) {
       productInfo: firstItemTitle.slice(0, 100),
       notes: {
         orderNumber: String(orderNumber),
+        order_id: String(orderNumber),
         orderToken,
+        customer_name: cleanName,
+        customer_email: cleanEmail,
+        customer_phone: cleanPhone,
         resellerSlug: resellerSlug ? String(resellerSlug).slice(0, 50) : '',
         couponCode: couponCode ? String(couponCode).slice(0, 30) : '',
       },
     });
+
+    // 1b. Generate optional Hosted Payment Link (rzp.io) fallback
+    let paymentLinkUrl: string | null = null;
+    try {
+      const siteOrigin = request.headers.get('origin') || request.headers.get('referer') || 'https://myztore.in';
+      const cleanOrigin = siteOrigin.split('/')[0] + '//' + siteOrigin.split('/')[2];
+      const plink = await createRazorpayPaymentLink({
+        orderId: orderNumber,
+        orderAmount: Number(finalTotalAmount),
+        customer: {
+          fullName: cleanName || 'Customer',
+          email: cleanEmail,
+          phone: cleanPhone || '9999999999',
+        },
+        productInfo: firstItemTitle.slice(0, 100),
+        callbackUrl: `${cleanOrigin}/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(orderToken)}`,
+        notes: {
+          orderNumber: String(orderNumber),
+          order_id: String(orderNumber),
+          orderToken,
+        },
+      });
+      if (plink?.short_url) {
+        paymentLinkUrl = plink.short_url;
+      }
+    } catch (plErr) {
+      console.warn('Hosted payment link non-blocking notice:', plErr);
+    }
 
     // 2. Persist Pending Order to Firestore
     if (db) {
@@ -310,6 +342,7 @@ export async function POST(request: Request) {
       currency: rzpOrder.currency || 'INR',
       order_id: orderNumber,
       order_token: orderToken,
+      payment_link_url: paymentLinkUrl,
     });
   } catch (error: any) {
     console.error('Error creating Razorpay order:', error);
