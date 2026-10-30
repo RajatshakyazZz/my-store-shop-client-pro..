@@ -61,7 +61,7 @@ export default function WhatsAppButton({
   }
 
   // Resolve dynamic phone number: prop > admin settings > fallback
-  const rawPhone = phoneNumber || settings?.supportWhatsapp || '9072850100';
+  const rawPhone = phoneNumber || settings?.supportWhatsapp || '9142408286';
 
   let cleanPhone = rawPhone.replace(/[^0-9]/g, '');
   if (cleanPhone.length === 10) {
@@ -70,11 +70,10 @@ export default function WhatsAppButton({
     cleanPhone = '91' + cleanPhone.slice(1);
   }
 
-  const effectiveStoreName = storeName || settings?.storeName || 'ZTORE';
+  const effectiveStoreName = storeName || settings?.storeName || 'VaultWorld Store';
   const effectiveDefaultMessage = defaultMessage || settings?.whatsappDefaultMessage;
 
   // Determine intelligent positioning based on current route
-  const isProductPage = pathname?.startsWith('/product/');
   const hasMobileBottomNav =
     !pathname?.startsWith('/r/') &&
     pathname !== '/r' &&
@@ -83,13 +82,13 @@ export default function WhatsAppButton({
     !pathname?.includes('/checkout') &&
     !pathname?.includes('/order-success');
 
-  // If on product page, float above both MobileBottomNav AND the sticky Buy Now bar (bottom-36 on mobile)
-  // If only MobileBottomNav is rendered, float at bottom-20 on mobile; otherwise bottom-6
+  // If on product page, float above the sticky Buy Now bar; otherwise above MobileBottomNav
+  const isProductPage = pathname?.startsWith('/product/');
   const defaultPosition = isProductPage
-    ? 'bottom-36 right-4 sm:bottom-6 sm:right-6'
+    ? 'bottom-[144px] right-3 sm:bottom-6 sm:right-6'
     : hasMobileBottomNav
-    ? 'bottom-20 right-4 sm:bottom-6 sm:right-6'
-    : 'bottom-20 md:bottom-6 right-4 sm:right-6';
+      ? 'bottom-20 right-4 sm:bottom-6 sm:right-6'
+      : 'bottom-20 md:bottom-6 right-4 sm:right-6';
 
   const position = positionClassName || defaultPosition;
 
@@ -137,7 +136,7 @@ export default function WhatsAppButton({
   const QUICK_PROMPTS = [
     { label: '⚡ How to download reels after purchase?', text: 'Hi! How do I get Google Drive access immediately after paying?' },
     { label: '📦 Is commercial & resale license included?', text: 'Hi! Can I resell or post these reels on Instagram/YouTube without copyright issues?' },
-    { label: '🤝 Help me with Resell & Earn setup', text: 'Hi! I want to earn with ZTORE Resell & Earn. How do I start?' },
+    { label: '🤝 Help me with Resell & Earn setup', text: 'Hi! I want to earn with VaultWorld Resell & Earn. How do I start?' },
   ];
 
   return (
@@ -163,7 +162,7 @@ export default function WhatsAppButton({
                       (e.target as HTMLElement).style.display = 'none';
                     }}
                   />
-                  <span className="text-xs font-black">MZ</span>
+                  <span className="text-xs font-black">VW</span>
                 </div>
                 {/* Active online pulse dot */}
                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-[#25D366] border-2 border-[#075E54] rounded-full" />
