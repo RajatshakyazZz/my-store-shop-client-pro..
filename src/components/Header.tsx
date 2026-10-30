@@ -12,6 +12,40 @@ import { filterBundlesByQuery } from '@/lib/search';
 import { BundleProduct } from '@/types';
 import { HeaderOfferConfig, getHeaderOfferSync, fetchHeaderOffer } from '@/lib/headerOffer';
 
+// Gradient theme definitions — must match HeaderOffer.tsx admin preview exactly
+const GRADIENT_THEMES: Record<string, { class: string; border: string; highlight: string; glow: string }> = {
+  luxury_red: {
+    class: 'bg-gradient-to-r from-[#1a0507] via-[#2d0a0f] to-[#140305]',
+    border: 'border-red-500/20',
+    highlight: 'text-rose-300 decoration-rose-400/50',
+    glow: 'rgba(239,68,68,0.25)',
+  },
+  pure_dark: {
+    class: 'bg-gradient-to-r from-[#09090b] via-[#18181b] to-[#09090b]',
+    border: 'border-white/10',
+    highlight: 'text-amber-300 decoration-amber-400/50',
+    glow: 'rgba(255,255,255,0.08)',
+  },
+  neon_ruby: {
+    class: 'bg-gradient-to-r from-[#38090f] via-[#540d16] to-[#26050a]',
+    border: 'border-red-500/40',
+    highlight: 'text-rose-200 decoration-rose-300/60',
+    glow: 'rgba(244,63,94,0.35)',
+  },
+  golden_amber: {
+    class: 'bg-gradient-to-r from-[#1f1605] via-[#2e2008] to-[#1a1203]',
+    border: 'border-amber-500/30',
+    highlight: 'text-amber-300 decoration-amber-400/60',
+    glow: 'rgba(245,158,11,0.25)',
+  },
+  emerald_deals: {
+    class: 'bg-gradient-to-r from-[#041a0e] via-[#092a18] to-[#04140a]',
+    border: 'border-emerald-500/30',
+    highlight: 'text-emerald-300 decoration-emerald-400/60',
+    glow: 'rgba(16,185,129,0.25)',
+  },
+};
+
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
@@ -25,6 +59,9 @@ export default function Header() {
   const [headerOffer, setHeaderOffer] = useState<HeaderOfferConfig>(() => getHeaderOfferSync());
   const [isCouponBannerVisible, setIsCouponBannerVisible] = useState(true);
   const [isCopied, setIsCopied] = useState(false);
+
+  // Resolve active gradient theme from admin config
+  const activeTheme = GRADIENT_THEMES[headerOffer?.bg_gradient || 'luxury_red'] ?? GRADIENT_THEMES.luxury_red;
 
   // Sync header offer from Cloud Firestore & listen for admin real-time updates
   useEffect(() => {
@@ -195,29 +232,13 @@ export default function Header() {
       {/* Top Promotional Coupon Header Bar (Fully synced with Admin Panel /asdf/header-offer) */}
       {isCouponBannerVisible && headerOffer.enabled && (
         <div
-          className={`relative ${
-            (headerOffer.bg_gradient &&
-              {
-                pure_dark: 'bg-gradient-to-r from-[#09090b] via-[#18181b] to-[#09090b] border-b border-white/10',
-                neon_ruby: 'bg-gradient-to-r from-[#38090f] via-[#540d16] to-[#26050a] border-b border-red-500/40',
-                golden_amber: 'bg-gradient-to-r from-[#1f1605] via-[#2e2008] to-[#1a1203] border-b border-amber-500/30',
-                emerald_deals: 'bg-gradient-to-r from-[#041a0e] via-[#092a18] to-[#04140a] border-b border-emerald-500/30',
-              }[headerOffer.bg_gradient]) ||
-            'bg-gradient-to-r from-[#1a0507] via-[#2d0a0f] to-[#140305] border-b border-red-500/20'
-          } text-white overflow-hidden`}
+          className={`relative ${activeTheme.class} border-b ${activeTheme.border} text-white overflow-hidden`}
         >
           {/* Subtle diagonal ambient glow */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
-              background:
-                headerOffer.bg_gradient === 'pure_dark'
-                  ? 'radial-gradient(ellipse 70% 80% at 50% -20%, rgba(255,255,255,0.08), rgba(255,255,255,0))'
-                  : headerOffer.bg_gradient === 'golden_amber'
-                  ? 'radial-gradient(ellipse 70% 80% at 50% -20%, rgba(245,158,11,0.25), rgba(255,255,255,0))'
-                  : headerOffer.bg_gradient === 'emerald_deals'
-                  ? 'radial-gradient(ellipse 70% 80% at 50% -20%, rgba(16,185,129,0.25), rgba(255,255,255,0))'
-                  : 'radial-gradient(ellipse 70% 80% at 50% -20%, rgba(239,68,68,0.25), rgba(255,255,255,0))',
+              background: `radial-gradient(ellipse 70% 80% at 50% -20%, ${activeTheme.glow}, rgba(255,255,255,0))`,
             }}
           />
 
@@ -245,7 +266,7 @@ export default function Header() {
                   {headerOffer.prefix_text && <span>{headerOffer.prefix_text}</span>}
                   {headerOffer.text_regular && <span>{headerOffer.text_regular}</span>}
                   {headerOffer.highlight_text && (
-                    <span className="text-rose-300 font-extrabold underline decoration-rose-400/50">
+                    <span className={`font-extrabold underline ${activeTheme.highlight}`}>
                       {headerOffer.highlight_text}
                     </span>
                   )}
@@ -256,7 +277,7 @@ export default function Header() {
                   {headerOffer.prefix_text && <span>{headerOffer.prefix_text}</span>}
                   {headerOffer.text_regular && <span>{headerOffer.text_regular}</span>}
                   {headerOffer.highlight_text && (
-                    <span className="text-rose-300 font-extrabold underline decoration-rose-400/50">
+                    <span className={`font-extrabold underline ${activeTheme.highlight}`}>
                       {headerOffer.highlight_text}
                     </span>
                   )}
