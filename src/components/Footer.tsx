@@ -138,7 +138,7 @@ export default function Footer() {
                     alt={settings.storeName || 'Ztore Digital'}
                     width={44}
                     height={44}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <div>

@@ -247,7 +247,7 @@ export default function Header() {
                 alt={settings.storeName || 'Ztore Digital'}
                 width={44}
                 height={44}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-cover"
               />
             </div>
             <div className="flex flex-col">
