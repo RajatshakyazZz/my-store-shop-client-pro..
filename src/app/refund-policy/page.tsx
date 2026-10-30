@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { RotateCcw, ShieldCheck, Clock, CheckCircle2, HelpCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import PolicyContactInfo from '@/components/PolicyContactInfo';
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztore.shop').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
-  title: 'Refund & Cancellation Policy | VaultWorld Store',
-  description: 'Official Refund & Cancellation Policy of VaultWorld Store. Details our transparent refund guidelines and 5-7 day payment gateway reversal timelines.',
+  title: 'Refund & Cancellation Policy | Ztore Digital',
+  description: 'Official Refund & Cancellation Policy of Ztore Digital. Details our transparent refund guidelines and 5-7 day payment gateway reversal timelines.',
   alternates: {
     canonical: `${siteUrl}/refund-policy`,
   },
@@ -29,7 +29,7 @@ export default function RefundPolicyPage() {
             Refund &amp; Cancellation Policy
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 font-medium">
-            Effective Date: October 2026 • Last Revised: October 30, 2026 • Applicable to all purchases on vaultworld.shop
+            Effective Date: October 2026 • Last Revised: October 30, 2026 • Applicable to all purchases on ztore.shop
           </p>
         </div>
 
@@ -65,7 +65,7 @@ export default function RefundPolicyPage() {
               <span>Nature of Digital Intangible Goods</span>
             </h2>
             <p>
-              All products listed and purchased on <strong>VaultWorld Store</strong> (vaultworld.shop) are <strong>intangible digital goods</strong> (including curated vertical video reel bundles, editing templates, AI creative clips, and media assets) delivered instantaneously via cloud storage links (Google Drive).
+              All products listed and purchased on <strong>Ztore Digital</strong> (ztore.shop) are <strong>intangible digital goods</strong> (including curated vertical video reel bundles, editing templates, AI creative clips, and media assets) delivered instantaneously via cloud storage links (Google Drive).
             </p>
             <p>
               Unlike physical merchandise, digital assets cannot be physically returned or retrieved once access to the Google Drive folder has been made available to the buyer. Therefore, in accordance with Indian e-commerce standards and digital copyright norms, purchases of digital downloads are generally final once the files have been accessed or downloaded. However, to protect our valued customers, we offer clear, fair exceptions outlined below.
@@ -215,7 +215,7 @@ export default function RefundPolicyPage() {
         {/* Footer Navigation Back to Store */}
         <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-2">
           <Link href="/" className="hover:text-amber-600 transition-colors">
-            ← Return to VaultWorld Store Home
+            ← Return to Ztore Digital Home
           </Link>
           <div className="flex gap-4">
             <Link href="/terms-and-conditions" className="hover:text-amber-600 transition-colors">

@@ -16,7 +16,7 @@ export interface FreeBundleOfferConfig {
 export const DEFAULT_FREE_BUNDLE_OFFER: FreeBundleOfferConfig = {
   enabled: true,
   bannerImage: '/banner-free-bundles.png',
-  bannerFallbackImage: 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png',
+  bannerFallbackImage: '/banner-free-bundles.png',
   minCartValue: 149,
   freeBundleQuantity: 2,
   headline: 'Get 2 of Any Bundle FREE',

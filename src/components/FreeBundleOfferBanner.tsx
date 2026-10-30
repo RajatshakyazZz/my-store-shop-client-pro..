@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useStoreSettings } from '@/context/StoreSettingsContext';
 
 interface FreeBundleOfferBannerProps {
   variant?: 'home' | 'checkout' | 'product';
@@ -15,6 +16,7 @@ export default function FreeBundleOfferBanner({
   currentTotal = 0,
 }: FreeBundleOfferBannerProps) {
   const { setIsFreeBundleModalOpen, freeBundles, subtotal, freeBundleOffer } = useCart();
+  const { settings } = useStoreSettings();
 
   // If the admin turned off the promotion, don't show the banner
   if (freeBundleOffer && freeBundleOffer.enabled === false) {
@@ -30,7 +32,7 @@ export default function FreeBundleOfferBanner({
   const bannerImgSrc = freeBundleOffer?.bannerImage || '/banner-free-bundles.png';
   const bannerFallbackSrc =
     freeBundleOffer?.bannerFallbackImage ||
-    'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png';
+    '/banner-free-bundles.png';
 
   const isCheckoutAction = variant === 'checkout' && isUnlocked;
 
@@ -49,22 +51,46 @@ export default function FreeBundleOfferBanner({
         className="block w-full overflow-hidden relative cursor-pointer"
         aria-label={`Claim ${freeQty} Free Bundles Special Offer`}
       >
-        <img
-          key={bannerImgSrc}
-          src={bannerImgSrc}
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = bannerFallbackSrc;
-          }}
-          alt={
-            freeBundleOffer?.headline ||
-            `Ztore Digital Neon Reels Bundle Sale - Get ${freeQty} Free Bundles on Min ₹${minCart} Payment`
-          }
-          width={1280}
-          height={480}
-          loading={variant === 'home' ? 'eager' : 'lazy'}
-          decoding="async"
-          className="w-full h-auto object-cover block group-hover:scale-[1.01] transition-transform duration-300"
-        />
+        <div className="relative w-full overflow-hidden">
+          <img
+            key={bannerImgSrc}
+            src={bannerImgSrc}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = bannerFallbackSrc;
+            }}
+            alt={
+              freeBundleOffer?.headline ||
+              `${settings.storeName || 'Ztore Digital'} Neon Reels Bundle Sale - Get ${freeQty} Free Bundles on Min ₹${minCart} Payment`
+            }
+            width={1280}
+            height={480}
+            loading={variant === 'home' ? 'eager' : 'lazy'}
+            decoding="async"
+            className="w-full h-auto object-cover block group-hover:scale-[1.01] transition-transform duration-300"
+          />
+
+          {/* Dynamic Store Brand Badge overlay on top-left of banner */}
+          <div className="absolute top-2 left-2 sm:top-3.5 sm:left-4 z-10 flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-black/75 backdrop-blur-md border border-white/15 shadow-lg select-none">
+            <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full overflow-hidden bg-black border border-white/20 shrink-0">
+              <img
+                src={settings?.logoUrl || '/logo.webp?v=2'}
+                alt={settings?.storeName || 'Store'}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/logo.webp?v=2';
+                }}
+              />
+            </div>
+            <div className="flex flex-col leading-none">
+              <span className="text-[11px] sm:text-xs font-black text-white tracking-tight">
+                {settings?.storeName || 'Ztore Digital'}
+              </span>
+              <span className="text-[8px] sm:text-[9px] font-bold text-amber-300 uppercase tracking-wider">
+                Special Offer
+              </span>
+            </div>
+          </div>
+        </div>
       </Link>
 
       {/* 2. Luxury Crimson Red Button right below the banner */}

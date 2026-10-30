@@ -7,7 +7,7 @@ import AnalyticsTracker from '@/components/AnalyticsTracker';
 import MetaPixelTracker from '@/components/MetaPixelTracker';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vaultworld.shop';
-const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-TD8N9SDD';
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || '';
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || 'G-7RMXL2RZ4J';
 const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION || 'googlef90de30240e3b03b';
 const BING_VERIFICATION = process.env.NEXT_PUBLIC_BING_VERIFICATION || '';
@@ -255,15 +255,27 @@ export default function RootLayout({
           {`
             try {
               !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              if(s && s.parentNode){s.parentNode.insertBefore(t,s);}
-              else{(b.head||b.body||b.documentElement).appendChild(t);}
-              }(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
+              {
+                if(f.fbq) return;
+                n=f.fbq=function(){
+                  var args = Array.prototype.slice.call(arguments);
+                  if ((args[0] === 'init' && args[1] === '1715650960276913') || (args[0] === 'set' && args[3] === '1715650960276913')) {
+                    return;
+                  }
+                  n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments);
+                };
+                if(!f._fbq) f._fbq=n;
+                n.push=n;
+                n.loaded=!0;
+                n.version='2.0';
+                n.queue=[];
+                t=b.createElement(e);
+                t.async=!0;
+                t.src=v;
+                s=b.getElementsByTagName(e)[0];
+                if(s && s.parentNode){s.parentNode.insertBefore(t,s);}
+                else{(b.head||b.body||b.documentElement).appendChild(t);}
+              }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
             } catch(e) { console.warn('Meta Pixel base loader skipped:', e); }
           `}
         </Script>

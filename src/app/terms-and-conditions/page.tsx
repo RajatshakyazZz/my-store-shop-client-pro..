@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { ShieldCheck, FileText, CheckCircle2, AlertCircle, Scale, CreditCard, Lock, Sparkles } from 'lucide-react';
 import PolicyContactInfo from '@/components/PolicyContactInfo';
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztore.shop').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
-  title: 'Terms & Conditions | VaultWorld Store',
-  description: 'Official Terms of Service and Merchant Agreement for VaultWorld Store. Fully compliant with RBI payment aggregator guidelines and Indian IT Act.',
+  title: 'Terms & Conditions | Ztore Digital',
+  description: 'Official Terms of Service and Merchant Agreement for Ztore Digital. Fully compliant with RBI payment aggregator guidelines and Indian IT Act.',
   alternates: {
     canonical: `${siteUrl}/terms-and-conditions`,
   },
@@ -65,7 +65,7 @@ export default function TermsPage() {
               <span>Agreement to Terms &amp; Scope of Contract</span>
             </h2>
             <p>
-              These Terms and Conditions (&quot;Terms&quot;, &quot;Terms of Service&quot;, &quot;Agreement&quot;) constitute a legally binding electronic agreement between you (&quot;User&quot;, &quot;Customer&quot;, &quot;Buyer&quot;, or &quot;You&quot;) and <strong>VaultWorld Store</strong> (&quot;Store&quot;, &quot;We&quot;, &quot;Us&quot;, or &quot;Our&quot;), operating via the website located at <strong>vaultworld.shop</strong> (and its official subdomains and mirror endpoints).
+              These Terms and Conditions (&quot;Terms&quot;, &quot;Terms of Service&quot;, &quot;Agreement&quot;) constitute a legally binding electronic agreement between you (&quot;User&quot;, &quot;Customer&quot;, &quot;Buyer&quot;, or &quot;You&quot;) and <strong>Ztore Digital</strong> (&quot;Store&quot;, &quot;We&quot;, &quot;Us&quot;, or &quot;Our&quot;), operating via the website located at <strong>ztore.shop</strong> (and its official subdomains and mirror endpoints).
             </p>
             <p>
               By visiting our website, browsing our digital bundle catalog, placing an order, or initiating checkout, you acknowledge that you have read, understood, and agreed to be bound by these Terms, as well as our{' '}
@@ -91,7 +91,7 @@ export default function TermsPage() {
               <span>Nature of Products &amp; Digital Offerings</span>
             </h2>
             <p>
-              VaultWorld Store is an e-commerce platform dedicated exclusively to <strong>intangible digital goods</strong>. Our products include:
+              Ztore Digital is an e-commerce platform dedicated exclusively to <strong>intangible digital goods</strong>. Our products include:
             </p>
             <ul className="list-disc pl-5 space-y-1.5 text-slate-600 font-medium">
               <li>Pre-rendered, high-definition (1080p Full HD) vertical video clips optimized for social media reels (9:16 aspect ratio).</li>
@@ -110,7 +110,7 @@ export default function TermsPage() {
               <span>User Eligibility &amp; Representations</span>
             </h2>
             <p>
-              To purchase or interact with VaultWorld Store, you represent and warrant that:
+              To purchase or interact with Ztore Digital, you represent and warrant that:
             </p>
             <ol className="list-decimal pl-5 space-y-1.5 text-slate-600 font-medium">
               <li>You are at least 18 years of age or possess the legal capacity to enter into a valid, binding contract under the Indian Contract Act, 1872. If you are under 18 years old, you may access and purchase only under the direct supervision of a parent or legal guardian.</li>
@@ -126,7 +126,7 @@ export default function TermsPage() {
               <span>Pricing, Currency &amp; Taxes</span>
             </h2>
             <p>
-              All prices displayed on VaultWorld Store are quoted in <strong>Indian National Rupees (INR / ₹)</strong>.
+              All prices displayed on Ztore Digital are quoted in <strong>Indian National Rupees (INR / ₹)</strong>.
             </p>
             <ul className="list-disc pl-5 space-y-1.5 text-slate-600 font-medium">
               <li><strong>Inclusive Pricing:</strong> Prices listed on bundle cards and checkout are final and inclusive of applicable Goods and Services Tax (GST) unless explicitly indicated otherwise.</li>
@@ -142,7 +142,7 @@ export default function TermsPage() {
               <span>Payment Terms &amp; Payment Aggregator Security</span>
             </h2>
             <p>
-              To ensure top-tier security and absolute financial privacy, all online payments on VaultWorld Store are facilitated through Reserve Bank of India (RBI) authorized, PCI-DSS Level 1 compliant payment aggregators:
+              To ensure top-tier security and absolute financial privacy, all online payments on Ztore Digital are facilitated through Reserve Bank of India (RBI) authorized, PCI-DSS Level 1 compliant payment aggregators:
             </p>
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
               <div className="flex items-center gap-2 font-bold text-slate-900 text-xs sm:text-sm">
@@ -162,7 +162,7 @@ export default function TermsPage() {
                 <span>PCI-DSS Financial Data Security Commitment:</span>
               </div>
               <p>
-                <strong>VaultWorld Store does not collect, record, or store any sensitive financial credentials</strong> such as credit/debit card numbers, CVV codes, net banking passwords, or UPI PINs. All payment transactions are encrypted via 256-bit SSL technology directly through the certified payment gateway servers (Cashfree Payments India Pvt. Ltd. / Razorpay Software Pvt. Ltd. / PayU Payments Pvt. Ltd.).
+                <strong>Ztore Digital does not collect, record, or store any sensitive financial credentials</strong> such as credit/debit card numbers, CVV codes, net banking passwords, or UPI PINs. All payment transactions are encrypted via 256-bit SSL technology directly through the certified payment gateway servers (Cashfree Payments India Pvt. Ltd. / Razorpay Software Pvt. Ltd. / PayU Payments Pvt. Ltd.).
               </p>
             </div>
           </section>
@@ -179,7 +179,7 @@ export default function TermsPage() {
             <ul className="list-disc pl-5 space-y-1.5 text-slate-600 font-medium">
               <li><strong>On-Screen Access:</strong> You are immediately redirected to our secure Order Confirmation Page where your direct Google Drive access buttons and folder links are made available.</li>
               <li><strong>Email Delivery:</strong> An automated digital delivery receipt containing your permanent access link is dispatched to your provided Gmail address within 60 seconds of transaction completion.</li>
-              <li><strong>Self-Service Access:</strong> Customers may re-access their Google Drive links at any time by entering their checkout email on our self-service portal at <Link href="/my-order" className="text-amber-700 underline font-semibold">vaultworld.shop/my-order</Link>.</li>
+              <li><strong>Self-Service Access:</strong> Customers may re-access their Google Drive links at any time by entering their checkout email on our self-service portal at <Link href="/my-order" className="text-amber-700 underline font-semibold">ztore.shop/my-order</Link>.</li>
               <li><strong>Shipping Charges:</strong> There are zero shipping, courier, or delivery fees (₹0.00).</li>
             </ul>
           </section>
@@ -191,7 +191,7 @@ export default function TermsPage() {
               <span>License Terms &amp; Permitted Usage</span>
             </h2>
             <p>
-              When purchasing bundles on VaultWorld Store, you are granted a non-exclusive license based on the licensing option specified for that product:
+              When purchasing bundles on Ztore Digital, you are granted a non-exclusive license based on the licensing option specified for that product:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1.5">
@@ -208,7 +208,7 @@ export default function TermsPage() {
                   B. Master Resell Rights (MRR / PLR License)
                 </span>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Where a bundle explicitly includes Reseller / Master Resell Rights (MRR), you are granted permission to package, resell, or distribute the bundle files to your own buyers and retain 100% of the sales proceeds. Resale must adhere to fair trade practices and must not claim false affiliation with VaultWorld Store.
+                  Where a bundle explicitly includes Reseller / Master Resell Rights (MRR), you are granted permission to package, resell, or distribute the bundle files to your own buyers and retain 100% of the sales proceeds. Resale must adhere to fair trade practices and must not claim false affiliation with Ztore Digital.
                 </p>
               </div>
             </div>
@@ -221,7 +221,7 @@ export default function TermsPage() {
               <span>Prohibited Activities &amp; Anti-Fraud Policy</span>
             </h2>
             <p>
-              Users of VaultWorld Store agree not to engage in any of the following prohibited behaviors:
+              Users of Ztore Digital agree not to engage in any of the following prohibited behaviors:
             </p>
             <ul className="list-disc pl-5 space-y-1 text-slate-600 font-medium">
               <li>Using stolen, compromised, or unauthorized credit cards, debit cards, or UPI IDs to initiate fraudulent checkouts.</li>
@@ -241,7 +241,7 @@ export default function TermsPage() {
               <span>Disclaimer of Warranties &amp; Earnings Representation</span>
             </h2>
             <p>
-              <strong>Educational &amp; Creative Utility Only:</strong> All video templates, hooks, and bundle assets provided by VaultWorld Store are creative tools provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis.
+              <strong>Educational &amp; Creative Utility Only:</strong> All video templates, hooks, and bundle assets provided by Ztore Digital are creative tools provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis.
             </p>
             <p>
               <strong>No Guarantee of Virality or Financial Earnings:</strong> While our bundles are curated to match current social media trends and high-retention formats, social media platform algorithms (Instagram, YouTube, Facebook, TikTok) are proprietary and subject to continuous automated updates. We do not make any express or implied guarantees regarding the exact number of views, followers, subscriber growth, or revenue you will attain by using our content. Your actual results depend solely on your creative consistency, niche targeting, audience engagement, and publishing strategy.
@@ -270,10 +270,10 @@ export default function TermsPage() {
               <span>Limitation of Liability &amp; Indemnification</span>
             </h2>
             <p>
-              To the maximum extent permitted by applicable Indian laws, VaultWorld Store, its founders, affiliates, employees, and licensors shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of your access to or inability to access the digital files, including loss of profits, data corruption, or business interruption.
+              To the maximum extent permitted by applicable Indian laws, Ztore Digital, its founders, affiliates, employees, and licensors shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of your access to or inability to access the digital files, including loss of profits, data corruption, or business interruption.
             </p>
             <p>
-              In all cases, our aggregate liability for any claims arising out of or related to these Terms or your purchase shall not exceed the total amount actually paid by you to VaultWorld Store for the specific order giving rise to the claim.
+              In all cases, our aggregate liability for any claims arising out of or related to these Terms or your purchase shall not exceed the total amount actually paid by you to Ztore Digital for the specific order giving rise to the claim.
             </p>
           </section>
 
@@ -308,7 +308,7 @@ export default function TermsPage() {
         {/* Footer Navigation Back to Store */}
         <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-2">
           <Link href="/" className="hover:text-amber-600 transition-colors">
-            ← Return to VaultWorld Store Home
+            ← Return to Ztore Digital Home
           </Link>
           <div className="flex gap-4">
             <Link href="/privacy-policy" className="hover:text-amber-600 transition-colors">

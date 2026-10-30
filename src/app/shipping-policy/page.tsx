@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { Zap, ShieldCheck, FolderOpen, Mail, Clock, HelpCircle, CheckCircle2 } from 'lucide-react';
 import PolicyContactInfo from '@/components/PolicyContactInfo';
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztore.shop').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
-  title: 'Shipping & Delivery Policy | VaultWorld Store',
-  description: 'Instant Digital Delivery and Shipping Policy for VaultWorld Store. Explains our 60-second cloud delivery via Google Drive with zero shipping charges.',
+  title: 'Shipping & Delivery Policy | Ztore Digital',
+  description: 'Instant Digital Delivery and Shipping Policy for Ztore Digital. Explains our 60-second cloud delivery via Google Drive with zero shipping charges.',
   alternates: {
     canonical: `${siteUrl}/shipping-policy`,
   },
@@ -29,7 +29,7 @@ export default function ShippingPolicyPage() {
             Shipping &amp; Digital Delivery Policy
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 font-medium">
-            Effective Date: October 2026 • Last Revised: October 30, 2026 • Applicable to all purchases on vaultworld.shop
+            Effective Date: October 2026 • Last Revised: October 30, 2026 • Applicable to all purchases on ztore.shop
           </p>
         </div>
 
@@ -65,7 +65,7 @@ export default function ShippingPolicyPage() {
               <span>100% Digital Intangible Products (No Physical Shipping)</span>
             </h2>
             <p>
-              VaultWorld Store operates exclusively as a retailer of <strong>downloadable digital content</strong> (including pre-rendered 1080p vertical video reels bundles, social media creative packs, AI reel clips, and editing assets).
+              Ztore Digital operates exclusively as a retailer of <strong>downloadable digital content</strong> (including pre-rendered 1080p vertical video reels bundles, social media creative packs, AI reel clips, and editing assets).
             </p>
             <p>
               <strong>We do not sell, package, or ship any physical goods or parcels.</strong> Consequently, physical postal shipping, courier transit times, delivery addresses, and courier tracking numbers are not applicable to any orders on our platform.
@@ -79,7 +79,7 @@ export default function ShippingPolicyPage() {
               <span>Shipping &amp; Delivery Charges</span>
             </h2>
             <p>
-              All digital products sold on VaultWorld Store carry <strong>Zero Shipping Charges (₹0.00 / Free Delivery)</strong>. The price displayed on the product page and checkout is the total final price you pay. There are no shipping, handling, fuel surcharge, or packaging fees added to your order.
+              All digital products sold on Ztore Digital carry <strong>Zero Shipping Charges (₹0.00 / Free Delivery)</strong>. The price displayed on the product page and checkout is the total final price you pay. There are no shipping, handling, fuel surcharge, or packaging fees added to your order.
             </p>
           </section>
 
@@ -131,7 +131,7 @@ export default function ShippingPolicyPage() {
                     Tier 3: 24/7 Self-Service Order Recovery Portal
                   </strong>
                   <p className="text-xs text-slate-600">
-                    You can retrieve your purchased Google Drive access links anytime by simply entering your checkout email on our self-service portal at <Link href="/my-order" className="text-amber-700 underline font-semibold">vaultworld.shop/my-order</Link>.
+                    You can retrieve your purchased Google Drive access links anytime by simply entering your checkout email on our self-service portal at <Link href="/my-order" className="text-amber-700 underline font-semibold">ztore.shop/my-order</Link>.
                   </p>
                 </div>
               </div>
@@ -166,7 +166,7 @@ export default function ShippingPolicyPage() {
             <ul className="list-disc pl-5 space-y-1 text-slate-600 font-medium text-xs sm:text-sm">
               <li>Check your email&apos;s <strong>Spam, Promotions, or Updates</strong> folder.</li>
               <li>Verify that you entered your correct Gmail address during checkout without typos.</li>
-              <li>Visit our self-service recovery page at <Link href="/my-order" className="text-amber-700 underline font-semibold">vaultworld.shop/my-order</Link>.</li>
+              <li>Visit our self-service recovery page at <Link href="/my-order" className="text-amber-700 underline font-semibold">ztore.shop/my-order</Link>.</li>
             </ul>
             <p className="text-xs text-slate-600">
               If you still cannot locate your access, contact our 24/7 customer support desk with your Order ID or payment screenshot, and we will manually re-dispatch your link within 2 to 4 hours.
@@ -190,7 +190,7 @@ export default function ShippingPolicyPage() {
         {/* Footer Navigation Back to Store */}
         <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-2">
           <Link href="/" className="hover:text-amber-600 transition-colors">
-            ← Return to VaultWorld Store Home
+            ← Return to Ztore Digital Home
           </Link>
           <div className="flex gap-4">
             <Link href="/terms-and-conditions" className="hover:text-amber-600 transition-colors">

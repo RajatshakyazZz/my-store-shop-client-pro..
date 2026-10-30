@@ -617,7 +617,7 @@ class PortalApiClient {
             dateStyle: 'medium',
             timeStyle: 'medium',
           });
-          const siteOrigin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop');
+          const siteOrigin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztore.shop');
           const productUrl = `${siteOrigin}/product/${newProduct.slug}`;
           const telegramText = `🚀📦 <b>NEW PRODUCT UPLOADED TO STORE!</b> ✨🔥
 ━━━━━━━━━━━━━━━━━━━━━━
@@ -642,7 +642,7 @@ class PortalApiClient {
                   parse_mode: 'HTML',
                   disable_web_page_preview: true,
                   reply_markup: {
-                    inline_keyboard: [[{ text: '🔗 View New Bundle on VaultWorld Store', url: productUrl }]],
+                    inline_keyboard: [[{ text: '🔗 View New Bundle on Ztore Digital', url: productUrl }]],
                   },
                 }),
               })
@@ -2250,7 +2250,7 @@ class PortalApiClient {
     }
 
     await logAdminAction({
-      adminEmail: 'admin@vaultworld.shop',
+      adminEmail: 'admin@ztore.shop',
       action: 'UPDATE_STORE_SETUP',
       module: 'Store Setup',
       details: `Updated store name: "${clean.store_name}", email: "${clean.contact_email}", phone: "${clean.support_whatsapp}"`,
@@ -2325,7 +2325,7 @@ class PortalApiClient {
     }
 
     await logAdminAction({
-      adminEmail: 'admin@vaultworld.shop',
+      adminEmail: 'admin@ztore.shop',
       action: 'UPDATE_META_PIXEL',
       module: 'Meta Pixel',
       details: `Updated Pixel ID: ${clean.pixel_id}`,
@@ -2387,7 +2387,7 @@ class PortalApiClient {
       }
     }
     await logAdminAction({
-      adminEmail: 'admin@vaultworld.shop',
+      adminEmail: 'admin@ztore.shop',
       action: 'UPDATE_WHATSAPP',
       module: 'WhatsApp Button',
       details: `Updated support phone to ${clean.phone_number}`,
@@ -2474,7 +2474,7 @@ class PortalApiClient {
               app_id: data.config.merchant_key || '',
               secret_key: data.config.merchant_salt || '',
               environment: data.config.environment || 'PRODUCTION',
-              return_url: data.config.return_url || 'https://vaultworld.shop/api/payment/payu/return',
+              return_url: data.config.return_url || 'https://ztore.shop/api/payment/payu/return',
             };
             this.saveSettingLocally('payu', mapped);
             return mapped;
@@ -2513,7 +2513,7 @@ class PortalApiClient {
             app_id: data.merchant_key || data.app_id || '',
             secret_key: data.merchant_salt || data.secret_key || '',
             environment: data.environment === 'TEST' || data.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
-            return_url: data.return_url || 'https://vaultworld.shop/api/payment/payu/return',
+            return_url: data.return_url || 'https://ztore.shop/api/payment/payu/return',
           };
           this.saveSettingLocally('payu', mapped);
           return mapped;
@@ -2569,7 +2569,7 @@ class PortalApiClient {
     }
 
     await logAdminAction({
-      adminEmail: 'admin@vaultworld.shop',
+      adminEmail: 'admin@ztore.shop',
       action: 'UPDATE_PAYU_CONFIG',
       module: 'Payments',
       details: `Updated PayU Gateway credentials (Env: ${clean.environment || 'PRODUCTION'}) in Cloud Database`,
@@ -3104,7 +3104,7 @@ class PortalApiClient {
     const defaultOffer: FreeBundleOffer = {
       enabled: true,
       banner_image: '/banner-free-bundles.png',
-      banner_fallback_image: 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png',
+      banner_fallback_image: '/banner-free-bundles.png',
       min_cart_value: 149,
       free_bundle_quantity: 2,
       headline: 'Get 2 of Any Bundle FREE',

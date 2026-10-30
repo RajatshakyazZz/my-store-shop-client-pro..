@@ -332,12 +332,15 @@ export default function Header() {
           <Link href="/" prefetch={false} className="flex items-center gap-2.5 group shrink-0">
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black border border-red-500/30 overflow-hidden flex items-center justify-center shadow-md shadow-red-500/20 group-hover:scale-105 transition-transform shrink-0">
               <img
-                src="/logo.webp?v=2"
-                alt="Ztore Digital Logo"
+                src={settings.logoUrl || '/logo.webp?v=2'}
+                alt={`${settings.storeName || 'Ztore Digital'} Logo`}
                 width={44}
                 height={44}
                 decoding="async"
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/logo.webp?v=2';
+                }}
               />
             </div>
             <div className="flex flex-col">

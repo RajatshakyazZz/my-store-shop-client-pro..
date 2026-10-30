@@ -25,7 +25,7 @@ import ImageUploadField from '../components/common/ImageUploadField';
 const DEFAULT_FORM: FreeBundleOffer = {
   enabled: true,
   banner_image: '/banner-free-bundles.png',
-  banner_fallback_image: 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png',
+  banner_fallback_image: '/banner-free-bundles.png',
   min_cart_value: 149,
   free_bundle_quantity: 2,
   headline: 'Get 2 of Any Bundle FREE',
@@ -243,7 +243,7 @@ export default function FreeBundleOfferPage() {
                     setForm({
                       ...form,
                       banner_image: '/banner-free-bundles.png',
-                      banner_fallback_image: 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png',
+                      banner_fallback_image: '/banner-free-bundles.png',
                     })
                   }
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
@@ -262,11 +262,11 @@ export default function FreeBundleOfferPage() {
                   onClick={() =>
                     setForm({
                       ...form,
-                      banner_image: 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png',
+                      banner_image: '/banner-free-bundles.png',
                     })
                   }
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                    form.banner_image === 'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png'
+                    form.banner_image === '/banner-free-bundles.png'
                       ? 'bg-amber-500/15 border-amber-500/40 text-amber-500 font-bold'
                       : isLight
                       ? 'border-slate-200 hover:bg-slate-100 text-slate-600'
@@ -476,7 +476,7 @@ export default function FreeBundleOfferPage() {
                   onError={(e) => {
                     (e.target as HTMLImageElement).src =
                       form.banner_fallback_image ||
-                      'https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png';
+                      '/banner-free-bundles.png';
                   }}
                   alt={form.headline || 'Promotional Offer Banner'}
                   className="w-full h-full object-cover"

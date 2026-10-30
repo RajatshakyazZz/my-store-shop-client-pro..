@@ -6,8 +6,8 @@ import { useStoreSettings } from '@/context/StoreSettingsContext';
 
 export default function PolicyContactInfo() {
   const { settings } = useStoreSettings();
-  const storeName = settings?.storeName || 'VaultWorld Store';
-  const supportEmail = settings?.supportEmail || 'support.vaultworld.shop@gmail.com';
+  const storeName = settings?.storeName || 'Ztore Digital';
+  const supportEmail = settings?.supportEmail || 'support.ztore.shop@gmail.com';
   const supportPhone = settings?.supportPhone || settings?.supportWhatsapp || '+91 8051017331';
 
   return (

@@ -132,7 +132,7 @@ export type GlobalBumpOffer = z.infer<typeof GlobalBumpOfferSchema>;
 export const FreeBundleOfferSchema = z.object({
   enabled: z.boolean().default(true),
   banner_image: z.string().default('/banner-free-bundles.png'),
-  banner_fallback_image: z.string().default('https://i.postimg.cc/VsF1DgQD/Vaultzet-Neon-Reels-Bundle-Sale.png'),
+  banner_fallback_image: z.string().default('/banner-free-bundles.png'),
   min_cart_value: z.number().default(149),
   free_bundle_quantity: z.number().default(2),
   headline: z.string().default('Get 2 of Any Bundle FREE'),

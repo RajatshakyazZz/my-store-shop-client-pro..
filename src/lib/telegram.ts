@@ -1,4 +1,4 @@
-// Telegram Instant Alert & Command Center Bot for VaultWorld Store (@Vault_World_bot)
+// Telegram Instant Alert & Command Center Bot for Ztore Digital (@Vault_World_bot)
 // Authorized Admins: 7483268297, 5950203511, 6206169480
 
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
@@ -421,7 +421,7 @@ function resolveDriveLinkForItem(item: { id?: string; title?: string; googleDriv
       (item.id && b.id === item.id) ||
       (item.title && b.title.toLowerCase() === item.title.toLowerCase())
   );
-  return matched?.googleDriveLink || 'https://vaultworld.shop/my-order';
+  return matched?.googleDriveLink || 'https://ztore.shop/my-order';
 }
 
 /**
@@ -494,9 +494,9 @@ ${itemsFormatted}${bumpLine}${reasonLine}
 ━━━━━━━━━━━━━━━━━━━━━━
 👇 <i>Tap below to follow up or send an instant 20% discount offer on WhatsApp:</i>`;
 
-  const followUpMsg = `Hi ${customerName}! 👋\n\nWe noticed you were checking out on *VaultWorld Store* (Order #${data.orderNumber}), but your payment of *₹${totalAmount}* was not completed.\n\n📦 *Your Selected Bundle(s):*\n• ${productNamesList || 'Viral Reels Bundle'}\n\n✨ Complete your order now to get *100% Instant Google Drive Download Access*:\n👉 https://vaultworld.shop/checkout\n\nReply here if you need any help with UPI or payment! 🚀`;
+  const followUpMsg = `Hi ${customerName}! 👋\n\nWe noticed you were checking out on *Ztore Digital* (Order #${data.orderNumber}), but your payment of *₹${totalAmount}* was not completed.\n\n📦 *Your Selected Bundle(s):*\n• ${productNamesList || 'Viral Reels Bundle'}\n\n✨ Complete your order now to get *100% Instant Google Drive Download Access*:\n👉 https://ztore.shop/checkout\n\nReply here if you need any help with UPI or payment! 🚀`;
 
-  const discountOfferMsg = `Hi ${customerName}! 🎁 *Special 15-Minute Offer from VaultWorld Store!*\n\nComplete your order (#${data.orderNumber}) for *${productNamesList || 'Viral Reels Bundle'}* in the next 15 minutes and get an *EXTRA 20% DISCOUNT (Save ₹${discountSaved}!)* 🔥\n\n💰 *Special Price for You:* Just *₹${discountedAmount}* (instead of ₹${totalAmount})\n📂 *Delivery:* 100% Instant Google Drive Link\n\n👉 Complete your order now:\nhttps://vaultworld.shop/checkout\n\nOr reply *YES* here to get a direct ₹${discountedAmount} UPI payment link right now! ⚡`;
+  const discountOfferMsg = `Hi ${customerName}! 🎁 *Special 15-Minute Offer from Ztore Digital!*\n\nComplete your order (#${data.orderNumber}) for *${productNamesList || 'Viral Reels Bundle'}* in the next 15 minutes and get an *EXTRA 20% DISCOUNT (Save ₹${discountSaved}!)* 🔥\n\n💰 *Special Price for You:* Just *₹${discountedAmount}* (instead of ₹${totalAmount})\n📂 *Delivery:* 100% Instant Google Drive Link\n\n👉 Complete your order now:\nhttps://ztore.shop/checkout\n\nOr reply *YES* here to get a direct ₹${discountedAmount} UPI payment link right now! ⚡`;
 
   const waFollowUpUrl = buildWhatsAppFollowUpUrl(customerPhone, followUpMsg);
   const waDiscountUrl = buildWhatsAppFollowUpUrl(customerPhone, discountOfferMsg);
@@ -552,8 +552,8 @@ export async function sendSaleSuccessTelegramAlert(data: OrderAlertData): Promis
             title: 'Viral Reels Bundle',
             license: 'personal',
             price: data.totalAmount,
-            resolvedDriveLink: 'https://vaultworld.shop/my-order',
-            files: [{ name: 'Viral Reels Bundle Access', file_url: 'https://vaultworld.shop/my-order' }],
+            resolvedDriveLink: 'https://ztore.shop/my-order',
+            files: [{ name: 'Viral Reels Bundle Access', file_url: 'https://ztore.shop/my-order' }],
           },
         ];
 
@@ -618,9 +618,9 @@ ${itemsFormatted}${bumpLine}
     })
     .join('\n\n');
 
-  const driveDeliveryMsg = `Hi ${customerName}! 🎉\n\nThank you for your purchase on *VaultWorld Store*! Your payment of *₹${data.totalAmount}.00* (Order #${data.orderNumber}) is confirmed. ✅\n\n📂 *Here is your Instant Google Drive Download Access:*\n\n${driveLinksText}\n\n🔑 You can also access all your orders anytime at:\n👉 https://vaultworld.shop/my-order (Email: ${customerEmail})\n\nEnjoy your reels & grow fast! Reply here if you need any assistance. 🚀`;
+  const driveDeliveryMsg = `Hi ${customerName}! 🎉\n\nThank you for your purchase on *Ztore Digital*! Your payment of *₹${data.totalAmount}.00* (Order #${data.orderNumber}) is confirmed. ✅\n\n📂 *Here is your Instant Google Drive Download Access:*\n\n${driveLinksText}\n\n🔑 You can also access all your orders anytime at:\n👉 https://ztore.shop/my-order (Email: ${customerEmail})\n\nEnjoy your reels & grow fast! Reply here if you need any assistance. 🚀`;
 
-  const thankYouMsg = `Hi ${customerName}! 🎉\n\nThank you for your order (#${data.orderNumber}) of *${productNamesList || 'Viral Reels Bundle'}* on *VaultWorld Store*!\n\nLet me know if you were able to open your Google Drive folder smoothly. Happy creating! 🚀`;
+  const thankYouMsg = `Hi ${customerName}! 🎉\n\nThank you for your order (#${data.orderNumber}) of *${productNamesList || 'Viral Reels Bundle'}* on *Ztore Digital*!\n\nLet me know if you were able to open your Google Drive folder smoothly. Happy creating! 🚀`;
 
   const waDriveUrl = buildWhatsAppFollowUpUrl(customerPhone, driveDeliveryMsg);
   const waThankYouUrl = buildWhatsAppFollowUpUrl(customerPhone, thankYouMsg);
@@ -674,9 +674,9 @@ ${itemsFormatted}
 ━━━━━━━━━━━━━━━━━━━━━━
 👇 <i>If they don't complete payment in 2 minutes, tap below to close the sale on WhatsApp:</i>`;
 
-  const helpMsg = `Hi ${customerName}! 👋\n\nI saw you are checking out *${productNamesList || 'our Viral Reels Bundle'}* (₹${totalAmount}) on *VaultWorld Store*.\n\nDo you need any help with UPI payment or have any questions about the Google Drive download link? Just reply here! 🚀`;
+  const helpMsg = `Hi ${customerName}! 👋\n\nI saw you are checking out *${productNamesList || 'our Viral Reels Bundle'}* (₹${totalAmount}) on *Ztore Digital*.\n\nDo you need any help with UPI payment or have any questions about the Google Drive download link? Just reply here! 🚀`;
 
-  const discountMsg = `Hi ${customerName}! 🎁 *Special Live Offer from VaultWorld Store!*\n\nComplete your checkout for *${productNamesList || 'Viral Reels Bundle'}* in the next 15 minutes and get *20% OFF* — pay just *₹${discountedAmount}* instead of ₹${totalAmount}!\n\n👉 Checkout now: https://vaultworld.shop/checkout\nOr reply *YES* here for a direct ₹${discountedAmount} UPI link! ⚡`;
+  const discountMsg = `Hi ${customerName}! 🎁 *Special Live Offer from Ztore Digital!*\n\nComplete your checkout for *${productNamesList || 'Viral Reels Bundle'}* in the next 15 minutes and get *20% OFF* — pay just *₹${discountedAmount}* instead of ₹${totalAmount}!\n\n👉 Checkout now: https://ztore.shop/checkout\nOr reply *YES* here for a direct ₹${discountedAmount} UPI link! ⚡`;
 
   return sendTelegramMessage(text, [
     [{ text: `💬 Message Lead on WhatsApp (${customerPhone})`, url: buildWhatsAppFollowUpUrl(customerPhone, helpMsg) }],
@@ -704,7 +704,7 @@ export async function sendProductAddedTelegramAlert(product: {
     return false;
   }
   const slug = product.slug || '';
-  const productUrl = slug ? `https://vaultworld.shop/product/${slug}` : 'https://vaultworld.shop/shop';
+  const productUrl = slug ? `https://ztore.shop/product/${slug}` : 'https://ztore.shop/shop';
   const categoryStr = (product.categories || ['Viral Reels']).join(', ');
 
   const text = `🚀📦 <b>NEW PRODUCT UPLOADED TO STORE!</b> ✨🔥
@@ -720,7 +720,7 @@ export async function sendProductAddedTelegramAlert(product: {
 ━━━━━━━━━━━━━━━━━━━━━━`;
 
   return sendTelegramMessage(text, [
-    [{ text: '🔗 View New Bundle on VaultWorld Store', url: productUrl }],
+    [{ text: '🔗 View New Bundle on Ztore Digital', url: productUrl }],
     [{ text: '📊 Check Today Stats (/today)', callback_data: 'cmd_today' }],
   ]);
 }
@@ -818,7 +818,7 @@ export function getCommandCenterButtons(): Array<Array<TelegramInlineButton>> {
       { text: '⏳ Abandoned Leads (/pending)', callback_data: 'cmd_pending' },
       { text: '🌙 Night Summary (/summary)', callback_data: 'cmd_summary' },
     ],
-    [{ text: '🛍️ Open VaultWorld Store', url: 'https://vaultworld.shop' }],
+    [{ text: '🛍️ Open Ztore Digital', url: 'https://ztore.shop' }],
   ];
 }
 
@@ -937,7 +937,7 @@ Welcome <b>Rajat Shakya</b>! Use these commands anytime to manage your store dir
       const name = o.customer?.fullName || 'Customer';
       const firstItem = o.items?.[0] || { title: 'Viral Reels Bundle' };
       const driveLink = resolveDriveLinkForItem(firstItem);
-      const msg = `Hi ${name}! 🎉 Here is your Google Drive download link for Order #${o.orderNumber} (*${firstItem.title}*):\n📂 ${driveLink}\n\nThank you for shopping at VaultWorld Store! 🚀`;
+      const msg = `Hi ${name}! 🎉 Here is your Google Drive download link for Order #${o.orderNumber} (*${firstItem.title}*):\n📂 ${driveLink}\n\nThank you for shopping at Ztore Digital! 🚀`;
       buttons.push([
         {
           text: `📂 Send Drive Link: #${o.orderNumber} (${name})`,
@@ -983,7 +983,7 @@ ${listText}
       const bundle = o.items?.[0]?.title || 'Viral Reels Bundle';
       const total = Number(o.totalAmount || 49);
       const disc = Math.max(19, Math.round(total * 0.8));
-      const msg = `Hi ${name}! 🎁 Complete your VaultWorld Store order (#${o.orderNumber}) for *${bundle}* in the next 15 mins and get *20% OFF* — pay just *₹${disc}* instead of ₹${total}!\n\n👉 https://vaultworld.shop/checkout\nReply *YES* for a direct ₹${disc} UPI link! 🚀`;
+      const msg = `Hi ${name}! 🎁 Complete your Ztore Digital order (#${o.orderNumber}) for *${bundle}* in the next 15 mins and get *20% OFF* — pay just *₹${disc}* instead of ₹${total}!\n\n👉 https://ztore.shop/checkout\nReply *YES* for a direct ₹${disc} UPI link! 🚀`;
       buttons.push([
         {
           text: `🎁 Recover #${o.orderNumber} (${name} • Offer ₹${disc})`,
