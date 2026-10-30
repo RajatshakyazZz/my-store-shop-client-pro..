@@ -1,15 +1,14 @@
 import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { ShieldCheck, Lock, Eye, RefreshCw, Server, HelpCircle, Mail, Phone, FileText } from 'lucide-react';
+import { ShieldCheck, Lock, Eye, Database, Server, UserCheck, AlertTriangle } from 'lucide-react';
 import PolicyContactInfo from '@/components/PolicyContactInfo';
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztore.shop').replace(/\/+$/, '');
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Ztore Digital - Secure Payment & Data Protection',
-  description:
-    'Official Privacy Policy for Ztore Digital. Understand how your personal information and payments are securely collected, processed, and protected under IT Act 2000.',
+  title: 'Privacy Policy | VaultWorld Store',
+  description: 'Official Privacy Policy of VaultWorld Store. Details our adherence to the Digital Personal Data Protection Act (DPDP Act 2023) and RBI payment security rules.',
   alternates: {
     canonical: `${siteUrl}/privacy-policy`,
   },
@@ -17,204 +16,247 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="py-12 sm:py-20 bg-slate-50 min-h-screen">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="py-12 sm:py-20 bg-[#faf9ff]">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
-        {/* Header Badge & Title */}
+        {/* Header Section */}
         <div className="text-center space-y-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-[11px] font-black uppercase text-emerald-700 tracking-wider">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-[11px] font-black uppercase text-emerald-800 tracking-wider">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>TRANSPARENT & SECURE DATA PRACTICES</span>
+            <span>DPDP ACT 2023 &amp; RBI COMPLIANT PRIVACY POLICY</span>
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
-            Privacy Policy
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#182247] tracking-tight">
+            Privacy Policy &amp; Data Protection
           </h1>
-          <p className="text-sm sm:text-base text-slate-600 font-medium max-w-2xl mx-auto">
-            At <strong className="text-slate-900">Ztore Digital</strong>, we respect your confidentiality. This policy outlines our data collection, handling, and security protocols in compliance with the Information Technology Act, 2000 and applicable digital commerce guidelines.
+          <p className="text-xs sm:text-sm text-slate-500 font-medium">
+            Effective Date: October 2026 • Last Revised: October 30, 2026 • Platform: vaultworld.shop
           </p>
-          <div className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-500 pt-1">
-            <span>Last Updated: October 30, 2026</span>
-            <span>•</span>
-            <span>Effective Date: Immediate</span>
-          </div>
         </div>
 
-        {/* Highlight Summary Grid for Compliance Reviewers */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-              <Lock className="w-5 h-5" />
+        {/* Core Financial Privacy Commitment Card (Mandatory for Cashfree / Razorpay / PayU Onboarding) */}
+        <div className="rounded-2xl sm:rounded-3xl bg-emerald-950 text-white p-6 sm:p-8 shadow-md border border-emerald-700/50 space-y-3">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center shrink-0">
+              <Lock className="w-5 h-5 text-emerald-400" />
             </div>
-            <div>
-              <h2 className="text-xs font-black text-slate-900 uppercase tracking-wide">256-Bit SSL Secured</h2>
-              <p className="text-[11px] text-slate-500 font-medium mt-0.5">Payment data processed exclusively through PCI-DSS Level 1 compliant gateways.</p>
-            </div>
+            <h3 className="font-extrabold text-base sm:text-lg text-emerald-200">
+              100% Zero Financial Data Storage Guarantee (PCI-DSS &amp; RBI Aligned)
+            </h3>
           </div>
-
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-              <Eye className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="text-xs font-black text-slate-900 uppercase tracking-wide">No Data Selling</h2>
-              <p className="text-[11px] text-slate-500 font-medium mt-0.5">We never sell, rent, or monetize your contact or billing information to third parties.</p>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-              <RefreshCw className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="text-xs font-black text-slate-900 uppercase tracking-wide">Instant Delivery</h2>
-              <p className="text-[11px] text-slate-500 font-medium mt-0.5">Email and phone are collected solely for cloud delivery and customer support.</p>
-            </div>
-          </div>
+          <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-normal">
+            <strong>VaultWorld Store never collects, captures, views, or stores your sensitive banking or payment card details.</strong> All transactions (UPI, Credit/Debit Cards, Net Banking) are conducted through bank-grade 256-bit encrypted sessions directly on the servers of Reserve Bank of India (RBI) authorized payment aggregators (Cashfree Payments, Razorpay Software, PayU India). Your card CVV, expiry dates, net banking passwords, and UPI PINs are processed exclusively on certified, PCI-DSS Level 1 compliant infrastructure.
+          </p>
         </div>
 
-        {/* Main Document Body */}
-        <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-sm space-y-8 text-sm text-slate-600 font-medium leading-relaxed">
+        {/* Main Content Body */}
+        <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-sm space-y-8 text-sm text-[#475569] font-normal leading-relaxed">
           
+          {/* Section 1 */}
           <section className="space-y-3">
-            <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-red-100 text-red-700 text-xs flex items-center justify-center font-black">1</span>
-              <span>Overview & Business Identity</span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
+              <span className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-700 font-black text-xs flex items-center justify-center">1</span>
+              <span>Introduction &amp; Regulatory Framework</span>
             </h2>
             <p>
-              This Privacy Policy applies to the website <strong className="text-slate-900">Ztore Digital</strong> (<a href={siteUrl} className="text-red-600 underline hover:text-red-700">{siteUrl}</a>). Ztore Digital is an Indian e-commerce platform specializing in premium downloadable digital content, video bundles, and creator templates. By browsing this store, placing an order, or using our support desk, you signify acceptance of the data practices described herein.
+              At <strong>VaultWorld Store</strong> (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;), protecting the personal privacy and data of our customers and visitors (&quot;you&quot;, &quot;user&quot;, &quot;buyer&quot;) is a paramount priority. This Privacy Policy sets forth our practices regarding the collection, storage, use, and disclosure of information when you interact with our website (<strong>vaultworld.shop</strong>).
             </p>
+            <p>
+              This document is prepared in strict accordance with:
+            </p>
+            <ul className="list-disc pl-5 space-y-1 text-slate-600 font-medium text-xs sm:text-sm">
+              <li>Section 43A of the Information Technology Act, 2000;</li>
+              <li>Rule 4 of the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011;</li>
+              <li>The Digital Personal Data Protection Act, 2023 (DPDP Act); and</li>
+              <li>Relevant regulatory circulars on digital transactions issued by the Reserve Bank of India (RBI).</li>
+            </ul>
           </section>
 
+          {/* Section 2 */}
           <section className="space-y-3">
-            <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-red-100 text-red-700 text-xs flex items-center justify-center font-black">2</span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
+              <span className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-700 font-black text-xs flex items-center justify-center">2</span>
               <span>Information We Collect</span>
             </h2>
             <p>
-              To fulfill your digital purchases and provide immediate access to cloud files, we collect only the minimum required information:
+              We adhere strictly to the principle of <strong>data minimization</strong>. We collect only the minimal information strictly required to process your order and fulfill your digital Google Drive access:
             </p>
-            <div className="space-y-2.5 pt-1">
-              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70">
-                <strong className="text-slate-900 block font-bold">A. Personal Identification Data:</strong>
-                <p className="text-xs text-slate-600 mt-0.5">
-                  Full name, email address (preferably Google Account email for Google Drive file permissions), and contact phone number.
+            
+            <div className="space-y-3 pt-1">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
+                <span className="font-extrabold text-slate-900 block text-xs sm:text-sm">
+                  A. Personal Contact Information (Provided by you during checkout)
+                </span>
+                <ul className="list-disc pl-5 space-y-1 text-xs text-slate-600">
+                  <li><strong>Full Name:</strong> To identify the customer and address transaction invoices.</li>
+                  <li><strong>Gmail / Email Address:</strong> Essential to grant instant permission access to the purchased Google Drive bundle folders and dispatch order confirmation emails.</li>
+                  <li><strong>WhatsApp / Phone Number:</strong> Used to dispatch automated order status receipts, link delivery confirmations, and provide instant customer support.</li>
+                </ul>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
+                <span className="font-extrabold text-slate-900 block text-xs sm:text-sm">
+                  B. Technical &amp; Device Information (Automatically collected)
+                </span>
+                <p className="text-xs text-slate-600">
+                  When you browse our store, our servers automatically log certain non-sensitive technical data, including your Internet Protocol (IP) address, operating system, browser type and version, language preferences, referring URLs, and device identifiers. This data is utilized solely to maintain store security, prevent fraudulent transactions, and analyze system performance.
                 </p>
               </div>
-              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70">
-                <strong className="text-slate-900 block font-bold">B. Transaction & Order Details:</strong>
-                <p className="text-xs text-slate-600 mt-0.5">
-                  Order ID, products purchased, order timestamp, gross amount paid, and payment reference numbers generated by the payment processor (e.g. Razorpay Payment ID or Cashfree Order ID).
-                </p>
-              </div>
-              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70">
-                <strong className="text-slate-900 block font-bold">C. Technical & Diagnostic Data:</strong>
-                <p className="text-xs text-slate-600 mt-0.5">
-                  IP address, browser type, device information, and interaction logs captured solely for cybersecurity, fraud prevention, and session maintenance.
+
+              <div className="p-4 rounded-2xl bg-rose-50/70 border border-rose-200/80 space-y-1">
+                <span className="font-extrabold text-rose-950 block text-xs sm:text-sm flex items-center gap-1.5">
+                  <AlertTriangle className="w-4 h-4 text-rose-600" />
+                  <span>C. Information We DO NOT Collect</span>
+                </span>
+                <p className="text-xs text-rose-900 font-medium">
+                  We explicitly do NOT capture, store, or have access to your bank account logins, debit or credit card CVV numbers, OTPs, or UPI security PINs. All financial checkout flows occur on the secure iframe or hosted gateway pages of authorized payment aggregators.
                 </p>
               </div>
             </div>
           </section>
 
+          {/* Section 3 */}
           <section className="space-y-3">
-            <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-red-100 text-red-700 text-xs flex items-center justify-center font-black">3</span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
+              <span className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-700 font-black text-xs flex items-center justify-center">3</span>
               <span>How We Use Your Information</span>
             </h2>
-            <p>Your data is used strictly for legitimate business operations:</p>
-            <ul className="list-disc pl-5 space-y-1.5 text-slate-700">
-              <li>Generating and transmitting instant Google Drive cloud download links.</li>
-              <li>Sending automated order receipts, tax invoices, and verification SMS/WhatsApp updates.</li>
-              <li>Responding to customer care inquiries and resolving download issues.</li>
-              <li>Preventing unauthorized transactions, fraud, or duplicate payment attempts.</li>
-              <li>Complying with statutory accounting and tax regulations in India.</li>
+            <p>
+              The information we collect is processed for the following legitimate business purposes:
+            </p>
+            <ul className="list-disc pl-5 space-y-1 text-slate-600 font-medium">
+              <li><strong>Digital Order Fulfillment:</strong> Granting lifetime access to the purchased video reels bundle via Google Drive cloud folders.</li>
+              <li><strong>Transaction Communications:</strong> Dispatching automated invoice receipts, order numbers, and download verification links via email and WhatsApp.</li>
+              <li><strong>Customer Support:</strong> Assisting you with download link recovery, file questions, or technical inquiries raised through our helpline.</li>
+              <li><strong>Security &amp; Fraud Prevention:</strong> Detecting and mitigating unauthorized payment attempts, abusive bots, or malicious activity.</li>
+              <li><strong>Legal Compliance:</strong> Maintaining accurate financial transaction records required under Indian tax, accounting, and e-commerce laws.</li>
             </ul>
           </section>
 
+          {/* Section 4 */}
           <section className="space-y-3">
-            <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-red-100 text-red-700 text-xs flex items-center justify-center font-black">4</span>
-              <span>Payment Security & Gateway Compliance</span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
+              <span className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-700 font-black text-xs flex items-center justify-center">4</span>
+              <span>Sharing of Information &amp; Third-Party Service Providers</span>
             </h2>
             <p>
-              <strong className="text-slate-900">We do NOT store or process sensitive banking credentials.</strong>
+              <strong>We do not sell, rent, lease, or monetize your personal data.</strong> Your personal data is never disclosed to commercial data brokers. We share your data solely with vetted, industry-standard service providers strictly as necessary to operate our store:
             </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 text-xs">
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <strong className="text-slate-900 block font-bold">Payment Aggregators</strong>
+                Cashfree Payments, Razorpay Software, and PayU Payments receive transaction tokens and order IDs to process payments securely.
+              </div>
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <strong className="text-slate-900 block font-bold">Cloud Infrastructure</strong>
+                Google Cloud Platform &amp; Firebase provide encrypted database storage and Google Drive digital file hosting.
+              </div>
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <strong className="text-slate-900 block font-bold">Messaging Providers</strong>
+                Official WhatsApp Business APIs and transactional email gateways to deliver your order download links.
+              </div>
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <strong className="text-slate-900 block font-bold">Statutory Authorities</strong>
+                Disclosed only when legally mandated under court order, subpoena, or Indian law enforcement directives.
+              </div>
+            </div>
+          </section>
+
+          {/* Section 5 */}
+          <section className="space-y-3">
+            <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
+              <span className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-700 font-black text-xs flex items-center justify-center">5</span>
+              <span>Cookies &amp; Tracking Technologies</span>
+            </h2>
             <p>
-              All online monetary transactions (UPI, Credit/Debit Cards, Net Banking, and Wallets) are executed through RBI-authorized payment aggregators—principally <strong className="text-slate-900">Razorpay Software Private Limited</strong> and <strong className="text-slate-900">Cashfree Payments India Private Limited</strong>.
+              VaultWorld Store uses standard browser cookies, local storage, and analytical tags to provide a seamless user experience:
             </p>
-            <ul className="list-disc pl-5 space-y-1 text-slate-700">
-              <li>All card and UPI numbers are encrypted via 256-bit TLS (Transport Layer Security).</li>
-              <li>Processors maintain rigorous PCI-DSS Level 1 compliance standards.</li>
-              <li>Our servers only receive transaction tokens confirming success or failure.</li>
+            <ul className="list-disc pl-5 space-y-1 text-slate-600 font-medium">
+              <li><strong>Essential Session Cookies:</strong> Maintain your cart selections, applied discount codes, and checkout state.</li>
+              <li><strong>Analytical Cookies:</strong> Help us measure store visits, popular bundle categories, and page loading speeds (e.g., Google Analytics).</li>
+              <li><strong>Marketing &amp; Attribution Pixels:</strong> Verify advertising effectiveness and prevent duplicate click attribution (e.g., Meta Pixel).</li>
+            </ul>
+            <p className="text-xs text-slate-500">
+              You can choose to disable or block cookies through your individual browser settings; however, disabling essential session cookies may impair the functionality of the cart and checkout pages.
+            </p>
+          </section>
+
+          {/* Section 6 */}
+          <section className="space-y-3">
+            <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
+              <span className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-700 font-black text-xs flex items-center justify-center">6</span>
+              <span>Data Retention &amp; Security Measures</span>
+            </h2>
+            <p>
+              We implement comprehensive technical and organizational security measures to protect your personal information:
+            </p>
+            <ul className="list-disc pl-5 space-y-1 text-slate-600 font-medium">
+              <li><strong>Encryption in Transit:</strong> 256-bit Secure Socket Layer (SSL/TLS) encryption across all endpoints of our website.</li>
+              <li><strong>Database Protection:</strong> Customer records in Firestore are shielded by strict role-based access rules preventing public read or write access.</li>
+              <li><strong>Retention Period:</strong> Personal customer order records are retained only for the duration required to maintain your lifetime download access and satisfy mandatory accounting audits under Indian tax laws.</li>
             </ul>
           </section>
 
+          {/* Section 7 */}
           <section className="space-y-3">
-            <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-red-100 text-red-700 text-xs flex items-center justify-center font-black">5</span>
-              <span>Cookies & Web Analytics</span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
+              <span className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-700 font-black text-xs flex items-center justify-center">7</span>
+              <span>Your Rights under the DPDP Act, 2023</span>
             </h2>
             <p>
-              We use necessary first-party cookies to manage shopping cart sessions, remember applied promotional coupons, and prevent CSRF attacks. Anonymous analytics may be utilized to measure overall page load performance and optimize customer checkout speed. You can disable non-essential cookies via your web browser settings.
+              Under Indian data protection laws, you possess the following rights regarding your personal information:
+            </p>
+            <ul className="list-disc pl-5 space-y-1 text-slate-600 font-medium">
+              <li><strong>Right to Access:</strong> You may request a summary of the personal data we hold regarding your purchases.</li>
+              <li><strong>Right to Correction &amp; Rectification:</strong> You may request updating inaccurate contact details or updating your delivery Gmail address.</li>
+              <li><strong>Right to Erasure:</strong> You may request the deletion of your personal data from our active customer records, subject to retention required for accounting compliance.</li>
+              <li><strong>Right to Withdraw Consent:</strong> You may withdraw your consent for promotional updates at any time.</li>
+            </ul>
+            <p className="text-xs text-slate-500">
+              To exercise any of these rights, please contact our Grievance Officer via email with your registered Order ID.
             </p>
           </section>
 
+          {/* Section 8 */}
           <section className="space-y-3">
-            <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-red-100 text-red-700 text-xs flex items-center justify-center font-black">6</span>
-              <span>Data Retention & Security Safeguards</span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
+              <span className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-700 font-black text-xs flex items-center justify-center">8</span>
+              <span>Protection of Minors</span>
             </h2>
             <p>
-              We enforce administrative, technical, and physical security measures to protect customer records stored in our encrypted cloud databases (Google Cloud Firebase). Order records are preserved for the minimum period legally required for auditing, tax assessment, and dispute resolution.
+              VaultWorld Store is not directed towards children under the age of 18. We do not knowingly collect personal data from minors. If you are a parent or guardian and become aware that your child has provided us with personal data without your consent, please contact us immediately to have the information expunged.
             </p>
           </section>
 
-          <section className="space-y-3">
-            <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-red-100 text-red-700 text-xs flex items-center justify-center font-black">7</span>
-              <span>User Rights & Opt-Out</span>
+          {/* Section 9 */}
+          <section className="space-y-3 pt-4 border-t border-slate-200">
+            <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
+              <span className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-700 font-black text-xs flex items-center justify-center">9</span>
+              <span>Grievance Officer &amp; Regulatory Redressal</span>
             </h2>
             <p>
-              As a user, you have the right to request a copy of the personal details stored about your purchases or ask for deletion of your non-transactional profile data by writing to our Grievance Desk.
+              In compliance with the Information Technology Act, 2000 and the Digital Personal Data Protection Act, 2023, the contact details of our designated Grievance Redressal Officer are provided below:
             </p>
+            <PolicyContactInfo />
           </section>
 
-          {/* Grievance & Contact Section Required by Razorpay & Cashfree */}
-          <section className="space-y-4 pt-4 border-t border-slate-200">
-            <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-red-100 text-red-700 text-xs flex items-center justify-center font-black">8</span>
-              <span>Grievance Officer & Official Contact Details</span>
-            </h2>
-            <p>
-              In accordance with the Information Technology Act, 2000 and rules made thereunder, any queries, clarifications, or grievances regarding this Privacy Policy should be addressed to our appointed Grievance Officer:
-            </p>
+        </div>
 
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-slate-700">
-              <p><strong className="text-slate-900">Platform:</strong> Ztore Digital</p>
-              <p><strong className="text-slate-900">Grievance Desk:</strong> Customer Support & Compliance Team</p>
-              <p><PolicyContactInfo /></p>
-              <p><strong className="text-slate-900">Operating Hours:</strong> 10:00 AM – 8:00 PM IST (Monday to Sunday)</p>
-              <p><strong className="text-slate-900">Response SLA:</strong> Inquiries acknowledged within 24 business hours.</p>
-            </div>
-          </section>
-
-          {/* Footer Navigation Strip */}
-          <div className="pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-slate-500">
-            <div className="flex items-center gap-4">
-              <Link href="/terms-and-conditions" className="hover:text-red-600 transition-colors">
-                Terms & Conditions &rarr;
-              </Link>
-              <Link href="/refund-policy" className="hover:text-red-600 transition-colors">
-                Refund Policy &rarr;
-              </Link>
-              <Link href="/contact-us" className="hover:text-red-600 transition-colors">
-                Contact Us &rarr;
-              </Link>
-            </div>
-            <Link href="/" className="text-red-600 hover:underline">
-              Back to Storefront
+        {/* Footer Navigation Back to Store */}
+        <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-2">
+          <Link href="/" className="hover:text-amber-600 transition-colors">
+            ← Return to VaultWorld Store Home
+          </Link>
+          <div className="flex gap-4">
+            <Link href="/terms-and-conditions" className="hover:text-amber-600 transition-colors">
+              Terms &amp; Conditions
+            </Link>
+            <Link href="/refund-policy" className="hover:text-amber-600 transition-colors">
+              Refund Policy
+            </Link>
+            <Link href="/shipping-policy" className="hover:text-amber-600 transition-colors">
+              Shipping &amp; Delivery
             </Link>
           </div>
-
         </div>
 
       </div>

@@ -13,6 +13,7 @@ export async function GET() {
     { path: '/privacy-policy', priority: '0.3', changefreq: 'monthly' },
     { path: '/terms-and-conditions', priority: '0.3', changefreq: 'monthly' },
     { path: '/refund-policy', priority: '0.3', changefreq: 'monthly' },
+    { path: '/shipping-policy', priority: '0.3', changefreq: 'monthly' },
   ];
 
   const urlEntries = pages
