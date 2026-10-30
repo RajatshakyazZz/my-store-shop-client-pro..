@@ -33,7 +33,6 @@ import {
 import { track } from '@/lib/analytics';
 import { resolveBundleSlug } from '@/lib/bundleResolver';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
-import FreeBundleOfferBanner from '@/components/FreeBundleOfferBanner';
 
 
 function CheckoutContent() {
@@ -794,8 +793,66 @@ function CheckoutContent() {
             </div>
           )}
 
-          {/* Special Free Bundles Offer Banner */}
-          <FreeBundleOfferBanner variant="checkout" currentTotal={checkoutTotal} />
+          {/* Selected Product Card (Displays the exact product chosen by the customer) */}
+          {checkoutItems.length > 0 && (
+            <div className="mb-6 p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:border-amber-400/40 transition-colors">
+              <div className="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">
+                    {checkoutItems.length === 1 ? 'Selected Product' : `Selected Products (${checkoutItems.length})`}
+                  </span>
+                </div>
+                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                  Instant Google Drive Delivery
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                {checkoutItems.map((item, idx) => (
+                  <div
+                    key={`top-item-${item?.product?.id || idx}-${item?.license || 'p'}`}
+                    className="flex items-center gap-3.5 sm:gap-4"
+                  >
+                    <img
+                      src={item?.product?.thumbnail || '/logo.webp'}
+                      alt={item?.product?.title || 'Selected Bundle'}
+                      className="w-14 h-16 sm:w-16 sm:h-20 object-cover rounded-xl border border-slate-200/90 shadow-xs shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-extrabold text-sm sm:text-base text-slate-900 leading-snug line-clamp-2">
+                        {item?.product?.title || 'Digital Bundle'}
+                      </h3>
+                      <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                        <span className="text-[10px] sm:text-[11px] font-bold text-amber-900 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-md">
+                          {item?.license === 'reseller' ? 'Reseller Rights' : 'Personal License'}
+                        </span>
+                        <span className="text-[10px] sm:text-[11px] font-semibold text-slate-500 hidden sm:inline">
+                          Format: 1080p MP4 Videos
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-base sm:text-lg font-black text-slate-950">
+                        ₹{item?.price || 0}.00
+                      </div>
+                      {(() => {
+                        const origPrice = item?.license === 'reseller'
+                          ? item?.product?.resellerOriginalPrice
+                          : item?.product?.personalOriginalPrice;
+                        return origPrice && origPrice > item.price ? (
+                          <div className="text-[11px] text-slate-400 line-through">
+                            ₹{origPrice}.00
+                          </div>
+                        ) : null;
+                      })()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Error Banner */}
           {errorMessage && (
