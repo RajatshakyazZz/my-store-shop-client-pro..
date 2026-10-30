@@ -1,5 +1,5 @@
-// Telegram Instant Alert & Command Center Bot for VaultWorld Store (@Vault_World_bot)
-// Authorized Admins: 7483268297, 5950203511, 6206169480
+// Telegram Instant Alert & Command Center Bot
+// Dynamically configured via Admin Panel (/asdf/settings -> Telegram) and environment variables
 
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -19,11 +19,9 @@ export interface ServerTelegramConfig {
   resellerAlert?: boolean;
 }
 
-export const TELEGRAM_BOT_TOKEN =
-  process.env.TELEGRAM_BOT_TOKEN || '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
-export const OWNER_CHAT_ID = process.env.TELEGRAM_OWNER_CHAT_ID || '7483268297';
+export const TELEGRAM_BOT_TOKEN = (process.env.TELEGRAM_BOT_TOKEN || '').trim();
+export const OWNER_CHAT_ID = (process.env.TELEGRAM_OWNER_CHAT_ID || '').trim();
 
-const DEFAULT_ADMIN_IDS = ['7483268297', '5950203511', '6206169480'];
 const ENV_ADMIN_IDS = [
   ...(process.env.TELEGRAM_ALLOWED_USER_IDS ? process.env.TELEGRAM_ALLOWED_USER_IDS.split(',') : []),
   process.env.TELEGRAM_CHAT_ID,
@@ -32,9 +30,7 @@ const ENV_ADMIN_IDS = [
   .map((s) => String(s || '').trim())
   .filter(Boolean);
 
-export const AUTHORIZED_TELEGRAM_ADMINS: string[] = Array.from(
-  new Set([...DEFAULT_ADMIN_IDS, ...ENV_ADMIN_IDS])
-);
+export let AUTHORIZED_TELEGRAM_ADMINS: string[] = Array.from(new Set(ENV_ADMIN_IDS));
 
 let cachedServerTelegramConfig: ServerTelegramConfig | null = null;
 let lastServerTelegramFetch = 0;
@@ -68,7 +64,7 @@ export async function fetchDynamicTelegramConfig(force = false): Promise<ServerT
     return cachedServerTelegramConfig;
   }
 
-  let envAdmins = [
+  const envAdmins = [
     ...(process.env.TELEGRAM_ALLOWED_USER_IDS ? process.env.TELEGRAM_ALLOWED_USER_IDS.split(',') : []),
     process.env.TELEGRAM_CHAT_ID,
     process.env.TELEGRAM_OWNER_CHAT_ID,
@@ -78,8 +74,8 @@ export async function fetchDynamicTelegramConfig(force = false): Promise<ServerT
 
   let resolvedConfig: ServerTelegramConfig = {
     enabled: true,
-    botToken: process.env.TELEGRAM_BOT_TOKEN || '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA',
-    adminChatIds: Array.from(new Set([...DEFAULT_ADMIN_IDS, ...envAdmins])),
+    botToken: (process.env.TELEGRAM_BOT_TOKEN || '').trim(),
+    adminChatIds: envAdmins,
     newOrderAlert: true,
     productAlert: true,
     dailySummaryAlert: true,
@@ -94,14 +90,13 @@ export async function fetchDynamicTelegramConfig(force = false): Promise<ServerT
         const data = snap.data();
         const customAdmins = parseConfigChatIds(data.admin_chat_ids);
 
-        const allAdmins = Array.from(
-          new Set([...DEFAULT_ADMIN_IDS, ...envAdmins, ...customAdmins])
-        );
+        // Strictly prioritize custom admins set in Admin Panel
+        const effectiveAdmins = customAdmins.length > 0 ? customAdmins : envAdmins;
 
         resolvedConfig = {
           enabled: parseConfigBool(data.enabled, true),
           botToken: String(data.bot_token || '').trim() || resolvedConfig.botToken,
-          adminChatIds: allAdmins.length > 0 ? allAdmins : resolvedConfig.adminChatIds,
+          adminChatIds: effectiveAdmins,
           newOrderAlert: parseConfigBool(data.new_order_alert, true),
           productAlert: parseConfigBool(data.product_alert, true),
           dailySummaryAlert: parseConfigBool(data.daily_summary_alert, true),
@@ -115,15 +110,12 @@ export async function fetchDynamicTelegramConfig(force = false): Promise<ServerT
           if (gData.telegram && typeof gData.telegram === 'object') {
             const t = gData.telegram;
             const customAdmins = parseConfigChatIds(t.admin_chat_ids);
-
-            const allAdmins = Array.from(
-              new Set([...DEFAULT_ADMIN_IDS, ...envAdmins, ...customAdmins])
-            );
+            const effectiveAdmins = customAdmins.length > 0 ? customAdmins : envAdmins;
 
             resolvedConfig = {
               enabled: parseConfigBool(t.enabled, true),
               botToken: String(t.bot_token || '').trim() || resolvedConfig.botToken,
-              adminChatIds: allAdmins.length > 0 ? allAdmins : resolvedConfig.adminChatIds,
+              adminChatIds: effectiveAdmins,
               newOrderAlert: parseConfigBool(t.new_order_alert, true),
               productAlert: parseConfigBool(t.product_alert, true),
               dailySummaryAlert: parseConfigBool(t.daily_summary_alert, true),
@@ -139,6 +131,7 @@ export async function fetchDynamicTelegramConfig(force = false): Promise<ServerT
   }
 
   TELEGRAM_ALERTS_ENABLED = resolvedConfig.enabled;
+  AUTHORIZED_TELEGRAM_ADMINS = resolvedConfig.adminChatIds;
   cachedServerTelegramConfig = resolvedConfig;
   lastServerTelegramFetch = now;
   return resolvedConfig;

@@ -35,10 +35,10 @@ export async function POST(request: Request) {
     }
 
     if (!token) {
-      token = process.env.TELEGRAM_BOT_TOKEN || '8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA';
+      token = (process.env.TELEGRAM_BOT_TOKEN || '').trim();
     }
     if (!rawIds) {
-      rawIds = '7483268297, 5950203511, 6206169480';
+      rawIds = (process.env.TELEGRAM_ALLOWED_USER_IDS || process.env.TELEGRAM_CHAT_ID || '').trim();
     }
 
     const targetChatIds = rawIds
@@ -46,13 +46,23 @@ export async function POST(request: Request) {
       .map((s) => s.trim())
       .filter(Boolean);
 
+    if (!token || targetChatIds.length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Please enter Bot Token and at least one Admin Chat ID in Admin Panel settings before testing.',
+        },
+        { status: 400, headers: CORS_HEADERS }
+      );
+    }
+
     const istTime = new Date().toLocaleString('en-IN', {
       timeZone: 'Asia/Kolkata',
       dateStyle: 'medium',
       timeStyle: 'medium',
     });
 
-    const msg = `⚡🔔 <b>VAULTWORLD STORE — TELEGRAM BOT TEST ALERT</b> 🚀
+    const msg = `⚡🔔 <b>ZTORE DIGITAL STORE — TELEGRAM BOT TEST ALERT</b> 🚀
 ━━━━━━━━━━━━━━━━━━━━━━
 ✅ <b>Bot Connection:</b> Active & Verified
 📱 <b>Admin Chat IDs:</b> ${targetChatIds.join(', ')}

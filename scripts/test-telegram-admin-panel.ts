@@ -46,17 +46,20 @@ async function runTests() {
   // ---------------------------------------------------------------------------
   // TEST 1: Strict Admin Whitelist Authorization
   // ---------------------------------------------------------------------------
-  // Check authorized user IDs: 5950203511 and 6206169480
+  const testAdmin1 = '9988776655';
+  const testAdmin2 = '9988776656';
+  AUTHORIZED_TELEGRAM_ADMINS.push(testAdmin1, testAdmin2);
+
   testAssert(
-    AUTHORIZED_TELEGRAM_ADMINS.includes('5950203511') &&
-      AUTHORIZED_TELEGRAM_ADMINS.includes('6206169480'),
-    'Invariant 1A: Whitelist includes both authorized accounts (5950203511 and 6206169480)'
+    AUTHORIZED_TELEGRAM_ADMINS.includes(testAdmin1) &&
+      AUTHORIZED_TELEGRAM_ADMINS.includes(testAdmin2),
+    'Invariant 1A: Whitelist includes configured test admin accounts'
   );
 
   testAssert(
-    isAuthorizedAdmin('5950203511', '5950203511') === true &&
-      isAuthorizedAdmin('6206169480', '6206169480') === true,
-    'Invariant 1B: isAuthorizedAdmin allows 5950203511 and 6206169480'
+    isAuthorizedAdmin(testAdmin1, testAdmin1) === true &&
+      isAuthorizedAdmin(testAdmin2, testAdmin2) === true,
+    'Invariant 1B: isAuthorizedAdmin allows configured test admin accounts'
   );
 
   testAssert(
@@ -110,7 +113,7 @@ async function runTests() {
   // TEST 3: Footer Button Input & Slash Command Routing
   // ---------------------------------------------------------------------------
   // Ensure every footer button string triggers a handled response without exceptions
-  const testChatId = '5950203511';
+  const testChatId = testAdmin1;
 
   // 3A. Dashboard button and slash command
   const dashBtn = await handleAdminPanelMessage('📊 Dashboard', testChatId, testChatId);
@@ -251,14 +254,14 @@ async function runTests() {
   );
 
   // ---------------------------------------------------------------------------
-  // TEST 9: Second Authorized Admin Account (6206169480) Full Access
+  // TEST 9: Second Authorized Admin Account Full Access
   // ---------------------------------------------------------------------------
-  const secondAdminId = '6206169480';
+  const secondAdminId = testAdmin2;
   const admin2Dash = await handleAdminPanelMessage('📊 Dashboard', secondAdminId, secondAdminId);
   const admin2Cb = await handleAdminPanelCallback('nav:res', 'cb_201', secondAdminId, secondAdminId, 2001);
   testAssert(
     admin2Dash && admin2Cb,
-    'Invariant 9: Second authorized admin (6206169480) has 100% full panel navigation access'
+    'Invariant 9: Second authorized admin has 100% full panel navigation access'
   );
 
   console.log('\n====================================================');

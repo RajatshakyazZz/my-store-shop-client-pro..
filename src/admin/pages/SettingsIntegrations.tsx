@@ -706,7 +706,7 @@ export default function SettingsIntegrations() {
                 <div className="relative mt-1.5">
                   <input
                     type={showTgToken ? 'text' : 'password'}
-                    placeholder="e.g. 8661050113:AAHwHpUC5rgY4yxTjaEmp16DeAoJkCr8zlA"
+                    placeholder="e.g. 123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ"
                     value={tgForm.bot_token || ''}
                     onChange={(e) => setTgForm({ ...tgForm, bot_token: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-sky-500 font-mono pr-10"
@@ -724,7 +724,7 @@ export default function SettingsIntegrations() {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. 7483268297, 5950203511, 6206169480"
+                  placeholder="e.g. 123456789, 987654321"
                   value={tgForm.admin_chat_ids || ''}
                   onChange={(e) => setTgForm({ ...tgForm, admin_chat_ids: e.target.value })}
                   className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-sky-500 font-mono"
