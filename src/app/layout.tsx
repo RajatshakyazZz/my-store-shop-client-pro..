@@ -24,15 +24,14 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'VaultWorld Store | Buy Viral Reels Bundles in India – 222,000+ Ready-to-Post Reels',
-    template: '%s | VaultWorld Store',
+    default: 'Ztore Digital | Buy Viral Reels Bundles in India – 222,000+ Ready-to-Post Reels',
+    template: '%s | Ztore Digital',
   },
   description:
-    'Download 222,000+ viral ready-to-post vertical reels bundles for Instagram Reels, YouTube Shorts & Facebook across 129+ niches. Zero watermarks, commercial & reseller rights, and instant Google Drive access.',
+    'Download 222,000+ viral ready-to-post vertical reels bundles for Instagram Reels, YouTube Shorts & Facebook across 129+ niches. Zero watermarks, commercial rights, and instant Google Drive access.',
   keywords: [
-    'vaultworld',
-    'vaultworld store',
-    'vaultzet',
+    'ztore digital',
+    'ztore digital store',
     'viral reels bundle',
     'ai reels bundle',
     'instagram reels bundle india',
@@ -41,12 +40,12 @@ export const metadata: Metadata = {
     'faceless instagram reels',
     'motivational reels bundle',
     '3d animation reels bundle',
-    'digital products resell india',
+    'digital products india',
     'watermark free reels download',
   ],
-  authors: [{ name: 'VaultWorld Store', url: SITE_URL }],
-  creator: 'VaultWorld Store',
-  publisher: 'VaultWorld Store',
+  authors: [{ name: 'Ztore Digital', url: SITE_URL }],
+  creator: 'Ztore Digital',
+  publisher: 'Ztore Digital',
   alternates: {
     canonical: SITE_URL,
   },
@@ -65,21 +64,21 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_IN',
     url: SITE_URL,
-    siteName: 'VaultWorld Store',
-    title: 'VaultWorld Store | 222,000+ Viral Reels Bundles – Instant Download',
+    siteName: 'Ztore Digital',
+    title: 'Ztore Digital | 222,000+ Viral Reels Bundles – Instant Download',
     description:
       'Over 222,000+ vertical HD reels across 129+ niches with zero watermarks & full commercial rights. Instant Google Drive delivery.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'VaultWorld Store | Viral Reels Bundles – Instant Google Drive Access',
+    title: 'Ztore Digital | Viral Reels Bundles – Instant Google Drive Access',
     description:
       'Grow faster on Instagram & YouTube Shorts with 222,000+ ready-to-post HD reels bundles.',
   },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'VaultWorld Store',
+    title: 'Ztore Digital',
   },
   icons: {
     icon: [
@@ -110,7 +109,7 @@ export default function RootLayout({
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
         url: SITE_URL,
-        name: 'VaultWorld Store',
+        name: 'Ztore Digital',
         description:
           'India’s #1 marketplace for ready-to-post viral Instagram Reels & YouTube Shorts bundles with instant Google Drive delivery.',
         potentialAction: {
@@ -122,13 +121,9 @@ export default function RootLayout({
       {
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
-        name: 'VaultWorld Store',
+        name: 'Ztore Digital',
         url: SITE_URL,
         logo: `${SITE_URL}/logo.webp`,
-        sameAs: [
-          'https://instagram.com/vaultworld.shop',
-          'https://youtube.com/@vaultworld',
-        ],
         contactPoint: {
           '@type': 'ContactPoint',
           email: 'support.vaultworld.shop@gmail.com',
