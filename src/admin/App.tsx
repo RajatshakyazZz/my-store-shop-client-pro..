@@ -30,7 +30,6 @@ import Resellers from './pages/Resellers';
 import BumpOffers from './pages/BumpOffers';
 import FreeBundleOffer from './pages/FreeBundleOffer';
 import GrowthProofs from './pages/GrowthProofs';
-import EarningProofs from './pages/EarningProofs';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -65,7 +64,6 @@ export default function AdminApp() {
                     <Route path="bump-offers" element={<BumpOffers />} />
                     <Route path="free-offer" element={<FreeBundleOffer />} />
                     <Route path="growth-proofs" element={<GrowthProofs />} />
-                    <Route path="earning-proofs" element={<EarningProofs />} />
                     <Route path="coupons" element={<Coupons />} />
                     <Route path="content" element={<Content />} />
                     <Route path="branding" element={<Branding />} />

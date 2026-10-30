@@ -510,21 +510,3 @@ export interface AdminGrowthProofsConfig {
   updatedAt?: string;
 }
 
-export interface AdminEarningProofItem {
-  id: string;
-  image: string;
-  amount: string;
-  tag: string;
-  caption: string;
-  date?: string;
-}
-
-export interface AdminEarningProofsConfig {
-  enabled: boolean;
-  badge: string;
-  headline: string;
-  subheadline: string;
-  items: AdminEarningProofItem[];
-  updatedAt?: string;
-}
-

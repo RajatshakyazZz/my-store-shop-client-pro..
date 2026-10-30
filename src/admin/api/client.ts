@@ -53,7 +53,6 @@ import {
   GlobalBumpOffer,
   FreeBundleOffer,
   AdminGrowthProofsConfig,
-  AdminEarningProofsConfig,
 } from './types';
 import { db, logAdminAction } from '../lib/firebase';
 import {
@@ -3401,120 +3400,6 @@ class PortalApiClient {
     return merged;
   }
 
-  // ==========================================
-  // 20. EARNING PROOFS (PAYMENT RECEIPTS SHOWCASE)
-  // ==========================================
-  async getEarningProofs(): Promise<AdminEarningProofsConfig> {
-    const defaultVal: AdminEarningProofsConfig = {
-      enabled: true,
-      badge: '💰 VERIFIED EARNINGS & PAYOUTS',
-      headline: 'Real Creator & Reseller Earnings',
-      subheadline: 'Genuine payment screenshots, UPI receipts and wallet payouts from our resellers and digital creators.',
-      items: [
-        {
-          id: 'ep-1',
-          image: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=700&auto=format&fit=crop&q=80',
-          amount: '₹28,450',
-          tag: 'UPI Received',
-          caption: 'Rahul Verma — Weekly profit reselling AI reels to client pages',
-          date: 'Yesterday',
-        },
-        {
-          id: 'ep-2',
-          image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=700&auto=format&fit=crop&q=80',
-          amount: '₹42,200',
-          tag: 'Bank Transfer',
-          caption: 'Priya Sharma — 10x ROI in first month with Reseller Rights',
-          date: '3 days ago',
-        },
-      ],
-    };
-
-    let cached: AdminEarningProofsConfig | null = null;
-    if (typeof window !== 'undefined') {
-      try {
-        const raw = localStorage.getItem('vaultzet_earning_proofs');
-        if (raw) cached = JSON.parse(raw);
-      } catch {}
-    }
-
-    try {
-      const res = await fetch('/api/admin/settings/earning-proofs', { cache: 'no-store' });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success && data.config) {
-          if (typeof window !== 'undefined') {
-            try {
-              localStorage.setItem('vaultzet_earning_proofs', JSON.stringify(data.config));
-            } catch {}
-          }
-          return data.config;
-        }
-      }
-    } catch {}
-
-    if (db) {
-      try {
-        const snap = await getDoc(doc(db, 'store_settings', 'earning_proofs')).catch(() => null);
-        if (snap && snap.exists()) {
-          const cfg = { ...defaultVal, ...snap.data() } as AdminEarningProofsConfig;
-          return cfg;
-        }
-        const genSnap = await getDoc(doc(db, 'store_settings', 'general')).catch(() => null);
-        if (genSnap && genSnap.exists()) {
-          const gData = genSnap.data();
-          if (gData.earning_proofs && typeof gData.earning_proofs === 'object') {
-            return { ...defaultVal, ...gData.earning_proofs };
-          }
-        }
-      } catch {}
-    }
-
-    return cached || defaultVal;
-  }
-
-  async updateEarningProofs(data: Partial<AdminEarningProofsConfig>): Promise<AdminEarningProofsConfig> {
-    const existing = await this.getEarningProofs();
-    const merged: AdminEarningProofsConfig = {
-      ...existing,
-      ...data,
-      updatedAt: new Date().toISOString(),
-    };
-
-    try {
-      await fetch('/api/admin/settings/earning-proofs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(merged),
-      });
-    } catch {}
-
-    if (db) {
-      try {
-        const cleanPayload = sanitizePayload(merged);
-        await setDoc(doc(db, 'store_settings', 'general'), { earning_proofs: cleanPayload }, { merge: true });
-        try {
-          await setDoc(doc(db, 'store_settings', 'earning_proofs'), cleanPayload, { merge: true });
-        } catch {}
-      } catch {}
-    }
-
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage.setItem('vaultzet_earning_proofs', JSON.stringify(merged));
-        window.dispatchEvent(new CustomEvent('vaultzet:earning_proofs_updated', { detail: merged }));
-      } catch {}
-    }
-
-    await logAdminAction({
-      adminEmail: 'admin@vaultzet.com',
-      action: 'UPDATE_EARNING_PROOFS',
-      module: 'Commerce',
-      details: `Updated Earning Proofs: ${merged.items?.length || 0} screenshots (Status: ${merged.enabled ? 'ACTIVE' : 'OFF'})`,
-    });
-
-    return merged;
-  }
 }
 
 export const portalApi = new PortalApiClient();

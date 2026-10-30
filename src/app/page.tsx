@@ -7,7 +7,6 @@ import MembershipPlans from '@/components/MembershipPlans';
 import UpcomingBundles from '@/components/UpcomingBundles';
 import CreatorProof from '@/components/CreatorProof';
 import GrowthProofSection from '@/components/GrowthProofSection';
-import EarningProofSection from '@/components/EarningProofSection';
 
 export default function HomePage() {
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
@@ -80,10 +79,9 @@ export default function HomePage() {
       <UpcomingBundles />
 
       {/* 3D Creator Growth Proofs (febric-style 3D Coverflow) */}
-      <GrowthProofSection />
-
-      {/* Real Reseller & Creator Earning Proofs */}
-      <EarningProofSection />
+      <div id="growth-proofs">
+        <GrowthProofSection />
+      </div>
 
       {/* Creator Growth Analytics & Testimonials */}
       <CreatorProof />

@@ -47,8 +47,6 @@ import { getBundleContentDetails } from '@/lib/bundleContent';
 import { track } from '@/lib/analytics';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
 import FreeBundleOfferBanner from '@/components/FreeBundleOfferBanner';
-import GrowthProofSection from '@/components/GrowthProofSection';
-import EarningProofSection from '@/components/EarningProofSection';
 import { parseHostedVideoUrl } from '@/lib/videoUtils';
 
 interface ProductDetailClientProps {
@@ -838,16 +836,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             ))}
           </div>
         </section>
-
-        {/* 3D GROWTH PROOFS SHOWCASE (FEB-STYLE 3D COVERFLOW PHONE CAROUSEL) */}
-        <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs border border-slate-200/90">
-          <GrowthProofSection />
-        </div>
-
-        {/* VERIFIED EARNING PROOFS SHOWCASE */}
-        <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs border border-slate-200/90">
-          <EarningProofSection />
-        </div>
 
         {/* SECTION 4: VERIFIED CUSTOMER REVIEWS */}
         <section className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-5">
