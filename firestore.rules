@@ -29,6 +29,16 @@ rules_version = '2';
 //    - purchase_client_fired: bool (optional)
 //    - order_token: string (optional, <= 100 chars)
 //    - cf_payment_id: string (optional, <= 100 chars, Cashfree payment reference ID)
+//    - razorpay_order_id: string (optional, <= 100 chars)
+//    - razorpay_payment_id: string (optional, <= 100 chars)
+//    - razorpay_signature: string (optional, <= 500 chars)
+//    - razorpay_receipt: string (optional, <= 100 chars)
+//    - razorpay_verified: bool (optional)
+//    - payment_status: string (optional, <= 50 chars)
+//    - paid_at: string (optional, <= 100 chars)
+//    - payment_verified_at: string (optional, <= 100 chars)
+//    - applied_coupon: map or null (optional)
+//    - discount_amount: number (optional, 0..10,000,000)
 //    - reseller_id: string (optional, <= 100 chars)
 //    - reseller_uid: string (optional, <= 100 chars)
 //    - reseller_listing_id: string (optional, <= 100 chars)
@@ -218,6 +228,9 @@ rules_version = '2';
 // 14. notification_outbox:
 //    - Asynchronous event delivery ledger. Append and status progression permitted.
 //
+// 15. order_success_records:
+//    - Instant recovery and backup records for confirmed orders.
+//
 // ===============================================================
 
 service cloud.firestore {
@@ -313,7 +326,10 @@ service cloud.firestore {
           'reseller_id', 'reseller_uid', 'reseller_listing_id', 'reseller_slug',
           'base_price_snapshot', 'resale_price_snapshot', 'reseller_earning', 'earning_status',
           'security_tamper_flag', 'payu_mihpayid', 'payu_bank_ref_num', 'payu_mode', 'payu_status',
-          'payu_verified', 'payu_error'
+          'payu_verified', 'payu_error',
+          'razorpay_order_id', 'razorpay_payment_id', 'razorpay_signature', 'razorpay_receipt',
+          'razorpay_verified', 'payment_status', 'paid_at', 'payment_verified_at',
+          'applied_coupon', 'discount_amount'
         ]) &&
         isValidString(data.orderNumber, 1, 60) &&
         data.customer is map &&
@@ -348,6 +364,16 @@ service cloud.firestore {
         isValidOptionalString(data, 'payu_status', 50) &&
         isValidOptionalBool(data, 'payu_verified') &&
         isValidOptionalString(data, 'payu_error', 500) &&
+        isValidOptionalString(data, 'razorpay_order_id', 100) &&
+        isValidOptionalString(data, 'razorpay_payment_id', 100) &&
+        isValidOptionalString(data, 'razorpay_signature', 500) &&
+        isValidOptionalString(data, 'razorpay_receipt', 100) &&
+        isValidOptionalBool(data, 'razorpay_verified') &&
+        isValidOptionalString(data, 'payment_status', 50) &&
+        isValidOptionalString(data, 'paid_at', 100) &&
+        isValidOptionalString(data, 'payment_verified_at', 100) &&
+        (!('applied_coupon' in data) || data.applied_coupon == null || data.applied_coupon is map) &&
+        isValidOptionalNumber(data, 'discount_amount', 0, 10000000) &&
         isValidOptionalString(data, 'reseller_id', 100) &&
         isValidOptionalString(data, 'reseller_uid', 100) &&
         isValidOptionalString(data, 'reseller_listing_id', 100) &&
@@ -397,7 +423,10 @@ service cloud.firestore {
         request.resource.data.customer == resource.data.customer &&
         request.resource.data.items == resource.data.items &&
         request.resource.data.totalAmount == resource.data.totalAmount &&
-        request.resource.data.paymentMethod == resource.data.paymentMethod &&
+        (
+          request.resource.data.paymentMethod == resource.data.paymentMethod ||
+          (request.resource.data.paymentMethod is string && request.resource.data.paymentMethod.size() <= 100)
+        ) &&
         (!('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt) &&
         (!('order_token' in resource.data) || request.resource.data.order_token == resource.data.order_token) &&
         (!('reseller_id' in resource.data) || request.resource.data.reseller_id == resource.data.reseller_id) &&
@@ -864,6 +893,19 @@ service cloud.firestore {
         isValidOptionalString(data, 'updatedAt', 100);
     }
 
+    function isValidOrderSuccessRecord(data) {
+      return data is map &&
+        (!('order_id' in data) || data.order_id is string || data.order_id is number) &&
+        (!('orderNumber' in data) || data.orderNumber is string || data.orderNumber is number) &&
+        (!('status' in data) || (data.status is string && data.status.size() <= 50)) &&
+        (!('customer' in data) || (data.customer is map && data.customer.size() <= 20)) &&
+        (!('items' in data) || (data.items is list && data.items.size() <= 50)) &&
+        (!('totalAmount' in data) || (data.totalAmount is number && data.totalAmount >= 0)) &&
+        (!('paymentMethod' in data) || (data.paymentMethod is string && data.paymentMethod.size() <= 100)) &&
+        (!('razorpay_payment_id' in data) || (data.razorpay_payment_id is string && data.razorpay_payment_id.size() <= 100)) &&
+        (!('created_at' in data) || data.created_at is string || data.created_at is timestamp);
+    }
+
     // ===============================================================
     // Collection Rules
     // ===============================================================
@@ -1142,6 +1184,18 @@ service cloud.firestore {
       allow create, update: if true;
 
       // Outbox entries cannot be deleted (audit history)
+      allow delete: if false;
+    }
+
+    // 15. Order Success Records
+    match /order_success_records/{recordId} {
+      // Storefront & Admin read order success records for instant offline recovery
+      allow read: if true;
+
+      // Payment verification handlers persist success records with validation
+      allow create, update: if isValidOrderSuccessRecord(request.resource.data);
+
+      // Audit and offline recovery records cannot be deleted
       allow delete: if false;
     }
 

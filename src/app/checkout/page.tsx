@@ -694,6 +694,50 @@ function CheckoutContent() {
         throw new Error('Razorpay SDK failed to load. Please check your internet connection.');
       }
 
+      // Active Background Status Poller for UPI QR Code cross-device scans
+      let pollInterval: any = null;
+      let isRedirecting = false;
+
+      const stopPolling = () => {
+        if (pollInterval) {
+          clearInterval(pollInterval);
+          pollInterval = null;
+        }
+      };
+
+      const doRedirectSuccess = (paymentId?: string) => {
+        if (isRedirecting) return;
+        isRedirecting = true;
+        stopPolling();
+        clearCart();
+        const pParam = paymentId ? `&razorpay_payment_id=${encodeURIComponent(paymentId)}` : '';
+        window.location.href = `/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}${pParam}`;
+      };
+
+      const checkPaymentStatus = async (): Promise<boolean> => {
+        try {
+          const checkRes = await fetch(
+            `/api/payment/razorpay/check-status?order_id=${encodeURIComponent(orderNumber)}&razorpay_order_id=${encodeURIComponent(data.razorpay_order_id)}&token=${encodeURIComponent(data.order_token)}`,
+            { cache: 'no-store' }
+          );
+          if (!checkRes.ok) return false;
+          const checkData = await checkRes.json();
+          if (checkData.paid || (checkData.success && checkData.status === 'completed')) {
+            doRedirectSuccess(checkData.payment_id);
+            return true;
+          }
+        } catch (e) {
+          // ignore transient poll errors
+        }
+        return false;
+      };
+
+      // Start polling every 2.5s immediately when modal opens
+      pollInterval = setInterval(async () => {
+        if (isRedirecting) return;
+        await checkPaymentStatus();
+      }, 2500);
+
       const options = {
         key: data.key_id,
         amount: data.amount,
@@ -711,11 +755,18 @@ function CheckoutContent() {
           color: '#dc2626', // Attractive Red theme matching Ztore Digital
         },
         modal: {
-          ondismiss: () => {
-            setIsProcessing(false);
+          ondismiss: async () => {
+            if (isRedirecting) return;
+            // Immediate check before giving up in case customer paid on phone and closed modal
+            const wasPaid = await checkPaymentStatus();
+            if (!wasPaid) {
+              stopPolling();
+              setIsProcessing(false);
+            }
           },
         },
         handler: async (response: any) => {
+          stopPolling();
           setIsProcessing(true);
           try {
             // Verify payment on server
@@ -724,7 +775,7 @@ function CheckoutContent() {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 order_id: orderNumber,
-                razorpay_order_id: response.razorpay_order_id,
+                razorpay_order_id: response.razorpay_order_id || data.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
                 token: data.order_token,
@@ -732,24 +783,27 @@ function CheckoutContent() {
             });
 
             const verifyData = await verifyRes.json();
-            if (verifyRes.ok && verifyData.success) {
-              clearCart();
-              window.location.href = `/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}`;
+            if (verifyRes.ok && (verifyData.success || verifyData.verified)) {
+              doRedirectSuccess(response.razorpay_payment_id);
             } else {
-              // Redirect to order success page where verify-order will be retried
-              window.location.href = `/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}&razorpay_payment_id=${encodeURIComponent(response.razorpay_payment_id || '')}`;
+              // Redirect to order success page where verify-order / check-status will resolve
+              doRedirectSuccess(response.razorpay_payment_id);
             }
           } catch (vErr) {
             console.error('Razorpay verification error:', vErr);
-            window.location.href = `/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}&razorpay_payment_id=${encodeURIComponent(response.razorpay_payment_id || '')}`;
+            doRedirectSuccess(response.razorpay_payment_id);
           }
         },
       };
 
       const rzpInstance = new (window as any).Razorpay(options);
-      rzpInstance.on('payment.failed', (resp: any) => {
-        setIsProcessing(false);
-        setErrorMessage(resp.error?.description || 'Payment was unsuccessful or cancelled. Please try again.');
+      rzpInstance.on('payment.failed', async (resp: any) => {
+        const wasPaid = await checkPaymentStatus();
+        if (!wasPaid) {
+          stopPolling();
+          setIsProcessing(false);
+          setErrorMessage(resp.error?.description || 'Payment was unsuccessful or cancelled. Please try again.');
+        }
       });
       rzpInstance.open();
     } catch (err: any) {

@@ -8,7 +8,7 @@ import { BUNDLE_PRODUCTS } from '@/data/bundles';
 import serverProductLinks from '@/data/productDriveLinks.server.json';
 import { sendMetaCapiPurchase } from '@/lib/metaCapi';
 import { extractClientMetadata, generateOrderToken } from '@/lib/orderToken';
-import { verifyRazorpaySignature, getRazorpayCredentials } from '@/lib/razorpay';
+import { verifyRazorpaySignature, getRazorpayCredentials, getRazorpayOrder, getRazorpayOrderPayments } from '@/lib/razorpay';
 
 export const runtime = 'nodejs';
 
@@ -253,7 +253,41 @@ async function handleVerification(
     storedOrder?.status === 'completed' ||
     storedOrder?.razorpay_verified === true;
 
-  if (isSignatureValid && !isAlreadyPaid) {
+  // Direct Razorpay API lookup if signature is absent (e.g. UPI QR scan flow)
+  let isApiVerified = false;
+  let resolvedPaymentId = razorpayData?.razorpayPaymentId || storedOrder?.razorpay_payment_id || '';
+  const targetRzpOrderId = razorpayData?.razorpayOrderId || storedOrder?.razorpay_order_id;
+
+  if (!isSignatureValid && !isAlreadyPaid && targetRzpOrderId) {
+    try {
+      const [rzpOrder, rzpPayments] = await Promise.all([
+        getRazorpayOrder(targetRzpOrderId).catch(() => null),
+        getRazorpayOrderPayments(targetRzpOrderId).catch(() => null),
+      ]);
+
+      const paymentsList: any[] = Array.isArray(rzpPayments?.items) ? rzpPayments.items : [];
+      const capturedPayment = paymentsList.find(
+        (p: any) => p && (p.status === 'captured' || p.status === 'authorized' || p.captured === true)
+      );
+
+      if (
+        Boolean(capturedPayment) ||
+        rzpOrder?.status === 'paid' ||
+        (rzpOrder?.amount_paid != null && rzpOrder.amount_paid > 0 && rzpOrder.amount_paid >= (rzpOrder.amount || 100))
+      ) {
+        isApiVerified = true;
+        if (capturedPayment?.id) {
+          resolvedPaymentId = capturedPayment.id;
+        }
+      }
+    } catch (checkErr) {
+      console.warn('[Razorpay Verify] API status check fallback warning:', checkErr);
+    }
+  }
+
+  const isConfirmedPaid = isSignatureValid || isApiVerified || isAlreadyPaid;
+
+  if ((isSignatureValid || isApiVerified) && !isAlreadyPaid) {
     // Mark as completed in Firestore
     if (db) {
       try {
@@ -261,15 +295,28 @@ async function handleVerification(
           status: 'completed',
           payment_status: 'PAID',
           paymentMethod: 'Razorpay (India)',
-          razorpay_payment_id: razorpayData?.razorpayPaymentId,
-          razorpay_order_id: razorpayData?.razorpayOrderId,
-          razorpay_signature: razorpayData?.razorpaySignature,
+          razorpay_payment_id: resolvedPaymentId || razorpayData?.razorpayPaymentId || `pay_${Date.now()}`,
+          razorpay_order_id: targetRzpOrderId || razorpayData?.razorpayOrderId,
+          razorpay_signature: razorpayData?.razorpaySignature || null,
           razorpay_verified: true,
           paid_at: new Date().toISOString(),
           payment_verified_at: new Date().toISOString(),
         };
 
-        await updateDoc(doc(db, 'orders', orderId), updatePayload);
+        if (storedOrder) {
+          await updateDoc(doc(db, 'orders', orderId), updatePayload);
+        } else {
+          await setDoc(doc(db, 'orders', orderId), {
+            orderNumber: orderId,
+            customer: { fullName: 'Valued Customer', email: '', phone: '' },
+            items: [{ id: 'bundle', title: 'Viral Reels Bundle', license: 'personal' }],
+            totalAmount: 99,
+            createdAt: new Date(),
+            timestampIso: new Date().toISOString(),
+            order_token: validToken,
+            ...updatePayload,
+          }, { merge: true });
+        }
 
         // Also persist to order_success_records for instant offline recovery
         await setDoc(
@@ -282,7 +329,7 @@ async function handleVerification(
             totalAmount: storedOrder?.totalAmount || 0,
             status: 'completed',
             paymentMethod: 'Razorpay',
-            razorpay_payment_id: razorpayData?.razorpayPaymentId,
+            razorpay_payment_id: resolvedPaymentId || razorpayData?.razorpayPaymentId,
             created_at: new Date().toISOString(),
           },
           { merge: true }
@@ -372,7 +419,7 @@ async function handleVerification(
   }
 
   // If order is paid, return verified response with Drive links
-  if (isSignatureValid || isAlreadyPaid) {
+  if (isConfirmedPaid) {
     const isClientFired = storedOrder?.purchase_client_fired === true;
     const isCapiDelivered = storedOrder?.purchase_event_status === 'delivered';
 

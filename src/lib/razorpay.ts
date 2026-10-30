@@ -262,3 +262,56 @@ export async function getRazorpayPaymentDetails(paymentId: string): Promise<any>
 
   return response.json();
 }
+
+/**
+ * Fetches all payments associated with a Razorpay Order
+ * GET https://api.razorpay.com/v1/orders/{order_id}/payments
+ */
+export async function getRazorpayOrderPayments(razorpayOrderId: string): Promise<any> {
+  const creds = await getRazorpayCredentials();
+
+  if (!creds.keyId || !creds.keySecret) {
+    throw new Error('Razorpay credentials missing');
+  }
+
+  const authHeader = `Basic ${Buffer.from(`${creds.keyId}:${creds.keySecret}`).toString('base64')}`;
+  const response = await fetch(`https://api.razorpay.com/v1/orders/${razorpayOrderId}/payments`, {
+    headers: {
+      Authorization: authHeader,
+    },
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch order payments from Razorpay: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+/**
+ * Fetches the current status and details of a Razorpay Order
+ * GET https://api.razorpay.com/v1/orders/{order_id}
+ */
+export async function getRazorpayOrder(razorpayOrderId: string): Promise<any> {
+  const creds = await getRazorpayCredentials();
+
+  if (!creds.keyId || !creds.keySecret) {
+    throw new Error('Razorpay credentials missing');
+  }
+
+  const authHeader = `Basic ${Buffer.from(`${creds.keyId}:${creds.keySecret}`).toString('base64')}`;
+  const response = await fetch(`https://api.razorpay.com/v1/orders/${razorpayOrderId}`, {
+    headers: {
+      Authorization: authHeader,
+    },
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch order from Razorpay: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+

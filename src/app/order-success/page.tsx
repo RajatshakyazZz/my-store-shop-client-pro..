@@ -250,13 +250,30 @@ function OrderSuccessContent() {
             });
           }
         } else {
-          setStatus('unpaid');
+          // If payment was recently completed via UPI QR on mobile, allow up to 5 automatic status checks (10s)
+          if (retryCount < 5) {
+            setTimeout(() => {
+              if (!isCancelled) {
+                setRetryCount((prev) => prev + 1);
+              }
+            }, 2000);
+          } else {
+            setStatus('unpaid');
+          }
         }
       })
       .catch((err) => {
         if (isCancelled) return;
         console.warn('Order verification failed:', err);
-        setStatus('unpaid');
+        if (retryCount < 5) {
+          setTimeout(() => {
+            if (!isCancelled) {
+              setRetryCount((prev) => prev + 1);
+            }
+          }, 2000);
+        } else {
+          setStatus('unpaid');
+        }
       });
 
     return () => {
