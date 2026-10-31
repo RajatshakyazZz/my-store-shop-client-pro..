@@ -31,7 +31,7 @@ export async function GET() {
             subheadline: data.subheadline || DEFAULT_GROWTH_PROOFS.subheadline,
             autoplay: typeof data.autoplay === 'boolean' ? data.autoplay : true,
             autoplayInterval: Number(data.autoplayInterval || data.autoplay_interval || 4000),
-            items: Array.isArray(data.items) ? data.items : DEFAULT_GROWTH_PROOFS.items,
+            items: Array.isArray(data.items) ? data.items : [],
             updatedAt: data.updatedAt || data.updated_at,
           };
           return NextResponse.json({ success: true, config }, { headers: CORS_HEADERS });
@@ -49,7 +49,7 @@ export async function GET() {
               subheadline: data.subheadline || DEFAULT_GROWTH_PROOFS.subheadline,
               autoplay: typeof data.autoplay === 'boolean' ? data.autoplay : true,
               autoplayInterval: Number(data.autoplayInterval || data.autoplay_interval || 4000),
-              items: Array.isArray(data.items) ? data.items : DEFAULT_GROWTH_PROOFS.items,
+              items: Array.isArray(data.items) ? data.items : [],
               updatedAt: data.updatedAt || data.updated_at,
             };
             return NextResponse.json({ success: true, config }, { headers: CORS_HEADERS });
@@ -87,6 +87,9 @@ export async function POST(request: Request) {
         followers: String(it.followers || '').trim(),
         metric: String(it.metric || '').trim(),
         tag: String(it.tag || '').trim(),
+        productId: it.productId ? String(it.productId).trim() : undefined,
+        productSlug: it.productSlug ? String(it.productSlug).trim() : undefined,
+        productTitle: it.productTitle ? String(it.productTitle).trim() : undefined,
       }));
 
     const updatedAt = new Date().toISOString();

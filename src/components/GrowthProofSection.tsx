@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import Link from 'next/link';
 import {
   Sparkles,
   ChevronLeft,
@@ -8,7 +9,7 @@ import {
   Maximize2,
   TrendingUp,
   Instagram,
-  CheckCircle2,
+  Package,
 } from 'lucide-react';
 import {
   GrowthProofsConfig,
@@ -21,9 +22,24 @@ import LightboxModal from './LightboxModal';
 interface GrowthProofSectionProps {
   initialConfig?: GrowthProofsConfig;
   className?: string;
+  productSlug?: string;
+  productId?: string;
+  strictProductOnly?: boolean;
+  headlineOverride?: string;
+  badgeOverride?: string;
+  subheadlineOverride?: string;
 }
 
-export default function GrowthProofSection({ initialConfig, className = '' }: GrowthProofSectionProps) {
+export default function GrowthProofSection({
+  initialConfig,
+  className = '',
+  productSlug,
+  productId,
+  strictProductOnly = false,
+  headlineOverride,
+  badgeOverride,
+  subheadlineOverride,
+}: GrowthProofSectionProps) {
   const [config, setConfig] = useState<GrowthProofsConfig>(initialConfig || getGrowthProofsSync());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -35,23 +51,67 @@ export default function GrowthProofSection({ initialConfig, className = '' }: Gr
   const currentXRef = useRef(0);
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Fetch updated config on mount
+  // Fetch updated config on mount & listen to live updates from admin
   useEffect(() => {
     fetchGrowthProofs().then((cfg) => {
       if (cfg) setConfig(cfg);
     });
+
+    const handleUpdate = (e: Event) => {
+      const customEvt = e as CustomEvent<GrowthProofsConfig>;
+      if (customEvt.detail) {
+        setConfig(customEvt.detail);
+      }
+    };
+
+    window.addEventListener('vaultzet:growth_proofs_updated', handleUpdate);
+    return () => window.removeEventListener('vaultzet:growth_proofs_updated', handleUpdate);
   }, []);
 
-  const items = config.items && config.items.length > 0 ? config.items : [];
+  const isProductFiltered = Boolean(productSlug || productId);
+
+  // Filter items based on product scope
+  const items = useMemo(() => {
+    if (!config.enabled || !config.items || config.items.length === 0) {
+      return [];
+    }
+
+    if (isProductFiltered) {
+      const targetSlug = (productSlug || '').toLowerCase().trim();
+      const targetId = String(productId || '').trim();
+
+      const matched = config.items.filter((it) => {
+        const itSlug = (it.productSlug || '').toLowerCase().trim();
+        const itId = String(it.productId || '').trim();
+        return (targetSlug && itSlug === targetSlug) || (targetId && itId === targetId);
+      });
+
+      // User requirement: "or dummy screenshot mat lagana jab user lagayega tabhi wo section show ho"
+      // If 0 screenshots uploaded for this specific product, return [] so section is hidden!
+      return matched;
+    }
+
+    // On main Growth Proofs page (/proofs) or home page without filter:
+    // User requirement: "or menu ke growth page per saare screenhot show hoen lage"
+    return config.items;
+  }, [config.enabled, config.items, isProductFiltered, productSlug, productId]);
+
   const total = items.length;
 
+  // Keep currentIndex bounded
+  useEffect(() => {
+    if (currentIndex >= total && total > 0) {
+      setCurrentIndex(0);
+    }
+  }, [currentIndex, total]);
+
   const nextSlide = useCallback(() => {
-    if (total === 0) return;
+    if (total <= 1) return;
     setCurrentIndex((prev) => (prev + 1) % total);
   }, [total]);
 
   const prevSlide = useCallback(() => {
-    if (total === 0) return;
+    if (total <= 1) return;
     setCurrentIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
@@ -70,6 +130,7 @@ export default function GrowthProofSection({ initialConfig, className = '' }: Gr
 
   // Touch Handlers for smooth mobile finger swipe
   const handleTouchStart = (clientX: number) => {
+    if (total <= 1) return;
     setIsDragging(true);
     startXRef.current = clientX;
     currentXRef.current = clientX;
@@ -77,7 +138,7 @@ export default function GrowthProofSection({ initialConfig, className = '' }: Gr
   };
 
   const handleTouchMove = (clientX: number) => {
-    if (!isDragging) return;
+    if (!isDragging || total <= 1) return;
     currentXRef.current = clientX;
   };
 
@@ -85,17 +146,17 @@ export default function GrowthProofSection({ initialConfig, className = '' }: Gr
     if (!isDragging) return;
     setIsDragging(false);
     const diff = currentXRef.current - startXRef.current;
-    if (Math.abs(diff) > 40) {
+    if (Math.abs(diff) > 40 && total > 1) {
       if (diff < 0) {
         nextSlide();
       } else {
         prevSlide();
       }
     }
-    // resume autoplay after 2s
     setTimeout(() => setIsPaused(false), 2000);
   };
 
+  // If section is disabled OR 0 screenshots exist for this scope, return null!
   if (!config.enabled || total === 0) {
     return null;
   }
@@ -103,6 +164,9 @@ export default function GrowthProofSection({ initialConfig, className = '' }: Gr
   // Calculate position class for each item relative to currentIndex
   const getSlot = (index: number): 'center' | 'left1' | 'left2' | 'right1' | 'right2' | 'hidden' => {
     if (total === 1) return 'center';
+    if (total === 2) {
+      return index === currentIndex ? 'center' : 'right1';
+    }
 
     let diff = (index - currentIndex) % total;
     if (diff < 0) diff += total;
@@ -116,11 +180,24 @@ export default function GrowthProofSection({ initialConfig, className = '' }: Gr
     return 'hidden';
   };
 
-  const currentItem = items[currentIndex];
+  const headline =
+    headlineOverride ||
+    (isProductFiltered
+      ? 'Real Growth From This Bundle'
+      : config.headline || 'Real Growth By Our Bundle Users');
+
+  const badge = badgeOverride || config.badge || 'REAL GROWTH PROOF';
+
+  const subheadline =
+    subheadlineOverride ||
+    (isProductFiltered
+      ? 'Genuine follower reach & viral stats achieved by creators using this specific reels pack.'
+      : config.subheadline ||
+        'These creators acquired our bundles, scaled to 100K+ followers, and monetize daily.');
 
   return (
     <section
-      className={`relative w-full py-16 sm:py-24 bg-[#09090b] text-white overflow-hidden select-none [contain:layout_style] ${className}`}
+      className={`relative w-full py-14 sm:py-20 bg-[#09090b] text-white overflow-hidden select-none [contain:layout_style] ${className}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -129,27 +206,25 @@ export default function GrowthProofSection({ initialConfig, className = '' }: Gr
       <div className="absolute bottom-0 right-1/4 w-[280px] h-[280px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-        
         {/* Header Block */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs sm:text-sm font-black tracking-widest uppercase mb-4 shadow-[0_0_20px_rgba(168,85,247,0.2)]">
             <Sparkles className="w-4 h-4 text-purple-400 animate-pulse" />
-            <span>{config.badge || 'REAL GROWTH PROOF'}</span>
+            <span>{badge}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1]">
-            {config.headline || 'Real Growth By Our Bundle Users'}
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.1]">
+            {headline}
           </h2>
 
-          <p className="text-sm sm:text-lg text-slate-400 mt-4 max-w-2xl mx-auto font-normal leading-relaxed">
-            {config.subheadline ||
-              'These creators acquired our bundles, scaled to 100K+ followers, and monetize daily.'}
+          <p className="text-xs sm:text-base text-slate-400 mt-3 sm:mt-4 max-w-2xl mx-auto font-normal leading-relaxed">
+            {subheadline}
           </p>
         </div>
 
         {/* 3D Perspective Stage / Coverflow Area */}
         <div
-          className="relative w-full h-[500px] sm:h-[580px] md:h-[680px] flex items-center justify-center [perspective:1200px] md:[perspective:1800px] touch-pan-y"
+          className="relative w-full h-[480px] sm:h-[560px] md:h-[650px] flex items-center justify-center [perspective:1200px] md:[perspective:1800px] touch-pan-y"
           onTouchStart={(e) => handleTouchStart(e.touches[0].clientX)}
           onTouchMove={(e) => handleTouchMove(e.touches[0].clientX)}
           onTouchEnd={handleTouchEnd}
@@ -230,7 +305,7 @@ export default function GrowthProofSection({ initialConfig, className = '' }: Gr
                     />
 
                     {/* Gradient Overlay for Text Readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent pointer-events-none" />
 
                     {/* Subtle Glass Inner Border */}
                     <div className="absolute inset-0 rounded-[24px] sm:rounded-[28px] border border-white/15 pointer-events-none" />
@@ -243,7 +318,29 @@ export default function GrowthProofSection({ initialConfig, className = '' }: Gr
                     )}
 
                     {/* Creator Info Footer */}
-                    <div className="absolute bottom-3 sm:bottom-4 left-3 right-3 sm:left-4 sm:right-4 z-20 text-white pointer-events-none">
+                    <div className="absolute bottom-3 sm:bottom-4 left-3 right-3 sm:left-4 sm:right-4 z-20 text-white">
+                      {/* Product Attribution Badge (Shown especially on global /proofs page) */}
+                      {item.productTitle && !isProductFiltered && (
+                        <div className="mb-1.5">
+                          {item.productSlug ? (
+                            <Link
+                              href={`/product/${item.productSlug}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-400/25 hover:bg-amber-400/35 text-amber-300 border border-amber-400/40 text-[10px] sm:text-[11px] font-black transition-colors truncate max-w-full"
+                              title={`View ${item.productTitle}`}
+                            >
+                              <Package className="w-3 h-3 text-amber-300 shrink-0" />
+                              <span className="truncate">{item.productTitle}</span>
+                            </Link>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-400/25 text-amber-300 border border-amber-400/40 text-[10px] sm:text-[11px] font-black truncate max-w-full">
+                              <Package className="w-3 h-3 text-amber-300 shrink-0" />
+                              <span className="truncate">{item.productTitle}</span>
+                            </span>
+                          )}
+                        </div>
+                      )}
+
                       {item.tag && (
                         <span className="inline-block px-2 py-0.5 rounded-md bg-purple-500/30 text-purple-200 text-[10px] sm:text-xs font-bold uppercase tracking-wider border border-purple-500/40 mb-1.5">
                           {item.tag}
@@ -273,51 +370,59 @@ export default function GrowthProofSection({ initialConfig, className = '' }: Gr
             })}
           </div>
 
-          {/* Floating Left Arrow */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              prevSlide();
-            }}
-            className="absolute left-2 sm:left-6 md:left-12 z-40 p-2.5 sm:p-3.5 rounded-full bg-black/60 hover:bg-purple-600 text-white border border-white/20 backdrop-blur-md shadow-2xl transition-all hover:scale-110 active:scale-95"
-            aria-label="Previous growth proof"
-          >
-            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-          </button>
+          {/* Floating Left Arrow (Visible only if more than 1 item) */}
+          {total > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                prevSlide();
+              }}
+              className="absolute left-2 sm:left-6 md:left-12 z-40 p-2.5 sm:p-3.5 rounded-full bg-black/60 hover:bg-purple-600 text-white border border-white/20 backdrop-blur-md shadow-2xl transition-all hover:scale-110 active:scale-95"
+              aria-label="Previous growth proof"
+            >
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+          )}
 
-          {/* Floating Right Arrow */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              nextSlide();
-            }}
-            className="absolute right-2 sm:right-6 md:right-12 z-40 p-2.5 sm:p-3.5 rounded-full bg-black/60 hover:bg-purple-600 text-white border border-white/20 backdrop-blur-md shadow-2xl transition-all hover:scale-110 active:scale-95"
-            aria-label="Next growth proof"
-          >
-            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-          </button>
+          {/* Floating Right Arrow (Visible only if more than 1 item) */}
+          {total > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                nextSlide();
+              }}
+              className="absolute right-2 sm:right-6 md:right-12 z-40 p-2.5 sm:p-3.5 rounded-full bg-black/60 hover:bg-purple-600 text-white border border-white/20 backdrop-blur-md shadow-2xl transition-all hover:scale-110 active:scale-95"
+              aria-label="Next growth proof"
+            >
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+          )}
         </div>
 
         {/* Carousel Indicators / Navigation Dots */}
-        <div className="flex items-center justify-center gap-2 mt-6 sm:mt-8">
-          {items.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentIndex(idx)}
-              className={`h-2 transition-all rounded-full ${
-                idx === currentIndex
-                  ? 'w-8 bg-purple-500 shadow-[0_0_12px_rgba(168,85,247,0.8)]'
-                  : 'w-2 bg-white/20 hover:bg-white/40'
-              }`}
-              aria-label={`Go to proof slide ${idx + 1}`}
-            />
-          ))}
-        </div>
+        {total > 1 && (
+          <div className="flex items-center justify-center gap-2 mt-6 sm:mt-8">
+            {items.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentIndex(idx)}
+                className={`h-2 transition-all rounded-full ${
+                  idx === currentIndex
+                    ? 'w-8 bg-purple-500 shadow-[0_0_12px_rgba(168,85,247,0.8)]'
+                    : 'w-2 bg-white/20 hover:bg-white/40'
+                }`}
+                aria-label={`Go to proof slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Mobile Swipe Hint */}
-        <div className="text-center mt-3 text-xs text-slate-500 md:hidden flex items-center justify-center gap-1.5">
-          <span>👈 Swipe left or right to explore proofs 👉</span>
-        </div>
+        {total > 1 && (
+          <div className="text-center mt-3 text-xs text-slate-500 md:hidden flex items-center justify-center gap-1.5">
+            <span>👈 Swipe left or right to explore proofs 👉</span>
+          </div>
+        )}
       </div>
 
       {/* Full-Screen Lightbox Modal for High-Res Inspection */}
@@ -328,7 +433,9 @@ export default function GrowthProofSection({ initialConfig, className = '' }: Gr
           id: it.id,
           image: it.image,
           title: it.title,
-          subtitle: `${it.followers || ''} • ${it.metric || ''}`,
+          subtitle: `${it.followers || ''}${it.followers && it.metric ? ' • ' : ''}${it.metric || ''}${
+            it.productTitle ? ` (Product: ${it.productTitle})` : ''
+          }`,
           badge: it.tag || 'Growth Proof',
         }))}
         currentIndex={currentIndex}

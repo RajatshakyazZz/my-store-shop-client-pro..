@@ -47,6 +47,7 @@ import { getBundleContentDetails } from '@/lib/bundleContent';
 import { track } from '@/lib/analytics';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
 import FreeBundleOfferBanner from '@/components/FreeBundleOfferBanner';
+import GrowthProofSection from '@/components/GrowthProofSection';
 import { parseHostedVideoUrl } from '@/lib/videoUtils';
 
 interface ProductDetailClientProps {
@@ -836,6 +837,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             ))}
           </div>
         </section>
+
+        {/* DEDICATED PRODUCT GROWTH PROOFS (Strictly renders ONLY if screenshots have been uploaded for this specific bundle) */}
+        <GrowthProofSection
+          productSlug={currentProduct.slug}
+          productId={String(currentProduct.id)}
+          strictProductOnly={true}
+          className="rounded-2xl sm:rounded-3xl"
+          headlineOverride={`Real Channel Growth With ${currentProduct.title}`}
+          subheadlineOverride="Verified Instagram reach & follower metrics achieved by creators using this bundle."
+        />
 
         {/* SECTION 4: VERIFIED CUSTOMER REVIEWS */}
         <section className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-5">

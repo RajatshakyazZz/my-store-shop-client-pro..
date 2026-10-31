@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   TrendingUp,
@@ -8,13 +8,12 @@ import {
   ArrowUp,
   ArrowDown,
   Sparkles,
-  Eye,
-  Sliders,
-  Instagram,
+  Package,
+  Layers,
+  Filter,
   CheckCircle2,
   ExternalLink,
-  Layers,
-  RotateCcw,
+  Info,
 } from 'lucide-react';
 import { portalApi } from '../api/client';
 import { AdminGrowthProofsConfig, AdminGrowthProofItem } from '../api/types';
@@ -37,16 +36,43 @@ export default function GrowthProofsPage() {
   const { success, error } = useToast();
   const { isLight } = useAdminTheme();
 
+  // 1. Fetch Growth Proofs config
   const { data: remoteConfig, isLoading } = useQuery({
     queryKey: ['growth-proofs-admin'],
     queryFn: () => portalApi.getGrowthProofs(),
   });
 
+  // 2. Fetch Catalog Products for the dropdown selector
+  const { data: rawProducts = [] } = useQuery({
+    queryKey: ['products-for-growth-proofs'],
+    queryFn: () => portalApi.getProducts(),
+  });
+
+  const products = useMemo(() => {
+    if (!Array.isArray(rawProducts)) return [];
+    const map = new Map<string, { id: string; slug: string; name: string }>();
+    for (const p of rawProducts) {
+      const slug = String(p.slug || '').trim();
+      if (slug && !map.has(slug)) {
+        map.set(slug, {
+          id: String(p.id || slug),
+          slug,
+          name: String(p.name || (p as any).title || slug).trim(),
+        });
+      }
+    }
+    return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name));
+  }, [rawProducts]);
+
   const [form, setForm] = useState<AdminGrowthProofsConfig>(DEFAULT_CONFIG);
+  const [productFilter, setProductFilter] = useState<string>('all');
 
   useEffect(() => {
     if (remoteConfig) {
-      setForm(remoteConfig);
+      setForm({
+        ...remoteConfig,
+        items: Array.isArray(remoteConfig.items) ? remoteConfig.items : [],
+      });
     }
   }, [remoteConfig]);
 
@@ -62,14 +88,23 @@ export default function GrowthProofsPage() {
   });
 
   const handleAddItem = () => {
+    const preselectedProduct =
+      productFilter !== 'all' && productFilter !== 'global'
+        ? products.find((p) => p.slug === productFilter)
+        : null;
+
     const newItem: AdminGrowthProofItem = {
       id: `gp-${Date.now()}`,
       image: '',
       title: '@creator_handle',
       followers: '150K Followers',
       metric: '+100K in 30 Days',
-      tag: 'AI Reels',
+      tag: preselectedProduct ? 'Bundle Result' : 'AI Reels',
+      productId: preselectedProduct ? preselectedProduct.id : '',
+      productSlug: preselectedProduct ? preselectedProduct.slug : '',
+      productTitle: preselectedProduct ? preselectedProduct.name : '',
     };
+
     setForm((prev) => ({
       ...prev,
       items: [newItem, ...prev.items],
@@ -108,6 +143,21 @@ export default function GrowthProofsPage() {
     mutation.mutate(form);
   };
 
+  // Filter items for the admin view list
+  const filteredItemsWithIndices = useMemo(() => {
+    return form.items
+      .map((item, originalIndex) => ({ item, originalIndex }))
+      .filter(({ item }) => {
+        if (productFilter === 'all') return true;
+        if (productFilter === 'global') return !item.productSlug;
+        return item.productSlug === productFilter;
+      });
+  }, [form.items, productFilter]);
+
+  const globalItemsCount = useMemo(() => {
+    return form.items.filter((it) => !it.productSlug).length;
+  }, [form.items]);
+
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-16">
       {/* Top Banner */}
@@ -122,7 +172,7 @@ export default function GrowthProofsPage() {
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Manage the 3D Instagram Account & Follower Growth Screenshot carousel displayed across product pages & storefront.
+            Upload Instagram follower growth screenshots. Assign to a <strong>specific product page</strong> or display across the main Growth Proofs page.
           </p>
         </div>
 
@@ -148,12 +198,26 @@ export default function GrowthProofsPage() {
         </div>
       </div>
 
+      {/* Helpful Feature Note */}
+      <div className="p-4 rounded-2xl bg-purple-950/40 border border-purple-500/30 flex items-start gap-3 text-xs text-purple-200">
+        <Info className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
+        <div className="space-y-1">
+          <div className="font-bold text-white text-xs sm:text-sm">
+            🎯 Dedicated Product Screenshots Feature:
+          </div>
+          <p className="leading-relaxed">
+            Aap kisi bhi screenshot card me <strong>"Assign To Specific Product Page"</strong> select kar sakte hain. Wo screenshot sirf usi product page per 3D coverflow me dikhega.
+            <strong> Jab tak kisi product per screenshot add nahi karenge, us product page per koi section ya dummy photo nahi dikhega.</strong> Saare screenshots menu ke main Growth Proofs page (<strong>/proofs</strong>) per ek saath show honge.
+          </p>
+        </div>
+      </div>
+
       {/* Global Section Controls */}
       <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
           <div>
             <h3 className="text-sm font-semibold text-white">Section Visibility</h3>
-            <p className="text-xs text-slate-400">Enable or disable the 3D Growth Proofs section storefront-wide.</p>
+            <p className="text-xs text-slate-400">Enable or disable the 3D Growth Proofs showcase globally.</p>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
@@ -182,7 +246,7 @@ export default function GrowthProofsPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">Headline</label>
+            <label className="block text-xs font-semibold text-slate-300 mb-1">Main Headline</label>
             <input
               type="text"
               value={form.headline}
@@ -193,7 +257,7 @@ export default function GrowthProofsPage() {
           </div>
 
           <div className="md:col-span-2">
-            <label className="block text-xs font-semibold text-slate-300 mb-1">Subheadline</label>
+            <label className="block text-xs font-semibold text-slate-300 mb-1">Main Subheadline</label>
             <input
               type="text"
               value={form.subheadline}
@@ -234,50 +298,161 @@ export default function GrowthProofsPage() {
         </div>
       </div>
 
-      {/* Screenshots List */}
+      {/* Filter Bar & Header */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
-            <span>Proof Screenshots ({form.items.length})</span>
-            <span className="text-xs font-normal text-slate-400">
-              (Uploaded screenshots will appear in the 3D coverflow carousel)
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+              <span>Proof Screenshots ({form.items.length})</span>
+            </h2>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Select any product below to filter or manage screenshots for that specific page.
+            </p>
+          </div>
+
+          {/* Product Filter Selector */}
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <span className="text-xs text-slate-400 font-medium flex items-center gap-1">
+              <Filter className="w-3.5 h-3.5" />
+              <span>Filter View:</span>
             </span>
-          </h2>
+            <select
+              value={productFilter}
+              onChange={(e) => setProductFilter(e.target.value)}
+              className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs font-semibold focus:outline-none focus:border-purple-500 cursor-pointer"
+            >
+              <option value="all">📁 All Screenshots ({form.items.length})</option>
+              <option value="global">🌐 General / Unassigned ({globalItemsCount})</option>
+              {products.map((p) => {
+                const count = form.items.filter((it) => it.productSlug === p.slug).length;
+                return (
+                  <option key={p.slug} value={p.slug}>
+                    📦 {p.name} {count > 0 ? `(${count})` : ''}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
         </div>
 
+        {/* List of Screenshots */}
         {form.items.length === 0 ? (
-          <div className="p-8 text-center rounded-2xl bg-slate-900 border border-dashed border-slate-800 space-y-3">
-            <TrendingUp className="w-8 h-8 text-slate-500 mx-auto" />
-            <p className="text-xs sm:text-sm text-slate-400">No screenshots added yet. Default samples will be shown.</p>
+          <div className="p-8 sm:p-12 text-center rounded-2xl bg-slate-900 border border-dashed border-slate-800 space-y-3">
+            <TrendingUp className="w-10 h-10 text-purple-400/50 mx-auto" />
+            <h3 className="text-sm sm:text-base font-bold text-white">No Screenshots Uploaded Yet</h3>
+            <p className="text-xs sm:text-sm text-slate-400 max-w-md mx-auto">
+              Add your first Instagram follower growth screenshot. Once uploaded, it will show on the store!
+            </p>
             <button
               type="button"
               onClick={handleAddItem}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs sm:text-sm font-semibold transition-all shadow-md"
             >
               <Plus className="w-4 h-4" />
-              <span>Add First Screenshot</span>
+              <span>Upload First Screenshot</span>
+            </button>
+          </div>
+        ) : filteredItemsWithIndices.length === 0 ? (
+          <div className="p-8 text-center rounded-2xl bg-slate-900 border border-dashed border-slate-800 space-y-3">
+            <Package className="w-8 h-8 text-slate-500 mx-auto" />
+            <p className="text-xs sm:text-sm text-slate-400">
+              No screenshots found for this filter.
+            </p>
+            <button
+              type="button"
+              onClick={handleAddItem}
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add Screenshot for this Product</span>
             </button>
           </div>
         ) : (
           <div className="space-y-4">
-            {form.items.map((item, index) => (
+            {filteredItemsWithIndices.map(({ item, originalIndex }) => (
               <div
                 key={item.id}
-                className="p-4 sm:p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col md:flex-row gap-5 items-start transition-all hover:border-slate-700"
+                className={`p-4 sm:p-5 rounded-2xl bg-slate-900 border transition-all flex flex-col md:flex-row gap-5 items-start ${
+                  item.productSlug
+                    ? 'border-purple-500/40 hover:border-purple-500/70 shadow-lg shadow-purple-950/20'
+                    : 'border-slate-800 hover:border-slate-700'
+                }`}
               >
                 {/* Screenshot Upload / Preview */}
                 <div className="w-full md:w-56 shrink-0">
                   <ImageUploadField
-                    label={`Screenshot #${index + 1}`}
+                    label={`Screenshot #${originalIndex + 1}`}
                     value={item.image}
-                    onChange={(url) => handleUpdateItem(index, { image: url })}
+                    onChange={(url) => handleUpdateItem(originalIndex, { image: url })}
                     placeholder="https://... upload screenshot"
                     helperText="Upload mobile screenshot (PNG/JPG)"
                   />
                 </div>
 
                 {/* Details Fields */}
-                <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3.5 w-full">
+                  {/* DEDICATED PRODUCT SELECTOR BOX */}
+                  <div className="sm:col-span-2 p-3 sm:p-3.5 rounded-xl bg-slate-800/90 border border-slate-700 space-y-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                      <label className="text-xs font-bold text-purple-300 flex items-center gap-1.5">
+                        <Package className="w-3.5 h-3.5 text-purple-400" />
+                        <span>Assign to Specific Product Page (Dedicated):</span>
+                      </label>
+                      {item.productSlug ? (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-black text-amber-300 bg-amber-400/15 border border-amber-400/30 px-2.5 py-0.5 rounded-full self-start sm:self-auto">
+                          🎯 Shows on: {item.productTitle || item.productSlug}
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-400 bg-slate-700/50 px-2 py-0.5 rounded-full self-start sm:self-auto">
+                          🌐 General / Main Growth Page
+                        </span>
+                      )}
+                    </div>
+
+                    <select
+                      value={item.productSlug || ''}
+                      onChange={(e) => {
+                        const selectedSlug = e.target.value;
+                        if (!selectedSlug) {
+                          handleUpdateItem(originalIndex, {
+                            productSlug: '',
+                            productId: '',
+                            productTitle: '',
+                          });
+                        } else {
+                          const prod = products.find((p) => p.slug === selectedSlug);
+                          handleUpdateItem(originalIndex, {
+                            productSlug: prod?.slug || selectedSlug,
+                            productId: prod?.id || '',
+                            productTitle: prod?.name || selectedSlug,
+                          });
+                        }
+                      }}
+                      className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs sm:text-sm font-semibold focus:outline-none focus:border-purple-500 cursor-pointer"
+                    >
+                      <option value="">🌐 All / General (Shows on Main Growth Proofs page from Menu)</option>
+                      <optgroup label="── Store Bundles & Products ──">
+                        {products.map((p) => (
+                          <option key={p.slug} value={p.slug}>
+                            📦 {p.name}
+                          </option>
+                        ))}
+                      </optgroup>
+                    </select>
+
+                    <p className="text-[11px] text-slate-400 leading-relaxed">
+                      {item.productSlug ? (
+                        <span className="text-emerald-400 font-medium">
+                          ✓ Ye screenshot sirf <strong>"{item.productTitle || item.productSlug}"</strong> ke product page per aur menu ke Growth Proofs page per dikhega.
+                        </span>
+                      ) : (
+                        <span>
+                          ℹ️ Ye screenshot main menu ke Growth Proofs page (<strong>/proofs</strong>) per show hoga.
+                        </span>
+                      )}
+                    </p>
+                  </div>
+
                   <div>
                     <label className="block text-[11px] font-semibold text-slate-400 mb-1">
                       Creator Account Handle
@@ -285,7 +460,7 @@ export default function GrowthProofsPage() {
                     <input
                       type="text"
                       value={item.title}
-                      onChange={(e) => handleUpdateItem(index, { title: e.target.value })}
+                      onChange={(e) => handleUpdateItem(originalIndex, { title: e.target.value })}
                       placeholder="@giggle.toons_"
                       className="w-full px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-purple-500"
                     />
@@ -298,7 +473,7 @@ export default function GrowthProofsPage() {
                     <input
                       type="text"
                       value={item.followers || ''}
-                      onChange={(e) => handleUpdateItem(index, { followers: e.target.value })}
+                      onChange={(e) => handleUpdateItem(originalIndex, { followers: e.target.value })}
                       placeholder="170K Followers"
                       className="w-full px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-purple-500"
                     />
@@ -311,7 +486,7 @@ export default function GrowthProofsPage() {
                     <input
                       type="text"
                       value={item.metric || ''}
-                      onChange={(e) => handleUpdateItem(index, { metric: e.target.value })}
+                      onChange={(e) => handleUpdateItem(originalIndex, { metric: e.target.value })}
                       placeholder="+120K in 30 Days"
                       className="w-full px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-purple-500"
                     />
@@ -324,7 +499,7 @@ export default function GrowthProofsPage() {
                     <input
                       type="text"
                       value={item.tag || ''}
-                      onChange={(e) => handleUpdateItem(index, { tag: e.target.value })}
+                      onChange={(e) => handleUpdateItem(originalIndex, { tag: e.target.value })}
                       placeholder="AI Animation"
                       className="w-full px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-purple-500"
                     />
@@ -335,26 +510,26 @@ export default function GrowthProofsPage() {
                 <div className="flex md:flex-col items-center gap-1.5 shrink-0 self-end md:self-center">
                   <button
                     type="button"
-                    onClick={() => handleMove(index, 'up')}
-                    disabled={index === 0}
-                    className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30"
+                    onClick={() => handleMove(originalIndex, 'up')}
+                    disabled={originalIndex === 0}
+                    className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 cursor-pointer"
                     title="Move Up"
                   >
                     <ArrowUp className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleMove(index, 'down')}
-                    disabled={index === form.items.length - 1}
-                    className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30"
+                    onClick={() => handleMove(originalIndex, 'down')}
+                    disabled={originalIndex === form.items.length - 1}
+                    className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 cursor-pointer"
                     title="Move Down"
                   >
                     <ArrowDown className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleRemoveItem(index)}
-                    className="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400"
+                    onClick={() => handleRemoveItem(originalIndex)}
+                    className="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 cursor-pointer"
                     title="Delete Screenshot"
                   >
                     <Trash2 className="w-4 h-4" />

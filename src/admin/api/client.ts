@@ -3289,32 +3289,7 @@ class PortalApiClient {
       subheadline: 'These creators acquired our bundles, scaled to 100K+ followers, and monetize daily.',
       autoplay: true,
       autoplayInterval: 4000,
-      items: [
-        {
-          id: 'gp-1',
-          image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=700&auto=format&fit=crop&q=80',
-          title: '@viral.animation_',
-          followers: '170K Followers',
-          metric: '+120K in 30 Days',
-          tag: 'AI Animation',
-        },
-        {
-          id: 'gp-2',
-          image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=700&auto=format&fit=crop&q=80',
-          title: '@aigrowth_hub',
-          followers: '240K Followers',
-          metric: '18M+ Monthly Views',
-          tag: 'AI Reels',
-        },
-        {
-          id: 'gp-3',
-          image: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=700&auto=format&fit=crop&q=80',
-          title: '@dailyreels_creator',
-          followers: '310K Followers',
-          metric: '+185K in 45 Days',
-          tag: 'Trending Niche',
-        },
-      ],
+      items: [],
     };
 
     let cached: AdminGrowthProofsConfig | null = null;

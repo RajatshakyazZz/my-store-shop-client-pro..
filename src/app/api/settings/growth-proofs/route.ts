@@ -21,7 +21,7 @@ export async function GET() {
             subheadline: data.subheadline || DEFAULT_GROWTH_PROOFS.subheadline,
             autoplay: typeof data.autoplay === 'boolean' ? data.autoplay : true,
             autoplayInterval: Number(data.autoplayInterval || data.autoplay_interval || 4000),
-            items: Array.isArray(data.items) ? data.items : DEFAULT_GROWTH_PROOFS.items,
+            items: Array.isArray(data.items) ? data.items : [],
             updatedAt: data.updatedAt || data.updated_at,
           };
           return NextResponse.json({ success: true, config });
@@ -39,7 +39,7 @@ export async function GET() {
               subheadline: data.subheadline || DEFAULT_GROWTH_PROOFS.subheadline,
               autoplay: typeof data.autoplay === 'boolean' ? data.autoplay : true,
               autoplayInterval: Number(data.autoplayInterval || data.autoplay_interval || 4000),
-              items: Array.isArray(data.items) ? data.items : DEFAULT_GROWTH_PROOFS.items,
+              items: Array.isArray(data.items) ? data.items : [],
               updatedAt: data.updatedAt || data.updated_at,
             };
             return NextResponse.json({ success: true, config });

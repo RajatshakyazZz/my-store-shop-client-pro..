@@ -497,6 +497,9 @@ export interface AdminGrowthProofItem {
   followers?: string;
   metric?: string;
   tag?: string;
+  productId?: string;
+  productSlug?: string;
+  productTitle?: string;
 }
 
 export interface AdminGrowthProofsConfig {
