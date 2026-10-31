@@ -7,10 +7,15 @@
   --rb-bg: #f8fafc;
   --rb-text: #0f172a;
   --rb-muted: #64748b;
-  --rb-purple: #d97706;
-  --rb-purple-light: #f59e0b;
-  --rb-purple-dark: #b45309;
-  --rb-pink: #eab308;
+  --rb-red: #dc2626;
+  --rb-red-light: #ef4444;
+  --rb-red-dark: #b91c1c;
+  --rb-red-soft: #fef2f2;
+  --rb-purple: #dc2626;
+  --rb-purple-light: #ef4444;
+  --rb-purple-dark: #b91c1c;
+  --rb-purple-soft: #fef2f2;
+  --rb-pink: #f43f5e;
   --rb-green: #059669;
   --rb-line: #e2e8f0;
 }
@@ -56,7 +61,7 @@ body {
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #d97706;
+  background: #dc2626;
 }
 
 /* Mask gradient for continuous marquee */
@@ -101,35 +106,37 @@ body {
   display: inline-block;
   width: 3px;
   height: 1.1em;
-  background: #d97706;
+  background: #dc2626;
   margin-left: 4px;
   vertical-align: middle;
   animation: blink 0.8s infinite;
 }
 
-/* Button glow - VaultWorld Signature Gold Luxe */
+/* Button glow - Signature Red Luxe */
 .btn-gradient-primary {
-  background: linear-gradient(105deg, #d97706 0%, #f59e0b 45%, #eab308 80%, #d97706 100%);
-  color: #020617;
+  background: linear-gradient(105deg, #dc2626 0%, #ef4444 45%, #f43f5e 80%, #dc2626 100%);
+  color: #ffffff;
   font-weight: 800;
-  box-shadow: 0 10px 24px rgba(245, 158, 11, 0.28);
+  box-shadow: 0 10px 24px rgba(220, 38, 38, 0.35);
   transition: all 0.2s ease-in-out;
 }
 .btn-gradient-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(245, 158, 11, 0.42);
+  box-shadow: 0 14px 30px rgba(220, 38, 38, 0.48);
 }
 
-.btn-gradient-orange {
-  background: linear-gradient(105deg, #d97706 0%, #f59e0b 45%, #eab308 80%, #d97706 100%);
-  color: #020617;
+.btn-gradient-orange,
+.btn-gradient-red {
+  background: linear-gradient(105deg, #dc2626 0%, #ef4444 45%, #f43f5e 80%, #dc2626 100%);
+  color: #ffffff;
   font-weight: 800;
-  box-shadow: 0 10px 24px rgba(245, 158, 11, 0.28);
+  box-shadow: 0 10px 24px rgba(220, 38, 38, 0.35);
   transition: all 0.2s ease-in-out;
 }
-.btn-gradient-orange:hover {
+.btn-gradient-orange:hover,
+.btn-gradient-red:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(245, 158, 11, 0.42);
+  box-shadow: 0 14px 30px rgba(220, 38, 38, 0.48);
 }
 
 /* Glassmorphism */

@@ -3,7 +3,7 @@ import { COMPETITOR_CATEGORIES } from '@/lib/categories';
 export const revalidate = 3600;
 
 export async function GET() {
-  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
+  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztoredigital.com').replace(/\/+$/, '');
   const now = new Date().toISOString();
 
   const seenSlugs = new Set<string>();

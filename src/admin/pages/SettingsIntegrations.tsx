@@ -25,6 +25,7 @@ import {
   Bell,
   RefreshCw,
   Database,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { portalApi } from '../api/client';
 import { useToast } from '../context/ToastContext';
@@ -35,17 +36,23 @@ import {
   RankMathConfig,
   LiteSpeedConfig,
   TelegramConfig,
+  ImgbbConfig,
 } from '../api/types';
 
 export default function SettingsIntegrations() {
   const queryClient = useQueryClient();
   const { addToast } = useToast();
-  const [activeTab, setActiveTab] = useState<'pg' | 'telegram' | 'meta' | 'analytics' | 'seo' | 'cache'>('pg');
+  const [activeTab, setActiveTab] = useState<'pg' | 'imgbb' | 'telegram' | 'meta' | 'analytics' | 'seo' | 'cache'>('pg');
 
   // Queries
   const { data: pgConfig, isLoading: pgLoading } = useQuery<PgBridgeConfig>({
     queryKey: ['pg-bridge'],
     queryFn: () => portalApi.getPgBridgeConfig(),
+  });
+
+  const { data: imgbbConfig, isLoading: imgbbLoading } = useQuery<ImgbbConfig>({
+    queryKey: ['imgbb-config'],
+    queryFn: () => portalApi.getImgbbConfig(),
   });
 
   const { data: tgConfig, isLoading: tgLoading } = useQuery<TelegramConfig>({
@@ -80,13 +87,21 @@ export default function SettingsIntegrations() {
   const [dnpForm, setDnpForm] = useState<Partial<DnpMetaConfig> | null>(null);
   const [mmcForm, setMmcForm] = useState<Partial<MmcAnalyticsConfig> | null>(null);
   const [liteSpeedForm, setLiteSpeedForm] = useState<Partial<LiteSpeedConfig> | null>(null);
+  const [imgbbForm, setImgbbForm] = useState<Partial<ImgbbConfig> | null>(null);
   const [showSecret, setShowSecret] = useState(false);
   const [showTgToken, setShowTgToken] = useState(false);
+  const [showImgbbKey, setShowImgbbKey] = useState(false);
   const [isTestingTg, setIsTestingTg] = useState(false);
+  const [isTestingImgbb, setIsTestingImgbb] = useState(false);
   const [isVerifyingPg, setIsVerifyingPg] = useState(false);
   const [isTestingMeta, setIsTestingMeta] = useState(false);
 
   // Sync state when data arrives
+  React.useEffect(() => {
+    if (imgbbConfig) {
+      setImgbbForm(imgbbConfig);
+    }
+  }, [imgbbConfig]);
   React.useEffect(() => {
     if (pgConfig) {
       setPgForm({
@@ -94,10 +109,7 @@ export default function SettingsIntegrations() {
         merchant_key: pgConfig.merchant_key || pgConfig.app_id || '',
         merchant_salt: pgConfig.merchant_salt || pgConfig.secret_key || '',
         environment: pgConfig.environment === 'TEST' || pgConfig.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
-        return_url: (pgConfig.return_url || 'https://vaultworld.shop/api/payment/payu/return')
-          .replace('api/payment/cashfree/return', 'api/payment/payu/return')
-          .replace('store.vaultzet.shop', 'vaultworld.shop')
-          .replace('vaultzet.shop', 'vaultworld.shop'),
+        return_url: (pgConfig.return_url || '/api/payment/razorpay/verify-order'),
       });
     }
   }, [pgConfig]);
@@ -143,19 +155,70 @@ export default function SettingsIntegrations() {
     onSuccess: () => {
       addToast({
         type: 'success',
-        title: 'PayU Saved to Cloud Database 🚀',
-        message: 'PayU credentials saved to Firestore! Live across all mobile devices, laptops & storefront checkout.',
+        title: 'Razorpay Saved to Cloud Database 🚀',
+        message: 'Razorpay credentials saved to Firestore! Live across all mobile devices, laptops & storefront checkout.',
       });
       queryClient.invalidateQueries({ queryKey: ['pg-bridge'] });
     },
     onError: (err: any) => {
       addToast({
         type: 'error',
-        title: 'Failed to update PayU Config',
+        title: 'Failed to update Razorpay Config',
         message: err.message,
       });
     },
   });
+
+  const updateImgbbMutation = useMutation({
+    mutationFn: (updated: { api_key: string }) => portalApi.updateImgbbConfig(updated),
+    onSuccess: () => {
+      addToast({
+        type: 'success',
+        title: 'ImgBB API Key Saved to Database 🚀',
+        message: 'ImgBB CDN key saved to Cloud Firestore! Image uploads will now work instantly.',
+      });
+      queryClient.invalidateQueries({ queryKey: ['imgbb-config'] });
+    },
+    onError: (err: any) => {
+      addToast({
+        type: 'error',
+        title: 'Failed to save ImgBB API key',
+        message: err.message,
+      });
+    },
+  });
+
+  const handleTestImgbb = async () => {
+    const key = String(imgbbForm?.api_key || '').trim();
+    if (!key) {
+      addToast({
+        type: 'warning',
+        title: 'API Key Required',
+        message: 'Please enter your ImgBB API key before testing.',
+      });
+      return;
+    }
+
+    setIsTestingImgbb(true);
+    try {
+      await portalApi.updateImgbbConfig({ api_key: key });
+      const res = await portalApi.testImgbbConfig(key);
+      addToast({
+        type: 'success',
+        title: 'ImgBB CDN Verified! 🚀',
+        message: res.message || 'ImgBB CDN is active and ready for product image uploads.',
+      });
+      queryClient.invalidateQueries({ queryKey: ['imgbb-config'] });
+    } catch (err: any) {
+      addToast({
+        type: 'error',
+        title: 'ImgBB Verification Failed',
+        message: err.message || 'Could not verify key with ImgBB.',
+      });
+    } finally {
+      setIsTestingImgbb(false);
+    }
+  };
 
   const updateTgMutation = useMutation({
     mutationFn: (updated: TelegramConfig) => portalApi.updateTelegramConfig(updated),
@@ -336,25 +399,25 @@ export default function SettingsIntegrations() {
       addToast({
         type: 'warning',
         title: 'Missing Credentials',
-        message: 'Please enter your PayU Merchant Key and Salt first.',
+        message: 'Please enter your Razorpay Key ID and Key Secret first.',
       });
       return;
     }
     addToast({
       type: 'info',
-      title: 'PayU Test Check',
+      title: 'Razorpay Test Check',
       message: `Environment: ${pgForm.environment || 'PRODUCTION'}. Ready for checkout.`,
     });
   };
 
   const handleProcessorVerify = async () => {
-    const key = String(pgForm?.merchant_key || pgForm?.app_id || '').trim();
-    const salt = String(pgForm?.merchant_salt || pgForm?.secret_key || '').trim();
-    if (!key || !salt) {
+    const key = String(pgForm?.key_id || pgForm?.merchant_key || pgForm?.app_id || '').trim();
+    const secret = String(pgForm?.key_secret || pgForm?.merchant_salt || pgForm?.secret_key || '').trim();
+    if (!key || !secret) {
       addToast({
         type: 'warning',
         title: 'Credentials Required',
-        message: 'Please fill in both PayU Merchant Key and Merchant Salt before verifying.',
+        message: 'Please fill in both Razorpay Key ID and Key Secret before verifying.',
       });
       return;
     }
@@ -363,22 +426,24 @@ export default function SettingsIntegrations() {
     try {
       await updatePgMutation.mutateAsync({
         ...pgForm,
+        key_id: key,
+        key_secret: secret,
         merchant_key: key,
-        merchant_salt: salt,
+        merchant_salt: secret,
         app_id: key,
-        secret_key: salt,
+        secret_key: secret,
       } as PgBridgeConfig);
 
       addToast({
         type: 'success',
-        title: 'PayU Status Verified & Synced! 🚀',
-        message: `Environment: ${pgForm?.environment || 'PRODUCTION'}. Credentials are saved in Firestore and ready for live checkout.`,
+        title: 'Razorpay Status Verified & Synced! 🚀',
+        message: `Environment: ${pgForm?.environment || 'PRODUCTION'}. Credentials are saved in database and active for live checkout.`,
       });
     } catch (err: any) {
       addToast({
         type: 'error',
         title: 'Verification Failed',
-        message: err.message || 'Could not verify PayU credentials.',
+        message: err.message || 'Could not verify Razorpay credentials.',
       });
     } finally {
       setIsVerifyingPg(false);
@@ -411,7 +476,8 @@ export default function SettingsIntegrations() {
       {/* Tabs - Touch-scrollable & edge-to-edge on mobile */}
       <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto admin-touch-scroll admin-no-scrollbar -mx-3.5 px-3.5 sm:mx-0 sm:px-0">
         {[
-          { id: 'pg', label: 'PayU Gateway', icon: CreditCard, color: 'text-purple-400' },
+          { id: 'pg', label: 'Razorpay Gateway', icon: CreditCard, color: 'text-purple-400' },
+          { id: 'imgbb', label: 'ImgBB CDN', icon: ImageIcon, color: 'text-rose-400' },
           { id: 'telegram', label: 'Telegram Alerts & Bot', icon: Send, color: 'text-sky-400' },
           { id: 'meta', label: 'DNP Meta CAPI', icon: Radio, color: 'text-blue-400' },
           { id: 'analytics', label: 'MMC Analytics', icon: Users, color: 'text-emerald-400' },
@@ -437,7 +503,7 @@ export default function SettingsIntegrations() {
         })}
       </div>
 
-      {/* TAB 1: PAYU PAYMENT GATEWAY */}
+      {/* TAB 1: RAZORPAY PAYMENT GATEWAY */}
       {activeTab === 'pg' && pgForm && (
         <div className="space-y-6">
           <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-6">
@@ -446,7 +512,7 @@ export default function SettingsIntegrations() {
                 <div className="flex items-center gap-2">
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
                     <CreditCard className="w-5 h-5 text-purple-400" />
-                    PayU Payment Gateway (India)
+                    Razorpay Payment Gateway (India)
                   </h3>
                   <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
                     pgForm.enabled
@@ -464,19 +530,19 @@ export default function SettingsIntegrations() {
                   </span>
                 </div>
                 <p className="text-xs text-slate-400 mt-1">
-                  Primary payment engine powering UPI (PhonePe, GPay, Paytm, CRED), Cards & NetBanking on VaultWorld Store via PayU India.
+                  Primary payment engine powering UPI (PhonePe, Google Pay, Paytm, CRED), NetBanking &amp; Cards on Ztore Digital via Razorpay.
                 </p>
               </div>
 
               <div className="flex items-center gap-3 shrink-0">
                 <a
-                  href="https://dashboard.payu.in"
+                  href="https://dashboard.razorpay.com/#/app/keys"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 border border-slate-700 transition-all flex items-center gap-1.5"
                 >
                   <ExternalLink className="w-3.5 h-3.5 text-purple-400" />
-                  <span>PayU Dashboard</span>
+                  <span>Razorpay Dashboard</span>
                 </a>
                 <button
                   type="button"
@@ -485,7 +551,7 @@ export default function SettingsIntegrations() {
                   className="px-3 py-1.5 rounded-lg bg-purple-600/20 hover:bg-purple-600/30 text-xs font-bold text-purple-300 border border-purple-500/30 transition-all flex items-center gap-1.5 disabled:opacity-50"
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>{isVerifyingPg ? 'Verifying...' : 'Verify Status'}</span>
+                  <span>{isVerifyingPg ? 'Verifying...' : 'Save & Verify'}</span>
                 </button>
               </div>
             </div>
@@ -493,9 +559,9 @@ export default function SettingsIntegrations() {
             {/* Gateway Status Switch */}
             <div className="flex items-center justify-between p-4 rounded-xl bg-slate-950/80 border border-slate-800/80">
               <div className="space-y-0.5">
-                <div className="text-xs font-bold text-white">Enable PayU on Storefront</div>
+                <div className="text-xs font-bold text-white">Enable Razorpay on Storefront</div>
                 <div className="text-[11px] text-slate-400">
-                  When active, customers will checkout securely via PayU India Payment Gateway.
+                  When active, customers will checkout securely via Razorpay (UPI, Cards, NetBanking).
                 </div>
               </div>
               <button
@@ -518,7 +584,7 @@ export default function SettingsIntegrations() {
               <Database className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
               <div className="text-xs text-slate-300 leading-relaxed">
                 <span className="font-bold text-white">Direct Cloud Database Sync: </span>
-                PayU Merchant Key & Salt database me save hote hain. Iske liye koi Vercel environment variables ya code rebuild ki zaroorat nahi hai. Ek baar save karne par Phone, Laptop aur Storefront Checkout par ye keys automatically live ho jayengi.
+                Razorpay Key ID &amp; Key Secret database me save hote hain. Admin Panel me keys daalne ke baad ye keys checkout par instant live ho jayengi bina kisi code redeploy ke.
               </div>
             </div>
 
@@ -532,8 +598,8 @@ export default function SettingsIntegrations() {
                   onChange={(e) => setPgForm({ ...pgForm, environment: e.target.value as any })}
                   className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-medium"
                 >
-                  <option value="PRODUCTION">PRODUCTION (Real live payments - secure.payu.in)</option>
-                  <option value="TEST">TEST (Sandbox Test mode - test.payu.in)</option>
+                  <option value="PRODUCTION">PRODUCTION (Live Mode - rzp_live_...)</option>
+                  <option value="TEST">TEST (Sandbox Test Mode - rzp_test_...)</option>
                 </select>
                 <p className="text-[10px] text-slate-500 mt-1">Select PRODUCTION when receiving real customer payments.</p>
               </div>
@@ -541,23 +607,32 @@ export default function SettingsIntegrations() {
               <div>
                 <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
                   <Key className="w-3.5 h-3.5 text-purple-400" />
-                  <span>PayU Merchant Key *</span>
+                  <span>Razorpay Key ID *</span>
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. 7rnFly or your PayU Merchant Key"
-                  value={pgForm.merchant_key || pgForm.app_id || ''}
-                  onChange={(e) => setPgForm({ ...pgForm, merchant_key: e.target.value, app_id: e.target.value })}
+                  placeholder="e.g. rzp_live_xxxxxxxxxxxxxx"
+                  value={pgForm.key_id || pgForm.merchant_key || pgForm.app_id || ''}
+                  onChange={(e) => {
+                    const val = e.target.value.trim();
+                    setPgForm({
+                      ...pgForm,
+                      key_id: val,
+                      merchant_key: val,
+                      app_id: val,
+                      environment: val.startsWith('rzp_test_') ? 'TEST' : pgForm.environment,
+                    });
+                  }}
                   className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
                 />
-                <p className="text-[10px] text-slate-500 mt-1">Found in PayU Dashboard &gt; Integration Details / API Keys.</p>
+                <p className="text-[10px] text-slate-500 mt-1">Found in Razorpay Dashboard &gt; Settings &gt; API Keys.</p>
               </div>
 
               <div className="md:col-span-2">
                 <label className="text-xs font-bold text-slate-300 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <Lock className="w-3.5 h-3.5 text-purple-400" />
-                    <span>PayU Merchant Salt *</span>
+                    <span>Razorpay Key Secret *</span>
                   </span>
                   <button
                     type="button"
@@ -565,30 +640,27 @@ export default function SettingsIntegrations() {
                     className="text-[11px] text-purple-400 hover:text-purple-300 flex items-center gap-1 font-semibold"
                   >
                     {showSecret ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                    <span>{showSecret ? 'Hide Salt' : 'Show Salt'}</span>
+                    <span>{showSecret ? 'Hide Secret' : 'Show Secret'}</span>
                   </button>
                 </label>
                 <div className="relative mt-1.5">
                   <input
                     type={showSecret ? 'text' : 'password'}
-                    placeholder="e.g. pj1nGpHgw... or your PayU Salt"
-                    value={pgForm.merchant_salt || pgForm.secret_key || ''}
-                    onChange={(e) => setPgForm({ ...pgForm, merchant_salt: e.target.value, secret_key: e.target.value })}
+                    placeholder="Your Razorpay Key Secret"
+                    value={pgForm.key_secret || pgForm.merchant_salt || pgForm.secret_key || ''}
+                    onChange={(e) => {
+                      const val = e.target.value.trim();
+                      setPgForm({
+                        ...pgForm,
+                        key_secret: val,
+                        merchant_salt: val,
+                        secret_key: val,
+                      });
+                    }}
                     className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono pr-10"
                   />
                 </div>
-                <p className="text-[10px] text-slate-500 mt-1">Never share your Merchant Salt. Stored securely and used for SHA-512 signature hashing.</p>
-              </div>
-
-              <div className="md:col-span-2">
-                <label className="text-xs font-bold text-slate-300">Customer Return / Redirect URL</label>
-                <input
-                  type="text"
-                  value={pgForm.return_url || 'https://vaultworld.shop/api/payment/payu/return'}
-                  onChange={(e) => setPgForm({ ...pgForm, return_url: e.target.value })}
-                  className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
-                />
-                <p className="text-[10px] text-slate-500 mt-1">URL where buyer returns after completing PayU payment.</p>
+                <p className="text-[10px] text-slate-500 mt-1">Never share your Key Secret. Stored securely and used for HMAC-SHA256 signature verification.</p>
               </div>
             </div>
 
@@ -596,7 +668,7 @@ export default function SettingsIntegrations() {
             <div className="p-4 rounded-xl bg-purple-950/20 border border-purple-800/30">
               <div className="text-xs font-bold text-purple-300 flex items-center gap-1.5 mb-2">
                 <Sparkles className="w-4 h-4 text-purple-400" />
-                <span>Supported Customer Payment Methods via PayU India</span>
+                <span>Supported Customer Payment Methods via Razorpay India</span>
               </div>
               <div className="flex flex-wrap gap-2 text-[11px] text-slate-300">
                 <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 flex items-center gap-1 font-medium">
@@ -628,7 +700,134 @@ export default function SettingsIntegrations() {
                 className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold shadow-md shadow-purple-600/20 transition-all disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
-                <span>{updatePgMutation.isPending ? 'Saving...' : 'Save PayU Gateway Config'}</span>
+                <span>{updatePgMutation.isPending ? 'Saving...' : 'Save Razorpay Gateway Config'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB: IMGBB CLOUD IMAGE CDN */}
+      {activeTab === 'imgbb' && (
+        <div className="space-y-6">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <ImageIcon className="w-5 h-5 text-rose-400" />
+                    ImgBB Cloud Image CDN
+                  </h3>
+                  <span
+                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                      imgbbForm?.api_key
+                        ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                        : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                    }`}
+                  >
+                    {imgbbForm?.api_key ? 'Active & Configured' : 'Needs API Key'}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 mt-1">
+                  High-speed image CDN storage used for product cover thumbnails and gallery preview screenshots.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 shrink-0">
+                <a
+                  href="https://api.imgbb.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 border border-slate-700 transition-all flex items-center gap-1.5"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-rose-400" />
+                  <span>Get Free ImgBB Key</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={handleTestImgbb}
+                  disabled={isTestingImgbb || !imgbbForm?.api_key}
+                  className="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 border border-slate-700 transition-all flex items-center gap-1.5 disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 text-emerald-400 ${isTestingImgbb ? 'animate-spin' : ''}`} />
+                  <span>{isTestingImgbb ? 'Testing...' : 'Test Connection'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Direct Database Sync Banner */}
+            <div className="p-4 rounded-xl bg-purple-950/20 border border-purple-800/30 flex items-start gap-3">
+              <Database className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
+              <div className="text-xs space-y-1">
+                <p className="font-bold text-purple-200">Direct Cloud Database Sync Active</p>
+                <p className="text-slate-400">
+                  ImgBB API Key database me save hota hai. Yaha key daalne ke baad upload from gallery feature instant live ho jayega bina kisi Vercel redeploy ke.
+                </p>
+              </div>
+            </div>
+
+            {/* API Key Input */}
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                  ImgBB API Key <span className="text-rose-400">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type={showImgbbKey ? 'text' : 'password'}
+                    value={imgbbForm?.api_key || ''}
+                    onChange={(e) => setImgbbForm({ ...imgbbForm, api_key: e.target.value })}
+                    placeholder="Enter your ImgBB v1 API Key (e.g. 5a4b3c2d1e...)"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-purple-500 text-xs text-white placeholder-slate-600 focus:outline-none font-mono pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowImgbbKey(!showImgbbKey)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                  >
+                    {showImgbbKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-1.5">
+                  100% Free Forever. Visit{' '}
+                  <a
+                    href="https://api.imgbb.com/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-rose-400 hover:text-rose-300 underline font-semibold"
+                  >
+                    api.imgbb.com
+                  </a>
+                  , login with Google, click &quot;Add API Key&quot; and paste here.
+                </p>
+              </div>
+
+              {/* Supported Specifications */}
+              <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <div>
+                  <span className="text-slate-500 block text-[10px] uppercase font-bold">Supported Formats</span>
+                  <span className="text-slate-200 font-semibold">.PNG, .JPG, .JPEG, .WEBP</span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block text-[10px] uppercase font-bold">Max File Size</span>
+                  <span className="text-slate-200 font-semibold">Up to 32 MB per image</span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block text-[10px] uppercase font-bold">Auto-Optimization</span>
+                  <span className="text-emerald-400 font-semibold">Client-side 1080p Canvas Engine</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-800 flex justify-end">
+              <button
+                type="button"
+                onClick={() => updateImgbbMutation.mutate({ api_key: String(imgbbForm?.api_key || '') })}
+                disabled={updateImgbbMutation.isPending}
+                className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs font-bold shadow-md shadow-rose-600/20 transition-all disabled:opacity-50"
+              >
+                <Save className="w-4 h-4" />
+                <span>{updateImgbbMutation.isPending ? 'Saving...' : 'Save ImgBB API Key'}</span>
               </button>
             </div>
           </div>

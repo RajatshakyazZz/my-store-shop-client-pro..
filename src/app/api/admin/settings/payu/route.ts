@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     const merchant_salt = String(body.merchant_salt || body.secret_key || '').trim();
     const environment = body.environment === 'TEST' || body.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION';
     const enabled = typeof body.enabled === 'boolean' ? body.enabled : true;
-    const return_url = String(body.return_url || '').trim() || 'https://vaultworld.shop/api/payment/payu/return';
+    const return_url = String(body.return_url || '').trim() || 'https://ztoredigital.com/api/payment/payu/return';
 
     const payload = {
       merchant_key,

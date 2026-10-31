@@ -80,7 +80,7 @@ export default function ResellerAuthModal({
 
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-[11px] font-black uppercase tracking-wider mb-2">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>VaultWorld Reseller Program</span>
+            <span>Ztore Digital Reseller Program</span>
           </div>
 
           <h3 className="text-xl font-black tracking-tight leading-tight">
@@ -255,7 +255,7 @@ export default function ResellerAuthModal({
 
           {tab === 'signup' && (
             <p className="text-[11px] text-gray-400 text-center leading-relaxed">
-              By joining, you agree to VaultWorld Reseller Terms. You earn the margin above base price with instant payout requests.
+              By joining, you agree to Ztore Digital Reseller Terms. You earn the margin above base price with instant payout requests.
             </p>
           )}
         </form>

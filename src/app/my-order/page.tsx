@@ -87,8 +87,8 @@ export default function MyOrdersPage() {
         
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200/60 text-amber-900 text-xs font-black uppercase tracking-wider">
-            <KeyRound className="w-3.5 h-3.5 text-amber-600" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 border border-red-200/60 text-red-900 text-xs font-black uppercase tracking-wider">
+            <KeyRound className="w-3.5 h-3.5 text-red-600" />
             Customer Download Portal
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">
@@ -110,7 +110,7 @@ export default function MyOrdersPage() {
         {/* Step 1: Input Email */}
         {step === 'email' && (
           <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/90 shadow-xl max-w-md mx-auto space-y-5">
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-700 border border-amber-200/60 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-700 border border-red-200/60 flex items-center justify-center">
               <Mail className="w-6 h-6" />
             </div>
 
@@ -133,13 +133,13 @@ export default function MyOrdersPage() {
                   placeholder="e.g. you@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-md shadow-amber-500/20 cursor-pointer"
+                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm flex items-center justify-center gap-2 shadow-md shadow-red-500/25 cursor-pointer"
               >
                 <span>Send One-Time OTP Code</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
@@ -151,7 +151,7 @@ export default function MyOrdersPage() {
         {/* Step 2: Verify OTP */}
         {step === 'otp' && (
           <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/90 shadow-xl max-w-md mx-auto space-y-5 animate-in fade-in">
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-700 border border-amber-200/60 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-700 border border-red-200/60 flex items-center justify-center">
               <KeyRound className="w-6 h-6" />
             </div>
 
@@ -163,8 +163,8 @@ export default function MyOrdersPage() {
             </div>
 
             {/* Instant Demo Helper Banner */}
-            <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs font-bold text-amber-900">
-              Demo OTP code: <span className="text-base font-black text-amber-700 tracking-widest">{mockGeneratedOtp}</span> (or 123456)
+            <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-xs font-bold text-red-900">
+              Demo OTP code: <span className="text-base font-black text-red-700 tracking-widest">{mockGeneratedOtp}</span> (or 123456)
             </div>
 
             <form onSubmit={handleVerifyOtp} className="space-y-4">
@@ -179,13 +179,13 @@ export default function MyOrdersPage() {
                   placeholder="123456"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
-                  className="w-full text-center tracking-widest text-xl font-black px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full text-center tracking-widest text-xl font-black px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-sm shadow-md shadow-amber-500/20 cursor-pointer"
+                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm shadow-md shadow-red-500/25 cursor-pointer"
               >
                 Verify &amp; Access Downloads →
               </button>
@@ -213,7 +213,7 @@ export default function MyOrdersPage() {
               </div>
               <button
                 onClick={() => setStep('email')}
-                className="text-xs font-bold text-amber-700 hover:underline"
+                className="text-xs font-bold text-red-600 hover:underline"
               >
                 {email ? 'Search Other Email' : 'Enter Email to Restore'}
               </button>
@@ -228,7 +228,7 @@ export default function MyOrdersPage() {
                 </p>
                 <Link
                   href="/shop"
-                  className="inline-block px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 text-xs font-black shadow-md shadow-amber-500/20"
+                  className="inline-block px-5 py-2.5 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white text-xs font-black shadow-md shadow-red-500/25"
                 >
                   Browse Bundles
                 </Link>
@@ -247,7 +247,7 @@ export default function MyOrdersPage() {
                     >
                       <div className="flex items-center justify-between text-xs font-bold pb-3 border-b border-slate-200">
                         <div>
-                          Order: <span className="text-amber-800 font-black">{orderId}</span>
+                          Order: <span className="text-red-700 font-black">{orderId}</span>
                         </div>
                         <div className="text-slate-400 font-medium">
                           {formattedDate}
@@ -276,7 +276,7 @@ export default function MyOrdersPage() {
                                   </span>
                                 </div>
                                 {itemFiles.length > 1 && (
-                                  <span className="text-[10px] font-bold text-amber-900 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200 shrink-0">
+                                  <span className="text-[10px] font-bold text-red-900 bg-red-50 px-2 py-0.5 rounded-full border border-red-200 shrink-0">
                                     {itemFiles.length} Drive Files
                                   </span>
                                 )}
@@ -289,7 +289,7 @@ export default function MyOrdersPage() {
                                     className="flex items-center justify-between p-2 rounded-lg bg-slate-50/70 border border-slate-200/60 gap-3"
                                   >
                                     <div className="flex items-center gap-2 min-w-0">
-                                      <FolderOpen className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                                      <FolderOpen className="w-3.5 h-3.5 text-red-600 shrink-0" />
                                       <span className="text-xs font-semibold text-slate-900 truncate">
                                         {f.name || `Drive Part #${fIdx + 1}`}
                                       </span>
@@ -298,7 +298,7 @@ export default function MyOrdersPage() {
                                       href={f.file_url || f.url || item.googleDriveLink || item.driveLink || 'https://drive.google.com'}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 text-[11px] font-black flex items-center gap-1.5 shadow-sm shrink-0"
+                                      className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white text-[11px] font-black flex items-center gap-1.5 shadow-sm shadow-red-500/20 shrink-0"
                                     >
                                       <Download className="w-3 h-3" />
                                       <span>Download</span>
@@ -311,12 +311,12 @@ export default function MyOrdersPage() {
                         })}
 
                         {ord.hasBump && (
-                          <div className="flex items-center justify-between bg-amber-50/80 p-3.5 rounded-xl border border-amber-200 gap-3">
+                          <div className="flex items-center justify-between bg-red-50/80 p-3.5 rounded-xl border border-red-200 gap-3">
                             <div>
-                              <h4 className="font-bold text-xs sm:text-sm text-amber-950">
+                              <h4 className="font-bold text-xs sm:text-sm text-red-950">
                                 ★ Bonus Pack: {ord.orderBump?.title || '1500+ Ultimate Twisted World & Viral AI Reels'}
                               </h4>
-                              <span className="text-[11px] text-amber-700 font-semibold">
+                              <span className="text-[11px] text-red-700 font-semibold">
                                 Order Bump Special Offer
                               </span>
                             </div>
@@ -325,7 +325,7 @@ export default function MyOrdersPage() {
                               href={ord.orderBump?.googleDriveLink || 'https://drive.google.com/drive/folders/bonus-pack-twisted-world'}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm shrink-0"
+                              className="px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm shadow-red-500/20 shrink-0"
                             >
                               <Download className="w-3.5 h-3.5" />
                               <span>Download</span>

@@ -3,9 +3,9 @@ import { TrendingUp, Users, Star, Award } from 'lucide-react';
 
 export default function CreatorProof() {
   const stats = [
-    { value: '14.2M+', label: 'Organic Views Generated', icon: TrendingUp, color: 'text-amber-700 bg-amber-50 border border-amber-200/50' },
+    { value: '14.2M+', label: 'Organic Views Generated', icon: TrendingUp, color: 'text-red-700 bg-red-50 border border-red-200/50' },
     { value: '3,850+', label: 'Creators & Agencies', icon: Users, color: 'text-slate-900 bg-slate-100 border border-slate-200' },
-    { value: '4.9 / 5', label: 'Average User Rating', icon: Star, color: 'text-amber-600 bg-amber-50 border border-amber-200/50' },
+    { value: '4.9 / 5', label: 'Average User Rating', icon: Star, color: 'text-red-600 bg-red-50 border border-red-200/50' },
     { value: '100%', label: 'Watermark-Free HD Quality', icon: Award, color: 'text-emerald-700 bg-emerald-50 border border-emerald-200' },
   ];
 
@@ -39,7 +39,7 @@ export default function CreatorProof() {
         
         {/* Heading */}
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200/60 text-xs font-black uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-red-50 text-red-900 border border-red-200/60 text-xs font-black uppercase tracking-wider mb-2">
             📊 Proven Results
           </div>
           <h2 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight">
@@ -57,7 +57,7 @@ export default function CreatorProof() {
             return (
               <div
                 key={i}
-                className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-sm text-center flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(245,158,11,0.1)] transition-all"
+                className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-sm text-center flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(239,68,68,0.1)] transition-all"
               >
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${stat.color} mb-1`}>
                   <Icon className="w-6 h-6" />
@@ -88,7 +88,7 @@ export default function CreatorProof() {
               <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                 <div>
                   <h3 className="font-extrabold text-sm text-slate-950">{t.name}</h3>
-                  <p className="text-xs text-amber-700 font-bold">{t.channel}</p>
+                  <p className="text-xs text-red-700 font-bold">{t.channel}</p>
                 </div>
                 <span className="text-xs font-bold text-slate-500">{t.followers}</span>
               </div>

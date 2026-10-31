@@ -7,28 +7,28 @@ import { useStoreSettings } from '@/context/StoreSettingsContext';
 
 export default function AboutUsPage() {
   const { settings } = useStoreSettings();
-  const supportEmail = settings?.supportEmail || 'support.vaultworld.shop@gmail.com';
+  const supportEmail = settings?.supportEmail || 'ztoredigital@gmail.com';
   return (
     <div className="py-12 sm:py-20 bg-slate-50/50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         <div className="text-center space-y-4">
-          <span className="text-xs font-black uppercase text-amber-700 tracking-wider">
+          <span className="text-xs font-black uppercase text-red-600 tracking-wider">
             WHO WE ARE
           </span>
           <h1 className="text-3xl sm:text-5xl font-black text-slate-950 tracking-tight">
-            Empowering Modern Creators & Digital Entrepreneurs
+            Empowering Modern Creators &amp; Digital Entrepreneurs
           </h1>
           <p className="text-base text-slate-600 font-medium max-w-2xl mx-auto leading-relaxed">
-            VaultWorld Store was built with one goal: To eliminate the hardest bottleneck for content creators — producing dozens of high-retention, high-converting video clips daily.
+            {settings?.storeName || 'Ztore Digital'} was built with one goal: To eliminate the hardest bottleneck for content creators — producing dozens of high-retention, high-converting video clips daily.
           </p>
         </div>
 
         <div className="rounded-3xl p-8 sm:p-12 bg-white border border-slate-200/90 shadow-sm space-y-6">
-          <h2 className="text-2xl font-black text-slate-950">Why Choose VaultWorld Store?</h2>
+          <h2 className="text-2xl font-black text-slate-950">Why Choose {settings?.storeName || 'Ztore Digital'}?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm text-slate-600 font-medium">
             <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-              <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 text-amber-800 flex items-center justify-center font-black">
+              <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200/60 text-red-700 flex items-center justify-center font-black">
                 1
               </div>
               <h3 className="font-extrabold text-slate-950 text-base">100% Watermark Free</h3>
@@ -36,7 +36,7 @@ export default function AboutUsPage() {
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-              <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 text-amber-800 flex items-center justify-center font-black">
+              <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200/60 text-red-700 flex items-center justify-center font-black">
                 2
               </div>
               <h3 className="font-extrabold text-slate-950 text-base">Algorithm Optimized</h3>
@@ -52,7 +52,7 @@ export default function AboutUsPage() {
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-              <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 flex items-center justify-center font-black">
+              <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200 text-red-700 flex items-center justify-center font-black">
                 4
               </div>
               <h3 className="font-extrabold text-slate-950 text-base">Reseller Rights (MRR)</h3>
@@ -64,7 +64,7 @@ export default function AboutUsPage() {
         {/* Official Contact & Support Desk */}
         <div className="rounded-3xl p-8 sm:p-10 bg-white border border-slate-200/90 shadow-sm space-y-6">
           <div className="text-center sm:text-left space-y-1">
-            <span className="text-xs font-black uppercase text-amber-700 tracking-wider">
+            <span className="text-xs font-black uppercase text-red-600 tracking-wider">
               HELP &amp; INQUIRIES
             </span>
             <h2 className="text-2xl font-black text-slate-950">Official Support Desk</h2>
@@ -102,7 +102,7 @@ export default function AboutUsPage() {
             {/* Email Support Card */}
             <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-red-100 text-red-700 flex items-center justify-center shrink-0">
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
@@ -129,7 +129,7 @@ export default function AboutUsPage() {
         <div className="text-center pt-4">
           <Link
             href="/shop"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-sm shadow-xl shadow-amber-500/25 cursor-pointer"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm shadow-xl shadow-red-500/25 cursor-pointer"
           >
             <span>Explore All 129+ Bundles Now</span>
           </Link>

@@ -5,21 +5,19 @@ import ReelsVideoPreview from '@/components/ReelsVideoPreview';
 import FreshReelsGrid from '@/components/FreshReelsGrid';
 import MembershipPlans from '@/components/MembershipPlans';
 import UpcomingBundles from '@/components/UpcomingBundles';
-import CreatorProof from '@/components/CreatorProof';
-import GrowthProofSection from '@/components/GrowthProofSection';
 
 export default function HomePage() {
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztoredigital.com').replace(/\/+$/, '');
 
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'VaultWorld Store',
+    name: 'Ztore Digital',
     url: siteUrl,
     logo: `${siteUrl}/icon.png`,
     description: "India's leading marketplace for viral ready-to-post vertical reels bundles with commercial rights.",
     sameAs: [
-      'https://www.instagram.com/vaultworld.shop',
+      'https://www.instagram.com/ztoredigital.com',
       'https://t.me/vaultworld',
     ],
     contactPoint: {
@@ -33,7 +31,7 @@ export default function HomePage() {
   const websiteJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'VaultWorld Store',
+    name: 'Ztore Digital',
     url: siteUrl,
     potentialAction: {
       '@type': 'SearchAction',
@@ -77,14 +75,6 @@ export default function HomePage() {
 
       {/* Upcoming Bundles & Notify Me */}
       <UpcomingBundles />
-
-      {/* 3D Creator Growth Proofs (febric-style 3D Coverflow) */}
-      <div id="growth-proofs">
-        <GrowthProofSection />
-      </div>
-
-      {/* Creator Growth Analytics & Testimonials */}
-      <CreatorProof />
     </div>
   );
 }

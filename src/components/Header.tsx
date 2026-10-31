@@ -156,9 +156,7 @@ export default function Header() {
     { name: 'Home', href: '/' },
     { name: 'Shop', href: '/shop' },
     { name: '🎁 Offer', href: '/claim-offer' },
-    { name: '🚀 Growth Proofs', href: '/proofs' },
     { name: 'Reels Feed', href: '/reels' },
-    { name: 'Resell & Earn', href: '/earn' },
     { name: 'My Orders', href: '/my-order' },
     { name: 'About Us', href: '/about-us' },
   ];
@@ -177,28 +175,28 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-[0_2px_10px_rgba(20,10,50,0.02)]">
       {/* Top Promotional Coupon Header Bar ("OFF20" for 20% Off on all products) */}
       {isCouponBannerVisible && (
-        <div className="relative bg-gradient-to-r from-[#210938] via-[#3b1261] to-[#1c0830] border-b border-white/10 text-white overflow-hidden">
+        <div className="relative bg-gradient-to-r from-[#180407] via-[#2d090f] to-[#180407] border-b border-red-900/40 text-white overflow-hidden">
           {/* Subtle diagonal ambient glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_80%_at_50%_-20%,rgba(168,85,247,0.3),rgba(255,255,255,0))] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_80%_at_50%_-20%,rgba(239,68,68,0.25),rgba(255,255,255,0))] pointer-events-none" />
 
           <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-2.5 relative flex items-center justify-between gap-2 text-xs">
-            {/* Left: Gold Sparkle + Diwali Offer Pill */}
+            {/* Left: Flame + Mega Sale Pill */}
             <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 z-10">
-              <span className="w-5 h-5 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center shrink-0">
-                <Sparkles className="w-3.5 h-3.5 fill-amber-300 text-amber-300" />
+              <span className="w-5 h-5 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center shrink-0">
+                <Sparkles className="w-3.5 h-3.5 fill-red-400 text-red-400" />
               </span>
-              <span className="px-2 sm:px-2.5 py-0.5 rounded-full border border-amber-300/40 bg-amber-400/15 text-[10px] font-black uppercase tracking-wider text-amber-200 shadow-2xs flex items-center gap-1">
-                <span>🪔</span>
-                <span>DIWALI OFFER</span>
+              <span className="px-2 sm:px-2.5 py-0.5 rounded-full border border-red-500/40 bg-red-500/15 text-[10px] font-black uppercase tracking-wider text-red-200 shadow-2xs flex items-center gap-1">
+                <span>🔥</span>
+                <span>MEGA SALE</span>
               </span>
             </div>
 
-            {/* Center: Diwali Offer Notice (Animated Left to Right on Mobile, Clean Centered on Desktop) */}
+            {/* Center: Offer Notice */}
             <div className="flex-1 overflow-hidden px-1 text-center min-w-0">
               <div className="animate-diwali-ltr font-bold text-[11px] sm:text-xs md:text-[13px] text-white tracking-wide">
-                <span>🪔 Diwali Dhamaka: </span>
+                <span>🔥 Mega Sale: </span>
                 <span>Flat </span>
-                <span className="text-amber-300 font-extrabold underline decoration-amber-400/50">20% Extra Discount</span>
+                <span className="text-red-400 font-extrabold underline decoration-red-500/50">20% Extra Discount</span>
                 <span> on All Reels Bundles! ✨</span>
               </div>
             </div>
@@ -214,13 +212,13 @@ export default function Header() {
                 <span className="text-[9px] sm:text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
                   CODE
                 </span>
-                <span className="text-xs font-black text-purple-950 tracking-wider">
+                <span className="text-xs font-black text-red-950 tracking-wider">
                   {isCopied ? 'COPIED!' : 'OFF20'}
                 </span>
                 {isCopied ? (
                   <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                 ) : (
-                  <Copy className="w-3.5 h-3.5 text-purple-700 group-hover:scale-110 transition-transform shrink-0" />
+                  <Copy className="w-3.5 h-3.5 text-red-600 group-hover:scale-110 transition-transform shrink-0" />
                 )}
               </button>
 
@@ -241,24 +239,23 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-[66px] sm:h-[74px] gap-3">
           
-          {/* Dynamic Brand Logo synced with Admin Panel */}
+          {/* Brand Logo matching screenshot */}
           <Link href="/" prefetch={false} className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black border border-amber-500/30 overflow-hidden flex items-center justify-center shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform shrink-0">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden flex items-center justify-center shadow-md shadow-red-500/25 group-hover:scale-105 transition-transform shrink-0">
               <img
-                src="/logo.webp?v=2"
-                alt="VaultWorld Store Logo"
+                src="/logo.png"
+                alt={settings.storeName || 'Ztore Digital'}
                 width={44}
                 height={44}
-                decoding="async"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-black text-[16px] sm:text-[17px] text-[#162048] tracking-tight leading-tight">
-                {settings.storeName}
+              <span className="font-black text-[16px] sm:text-[17px] text-slate-900 tracking-tight leading-tight">
+                {settings.storeName || 'Ztore Digital'}
               </span>
-              <span className="text-[11px] sm:text-[12px] font-medium text-[#4a5270] tracking-tight">
-                {settings.tagline}
+              <span className="text-[11px] sm:text-[12px] font-medium text-slate-500 tracking-tight">
+                {settings.tagline || 'Everything You Need, All in One Place.'}
               </span>
             </div>
           </Link>
@@ -273,27 +270,27 @@ export default function Header() {
                   href={link.href}
                   prefetch={false}
                   className={`text-[15px] font-bold transition-all relative py-1 ${
-                    isActive ? 'text-slate-900 font-extrabold' : 'text-slate-600 hover:text-slate-900'
+                    isActive ? 'text-slate-900 font-extrabold' : 'text-slate-600 hover:text-red-600'
                   }`}
                 >
                   {link.name}
                   {isActive && (
-                    <span className="absolute -bottom-1 left-0 right-0 h-[3px] bg-gradient-to-r from-amber-500 to-yellow-500 rounded-full shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
+                    <span className="absolute -bottom-1 left-0 right-0 h-[3px] bg-red-600 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
                   )}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Right Tools matching Competitor Screenshots */}
+          {/* Right Tools */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Desktop Pill Search Box with Instant Live Autocomplete Dropdown */}
             <div ref={desktopSearchRef} className="relative hidden sm:block">
               <form
                 onSubmit={handleSearchSubmit}
-                className="flex items-center bg-slate-50 hover:bg-slate-100/80 focus-within:bg-white border border-slate-200 rounded-full pl-3.5 pr-2 py-0.5 focus-within:ring-2 focus-within:ring-amber-500/20 focus-within:border-amber-500 transition-all"
+                className="flex items-center bg-slate-50 hover:bg-slate-100/80 focus-within:bg-white border border-slate-200 rounded-full pl-3.5 pr-2 py-0.5 focus-within:ring-2 focus-within:ring-red-500/20 focus-within:border-red-500 transition-all"
               >
-                <Search className="w-4 h-4 text-amber-600 shrink-0" />
+                <Search className="w-4 h-4 text-red-600 shrink-0" />
                 <input
                   type="text"
                   autoComplete="off"
@@ -322,9 +319,9 @@ export default function Header() {
               {/* Instant Dropdown Results for Desktop */}
               {isDropdownOpen && searchQuery.trim() && (
                 <div className="absolute top-full right-0 mt-2 w-80 lg:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150">
-                  <div className="p-2.5 bg-gradient-to-r from-amber-50 to-yellow-50 border-b border-amber-100 flex items-center justify-between">
-                    <span className="text-[11px] font-black text-amber-900 uppercase tracking-wider flex items-center gap-1">
-                      <Sparkles className="w-3 h-3 text-amber-600" />
+                  <div className="p-2.5 bg-gradient-to-r from-red-50 to-rose-50 border-b border-red-100 flex items-center justify-between">
+                    <span className="text-[11px] font-black text-red-900 uppercase tracking-wider flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-red-600" />
                       <span>{searchResults.length} Bundle{searchResults.length !== 1 ? 's' : ''} Found</span>
                     </span>
                     {searchResults.length > 0 && (
@@ -332,13 +329,13 @@ export default function Header() {
                     )}
                   </div>
 
-                  <div className="max-h-80 overflow-y-auto divide-y divide-purple-50 p-1">
+                  <div className="max-h-80 overflow-y-auto divide-y divide-red-50 p-1">
                     {searchResults.slice(0, 5).map((bundle) => (
                       <Link
                         key={bundle.id}
                         href={`/product/${bundle.slug}`}
                         onClick={() => setIsDropdownOpen(false)}
-                        className="flex items-center gap-3 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group"
+                        className="flex items-center gap-3 p-2 rounded-xl hover:bg-red-50/60 transition-colors group"
                       >
                         <img
                           src={bundle.thumbnail}
@@ -346,11 +343,11 @@ export default function Header() {
                           className="w-11 h-11 rounded-lg object-cover shrink-0 bg-slate-900 border border-slate-200"
                         />
                         <div className="min-w-0 flex-1">
-                          <h4 className="text-xs font-bold text-slate-900 line-clamp-1 group-hover:text-amber-700 transition-colors">
+                          <h4 className="text-xs font-bold text-slate-900 line-clamp-1 group-hover:text-red-700 transition-colors">
                             {bundle.title}
                           </h4>
                           <div className="flex items-center gap-2 mt-0.5">
-                            <span className="text-[10px] font-bold text-amber-800 bg-amber-100/70 px-1.5 py-0.5 rounded">
+                            <span className="text-[10px] font-bold text-red-800 bg-red-100/70 px-1.5 py-0.5 rounded">
                               {bundle.reelCount}+ Reels
                             </span>
                             <span className="text-xs font-black text-slate-900">
@@ -378,7 +375,7 @@ export default function Header() {
                     <button
                       type="button"
                       onClick={handleViewAllResults}
-                      className="w-full py-2.5 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 font-black text-xs text-center block transition-all"
+                      className="w-full py-2.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs text-center block transition-all"
                     >
                       View all {searchResults.length} results in Shop &rarr;
                     </button>
@@ -395,60 +392,38 @@ export default function Header() {
                 if (isMobileMenuOpen) setIsMobileMenuOpen(false);
               }}
               aria-label="Search"
-              className="sm:hidden w-9 h-9 rounded-xl bg-amber-50 text-amber-800 border border-amber-200/60 flex items-center justify-center hover:bg-amber-100 transition-colors shrink-0"
+              className="sm:hidden w-9 h-9 rounded-xl bg-red-50 text-red-800 border border-red-200/60 flex items-center justify-center hover:bg-red-100 transition-colors shrink-0"
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-4 h-4 text-red-600" />
             </button>
 
             {/* Mobile Cart Button */}
             <Link
               href="/cart"
               prefetch={false}
-              className="sm:hidden px-2.5 h-9 rounded-xl bg-amber-50 text-amber-900 border border-amber-200/60 flex items-center gap-1.5 hover:bg-amber-100 transition-colors text-xs font-bold relative shrink-0"
+              className="sm:hidden px-2.5 h-9 rounded-xl bg-red-50 text-red-900 border border-red-200/60 flex items-center gap-1.5 hover:bg-red-100 transition-colors text-xs font-bold relative shrink-0"
               aria-label="Cart"
             >
-              <ShoppingCart className="w-4 h-4 text-amber-700" />
+              <ShoppingCart className="w-4 h-4 text-red-600" />
               <span>Cart</span>
               {cartCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-amber-600 text-[9px] font-black text-white flex items-center justify-center shadow-xs">
+                <span className="w-4 h-4 rounded-full bg-red-600 text-[9px] font-black text-white flex items-center justify-center shadow-xs">
                   {cartCount}
                 </span>
               )}
-            </Link>
-
-            {/* Mobile Growth Proofs Pill Button */}
-            <Link
-              href="/proofs"
-              prefetch={false}
-              className="sm:hidden px-2 h-9 rounded-xl bg-gradient-to-r from-purple-50 to-indigo-50 text-purple-800 border border-purple-200/80 flex items-center gap-1 hover:bg-purple-100 transition-colors text-xs font-bold shrink-0 shadow-2xs"
-              aria-label="Growth Proofs"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-purple-600 animate-pulse" />
-              <span className="text-[11px] font-extrabold">Proofs</span>
-            </Link>
-
-            {/* Direct Growth Proofs Pill Button in Header Bar (Desktop & Tablet) */}
-            <Link
-              href="/proofs"
-              prefetch={false}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-purple-50 to-indigo-50 hover:from-purple-100 hover:to-indigo-100 text-purple-700 hover:text-purple-900 border border-purple-200 text-xs font-extrabold tracking-wide transition-all hover:scale-105 active:scale-95 shadow-2xs shrink-0"
-              title="View Real Instagram Growth Proofs"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-purple-600 animate-pulse" />
-              <span>Growth Proofs</span>
             </Link>
 
             {/* Desktop Cart Button Pill */}
             <Link
               href="/cart"
               prefetch={false}
-              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-slate-900 font-bold text-sm transition-all group"
+              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 hover:bg-red-50/50 border border-slate-200 hover:border-red-200 text-slate-900 font-bold text-sm transition-all group"
               aria-label="Cart"
             >
               <div className="relative">
-                <ShoppingCart className="w-4 h-4 text-amber-600 group-hover:scale-110 transition-transform" />
+                <ShoppingCart className="w-4 h-4 text-red-600 group-hover:scale-110 transition-transform" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2.5 w-4 h-4 rounded-full bg-amber-600 text-[10px] font-black text-white flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2.5 w-4 h-4 rounded-full bg-red-600 text-[10px] font-black text-white flex items-center justify-center">
                     {cartCount}
                   </span>
                 )}
@@ -477,9 +452,9 @@ export default function Header() {
           <div className="sm:hidden border-t border-slate-100 bg-white py-2.5 px-1 animate-in fade-in duration-150">
             <form
               onSubmit={handleSearchSubmit}
-              className="flex items-center bg-slate-50 border border-slate-200 rounded-full pl-3 pr-2 py-0.5 focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-500/20"
+              className="flex items-center bg-slate-50 border border-slate-200 rounded-full pl-3 pr-2 py-0.5 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
             >
-              <Search className="w-4 h-4 text-amber-600 shrink-0" />
+              <Search className="w-4 h-4 text-red-600 shrink-0" />
               <input
                 type="text"
                 autoFocus
@@ -499,7 +474,7 @@ export default function Header() {
                   <X className="w-3.5 h-3.5" />
                 </button>
               ) : (
-                <div className="w-7 h-7 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center shrink-0">
+                <div className="w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center shrink-0">
                   <Search className="w-3 h-3" />
                 </div>
               )}
@@ -508,7 +483,7 @@ export default function Header() {
             {/* Mobile Instant Results List */}
             {searchQuery.trim() && (
               <div className="mt-2.5 bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden animate-in fade-in duration-150">
-                <div className="p-2 bg-amber-50/80 border-b border-amber-100 flex items-center justify-between text-[11px] font-bold text-amber-900">
+                <div className="p-2 bg-red-50/80 border-b border-red-100 flex items-center justify-between text-[11px] font-bold text-red-900">
                   <span>
                     {searchResults.length} Bundle{searchResults.length !== 1 ? 's' : ''} Found
                   </span>
@@ -516,7 +491,7 @@ export default function Header() {
                     <button
                       type="button"
                       onClick={handleViewAllResults}
-                      className="text-[10px] text-amber-800 underline font-extrabold"
+                      className="text-[10px] text-red-800 underline font-extrabold"
                     >
                       See All in Shop &rarr;
                     </button>
@@ -532,7 +507,7 @@ export default function Header() {
                         setIsMobileSearchOpen(false);
                         setIsDropdownOpen(false);
                       }}
-                      className="flex items-center gap-2.5 p-2 rounded-xl active:bg-amber-100/70 transition-colors"
+                      className="flex items-center gap-2.5 p-2 rounded-xl active:bg-red-100/70 transition-colors"
                     >
                       <img
                         src={bundle.thumbnail}
@@ -544,7 +519,7 @@ export default function Header() {
                           {bundle.title}
                         </h4>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="text-[9px] font-bold text-amber-800 bg-amber-100/70 px-1 py-0.2 rounded">
+                          <span className="text-[9px] font-bold text-red-800 bg-red-100/70 px-1 py-0.2 rounded">
                             {bundle.reelCount}+ Reels
                           </span>
                           <span className="text-xs font-black text-slate-900">
@@ -566,7 +541,7 @@ export default function Header() {
                   <button
                     type="button"
                     onClick={handleViewAllResults}
-                    className="w-full py-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-black text-xs text-center block"
+                    className="w-full py-2 bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-xs text-center block"
                   >
                     View all {searchResults.length} results in Shop &rarr;
                   </button>
@@ -580,23 +555,16 @@ export default function Header() {
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-slate-100 bg-white px-4 py-4 space-y-3">
             <div className="space-y-1">
-              {navLinks.map((link) => {
-                const isProof = link.href === '/proofs';
-                return (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`block px-3.5 py-2.5 rounded-xl text-[15px] font-bold transition-colors ${
-                      isProof
-                        ? 'bg-gradient-to-r from-purple-50 to-indigo-50 text-purple-900 border border-purple-200/80 font-extrabold shadow-2xs'
-                        : 'text-slate-900 hover:bg-amber-50 active:bg-amber-100'
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                );
-              })}
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-3.5 py-2.5 rounded-xl text-[15px] font-bold transition-colors text-slate-900 hover:bg-red-50 hover:text-red-600 active:bg-red-100"
+                >
+                  {link.name}
+                </Link>
+              ))}
             </div>
           </div>
         )}

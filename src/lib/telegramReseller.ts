@@ -1,4 +1,4 @@
-// Telegram Reseller Notifications & Admin Command Bot for VaultWorld Store
+// Telegram Reseller Notifications & Admin Command Bot for Ztore Digital
 import {
   TELEGRAM_BOT_TOKEN,
   OWNER_CHAT_ID,
@@ -285,7 +285,7 @@ export async function sendResellerSaleTelegramAlert(params: {
 🧾 <b>Order ID:</b> <code>${escapeHtml(orderNumber)}</code>
 📦 <b>Reels Bundle:</b> ${escapeHtml(productTitle)}
 💰 <b>Customer Paid:</b> <b>₹${totalAmount}.00</b>
-🏷️ <b>VaultWorld Base Cost:</b> ₹${calculatedBase}.00
+🏷️ <b>Ztore Digital Base Cost:</b> ₹${calculatedBase}.00
 💵 <b>Reseller Commission:</b> <b>+₹${resellerEarning}.00</b> (Instant Credit)
 
 👤 <b>RESELLER DETAILS</b>
@@ -333,7 +333,7 @@ export async function handleAdminTelegramCommand(
 ): Promise<boolean> {
   if (!isAuthorizedTelegramAdmin(fromId, chatId)) {
     await sendTelegramMessage(
-      '⛔ <b>Access Denied:</b> This bot command interface is restricted to authorized VaultWorld Store administrators.',
+      '⛔ <b>Access Denied:</b> This bot command interface is restricted to authorized Ztore Digital administrators.',
       undefined,
       chatId
     );

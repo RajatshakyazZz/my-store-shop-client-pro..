@@ -214,12 +214,27 @@ export default function GalleryImageManager({
           <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="font-semibold">{uploadError}</p>
-            {uploadError.includes('IMGBB_API_KEY') && (
-              <p className="text-[11px] text-rose-400/90 mt-1">
-                Tip: Add <code className="bg-rose-950 px-1 py-0.5 rounded text-amber-300">IMGBB_API_KEY</code> to your
-                Vercel Project Settings &gt; Environment Variables.
-              </p>
-            )}
+            <p className="text-[11px] text-rose-400/90 mt-1">
+              Tip: Go to{' '}
+              <a
+                href="/asdf/settings"
+                target="_blank"
+                rel="noreferrer"
+                className="underline font-bold text-rose-200 hover:text-white"
+              >
+                Settings &gt; Integrations &gt; ImgBB CDN
+              </a>{' '}
+              to save your free API key from{' '}
+              <a
+                href="https://api.imgbb.com/"
+                target="_blank"
+                rel="noreferrer"
+                className="underline font-bold text-rose-200 hover:text-white"
+              >
+                api.imgbb.com
+              </a>{' '}
+              (works instantly without redeploying). Or click &quot;Edit URLs Manually&quot; above to paste direct image links.
+            </p>
           </div>
         </div>
       )}

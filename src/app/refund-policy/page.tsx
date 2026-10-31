@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { RotateCcw, ShieldCheck, Clock, CheckCircle2, HelpCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import PolicyContactInfo from '@/components/PolicyContactInfo';
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztoredigital.com').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
-  title: 'Refund & Cancellation Policy | VaultWorld Store',
-  description: 'Official Refund & Cancellation Policy of VaultWorld Store. Details our transparent refund guidelines and 5-7 day payment gateway reversal timelines.',
+  title: 'Refund & Cancellation Policy | Ztore Digital',
+  description: 'Official Refund & Cancellation Policy of Ztore Digital. Details our transparent refund guidelines and 5-7 day payment gateway reversal timelines.',
   alternates: {
     canonical: `${siteUrl}/refund-policy`,
   },
@@ -21,15 +21,15 @@ export default function RefundPolicyPage() {
         
         {/* Header Section */}
         <div className="text-center space-y-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-[11px] font-black uppercase text-amber-800 tracking-wider">
-            <RotateCcw className="w-3.5 h-3.5 text-amber-600" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/25 text-[11px] font-black uppercase text-red-800 tracking-wider">
+            <RotateCcw className="w-3.5 h-3.5 text-red-600" />
             <span>TRANSPARENT CONSUMER PROTECTION</span>
           </span>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#182247] tracking-tight">
             Refund &amp; Cancellation Policy
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 font-medium">
-            Effective Date: October 2026 • Last Revised: October 30, 2026 • Applicable to all purchases on vaultworld.shop
+            Effective Date: October 2026 • Last Revised: October 30, 2026 • Applicable to all purchases on ztoredigital.com
           </p>
         </div>
 
@@ -61,11 +61,11 @@ export default function RefundPolicyPage() {
           {/* Section 1 */}
           <section className="space-y-3">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">1</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">1</span>
               <span>Nature of Digital Intangible Goods</span>
             </h2>
             <p>
-              All products listed and purchased on <strong>VaultWorld Store</strong> (vaultworld.shop) are <strong>intangible digital goods</strong> (including curated vertical video reel bundles, editing templates, AI creative clips, and media assets) delivered instantaneously via cloud storage links (Google Drive).
+              All products listed and purchased on <strong>Ztore Digital</strong> (ztoredigital.com) are <strong>intangible digital goods</strong> (including curated vertical video reel bundles, editing templates, AI creative clips, and media assets) delivered instantaneously via cloud storage links (Google Drive).
             </p>
             <p>
               Unlike physical merchandise, digital assets cannot be physically returned or retrieved once access to the Google Drive folder has been made available to the buyer. Therefore, in accordance with Indian e-commerce standards and digital copyright norms, purchases of digital downloads are generally final once the files have been accessed or downloaded. However, to protect our valued customers, we offer clear, fair exceptions outlined below.
@@ -75,7 +75,7 @@ export default function RefundPolicyPage() {
           {/* Section 2 */}
           <section className="space-y-3">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">2</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">2</span>
               <span>Eligibility &amp; Conditions for a Full Refund</span>
             </h2>
             <p>
@@ -124,7 +124,7 @@ export default function RefundPolicyPage() {
           {/* Section 3 */}
           <section className="space-y-3">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">3</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">3</span>
               <span>Non-Refundable Circumstances</span>
             </h2>
             <p>
@@ -141,7 +141,7 @@ export default function RefundPolicyPage() {
           {/* Section 4 */}
           <section className="space-y-3">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">4</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">4</span>
               <span>Cancellation Policy</span>
             </h2>
             <p>
@@ -155,7 +155,7 @@ export default function RefundPolicyPage() {
           {/* Section 5 */}
           <section className="space-y-3">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">5</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">5</span>
               <span>Refund Processing &amp; Bank Reversal Timelines</span>
             </h2>
             <p>
@@ -178,7 +178,7 @@ export default function RefundPolicyPage() {
           {/* Section 6 */}
           <section className="space-y-3">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">6</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">6</span>
               <span>How to Request a Refund or Link Assistance</span>
             </h2>
             <p>
@@ -201,7 +201,7 @@ export default function RefundPolicyPage() {
           {/* Section 7 */}
           <section className="space-y-3 pt-4 border-t border-slate-200">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">7</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">7</span>
               <span>Official Support &amp; Grievance Redressal</span>
             </h2>
             <p>
@@ -214,17 +214,17 @@ export default function RefundPolicyPage() {
 
         {/* Footer Navigation Back to Store */}
         <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-2">
-          <Link href="/" className="hover:text-amber-600 transition-colors">
-            ← Return to VaultWorld Store Home
+          <Link href="/" className="hover:text-red-600 transition-colors">
+            ← Return to Ztore Digital Home
           </Link>
           <div className="flex gap-4">
-            <Link href="/terms-and-conditions" className="hover:text-amber-600 transition-colors">
+            <Link href="/terms-and-conditions" className="hover:text-red-600 transition-colors">
               Terms &amp; Conditions
             </Link>
-            <Link href="/privacy-policy" className="hover:text-amber-600 transition-colors">
+            <Link href="/privacy-policy" className="hover:text-red-600 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/shipping-policy" className="hover:text-amber-600 transition-colors">
+            <Link href="/shipping-policy" className="hover:text-red-600 transition-colors">
               Shipping &amp; Delivery
             </Link>
           </div>

@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { Zap, ShieldCheck, FolderOpen, Mail, Clock, HelpCircle, CheckCircle2 } from 'lucide-react';
 import PolicyContactInfo from '@/components/PolicyContactInfo';
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztoredigital.com').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
-  title: 'Shipping & Delivery Policy | VaultWorld Store',
-  description: 'Instant Digital Delivery and Shipping Policy for VaultWorld Store. Explains our 60-second cloud delivery via Google Drive with zero shipping charges.',
+  title: 'Shipping & Delivery Policy | Ztore Digital',
+  description: 'Instant Digital Delivery and Shipping Policy for Ztore Digital. Explains our 60-second cloud delivery via Google Drive with zero shipping charges.',
   alternates: {
     canonical: `${siteUrl}/shipping-policy`,
   },
@@ -21,15 +21,15 @@ export default function ShippingPolicyPage() {
         
         {/* Header Section */}
         <div className="text-center space-y-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-[11px] font-black uppercase text-amber-800 tracking-wider">
-            <Zap className="w-3.5 h-3.5 text-amber-600" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/25 text-[11px] font-black uppercase text-red-800 tracking-wider">
+            <Zap className="w-3.5 h-3.5 text-red-600" />
             <span>INSTANT ELECTRONIC DELIVERY POLICY</span>
           </span>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#182247] tracking-tight">
             Shipping &amp; Digital Delivery Policy
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 font-medium">
-            Effective Date: October 2026 • Last Revised: October 30, 2026 • Applicable to all purchases on vaultworld.shop
+            Effective Date: October 2026 • Last Revised: October 30, 2026 • Applicable to all purchases on our store
           </p>
         </div>
 
@@ -61,11 +61,11 @@ export default function ShippingPolicyPage() {
           {/* Section 1 */}
           <section className="space-y-3">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">1</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">1</span>
               <span>100% Digital Intangible Products (No Physical Shipping)</span>
             </h2>
             <p>
-              VaultWorld Store operates exclusively as a retailer of <strong>downloadable digital content</strong> (including pre-rendered 1080p vertical video reels bundles, social media creative packs, AI reel clips, and editing assets).
+              Our store operates exclusively as a retailer of <strong>downloadable digital content</strong> (including pre-rendered 1080p vertical video reels bundles, social media creative packs, AI reel clips, and editing assets).
             </p>
             <p>
               <strong>We do not sell, package, or ship any physical goods or parcels.</strong> Consequently, physical postal shipping, courier transit times, delivery addresses, and courier tracking numbers are not applicable to any orders on our platform.
@@ -75,18 +75,18 @@ export default function ShippingPolicyPage() {
           {/* Section 2 */}
           <section className="space-y-3">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">2</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">2</span>
               <span>Shipping &amp; Delivery Charges</span>
             </h2>
             <p>
-              All digital products sold on VaultWorld Store carry <strong>Zero Shipping Charges (₹0.00 / Free Delivery)</strong>. The price displayed on the product page and checkout is the total final price you pay. There are no shipping, handling, fuel surcharge, or packaging fees added to your order.
+              All digital products sold on our store carry <strong>Zero Shipping Charges (₹0.00 / Free Delivery)</strong>. The price displayed on the product page and checkout is the total final price you pay. There are no shipping, handling, fuel surcharge, or packaging fees added to your order.
             </p>
           </section>
 
           {/* Section 3 */}
           <section className="space-y-3">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">3</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">3</span>
               <span>Delivery Method &amp; Fulfillment Process</span>
             </h2>
             <p>
@@ -95,7 +95,7 @@ export default function ShippingPolicyPage() {
             
             <div className="space-y-3 pt-1">
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
-                <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-700 flex items-center justify-center shrink-0 font-black text-xs">
+                <div className="w-8 h-8 rounded-xl bg-red-500/10 text-red-700 flex items-center justify-center shrink-0 font-black text-xs">
                   1
                 </div>
                 <div className="space-y-1">
@@ -131,7 +131,7 @@ export default function ShippingPolicyPage() {
                     Tier 3: 24/7 Self-Service Order Recovery Portal
                   </strong>
                   <p className="text-xs text-slate-600">
-                    You can retrieve your purchased Google Drive access links anytime by simply entering your checkout email on our self-service portal at <Link href="/my-order" className="text-amber-700 underline font-semibold">vaultworld.shop/my-order</Link>.
+                    You can retrieve your purchased Google Drive access links anytime by simply entering your checkout email on our self-service portal at <Link href="/my-order" className="text-red-700 underline font-semibold">my-order</Link>.
                   </p>
                 </div>
               </div>
@@ -141,7 +141,7 @@ export default function ShippingPolicyPage() {
           {/* Section 4 */}
           <section className="space-y-3">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">4</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">4</span>
               <span>Delivery Timelines &amp; SLA Commitment</span>
             </h2>
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs sm:text-sm text-slate-700 font-medium">
@@ -157,7 +157,7 @@ export default function ShippingPolicyPage() {
           {/* Section 5 */}
           <section className="space-y-3">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">5</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">5</span>
               <span>Undelivered Email or Access Link Assistance</span>
             </h2>
             <p>
@@ -166,7 +166,7 @@ export default function ShippingPolicyPage() {
             <ul className="list-disc pl-5 space-y-1 text-slate-600 font-medium text-xs sm:text-sm">
               <li>Check your email&apos;s <strong>Spam, Promotions, or Updates</strong> folder.</li>
               <li>Verify that you entered your correct Gmail address during checkout without typos.</li>
-              <li>Visit our self-service recovery page at <Link href="/my-order" className="text-amber-700 underline font-semibold">vaultworld.shop/my-order</Link>.</li>
+              <li>Visit our self-service recovery page at <Link href="/my-order" className="text-red-700 underline font-semibold">my-order</Link>.</li>
             </ul>
             <p className="text-xs text-slate-600">
               If you still cannot locate your access, contact our 24/7 customer support desk with your Order ID or payment screenshot, and we will manually re-dispatch your link within 2 to 4 hours.
@@ -176,7 +176,7 @@ export default function ShippingPolicyPage() {
           {/* Section 6 */}
           <section className="space-y-3 pt-4 border-t border-slate-200">
             <h2 className="text-lg sm:text-xl font-bold text-[#182247] flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 font-black text-xs flex items-center justify-center">6</span>
+              <span className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 font-black text-xs flex items-center justify-center">6</span>
               <span>Contact for Delivery Assistance</span>
             </h2>
             <p>
@@ -189,17 +189,17 @@ export default function ShippingPolicyPage() {
 
         {/* Footer Navigation Back to Store */}
         <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-2">
-          <Link href="/" className="hover:text-amber-600 transition-colors">
-            ← Return to VaultWorld Store Home
+          <Link href="/" className="hover:text-red-600 transition-colors">
+            ← Return to Store Home
           </Link>
           <div className="flex gap-4">
-            <Link href="/terms-and-conditions" className="hover:text-amber-600 transition-colors">
+            <Link href="/terms-and-conditions" className="hover:text-red-600 transition-colors">
               Terms &amp; Conditions
             </Link>
-            <Link href="/privacy-policy" className="hover:text-amber-600 transition-colors">
+            <Link href="/privacy-policy" className="hover:text-red-600 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/refund-policy" className="hover:text-amber-600 transition-colors">
+            <Link href="/refund-policy" className="hover:text-red-600 transition-colors">
               Refund Policy
             </Link>
           </div>

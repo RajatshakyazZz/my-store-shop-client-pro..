@@ -58,7 +58,7 @@ export default function MobileBottomNav() {
   ];
 
   return (
-    <nav className="md:hidden fixed left-2.5 right-2.5 bottom-2.5 z-50 min-h-[58px] bg-slate-950/92 backdrop-blur-2xl border border-amber-500/25 rounded-[22px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] px-1.5 py-1.5 grid grid-cols-4 items-stretch">
+    <nav className="md:hidden fixed left-2.5 right-2.5 bottom-2.5 z-50 min-h-[58px] bg-slate-950/92 backdrop-blur-2xl border border-red-500/25 rounded-[22px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] px-1.5 py-1.5 grid grid-cols-4 items-stretch">
       {navItems.map((item) => {
         const isActive = item.href === '/reels' ? isReelsPage : pathname === item.href;
 
@@ -69,12 +69,12 @@ export default function MobileBottomNav() {
             prefetch={false}
             className={`relative flex flex-col items-center justify-center py-1 px-1 rounded-[16px] transition-all ${
               isActive
-                ? 'bg-gradient-to-b from-amber-500/20 to-amber-500/5 text-amber-400 font-black border border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.15)]'
-                : 'text-slate-400 hover:text-amber-300 font-bold'
+                ? 'bg-gradient-to-b from-red-600/20 to-red-600/5 text-red-500 font-black border border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.15)]'
+                : 'text-slate-400 hover:text-red-400 font-bold'
             }`}
           >
             {isActive && (
-              <span className="absolute -top-[5px] left-1/2 -translate-x-1/2 w-6 h-[3px] rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 shadow-[0_0_10px_rgba(245,158,11,0.6)]" />
+              <span className="absolute -top-[5px] left-1/2 -translate-x-1/2 w-6 h-[3px] rounded-full bg-gradient-to-r from-red-600 to-rose-500 shadow-[0_0_10px_rgba(239,68,68,0.6)]" />
             )}
             <span className="relative flex items-center justify-center w-[26px] h-[26px]">
               {item.icon}
@@ -92,20 +92,20 @@ export default function MobileBottomNav() {
         prefetch={false}
         className={`relative flex flex-col items-center justify-center py-1 px-1 rounded-[16px] transition-all ${
           isCartPage
-            ? 'bg-gradient-to-b from-amber-500/20 to-amber-500/5 text-amber-400 font-black border border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.15)]'
-            : 'text-slate-400 hover:text-amber-300 font-bold'
+            ? 'bg-gradient-to-b from-red-600/20 to-red-600/5 text-red-500 font-black border border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.15)]'
+            : 'text-slate-400 hover:text-red-400 font-bold'
         }`}
         aria-label="Cart"
       >
         {isCartPage && (
-          <span className="absolute -top-[5px] left-1/2 -translate-x-1/2 w-6 h-[3px] rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 shadow-[0_0_10px_rgba(245,158,11,0.6)]" />
+          <span className="absolute -top-[5px] left-1/2 -translate-x-1/2 w-6 h-[3px] rounded-full bg-gradient-to-r from-red-600 to-rose-500 shadow-[0_0_10px_rgba(239,68,68,0.6)]" />
         )}
         <span className="relative flex items-center justify-center w-[26px] h-[26px]">
           <svg className="w-[22px] h-[22px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
             <path d="M3 4h2l2.1 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L20 8H6.2M9 20h.01M17 20h.01" />
           </svg>
           {cartCount > 0 && (
-            <span className="absolute -top-1 -right-2 min-w-[17px] h-[17px] px-1 rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 text-slate-950 text-[9px] font-black flex items-center justify-center border-2 border-slate-950 shadow-md shadow-amber-500/40">
+            <span className="absolute -top-1 -right-2 min-w-[17px] h-[17px] px-1 rounded-full bg-gradient-to-br from-red-600 to-rose-600 text-white text-[9px] font-black flex items-center justify-center border-2 border-slate-950 shadow-md shadow-red-500/40">
               {cartCount}
             </span>
           )}
@@ -114,7 +114,7 @@ export default function MobileBottomNav() {
           Cart
         </span>
         {cartCount > 0 && (
-          <span className="text-[7.5px] font-black text-amber-400 leading-none mt-0.5">
+          <span className="text-[7.5px] font-black text-red-400 leading-none mt-0.5">
             ₹{total}.00
           </span>
         )}

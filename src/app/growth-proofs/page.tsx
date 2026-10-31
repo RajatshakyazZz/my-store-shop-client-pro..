@@ -1,4 +1,5 @@
-import ProofsPage, { metadata } from '../proofs/page';
+import { redirect } from 'next/navigation';
 
-export { metadata };
-export default ProofsPage;
+export default function GrowthProofsPage() {
+  redirect('/');
+}

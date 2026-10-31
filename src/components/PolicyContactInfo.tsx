@@ -6,9 +6,9 @@ import { useStoreSettings } from '@/context/StoreSettingsContext';
 
 export default function PolicyContactInfo() {
   const { settings } = useStoreSettings();
-  const storeName = settings?.storeName || 'VaultWorld Store';
-  const supportEmail = settings?.supportEmail || 'support.vaultworld.shop@gmail.com';
-  const supportPhone = settings?.supportPhone || settings?.supportWhatsapp || '+91 8051017331';
+  const storeName = settings?.storeName || 'Ztore Digital';
+  const supportEmail = settings?.supportEmail || 'ztoredigital@gmail.com';
+  const supportPhone = settings?.supportPhone || settings?.supportWhatsapp || '+91 88072 81600';
 
   return (
     <div className="mt-6 rounded-2xl bg-slate-50 border border-slate-200/90 p-5 sm:p-6 text-slate-700 text-xs sm:text-sm space-y-4">
@@ -21,7 +21,7 @@ export default function PolicyContactInfo() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
         <div className="flex items-start gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+          <div className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 flex items-center justify-center shrink-0 mt-0.5">
             <span className="font-black text-xs">🏢</span>
           </div>
           <div>
@@ -38,7 +38,7 @@ export default function PolicyContactInfo() {
             <span className="font-bold text-slate-900 block">Customer Support Email</span>
             <a
               href={`mailto:${supportEmail}`}
-              className="text-amber-700 hover:text-amber-800 font-semibold underline underline-offset-2 break-all"
+              className="text-red-700 hover:text-red-800 font-semibold underline underline-offset-2 break-all"
             >
               {supportEmail}
             </a>
@@ -56,7 +56,7 @@ export default function PolicyContactInfo() {
         </div>
 
         <div className="flex items-start gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-700 flex items-center justify-center shrink-0 mt-0.5">
+          <div className="w-7 h-7 rounded-lg bg-red-500/10 text-red-700 flex items-center justify-center shrink-0 mt-0.5">
             <Clock className="w-3.5 h-3.5" />
           </div>
           <div>

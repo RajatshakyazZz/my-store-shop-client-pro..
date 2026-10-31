@@ -251,11 +251,11 @@ export default function ReelsFeedPage() {
     buyNow(bundle, 'personal');
   };
 
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://vaultworld.shop').replace(/\/+$/, '');
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztoredigital.com').replace(/\/+$/, '');
   const itemListJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'VaultWorld Store Viral Reels Video Previews',
+    name: 'Ztore Digital Viral Reels Video Previews',
     numberOfItems: baseReels.length,
     itemListElement: baseReels.slice(0, 20).map((r, idx) => ({
       '@type': 'ListItem',
@@ -548,7 +548,7 @@ export default function ReelsFeedPage() {
                 <h2 className="max-w-[84%] text-[15px] sm:text-[17px] font-extrabold leading-snug tracking-tight text-white drop-shadow-md">
                   <Link
                     href={getProductUrlForReel(reel)}
-                    className="hover:text-amber-300 transition-colors inline"
+                    className="hover:text-red-300 transition-colors inline"
                   >
                     <span>{reel.bundleTitle || reel.title}</span>
                     <span className="inline-block ml-1 text-white/90 text-sm">↗</span>
@@ -578,7 +578,7 @@ export default function ReelsFeedPage() {
                     <del className="text-[9px] font-bold text-slate-400">
                       ₹{regularPrice}.00
                     </del>
-                    <strong className="text-[11px] font-black text-amber-700">
+                    <strong className="text-[11px] font-black text-red-600">
                       ₹{salePrice}.00
                     </strong>
                     <em className="not-italic text-[7.5px] font-black px-1.5 py-0.5 rounded-full bg-[#e9faef] text-[#138a4c]">
@@ -628,7 +628,7 @@ export default function ReelsFeedPage() {
                 <button
                   type="button"
                   onClick={() => handleBuyNow(reel)}
-                  className="relative flex items-center justify-center gap-2 min-h-[46px] px-3 rounded-[14px] bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-[12px] tracking-wide shadow-[0_10px_24px_rgba(245,158,11,0.32)] active:scale-95 transition-all overflow-hidden group cursor-pointer"
+                  className="relative flex items-center justify-center gap-2 min-h-[46px] px-3 rounded-[14px] bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-[12px] tracking-wide shadow-[0_10px_24px_rgba(239,68,68,0.35)] active:scale-95 transition-all overflow-hidden group cursor-pointer"
                 >
                   {/* Subtle shine sweep */}
                   <span

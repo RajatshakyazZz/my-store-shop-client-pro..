@@ -60,7 +60,7 @@ export async function POST(request: Request) {
   const isLocalhost = hostHeader.includes('localhost');
   const baseUrl = isLocalhost
     ? `http://${hostHeader}`
-    : (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vaultworld.shop').replace(/\/+$/, '');
+    : (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.ztoredigital.com').replace(/\/+$/, '');
 
   try {
     const data = await parsePayURequestBody(request);

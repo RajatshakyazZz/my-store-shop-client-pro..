@@ -23,6 +23,7 @@ import {
   Gift,
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useStoreSettings } from '@/context/StoreSettingsContext';
 import { CartItem, LicenseType, OrderBumpItem } from '@/types';
 import { ORDER_BUMP } from '@/data/bundles';
 import {
@@ -57,7 +58,9 @@ function CheckoutContent() {
     freeBundles,
     removeFreeBundle,
     setIsFreeBundleModalOpen,
+    clearCart,
   } = useCart();
+  const { settings } = useStoreSettings();
 
   const [isLoadingBundle, setIsLoadingBundle] = useState<boolean>(() => {
     if ((isBuyNowMode || resellerSlug) && !buyNowItem) return true;
@@ -593,7 +596,7 @@ function CheckoutContent() {
 
     // Track GA4 add_payment_info
     track('add_payment_info', {
-      payment_type: 'PayU India UPI / Netbanking / Cards',
+      payment_type: 'Razorpay UPI / Netbanking / Cards',
       currency: 'INR',
       value: checkoutTotal,
       items: allCheckoutItems.map((i, idx) => ({
@@ -647,8 +650,8 @@ function CheckoutContent() {
     };
 
     try {
-      // 1. Create PayU Order on server
-      const res = await fetch('/api/payment/payu/create-order', {
+      // 1. Create Razorpay Order on server
+      const res = await fetch('/api/payment/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderPayload),
@@ -656,10 +659,10 @@ function CheckoutContent() {
 
       const data = await res.json();
 
-      if (!res.ok || !data.success || !data.action || !data.params) {
+      if (!res.ok || !data.success || !data.razorpay_order_id) {
         throw new Error(
           data.error ||
-            'Could not initialize PayU payment. Please verify PayU API credentials in the Admin Portal.'
+            'Could not initialize Razorpay payment. Please verify Razorpay API credentials in the Admin Portal.'
         );
       }
 
@@ -671,24 +674,171 @@ function CheckoutContent() {
         status: 'pending',
       }));
 
-      // 2. Auto-submit form to PayU India Hosted Checkout (UPI, GPay, PhonePe, Paytm, Cards, NetBanking)
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = data.action;
-      form.style.display = 'none';
+      // Helper to dynamically load Razorpay SDK if not already loaded
+      const loadRazorpayScript = () => {
+        return new Promise<boolean>((resolve) => {
+          if (typeof window !== 'undefined' && (window as any).Razorpay) {
+            return resolve(true);
+          }
+          const script = document.createElement('script');
+          script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+          script.async = true;
+          script.onload = () => resolve(true);
+          script.onerror = () => resolve(false);
+          document.body.appendChild(script);
+        });
+      };
 
-      Object.entries(data.params).forEach(([key, value]) => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = String(value);
-        form.appendChild(input);
+      const isLoaded = await loadRazorpayScript();
+      if (!isLoaded) {
+        throw new Error('Razorpay SDK failed to load. Please check your internet connection.');
+      }
+
+      // Active Background Status Poller for UPI QR Code cross-device scans
+      let pollInterval: any = null;
+      let isRedirecting = false;
+
+      const stopPolling = () => {
+        if (pollInterval) {
+          clearInterval(pollInterval);
+          pollInterval = null;
+        }
+      };
+
+      const doRedirectSuccess = (paymentId?: string, rzpOrderId?: string, rzpSig?: string) => {
+        if (isRedirecting) return;
+        isRedirecting = true;
+        stopPolling();
+        clearCart();
+        const pParam = paymentId ? `&razorpay_payment_id=${encodeURIComponent(paymentId)}` : '';
+        const rParam = rzpOrderId ? `&razorpay_order_id=${encodeURIComponent(rzpOrderId)}` : '';
+        const sParam = rzpSig ? `&razorpay_signature=${encodeURIComponent(rzpSig)}` : '';
+        window.location.href = `/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}${pParam}${rParam}${sParam}`;
+      };
+
+      const checkPaymentStatus = async (): Promise<boolean> => {
+        try {
+          const checkRes = await fetch(
+            `/api/payment/razorpay/check-status?order_id=${encodeURIComponent(orderNumber)}&razorpay_order_id=${encodeURIComponent(data.razorpay_order_id)}&token=${encodeURIComponent(data.order_token)}`,
+            { cache: 'no-store' }
+          );
+          if (!checkRes.ok) return false;
+          const checkData = await checkRes.json();
+          if (checkData.paid || (checkData.success && checkData.status === 'completed')) {
+            doRedirectSuccess(checkData.payment_id);
+            return true;
+          }
+        } catch (e) {
+          // ignore transient poll errors
+        }
+        return false;
+      };
+
+      // Start polling every 2.5s immediately when modal opens
+      pollInterval = setInterval(async () => {
+        if (isRedirecting) return;
+        await checkPaymentStatus();
+      }, 2500);
+
+      const cleanPhoneDigits = phone.trim().replace(/\D/g, '');
+      const formattedPrefillPhone = cleanPhoneDigits.length === 10
+        ? `+91${cleanPhoneDigits}`
+        : cleanPhoneDigits.startsWith('91')
+        ? `+${cleanPhoneDigits}`
+        : `+91${cleanPhoneDigits}`;
+
+      const logoAbsoluteUrl = typeof window !== 'undefined'
+        ? `${window.location.origin}/logo.png`
+        : 'https://myztore.in/logo.png';
+
+      const callbackUrl = typeof window !== 'undefined'
+        ? `${window.location.origin}/api/payment/razorpay/callback?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}`
+        : `https://myztore.in/api/payment/razorpay/callback?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}`;
+
+      const options = {
+        key: data.key_id,
+        amount: data.amount,
+        currency: data.currency || 'INR',
+        name: settings.storeName || 'Ztore Digital',
+        description: (orderPayload.items?.[0]?.title || 'Viral Reels Bundle').slice(0, 100),
+        image: logoAbsoluteUrl,
+        order_id: data.razorpay_order_id,
+        callback_url: callbackUrl,
+        redirect: true,
+        prefill: {
+          name: fullName.trim(),
+          email: email.trim().toLowerCase(),
+          contact: formattedPrefillPhone,
+        },
+        notes: {
+          order_id: String(orderNumber),
+          customer_name: fullName.trim(),
+          customer_email: email.trim().toLowerCase(),
+        },
+        theme: {
+          color: '#dc2626', // Attractive Red theme matching Ztore Digital
+        },
+        modal: {
+          confirm_close: true,
+          backdropclose: false,
+          ondismiss: async () => {
+            if (isRedirecting) return;
+            // Immediate check before giving up in case customer paid on phone and closed modal
+            const wasPaid = await checkPaymentStatus();
+            if (!wasPaid) {
+              stopPolling();
+              setIsProcessing(false);
+            }
+          },
+        },
+        retry: {
+          enabled: true,
+        },
+        handler: async (response: any) => {
+          stopPolling();
+          setIsProcessing(true);
+          const pId = response?.razorpay_payment_id || '';
+          const rOrderId = response?.razorpay_order_id || data.razorpay_order_id || '';
+          const sig = response?.razorpay_signature || '';
+
+          // Background verification call
+          fetch('/api/payment/razorpay/verify-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              order_id: orderNumber,
+              razorpay_order_id: rOrderId,
+              razorpay_payment_id: pId,
+              razorpay_signature: sig,
+              token: data.order_token,
+            }),
+          }).catch(() => {});
+
+          doRedirectSuccess(pId, rOrderId, sig);
+        },
+      };
+
+      const rzpInstance = new (window as any).Razorpay(options);
+      rzpInstance.on('payment.failed', async (resp: any) => {
+        const wasPaid = await checkPaymentStatus();
+        if (!wasPaid) {
+          stopPolling();
+          const errorDesc = String(resp.error?.description || '').toLowerCase();
+          const isDomainBlocked = errorDesc.includes('does not match registered website') || errorDesc.includes('website does not match');
+
+          // If domain whitelisting is blocking in-app modal, seamless instant fallback to official Razorpay hosted link
+          if (isDomainBlocked && data.payment_link_url) {
+            window.location.href = data.payment_link_url;
+            return;
+          }
+
+          setIsProcessing(false);
+          setErrorMessage(resp.error?.description || 'Payment was unsuccessful or cancelled. Please try again.');
+        }
       });
-
-      document.body.appendChild(form);
-      form.submit();
+      rzpInstance.open();
     } catch (err: any) {
-      console.error('PayU order error:', err);
+      console.error('Razorpay order error:', err);
       setIsProcessing(false);
       setErrorMessage(
         err.message || 'Payment initiation failed. Please check your connection and try again.'
@@ -700,12 +850,12 @@ function CheckoutContent() {
   if (isLoadingBundle) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center space-y-4 bg-[#faf9f6]">
-        <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 animate-pulse">
+        <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-600 animate-pulse">
           <Loader2 className="w-8 h-8 animate-spin" />
         </div>
         <h2 className="text-xl font-black text-slate-950">Loading Your Checkout...</h2>
         <p className="text-xs text-slate-500 max-w-sm">
-          Preparing bundle details and secure PayU payment gateway.
+          Preparing bundle details and secure Razorpay payment gateway.
         </p>
       </div>
     );
@@ -716,7 +866,7 @@ function CheckoutContent() {
     if (resellerSlug) {
       return (
         <div className="max-w-2xl mx-auto px-4 py-20 text-center space-y-4 bg-[#faf9f6]">
-          <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mx-auto text-2xl">
+          <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 text-red-600 flex items-center justify-center mx-auto text-2xl">
             📦
           </div>
           <h1 className="text-2xl font-black text-slate-950">Bundle Not Found</h1>
@@ -725,7 +875,7 @@ function CheckoutContent() {
           </p>
           <Link
             href={`/r/${resellerSlug}`}
-            className="inline-block px-6 py-3 rounded-full btn-gradient-primary text-slate-950 text-xs font-black shadow-md hover:scale-105 transition-transform"
+            className="inline-block px-6 py-3 rounded-full btn-gradient-primary text-white text-xs font-black shadow-md hover:scale-105 transition-transform"
           >
             ← Return to Product Page
           </Link>
@@ -735,14 +885,14 @@ function CheckoutContent() {
 
     return (
       <div className="max-w-2xl mx-auto px-4 py-20 text-center space-y-4 bg-[#faf9f6]">
-        <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mx-auto text-2xl">
+        <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 text-red-600 flex items-center justify-center mx-auto text-2xl">
           🛍️
         </div>
         <h1 className="text-2xl font-black text-slate-950">Your Checkout is Empty</h1>
         <p className="text-sm text-slate-500">Pick a viral reels bundle before proceeding to checkout.</p>
         <Link
           href="/shop"
-          className="inline-block px-6 py-3 rounded-full btn-gradient-primary text-slate-950 text-xs font-black shadow-md hover:scale-105 transition-transform"
+          className="inline-block px-6 py-3 rounded-full btn-gradient-primary text-white text-xs font-black shadow-md hover:scale-105 transition-transform"
         >
           Explore All Bundles →
         </Link>
@@ -761,7 +911,7 @@ function CheckoutContent() {
                 <div className="flex items-center gap-2 mb-1.5">
                   <Link
                     href={`/r/${resellerSlug}`}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-amber-600 hover:text-amber-700 hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-red-600 hover:text-red-700 hover:underline"
                   >
                     ← Back to Product
                   </Link>
@@ -769,10 +919,10 @@ function CheckoutContent() {
                   <span className="text-[11px] font-bold text-slate-500">Authorized Partner Checkout</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
-                  Secure PayU Checkout
+                  Secure Razorpay Checkout
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-                  Fill your details below, pay securely via PayU, and get instant Google Drive access.
+                  Fill your details below, pay securely via Razorpay, and get instant Google Drive access.
                 </p>
               </div>
               <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/80 self-start sm:self-center shrink-0">
@@ -787,7 +937,7 @@ function CheckoutContent() {
                   {isBuyNowMode ? 'Instant Buy Now Checkout' : 'Express Checkout'}
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-                  Zero hassle: Fill your details, pay securely via PayU, and get instant Google Drive access.
+                  Zero hassle: Fill your details, pay securely via Razorpay, and get instant Google Drive access.
                 </p>
               </div>
               <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/80">
@@ -799,7 +949,7 @@ function CheckoutContent() {
 
           {/* Selected Product Card (Displays the exact product chosen by the customer) */}
           {checkoutItems.length > 0 && (
-            <div className="mb-6 p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:border-amber-400/40 transition-colors">
+            <div className="mb-6 p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:border-red-400/40 transition-colors">
               <div className="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -829,7 +979,7 @@ function CheckoutContent() {
                         {item?.product?.title || 'Digital Bundle'}
                       </h3>
                       <div className="flex flex-wrap items-center gap-2 mt-1.5">
-                        <span className="text-[10px] sm:text-[11px] font-bold text-amber-900 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-md">
+                        <span className="text-[10px] sm:text-[11px] font-bold text-red-900 bg-red-50 border border-red-200/80 px-2 py-0.5 rounded-md">
                           {item?.license === 'reseller' ? 'Reseller Rights' : 'Personal License'}
                         </span>
                         <span className="text-[10px] sm:text-[11px] font-semibold text-slate-500 hidden sm:inline">
@@ -867,9 +1017,9 @@ function CheckoutContent() {
                   <span className="font-bold">Checkout Issue: </span>
                   {errorMessage}
                 </div>
-                {(errorMessage.includes('PayU') || errorMessage.includes('Merchant')) && (
+                {(errorMessage.includes('Razorpay') || errorMessage.includes('Key') || errorMessage.includes('credential')) && (
                   <p className="text-[11px] text-rose-700 font-normal mt-1 leading-relaxed">
-                    Note: Agar aapne Admin Portal ya Vercel me PayU keys update ki hain, toh Vercel dashboard me <strong>Deployments &gt; Redeploy</strong> karein ya Admin Portal (Settings &gt; Integrations &gt; PayU Gateway) me Merchant Key &amp; Salt save karein.
+                    Note: Agar aapne Admin Portal me Razorpay keys update ki hain, toh Admin Portal (Settings &gt; Integrations &gt; Razorpay Gateway) me Key ID &amp; Key Secret check karein.
                   </p>
                 )}
               </div>
@@ -882,10 +1032,10 @@ function CheckoutContent() {
             <div className="lg:col-span-7 space-y-6">
               
               {/* 1. Customer Details (Minimal 3 Fields with Strict Anti-Fake Validation) */}
-              <div id="delivery-info" className="rounded-3xl p-5 sm:p-6 bg-white border border-slate-200/90 shadow-sm hover:border-amber-400/40 transition-colors space-y-4 scroll-mt-24">
+              <div id="delivery-info" className="rounded-3xl p-5 sm:p-6 bg-white border border-slate-200/90 shadow-sm hover:border-red-400/40 transition-colors space-y-4 scroll-mt-24">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-slate-950 text-amber-400 border border-amber-500/40 text-xs font-black flex items-center justify-center shadow-xs">
+                    <span className="w-6 h-6 rounded-full bg-slate-950 text-red-400 border border-red-500/40 text-xs font-black flex items-center justify-center shadow-xs">
                       1
                     </span>
                     <h2 className="text-base font-extrabold text-slate-900">
@@ -920,7 +1070,7 @@ function CheckoutContent() {
                           ? 'border-red-400 bg-red-50/30 focus:ring-red-400'
                           : fullName.length > 0 && !nameError
                           ? 'border-emerald-400 bg-emerald-50/20 focus:ring-emerald-400'
-                          : 'border-slate-200 focus:ring-amber-500/30 focus:border-amber-500'
+                          : 'border-slate-200 focus:ring-red-500/30 focus:border-red-500'
                       }`}
                     />
                     {(touched.name || fullName.length > 0) && nameError && (
@@ -937,7 +1087,7 @@ function CheckoutContent() {
                       <label className="block text-xs font-bold text-slate-700">
                         Gmail Address (For Google Drive Access) <span className="text-red-500">*</span>
                       </label>
-                      <span className="text-[10px] font-extrabold text-amber-900 bg-amber-50 border border-amber-200/70 px-2 py-0.5 rounded">
+                      <span className="text-[10px] font-extrabold text-red-900 bg-red-50 border border-red-200/70 px-2 py-0.5 rounded">
                         Only @gmail.com
                       </span>
                     </div>
@@ -954,7 +1104,7 @@ function CheckoutContent() {
                           ? 'border-red-400 bg-red-50/30 focus:ring-red-400'
                           : email.length > 0 && !emailError
                           ? 'border-emerald-400 bg-emerald-50/20 focus:ring-emerald-400'
-                          : 'border-slate-200 focus:ring-amber-500/30 focus:border-amber-500'
+                          : 'border-slate-200 focus:ring-red-500/30 focus:border-red-500'
                       }`}
                     />
                     {(touched.email || email.length > 0) && emailError ? (
@@ -996,7 +1146,7 @@ function CheckoutContent() {
                           ? 'border-red-400 bg-red-50/30 focus-within:ring-red-400'
                           : phone.length === 10 && !phoneError
                           ? 'border-emerald-400 bg-emerald-50/20 focus-within:ring-emerald-400'
-                          : 'border-slate-200 bg-white focus-within:ring-amber-500/30 focus-within:border-amber-500'
+                          : 'border-slate-200 bg-white focus-within:ring-red-500/30 focus-within:border-red-500'
                       }`}
                     >
                       <span className="px-3.5 py-3 bg-slate-100 border-r border-slate-200 text-xs sm:text-sm font-extrabold text-slate-700 select-none shrink-0">
@@ -1040,17 +1190,17 @@ function CheckoutContent() {
                     <button
                       type="submit"
                       disabled={isProcessing}
-                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(245,158,11,0.35)] hover:shadow-[0_14px_34px_rgba(245,158,11,0.5)] border border-amber-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
+                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
                     >
                       {isProcessing ? (
                         <span className="flex items-center gap-2">
                           <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>Connecting PayU Gateway...</span>
+                          <span>Connecting Razorpay Gateway...</span>
                         </span>
                       ) : (
                         <>
-                          <Lock className="w-4 h-4 text-slate-950" />
-                          <span>Pay ₹{checkoutTotal}.00 via PayU (Instant Access)</span>
+                          <Lock className="w-4 h-4 text-white" />
+                          <span>Pay ₹{checkoutTotal}.00 via Razorpay (Instant Access)</span>
                         </>
                       )}
                     </button>
@@ -1068,10 +1218,10 @@ function CheckoutContent() {
 
               {/* 2. Exclusive Order Bump with Live 10-Min Timer matching reelsbundles.in */}
               {!isBumpExpired && activeBumpOffer && (
-                <div className="rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-amber-50/50 via-white to-amber-100/30 border-2 border-amber-400/60 shadow-sm relative overflow-hidden">
+                <div className="rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-red-50/50 via-white to-red-100/30 border-2 border-red-400/60 shadow-sm relative overflow-hidden">
                   {/* Header ribbon */}
                   <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
-                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-950 text-amber-400 border border-amber-500/30 shadow-xs">
+                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-950 text-red-400 border border-red-500/30 shadow-xs">
                       ★ SPECIAL 1-TIME OFFER
                     </div>
                     <div className="flex items-center gap-1.5 text-xs font-black text-red-600 bg-red-50 px-2.5 py-1 rounded-full border border-red-200 animate-pulse">
@@ -1084,7 +1234,7 @@ function CheckoutContent() {
                     <img
                       src={activeBumpOffer.thumbnail}
                       alt={activeBumpOffer.title}
-                      className="w-20 sm:w-24 aspect-[4/3] rounded-xl object-cover shrink-0 border border-amber-200 shadow-sm"
+                      className="w-20 sm:w-24 aspect-[4/3] rounded-xl object-cover shrink-0 border border-red-200 shadow-sm"
                     />
                     <div className="flex-1 min-w-0">
                       <h3 className="font-extrabold text-sm text-slate-950 leading-snug">
@@ -1108,12 +1258,12 @@ function CheckoutContent() {
                   </div>
 
                   {/* Switcher Toggle */}
-                  <label className="mt-4 pt-3 border-t border-amber-200/80 flex items-center gap-3 cursor-pointer select-none">
+                  <label className="mt-4 pt-3 border-t border-red-200/80 flex items-center gap-3 cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={orderBumpAdded}
                       onChange={() => setOrderBumpAdded(!orderBumpAdded)}
-                      className="w-5 h-5 rounded text-amber-500 focus:ring-amber-500 border-slate-300 cursor-pointer"
+                      className="w-5 h-5 rounded text-red-500 focus:ring-red-500 border-slate-300 cursor-pointer"
                     />
                     <span className="text-xs font-extrabold text-slate-900">
                       Yes! Add this {activeBumpOffer.reelCount || 1000}+ reels mega pack to my order for just ₹{activeBumpOffer.discountPrice}
@@ -1122,11 +1272,11 @@ function CheckoutContent() {
                 </div>
               )}
 
-              {/* 3. PayU Payment Gateway Card */}
+              {/* 3. Razorpay Payment Gateway Card */}
               <div className="rounded-3xl p-6 bg-white border border-slate-200/90 shadow-sm space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-slate-950 text-amber-400 border border-amber-500/40 text-xs font-black flex items-center justify-center shadow-xs">
+                    <span className="w-6 h-6 rounded-full bg-slate-950 text-red-400 border border-red-500/40 text-xs font-black flex items-center justify-center shadow-xs">
                       2
                     </span>
                     <h2 className="text-base font-extrabold text-slate-900">
@@ -1134,16 +1284,16 @@ function CheckoutContent() {
                     </h2>
                   </div>
                   <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5" /> PayU Verified
+                    <ShieldCheck className="w-3.5 h-3.5" /> Razorpay Verified
                   </span>
                 </div>
 
-                {/* Branded PayU Details Card */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-amber-500/20 text-white space-y-3.5 shadow-md">
+                {/* Branded Razorpay Details Card */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-red-500/20 text-white space-y-3.5 shadow-md">
                   <div className="flex items-center justify-between">
-                    <div className="font-bold text-xs text-amber-400 flex items-center gap-1.5">
-                      <CreditCard className="w-4 h-4 text-amber-400" />
-                      <span>PayU Payment Gateway (India)</span>
+                    <div className="font-bold text-xs text-red-400 flex items-center gap-1.5">
+                      <CreditCard className="w-4 h-4 text-red-400" />
+                      <span>Razorpay Payment Gateway (India)</span>
                     </div>
                     <span className="text-[10px] font-bold text-slate-400">
                       RBI Regulated • Zero Extra Fee
@@ -1151,13 +1301,13 @@ function CheckoutContent() {
                   </div>
 
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Pay securely with any payment option of your choice. A fast, encrypted PayU checkout will open to complete payment via UPI, Cards, or NetBanking.
+                    Pay securely with any payment option of your choice. A fast, encrypted Razorpay checkout modal will open to complete payment via UPI, Cards, or NetBanking.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <Smartphone className="w-3.5 h-3.5 text-amber-400" />
+                        <Smartphone className="w-3.5 h-3.5 text-red-400" />
                         <span>All UPI Apps</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
@@ -1167,7 +1317,7 @@ function CheckoutContent() {
 
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <CreditCard className="w-3.5 h-3.5 text-amber-400" />
+                        <CreditCard className="w-3.5 h-3.5 text-red-400" />
                         <span>Cards</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
@@ -1177,7 +1327,7 @@ function CheckoutContent() {
 
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <Building className="w-3.5 h-3.5 text-amber-400" />
+                        <Building className="w-3.5 h-3.5 text-red-400" />
                         <span>NetBanking</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
@@ -1218,7 +1368,7 @@ function CheckoutContent() {
                         <h4 className="font-bold text-xs text-slate-950 line-clamp-1">
                           {item?.product?.title || 'Viral Reels Bundle'}
                         </h4>
-                        <span className="text-[10px] font-bold text-amber-900 bg-amber-50 border border-amber-200/70 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-bold text-red-900 bg-red-50 border border-red-200/70 px-1.5 py-0.5 rounded">
                           {item?.license === 'reseller' ? 'Reseller Rights' : 'Personal Use'}
                         </span>
                       </div>
@@ -1242,22 +1392,22 @@ function CheckoutContent() {
                   ))}
 
                   {orderBumpAdded && activeBumpOffer && (
-                    <div className="flex gap-3 items-center justify-between p-2.5 rounded-xl bg-amber-50/70 border border-amber-200">
+                    <div className="flex gap-3 items-center justify-between p-2.5 rounded-xl bg-red-50/70 border border-red-200">
                       <img
                         src={activeBumpOffer.thumbnail}
                         alt={activeBumpOffer.title}
                         className="w-12 h-14 object-cover rounded-lg shrink-0"
                       />
                       <div className="flex-1 min-w-0 px-1">
-                        <h4 className="font-bold text-xs text-amber-950 line-clamp-1">
+                        <h4 className="font-bold text-xs text-red-950 line-clamp-1">
                           {activeBumpOffer.title}
                         </h4>
-                        <span className="text-[10px] font-bold text-amber-800 bg-amber-200 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-bold text-red-800 bg-red-200 px-1.5 py-0.5 rounded">
                           Bonus Offer
                         </span>
                       </div>
                       <div className="text-right shrink-0">
-                        <div className="font-extrabold text-xs text-amber-950">
+                        <div className="font-extrabold text-xs text-red-950">
                           ₹{activeBumpOffer.discountPrice}.00
                         </div>
                         <button
@@ -1324,15 +1474,15 @@ function CheckoutContent() {
 
                   {/* If qualified but hasn't claimed all free bundles */}
                   {isOfferActive && checkoutSubtotal >= minCart && freeBundles.length < freeQty && (
-                    <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-400/10 to-amber-500/15 border border-amber-400/40 flex items-center justify-between gap-2 shadow-xs">
-                      <div className="text-xs font-bold text-amber-950 flex items-center gap-1.5">
-                        <Gift className="w-4 h-4 shrink-0 text-amber-600" />
+                    <div className="p-3.5 rounded-2xl bg-gradient-to-r from-red-500/10 via-rose-400/10 to-red-500/15 border border-red-400/40 flex items-center justify-between gap-2 shadow-xs">
+                      <div className="text-xs font-bold text-red-950 flex items-center gap-1.5">
+                        <Gift className="w-4 h-4 shrink-0 text-red-600" />
                         <span>You unlocked {freeQty} Free Bundles!</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => setIsFreeBundleModalOpen(true)}
-                        className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 text-slate-950 text-xs font-black hover:opacity-95 shadow-xs cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+                        className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 text-white text-xs font-black hover:opacity-95 shadow-xs cursor-pointer hover:scale-105 active:scale-95 transition-transform"
                       >
                         Claim Now (₹0)
                       </button>
@@ -1344,7 +1494,7 @@ function CheckoutContent() {
                 <div className="pt-3 border-t border-slate-100">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                      <Tag className="w-3.5 h-3.5 text-amber-500" />
+                      <Tag className="w-3.5 h-3.5 text-red-500" />
                       Promo / Discount Code
                     </span>
                     {appliedCoupon && (
@@ -1373,14 +1523,14 @@ function CheckoutContent() {
                               }
                             }}
                             placeholder="Enter coupon code"
-                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 uppercase tracking-wider"
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500 uppercase tracking-wider"
                           />
                         </div>
                         <button
                           type="button"
                           onClick={() => handleApplyCoupon()}
                           disabled={couponLoading || !couponInput.trim()}
-                          className="px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 active:scale-95 disabled:opacity-50 text-amber-400 text-xs font-black transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs border border-slate-800"
+                          className="px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 active:scale-95 disabled:opacity-50 text-red-400 text-xs font-black transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs border border-slate-800"
                         >
                           {couponLoading ? (
                             <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -1461,17 +1611,17 @@ function CheckoutContent() {
                   <button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(245,158,11,0.35)] hover:shadow-[0_14px_34px_rgba(245,158,11,0.5)] border border-amber-400/50 hover:scale-[1.01] transition-all disabled:opacity-70 cursor-pointer"
+                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] transition-all disabled:opacity-70 cursor-pointer"
                   >
                     {isProcessing ? (
                       <span className="flex items-center gap-2">
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Connecting PayU Gateway...
+                        Connecting Razorpay Gateway...
                       </span>
                     ) : (
                       <>
-                        <Lock className="w-4 h-4 text-slate-950" />
-                        <span>Pay ₹{checkoutTotal}.00 via PayU (Instant Access)</span>
+                        <Lock className="w-4 h-4 text-white" />
+                        <span>Pay ₹{checkoutTotal}.00 via Razorpay (Instant Access)</span>
                       </>
                     )}
                   </button>
@@ -1481,7 +1631,7 @@ function CheckoutContent() {
                       <ShieldCheck className="w-4 h-4 text-emerald-600" />
                       Instant Google Drive Link Delivery
                     </p>
-                    <p>Protected by 256-bit SSL encryption & PayU India Security</p>
+                    <p>Protected by 256-bit SSL encryption &amp; Razorpay India Security</p>
                   </div>
                 </div>
               </div>
@@ -1539,17 +1689,17 @@ function CheckoutContent() {
                 <button
                   type="submit"
                   disabled={isProcessing}
-                  className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(245,158,11,0.35)] hover:shadow-[0_14px_34px_rgba(245,158,11,0.5)] border border-amber-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
+                  className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
                 >
                   {isProcessing ? (
                     <span className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Connecting PayU Gateway...
+                      Connecting Razorpay Gateway...
                     </span>
                   ) : (
                     <>
-                      <Lock className="w-4 h-4 text-slate-950" />
-                      <span>Pay ₹{checkoutTotal}.00 via PayU (Instant Access)</span>
+                      <Lock className="w-4 h-4 text-white" />
+                      <span>Pay ₹{checkoutTotal}.00 via Razorpay (Instant Access)</span>
                     </>
                   )}
                 </button>
@@ -1571,18 +1721,18 @@ function CheckoutContent() {
 export default function CheckoutPage() {
   return (
     <>
-      {/* PayU India Secure Hosted Checkout - high priority preconnect */}
-      <link rel="preconnect" href="https://secure.payu.in" />
-      <link rel="dns-prefetch" href="https://secure.payu.in" />
+      {/* Razorpay India Secure Checkout preconnect */}
+      <link rel="preconnect" href="https://checkout.razorpay.com" />
+      <link rel="dns-prefetch" href="https://api.razorpay.com" />
       <Suspense
         fallback={
           <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center space-y-4 bg-[#faf9f6]">
-            <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 animate-pulse">
-              <div className="w-8 h-8 rounded-full border-4 border-amber-500 border-t-transparent animate-spin" />
+            <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-600 animate-pulse">
+              <div className="w-8 h-8 rounded-full border-4 border-red-500 border-t-transparent animate-spin" />
             </div>
             <h2 className="text-xl font-black text-slate-950">Loading Checkout...</h2>
             <p className="text-xs text-slate-500 max-w-sm">
-              Preparing bundle details and secure PayU payment gateway.
+              Preparing bundle details and secure Razorpay payment gateway.
             </p>
           </div>
         }

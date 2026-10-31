@@ -68,7 +68,7 @@ export interface ResellerListing {
   themePreset?: ListingThemePreset;
   promoBadge?: string;
   whatsappButtonEnabled?: boolean; // Toggle floating WhatsApp chat button on landing page (default: true)
-  whatsappNumber?: string; // Optional custom WhatsApp number (defaults to +91 9142408286)
+  whatsappNumber?: string; // Optional custom WhatsApp number (defaults to +91 8807281600)
   status: ListingStatus;
   viewsCount: number;
   uniqueVisitorsCount?: number;

@@ -1065,7 +1065,7 @@ export default function Products() {
               <div>
                 <h4 className="text-xs font-bold text-white">Google Drive Digital Delivery System</h4>
                 <p className="text-[11px] text-slate-400">
-                  All 131 products include high-speed Google Drive download access links delivered to buyers upon PayU payment.
+                  All 131 products include high-speed Google Drive download access links delivered to buyers upon Razorpay payment.
                 </p>
               </div>
             </div>
@@ -1827,7 +1827,7 @@ export default function Products() {
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-400 leading-relaxed">
-                      Ek product ki multiple Google Drive / Mega files yaha add karein (jaise Part 1, Part 2, Bonus Zip). Jab customer PayU se payment complete karega, to confirmation page aur download portal par ye saare download links unlock ho jayenge!
+                      Ek product ki multiple Google Drive / Mega files yaha add karein (jaise Part 1, Part 2, Bonus Zip). Jab customer Razorpay se payment complete karega, to confirmation page aur download portal par ye saare download links unlock ho jayenge!
                     </p>
                     <p className="text-[11px] text-emerald-400 font-bold pt-0.5">
                       🔒 Security: Download links database me direct secure rehte hain aur payment se pehle kabhi frontend code me expose nahi hote.
@@ -2618,7 +2618,7 @@ export default function Products() {
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-400 leading-relaxed">
-                      Ek product ki multiple Google Drive / Mega files yaha add karein (jaise Part 1, Part 2, Bonus Zip). Jab customer PayU se payment complete karega, to confirmation page aur download portal par ye saare download links unlock ho jayenge!
+                      Ek product ki multiple Google Drive / Mega files yaha add karein (jaise Part 1, Part 2, Bonus Zip). Jab customer Razorpay se payment complete karega, to confirmation page aur download portal par ye saare download links unlock ho jayenge!
                     </p>
                     <p className="text-[11px] text-emerald-400 font-bold pt-0.5">
                       🔒 Security Guarantee: Download links database me direct secure rehte hain aur payment se pehle kabhi frontend code me expose nahi hote.
