@@ -2679,18 +2679,13 @@ class PortalApiClient {
       }
     }
 
-    // 2. Direct client Firestore persistence
+    // 2. Direct client Firestore persistence to store_settings/general
     if (db) {
       try {
         await setDoc(doc(db, 'store_settings', 'general'), clean, { merge: true });
       } catch (e) {
         console.warn('Firestore direct write to store_settings/general warning:', e);
       }
-
-      Promise.allSettled([
-        setDoc(doc(db, 'store_settings', 'razorpay'), clean, { merge: true }),
-        setDoc(doc(db, 'store_settings', 'payu'), clean, { merge: true }),
-      ]).catch(() => null);
     }
 
     await logAdminAction({

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
-import { getRazorpayOrder, getRazorpayOrderPayments } from '@/lib/razorpay';
+import { getRazorpayOrder, getRazorpayOrderPayments, getRazorpayOrderByReceipt } from '@/lib/razorpay';
 import { sendSaleSuccessTelegramAlert } from '@/lib/telegram';
 import { sendMetaCapiPurchase } from '@/lib/metaCapi';
 import { generateOrderToken, extractClientMetadata } from '@/lib/orderToken';
@@ -42,8 +42,17 @@ async function verifyAndProcessOrder(
     };
   }
 
-  // 2. Resolve razorpay_order_id
-  const targetRzpOrderId = razorpayOrderId || storedOrder?.razorpay_order_id;
+  // 2. Resolve razorpay_order_id (from params, Firestore, or search by receipt)
+  let targetRzpOrderId = razorpayOrderId || storedOrder?.razorpay_order_id;
+  if (!targetRzpOrderId) {
+    try {
+      const orderMatch = await getRazorpayOrderByReceipt(orderId);
+      if (orderMatch?.id) {
+        targetRzpOrderId = orderMatch.id;
+      }
+    } catch {}
+  }
+
   if (!targetRzpOrderId) {
     return {
       success: true,

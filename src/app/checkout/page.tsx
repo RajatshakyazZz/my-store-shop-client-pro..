@@ -705,13 +705,15 @@ function CheckoutContent() {
         }
       };
 
-      const doRedirectSuccess = (paymentId?: string) => {
+      const doRedirectSuccess = (paymentId?: string, rzpOrderId?: string, rzpSig?: string) => {
         if (isRedirecting) return;
         isRedirecting = true;
         stopPolling();
         clearCart();
         const pParam = paymentId ? `&razorpay_payment_id=${encodeURIComponent(paymentId)}` : '';
-        window.location.href = `/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}${pParam}`;
+        const rParam = rzpOrderId ? `&razorpay_order_id=${encodeURIComponent(rzpOrderId)}` : '';
+        const sParam = rzpSig ? `&razorpay_signature=${encodeURIComponent(rzpSig)}` : '';
+        window.location.href = `/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}${pParam}${rParam}${sParam}`;
       };
 
       const checkPaymentStatus = async (): Promise<boolean> => {
@@ -749,6 +751,10 @@ function CheckoutContent() {
         ? `${window.location.origin}/logo.png`
         : 'https://myztore.in/logo.png';
 
+      const callbackUrl = typeof window !== 'undefined'
+        ? `${window.location.origin}/api/payment/razorpay/callback?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}`
+        : `https://myztore.in/api/payment/razorpay/callback?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}`;
+
       const options = {
         key: data.key_id,
         amount: data.amount,
@@ -757,6 +763,8 @@ function CheckoutContent() {
         description: (orderPayload.items?.[0]?.title || 'Viral Reels Bundle').slice(0, 100),
         image: logoAbsoluteUrl,
         order_id: data.razorpay_order_id,
+        callback_url: callbackUrl,
+        redirect: true,
         prefill: {
           name: fullName.trim(),
           email: email.trim().toLowerCase(),
@@ -789,31 +797,24 @@ function CheckoutContent() {
         handler: async (response: any) => {
           stopPolling();
           setIsProcessing(true);
-          try {
-            // Verify payment on server
-            const verifyRes = await fetch('/api/payment/razorpay/verify-order', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                order_id: orderNumber,
-                razorpay_order_id: response.razorpay_order_id || data.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                token: data.order_token,
-              }),
-            });
+          const pId = response?.razorpay_payment_id || '';
+          const rOrderId = response?.razorpay_order_id || data.razorpay_order_id || '';
+          const sig = response?.razorpay_signature || '';
 
-            const verifyData = await verifyRes.json();
-            if (verifyRes.ok && (verifyData.success || verifyData.verified)) {
-              doRedirectSuccess(response.razorpay_payment_id);
-            } else {
-              // Redirect to order success page where verify-order / check-status will resolve
-              doRedirectSuccess(response.razorpay_payment_id);
-            }
-          } catch (vErr) {
-            console.error('Razorpay verification error:', vErr);
-            doRedirectSuccess(response.razorpay_payment_id);
-          }
+          // Background verification call
+          fetch('/api/payment/razorpay/verify-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              order_id: orderNumber,
+              razorpay_order_id: rOrderId,
+              razorpay_payment_id: pId,
+              razorpay_signature: sig,
+              token: data.order_token,
+            }),
+          }).catch(() => {});
+
+          doRedirectSuccess(pId, rOrderId, sig);
         },
       };
 

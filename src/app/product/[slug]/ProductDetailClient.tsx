@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ChevronRight,
   Star,
@@ -34,6 +34,10 @@ import {
   Pause,
   VolumeX,
   Film,
+  Copy,
+  ExternalLink,
+  RefreshCw,
+  KeyRound,
 } from 'lucide-react';
 import { BUNDLE_PRODUCTS } from '@/data/bundles';
 import { useCart } from '@/context/CartContext';
@@ -108,6 +112,7 @@ const CUSTOMER_REVIEWS = [
 
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { buyNow } = useCart();
   const { settings } = useStoreSettings();
 
@@ -116,6 +121,19 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [isDescExpanded, setIsDescExpanded] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [helpfulMap, setHelpfulMap] = useState<Record<string, number>>({});
+
+  // Product Unlock State
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [unlockedDriveLink, setUnlockedDriveLink] = useState('');
+  const [unlockedFiles, setUnlockedFiles] = useState<Array<{ id?: string; name: string; file_url: string }>>([]);
+  const [unlockedOrderNumber, setUnlockedOrderNumber] = useState('');
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  // Manual Gmail Unlock form state
+  const [showEmailUnlock, setShowEmailUnlock] = useState(false);
+  const [unlockEmailInput, setUnlockEmailInput] = useState('');
+  const [isUnlocking, setIsUnlocking] = useState(false);
+  const [unlockError, setUnlockError] = useState('');
 
   useEffect(() => {
     setCurrentProduct(product);
@@ -134,6 +152,169 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       isMounted = false;
     };
   }, [product.slug]);
+
+  // Comprehensive Unlock Verification Effect
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const prodId = String(product.id || '').toLowerCase().trim();
+    const prodSlug = String(product.slug || '').toLowerCase().trim();
+    const prodTitle = String(product.title || '').toLowerCase().trim();
+
+    // 1. Check local device storage of purchased orders
+    const checkLocalStorage = (): boolean => {
+      try {
+        const purchasedRaw = localStorage.getItem('vaultzet_purchased_orders');
+        const ordersRaw = localStorage.getItem('vaultzet_orders');
+        const allOrders: any[] = [];
+        if (purchasedRaw) {
+          const parsed = JSON.parse(purchasedRaw);
+          if (Array.isArray(parsed)) allOrders.push(...parsed);
+        }
+        if (ordersRaw) {
+          const parsed = JSON.parse(ordersRaw);
+          if (Array.isArray(parsed)) allOrders.push(...parsed);
+        }
+
+        for (const order of allOrders) {
+          const items: any[] = Array.isArray(order.items) ? order.items : [];
+          for (const it of items) {
+            const itId = String(it.id || '').toLowerCase().trim();
+            const itSlug = String(it.slug || '').toLowerCase().trim();
+            const itTitle = String(it.title || '').toLowerCase().trim();
+
+            const isMatch =
+              (prodId && (itId === prodId || itId.includes(prodId) || prodId.includes(itId))) ||
+              (prodSlug && (itSlug === prodSlug || itId.includes(prodSlug) || prodSlug.includes(itId))) ||
+              (prodTitle && (itTitle.includes(prodTitle) || prodTitle.includes(itTitle)));
+
+            if (isMatch) {
+              const driveLink =
+                it.googleDriveLink ||
+                it.google_drive_link ||
+                (product as any).googleDriveLink ||
+                (product as any).google_drive_link ||
+                '';
+              const files = Array.isArray(it.files) && it.files.length > 0 ? it.files : [];
+              setIsUnlocked(true);
+              setUnlockedDriveLink(driveLink);
+              setUnlockedFiles(files);
+              setUnlockedOrderNumber(order.orderNumber || order.order_id || '');
+              return true;
+            }
+          }
+        }
+
+        // Check unlocked slugs set
+        const slugsRaw = localStorage.getItem('vaultzet_unlocked_slugs');
+        if (slugsRaw) {
+          const set: string[] = JSON.parse(slugsRaw);
+          if (Array.isArray(set) && (set.includes(prodId) || set.includes(prodSlug))) {
+            setIsUnlocked(true);
+            setUnlockedDriveLink((product as any).googleDriveLink || (product as any).google_drive_link || '');
+            return true;
+          }
+        }
+      } catch (e) {
+        console.warn('Error reading purchased orders from localStorage:', e);
+      }
+      return false;
+    };
+
+    const alreadyFound = checkLocalStorage();
+    if (alreadyFound) return;
+
+    // 2. Query server unlock API if query params or customer email present
+    const qUnlocked = searchParams?.get('unlocked');
+    const qOrderId = searchParams?.get('order_id') || searchParams?.get('orderNumber');
+    let savedCustomerEmail = '';
+    try {
+      savedCustomerEmail = localStorage.getItem('vaultzet_customer_email') || '';
+    } catch {}
+
+    if (qUnlocked === '1' || qOrderId || savedCustomerEmail) {
+      fetch('/api/products/unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: product.id,
+          slug: product.slug,
+          title: product.title,
+          orderId: qOrderId || undefined,
+          email: savedCustomerEmail || undefined,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.unlocked) {
+            setIsUnlocked(true);
+            setUnlockedDriveLink(data.driveLink || '');
+            setUnlockedFiles(Array.isArray(data.files) ? data.files : []);
+            setUnlockedOrderNumber(data.orderNumber || qOrderId || '');
+
+            // Persist locally for instant offline future reloads
+            try {
+              const slugsRaw = localStorage.getItem('vaultzet_unlocked_slugs');
+              const set = new Set<string>(slugsRaw ? JSON.parse(slugsRaw) : []);
+              if (product.id) set.add(String(product.id).toLowerCase());
+              if (product.slug) set.add(String(product.slug).toLowerCase());
+              localStorage.setItem('vaultzet_unlocked_slugs', JSON.stringify(Array.from(set)));
+            } catch {}
+          }
+        })
+        .catch(() => {});
+    }
+  }, [product.id, product.slug, product.title, searchParams]);
+
+  const handleManualUnlock = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!unlockEmailInput.trim()) return;
+    setIsUnlocking(true);
+    setUnlockError('');
+    try {
+      const res = await fetch('/api/products/unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: product.id,
+          slug: product.slug,
+          title: product.title,
+          email: unlockEmailInput.trim().toLowerCase(),
+        }),
+      });
+      const data = await res.json();
+      if (data.unlocked) {
+        setIsUnlocked(true);
+        setUnlockedDriveLink(data.driveLink || '');
+        setUnlockedFiles(Array.isArray(data.files) ? data.files : []);
+        setUnlockedOrderNumber(data.orderNumber || '');
+        setShowEmailUnlock(false);
+        try {
+          localStorage.setItem('vaultzet_customer_email', unlockEmailInput.trim().toLowerCase());
+          const slugsRaw = localStorage.getItem('vaultzet_unlocked_slugs');
+          const set = new Set<string>(slugsRaw ? JSON.parse(slugsRaw) : []);
+          if (product.id) set.add(String(product.id).toLowerCase());
+          if (product.slug) set.add(String(product.slug).toLowerCase());
+          localStorage.setItem('vaultzet_unlocked_slugs', JSON.stringify(Array.from(set)));
+        } catch {}
+      } else {
+        setUnlockError(data.message || 'No confirmed purchase found for this email address. Please check your Gmail or contact WhatsApp support.');
+      }
+    } catch {
+      setUnlockError('Connection error. Please try again or check your network.');
+    } finally {
+      setIsUnlocking(false);
+    }
+  };
+
+  const handleCopyDriveLink = () => {
+    const link = unlockedDriveLink || (p as any).googleDriveLink || 'https://drive.google.com';
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(link);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
+    }
+  };
 
   const p = currentProduct;
 
@@ -428,36 +609,186 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 </div>
               </div>
 
-              {/* Primary Buy Button */}
-              <div className="space-y-3 pt-1">
-                <button
-                  type="button"
-                  onClick={() => buyNow(p, 'personal')}
-                  className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-base shadow-lg shadow-red-500/25 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <Zap className="w-4 h-4 fill-white" />
-                  <span>Buy Now — ₹{activePrice}.00 (Instant Access)</span>
-                </button>
-
-                <p className="text-center text-[11px] text-slate-500 font-medium flex items-center justify-center gap-1.5">
-                  <FolderOpen className="w-3.5 h-3.5 text-red-600 shrink-0" />
-                  <span>Drive link appears on screen immediately & is sent to your email.</span>
-                </p>
-
-                {/* Indian UPI Payment Badges Strip */}
-                <div className="pt-2 border-t border-slate-100 space-y-1.5 text-center">
-                  <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                    <Lock className="w-3 cinematic text-emerald-600" />
-                    <span>Instant UPI Checkout via Razorpay</span>
+              {/* UNLOCKED HERO CARD (When Product is Purchased & Unlocked) */}
+              {isUnlocked && (
+                <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-emerald-50 via-teal-50/40 to-emerald-50 border-2 border-emerald-400/80 shadow-xl shadow-emerald-500/10 space-y-4 animate-fadeIn">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center shadow-lg shadow-emerald-600/30 shrink-0">
+                      <CheckCircle2 className="w-6 h-6 stroke-[3]" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase tracking-wider">
+                        <Sparkles className="w-3 h-3 text-emerald-600" />
+                        <span>Lifetime Access Unlocked</span>
+                      </div>
+                      <h3 className="text-lg font-black text-slate-900 tracking-tight mt-0.5">
+                        You Own This Reels Bundle!
+                      </h3>
+                      <p className="text-xs text-slate-600 font-medium">
+                        Instant Google Drive access active {unlockedOrderNumber ? `(Order #${unlockedOrderNumber})` : ''}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-center gap-1.5 flex-wrap text-[11px] font-bold text-slate-600">
-                    <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Google Pay</span>
-                    <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">PhonePe</span>
-                    <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Paytm</span>
-                    <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">BHIM UPI</span>
-                    <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Cards</span>
-                  </div>
+
+                  {/* Multiple Drive Files or Single Folder */}
+                  {unlockedFiles.length > 1 ? (
+                    <div className="space-y-2 pt-1">
+                      <p className="text-[11px] font-extrabold text-slate-700 uppercase tracking-wider">
+                        Included Google Drive Folders ({unlockedFiles.length}):
+                      </p>
+                      {unlockedFiles.map((f, idx) => (
+                        <div
+                          key={f.id || idx}
+                          className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-white border border-emerald-200/80 shadow-sm"
+                        >
+                          <div className="min-w-0">
+                            <strong className="block text-xs font-bold text-slate-900 truncate">
+                              {f.name || `Drive Folder Part ${idx + 1}`}
+                            </strong>
+                            <span className="text-[10px] text-slate-400 font-medium">Direct Cloud Access</span>
+                          </div>
+                          <a
+                            href={f.file_url || unlockedDriveLink || 'https://drive.google.com'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-black shadow-md shadow-emerald-600/20 shrink-0 transition-transform hover:scale-[1.02]"
+                          >
+                            <Download className="w-3.5 h-3.5 stroke-[2.5]" />
+                            <span>Open</span>
+                            <ExternalLink className="w-3 h-3 opacity-80" />
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="pt-1 space-y-2">
+                      <a
+                        href={unlockedDriveLink || (p as any).googleDriveLink || 'https://drive.google.com'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white font-black text-sm sm:text-base shadow-xl shadow-emerald-600/25 flex items-center justify-center gap-2.5 transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                      >
+                        <FolderOpen className="w-5 h-5 stroke-[2.5]" />
+                        <span>Open Google Drive &amp; Access Reels Now</span>
+                        <ExternalLink className="w-4 h-4 opacity-80" />
+                      </a>
+
+                      <div className="flex items-center justify-center gap-4 text-xs font-bold text-slate-500 pt-1">
+                        <button
+                          type="button"
+                          onClick={handleCopyDriveLink}
+                          className="hover:text-emerald-700 flex items-center gap-1 transition-colors cursor-pointer py-1"
+                        >
+                          {copiedLink ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-600" />
+                              <span className="text-emerald-700">Link Copied!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5" />
+                              <span>Copy Drive Link</span>
+                            </>
+                          )}
+                        </button>
+                        <span>•</span>
+                        <Link href="/my-order" className="hover:text-slate-900 flex items-center gap-1 transition-colors">
+                          <span>View in My Orders</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+                    </div>
+                  )}
                 </div>
+              )}
+
+              {/* Primary Action Button (Unlocked vs Buy) */}
+              <div className="space-y-3 pt-1">
+                {isUnlocked ? (
+                  <a
+                    href={unlockedDriveLink || (p as any).googleDriveLink || 'https://drive.google.com'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-500 text-white font-black text-base shadow-lg shadow-emerald-500/25 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <CheckCircle2 className="w-5 h-5" />
+                    <span>Access Google Drive (100% Unlocked)</span>
+                  </a>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => buyNow(p, 'personal')}
+                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-base shadow-lg shadow-red-500/25 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Zap className="w-4 h-4 fill-white" />
+                      <span>Buy Now — ₹{activePrice}.00 (Instant Access)</span>
+                    </button>
+
+                    <p className="text-center text-[11px] text-slate-500 font-medium flex items-center justify-center gap-1.5">
+                      <FolderOpen className="w-3.5 h-3.5 text-red-600 shrink-0" />
+                      <span>Drive link appears on screen immediately &amp; is sent to your email.</span>
+                    </p>
+
+                    {/* Indian UPI Payment Badges Strip */}
+                    <div className="pt-2 border-t border-slate-100 space-y-1.5 text-center">
+                      <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        <Lock className="w-3 text-emerald-600" />
+                        <span>Instant UPI Checkout via Razorpay</span>
+                      </div>
+                      <div className="flex items-center justify-center gap-1.5 flex-wrap text-[11px] font-bold text-slate-600">
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Google Pay</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">PhonePe</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Paytm</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">BHIM UPI</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Cards</span>
+                      </div>
+                    </div>
+
+                    {/* Already Purchased / Unlock with Gmail Helper */}
+                    <div className="pt-2 text-center">
+                      <button
+                        type="button"
+                        onClick={() => setShowEmailUnlock(!showEmailUnlock)}
+                        className="text-[11px] font-bold text-slate-500 hover:text-red-700 transition-colors inline-flex items-center gap-1 cursor-pointer py-1"
+                      >
+                        <KeyRound className="w-3.5 h-3.5" />
+                        <span>Already bought this bundle? Unlock with Gmail →</span>
+                      </button>
+
+                      {showEmailUnlock && (
+                        <form
+                          onSubmit={handleManualUnlock}
+                          className="mt-2.5 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/90 text-left space-y-2 animate-fadeIn"
+                        >
+                          <label className="block text-[11px] font-bold text-slate-700">
+                            Enter the Gmail address you used during checkout:
+                          </label>
+                          <div className="flex gap-2">
+                            <input
+                              type="email"
+                              placeholder="e.g. yourname@gmail.com"
+                              value={unlockEmailInput}
+                              onChange={(e) => setUnlockEmailInput(e.target.value)}
+                              className="flex-1 px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-red-500"
+                              required
+                            />
+                            <button
+                              type="submit"
+                              disabled={isUnlocking}
+                              className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shrink-0 disabled:opacity-50 cursor-pointer"
+                            >
+                              {isUnlocking ? 'Checking...' : 'Unlock'}
+                            </button>
+                          </div>
+                          {unlockError && (
+                            <p className="text-[11px] font-semibold text-rose-600">{unlockError}</p>
+                          )}
+                        </form>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
 
             </div>
@@ -499,14 +830,26 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               </div>
 
               <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => buyNow(p, 'personal')}
-                  className="w-full sm:w-auto py-3 px-5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs sm:text-sm shadow-lg shadow-red-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
-                >
-                  <Zap className="w-4 h-4 fill-white" />
-                  <span>Buy This Bundle — ₹{activePrice}.00</span>
-                </button>
+                {isUnlocked ? (
+                  <a
+                    href={unlockedDriveLink || (p as any).googleDriveLink || 'https://drive.google.com'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto py-3 px-5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-500 text-white font-black text-xs sm:text-sm shadow-lg shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                  >
+                    <FolderOpen className="w-4 h-4" />
+                    <span>Access Google Drive (Unlocked)</span>
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => buyNow(p, 'personal')}
+                    className="w-full sm:w-auto py-3 px-5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs sm:text-sm shadow-lg shadow-red-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                  >
+                    <Zap className="w-4 h-4 fill-white" />
+                    <span>Buy This Bundle — ₹{activePrice}.00</span>
+                  </button>
+                )}
               </div>
             </div>
 
@@ -660,14 +1003,26 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
                 {/* Quick Action Footer inside sample section */}
                 <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => buyNow(p, 'personal')}
-                    className="w-full sm:w-auto py-3 px-6 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <Zap className="w-4 h-4 fill-white" />
-                    <span>Instant Checkout — ₹{activePrice}.00</span>
-                  </button>
+                  {isUnlocked ? (
+                    <a
+                      href={unlockedDriveLink || (p as any).googleDriveLink || 'https://drive.google.com'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto py-3 px-6 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-500 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <FolderOpen className="w-4 h-4" />
+                      <span>Open Google Drive (Unlocked)</span>
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => buyNow(p, 'personal')}
+                      className="w-full sm:w-auto py-3 px-6 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Zap className="w-4 h-4 fill-white" />
+                      <span>Instant Checkout — ₹{activePrice}.00</span>
+                    </button>
+                  )}
                   <span className="text-[11px] text-slate-400 flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                     <span>One-time payment • Lifetime access</span>
@@ -1012,32 +1367,60 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
       {/* MOBILE STICKY BOTTOM BAR (Locked Directly Above MobileBottomNav) */}
       <aside
-        aria-label="Sticky Buy Now Bar"
-        className="fixed bottom-[74px] left-2.5 right-2.5 z-40 md:hidden bg-slate-950/95 backdrop-blur-xl border border-red-500/30 rounded-2xl px-3.5 py-2.5 shadow-[0_-8px_30px_rgba(0,0,0,0.6)]"
+        aria-label="Sticky Action Bar"
+        className={`fixed bottom-[74px] left-2.5 right-2.5 z-40 md:hidden bg-slate-950/95 backdrop-blur-xl ${
+          isUnlocked ? 'border border-emerald-500/50' : 'border border-red-500/30'
+        } rounded-2xl px-3.5 py-2.5 shadow-[0_-8px_30px_rgba(0,0,0,0.6)]`}
       >
         <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
-          {/* Price */}
+          {/* Price or Unlocked status */}
           <div className="flex flex-col shrink-0 min-w-0">
-            <span className="text-[9px] font-bold text-rose-400 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
-              Instant Access
-            </span>
-            <div className="flex items-baseline gap-1.5 mt-0.5">
-              <span className="text-xl font-black text-white">₹{activePrice}.00</span>
-              <span className="text-xs text-slate-400 line-through font-semibold">₹{originalPrice}.00</span>
-            </div>
+            {isUnlocked ? (
+              <div>
+                <span className="text-[9px] font-bold text-emerald-400 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                  Unlocked
+                </span>
+                <span className="text-xs font-black text-white truncate block max-w-[120px]">
+                  Drive Ready
+                </span>
+              </div>
+            ) : (
+              <div>
+                <span className="text-[9px] font-bold text-rose-400 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                  Instant Access
+                </span>
+                <div className="flex items-baseline gap-1.5 mt-0.5">
+                  <span className="text-xl font-black text-white">₹{activePrice}.00</span>
+                  <span className="text-xs text-slate-400 line-through font-semibold">₹{originalPrice}.00</span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Action Button */}
           <div className="flex items-center gap-1.5 flex-1 justify-end min-w-0">
-            <button
-              type="button"
-              onClick={() => buyNow(p, 'personal')}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm shadow-md shadow-red-500/25 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-            >
-              <Zap className="w-4 h-4 fill-white" />
-              <span>Buy Now — ₹{activePrice}</span>
-            </button>
+            {isUnlocked ? (
+              <a
+                href={unlockedDriveLink || (p as any).googleDriveLink || 'https://drive.google.com'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-500 text-white font-black text-xs sm:text-sm shadow-md shadow-emerald-500/25 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <FolderOpen className="w-4 h-4" />
+                <span>Open Drive Folder</span>
+              </a>
+            ) : (
+              <button
+                type="button"
+                onClick={() => buyNow(p, 'personal')}
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm shadow-md shadow-red-500/25 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <Zap className="w-4 h-4 fill-white" />
+                <span>Buy Now — ₹{activePrice}</span>
+              </button>
+            )}
           </div>
         </div>
       </aside>

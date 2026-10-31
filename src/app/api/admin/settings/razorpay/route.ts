@@ -87,13 +87,8 @@ export async function POST(request: Request) {
 
     if (db) {
       try {
-        // 1. Primary database persistence: store_settings/general
+        // 1. Primary database persistence: store_settings/general (universally allowed by live rules)
         await setDoc(doc(db, 'store_settings', 'general'), payload, { merge: true });
-
-        // 2. Secondary database persistence: attempt store_settings/razorpay
-        await Promise.allSettled([
-          setDoc(doc(db, 'store_settings', 'razorpay'), payload, { merge: true }),
-        ]);
       } catch (firestoreErr: any) {
         console.error('Firestore error saving Razorpay config in API route:', firestoreErr);
         return NextResponse.json(

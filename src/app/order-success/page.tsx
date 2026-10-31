@@ -189,6 +189,19 @@ function OrderSuccessContent() {
               });
               localStorage.setItem('vaultzet_purchased_orders', JSON.stringify(list));
             }
+
+            // Also persist customer email and unlocked product IDs/slugs for instant product-page unlock
+            if (orderObj.customer?.email) {
+              localStorage.setItem('vaultzet_customer_email', String(orderObj.customer.email).toLowerCase().trim());
+            }
+
+            const rawSlugs = localStorage.getItem('vaultzet_unlocked_slugs');
+            const unlockedSlugsSet = new Set<string>(rawSlugs ? JSON.parse(rawSlugs) : []);
+            (orderObj.items || []).forEach((it: any) => {
+              if (it.id) unlockedSlugsSet.add(String(it.id).toLowerCase());
+              if (it.slug) unlockedSlugsSet.add(String(it.slug).toLowerCase());
+            });
+            localStorage.setItem('vaultzet_unlocked_slugs', JSON.stringify(Array.from(unlockedSlugsSet)));
           } catch (e) {
             console.warn('Could not store order locally:', e);
           }
@@ -250,8 +263,8 @@ function OrderSuccessContent() {
             });
           }
         } else {
-          // If payment was recently completed via UPI QR on mobile, allow up to 5 automatic status checks (10s)
-          if (retryCount < 5) {
+          // If payment was recently completed via UPI QR on mobile, allow up to 15 automatic status checks (30s)
+          if (retryCount < 15) {
             setTimeout(() => {
               if (!isCancelled) {
                 setRetryCount((prev) => prev + 1);
@@ -265,7 +278,7 @@ function OrderSuccessContent() {
       .catch((err) => {
         if (isCancelled) return;
         console.warn('Order verification failed:', err);
-        if (retryCount < 5) {
+        if (retryCount < 15) {
           setTimeout(() => {
             if (!isCancelled) {
               setRetryCount((prev) => prev + 1);
@@ -393,11 +406,14 @@ function OrderSuccessContent() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
               <button
                 type="button"
-                onClick={() => setRetryCount((c) => c + 1)}
-                className="w-full sm:w-auto px-7 py-3 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white text-xs font-black flex items-center justify-center gap-2 shadow-lg shadow-red-500/25 transition-transform hover:scale-[1.02]"
+                onClick={() => {
+                  setStatus('verifying');
+                  setRetryCount(0);
+                }}
+                className="w-full sm:w-auto px-7 py-3 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white text-xs font-black flex items-center justify-center gap-2 shadow-lg shadow-red-500/25 transition-transform hover:scale-[1.02] cursor-pointer"
               >
-                <RefreshCw className="w-4 h-4" />
-                <span>Re-Check Payment Status</span>
+                <RefreshCw className="w-4 h-4 animate-spin" />
+                <span>I Have Paid — Re-Check Status &amp; Unlock</span>
               </button>
 
               <Link

@@ -71,9 +71,13 @@ export async function getRazorpayCredentials(forceRefresh = false): Promise<Razo
         const data = generalSnap.data();
         if (data.razorpay_key_id) keyId = String(data.razorpay_key_id).trim();
         if (data.razorpay_key_secret) keySecret = String(data.razorpay_key_secret).trim();
-        // Also support generic field names if saved under razorpay profile
+        // Also support generic field names if saved under general or razorpay profile
         if (!keyId && data.key_id && String(data.key_id).startsWith('rzp_')) keyId = String(data.key_id).trim();
         if (!keySecret && data.key_secret && data.key_id && String(data.key_id).startsWith('rzp_')) keySecret = String(data.key_secret).trim();
+        if (!keyId && data.merchant_key && String(data.merchant_key).startsWith('rzp_')) keyId = String(data.merchant_key).trim();
+        if (!keyId && data.app_id && String(data.app_id).startsWith('rzp_')) keyId = String(data.app_id).trim();
+        if (!keySecret && data.merchant_salt && (keyId.startsWith('rzp_') || String(data.merchant_salt).length >= 10)) keySecret = String(data.merchant_salt).trim();
+        if (!keySecret && data.secret_key && (keyId.startsWith('rzp_') || String(data.secret_key).length >= 10)) keySecret = String(data.secret_key).trim();
         if (data.environment) {
           environment = data.environment === 'TEST' || data.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION';
         }
@@ -372,10 +376,50 @@ export async function getRazorpayOrderPayments(razorpayOrderId: string): Promise
 }
 
 /**
+ * Fetches Razorpay Order by receipt identifier (e.g. VZ-124219)
+ * GET https://api.razorpay.com/v1/orders?receipt={receipt}&count=5
+ */
+export async function getRazorpayOrderByReceipt(receipt: string): Promise<any | null> {
+  const creds = await getRazorpayCredentials();
+
+  if (!creds.keyId || !creds.keySecret || !receipt) {
+    return null;
+  }
+
+  try {
+    const authHeader = `Basic ${Buffer.from(`${creds.keyId}:${creds.keySecret}`).toString('base64')}`;
+    const cleanReceipt = encodeURIComponent(receipt.trim());
+    const response = await fetch(`https://api.razorpay.com/v1/orders?receipt=${cleanReceipt}&count=5`, {
+      method: 'GET',
+      headers: {
+        Authorization: authHeader,
+      },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) return null;
+    const data = await response.json();
+    const items: any[] = Array.isArray(data?.items) ? data.items : [];
+    if (items.length === 0) return null;
+    const paidOrder = items.find((o: any) => o && (o.status === 'paid' || (o.amount_paid && o.amount_paid > 0)));
+    return paidOrder || items[0];
+  } catch (err) {
+    console.warn('[Razorpay] getRazorpayOrderByReceipt error:', err);
+    return null;
+  }
+}
+
+/**
  * Fetches the current status and details of a Razorpay Order
  * GET https://api.razorpay.com/v1/orders/{order_id}
  */
 export async function getRazorpayOrder(razorpayOrderId: string): Promise<any> {
+  // If order number (VZ-XXXXXX) was passed instead of rzp order_id, resolve by receipt
+  if (razorpayOrderId && (razorpayOrderId.startsWith('VZ-') || !razorpayOrderId.startsWith('order_'))) {
+    const byReceipt = await getRazorpayOrderByReceipt(razorpayOrderId);
+    if (byReceipt) return byReceipt;
+  }
+
   const creds = await getRazorpayCredentials();
 
   if (!creds.keyId || !creds.keySecret) {
