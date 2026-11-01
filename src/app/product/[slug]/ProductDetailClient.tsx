@@ -454,8 +454,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Store</span>
             </Link>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-bold">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50 text-red-700 border border-red-200 text-[11px] font-bold">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
               <span>Instant Delivery</span>
             </span>
           </div>
@@ -574,7 +574,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       <span className="text-slate-400 font-medium text-[11px]">({p.reviewCount || 200}+ verified reviews)</span>
                     </div>
                   </div>
-                  <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                  <span className="text-[11px] font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded-md border border-red-200">
                     Verified Digital Bundle
                   </span>
                 </div>
@@ -606,7 +606,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   </p>
                 </div>
                 <div className="text-right">
-                  <span className="inline-block px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 text-xs font-black">
+                  <span className="inline-block px-2.5 py-1 rounded-lg bg-red-100 text-red-800 text-xs font-black">
                     Save ₹{savingsAmount}
                   </span>
                 </div>
@@ -745,21 +745,21 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     <button
                       type="button"
                       onClick={() => buyNow(p, 'personal')}
-                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-base shadow-lg shadow-emerald-500/25 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-base shadow-lg shadow-red-500/25 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <Lock className="w-4 h-4 text-white" />
                       <span>Order &amp; Pay via WhatsApp UPI — ₹{activePrice}.00</span>
                     </button>
 
                     <p className="text-center text-[11px] text-slate-500 font-medium flex items-center justify-center gap-1.5">
-                      <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                      <Lock className="w-3.5 h-3.5 text-red-600 shrink-0" />
                       <span>Direct free downloads locked • Payment verified on WhatsApp prior to access.</span>
                     </p>
 
                     {/* Instant Access & Delivery Strip */}
                     <div className="pt-2 border-t border-slate-100 space-y-1.5 text-center">
-                      <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-amber-700 uppercase tracking-wider">
-                        <Lock className="w-3 text-amber-600" />
+                      <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-red-700 uppercase tracking-wider">
+                        <Lock className="w-3 text-red-600" />
                         <span>Payment Verification Required Prior to Access</span>
                       </div>
                       <div className="flex items-center justify-center gap-1.5 flex-wrap text-[11px] font-bold text-slate-600">
@@ -1450,7 +1450,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <button
                 type="button"
                 onClick={() => buyNow(p, 'personal')}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-sm shadow-md shadow-emerald-500/25 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm shadow-md shadow-red-500/25 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Lock className="w-4 h-4 text-white" />
                 <span>Order via WhatsApp UPI — ₹{activePrice}</span>

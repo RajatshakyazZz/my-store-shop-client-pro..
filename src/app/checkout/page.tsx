@@ -770,8 +770,8 @@ function CheckoutContent() {
                   Fill your details below to get instant Google Drive access to your bundle.
                 </p>
               </div>
-              <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/80 self-start sm:self-center shrink-0">
-                <Lock className="w-3.5 h-3.5 text-emerald-600" />
+              <div className="flex items-center gap-2 text-xs font-bold text-red-800 bg-red-50 px-3.5 py-1.5 rounded-full border border-red-200/80 self-start sm:self-center shrink-0">
+                <Lock className="w-3.5 h-3.5 text-red-600" />
                 <span>256-bit Secure Encryption</span>
               </div>
             </div>
@@ -785,8 +785,8 @@ function CheckoutContent() {
                   Zero hassle: Fill your details to get instant Google Drive access to your bundle.
                 </p>
               </div>
-              <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/80">
-                <Lock className="w-3.5 h-3.5 text-emerald-600" />
+              <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-red-800 bg-red-50 px-3.5 py-1.5 rounded-full border border-red-200/80">
+                <Lock className="w-3.5 h-3.5 text-red-600" />
                 <span>256-bit Secure Encryption</span>
               </div>
             </div>
@@ -797,13 +797,13 @@ function CheckoutContent() {
             <div className="mb-6 p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:border-red-400/40 transition-colors">
               <div className="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
                   <span className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">
                     {checkoutItems.length === 1 ? 'Selected Product' : `Selected Products (${checkoutItems.length})`}
                   </span>
                 </div>
-                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                <span className="text-[11px] font-bold text-red-700 bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-red-600" />
                   Instant Google Drive Delivery
                 </span>
               </div>
@@ -1030,7 +1030,7 @@ function CheckoutContent() {
                     <button
                       type="submit"
                       disabled={isProcessing}
-                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(16,185,129,0.35)] hover:shadow-[0_14px_34px_rgba(16,185,129,0.5)] border border-emerald-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
+                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
                     >
                       {isProcessing ? (
                         <span className="flex items-center gap-2">
@@ -1045,8 +1045,8 @@ function CheckoutContent() {
                       )}
                     </button>
                     <div className="flex items-center justify-center gap-2 text-[11px] text-slate-500 font-semibold text-center mt-2.5">
-                      <span className="flex items-center gap-1 text-amber-700 font-bold">
-                        <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                      <span className="flex items-center gap-1 text-red-700 font-bold">
+                        <Lock className="w-3.5 h-3.5 text-red-600 shrink-0" />
                         <span>Payment Required Prior to Access</span>
                       </span>
                       <span>•</span>
@@ -1084,13 +1084,13 @@ function CheckoutContent() {
                         {activeBumpOffer.subtitle}
                       </p>
                       <div className="flex items-center gap-2 mt-2">
-                        <span className="font-black text-sm text-emerald-700">
+                        <span className="font-black text-sm text-red-700">
                           ₹{activeBumpOffer.discountPrice}.00
                         </span>
                         <span className="text-xs text-slate-400 line-through">
                           ₹{activeBumpOffer.originalPrice}.00
                         </span>
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200">
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-red-100 text-red-800 border border-red-200">
                           {activeBumpOffer.discountPercentage}% OFF
                         </span>
                       </div>
@@ -1116,26 +1116,26 @@ function CheckoutContent() {
               <div className="rounded-3xl p-6 bg-white border border-slate-200/90 shadow-sm space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-slate-950 text-amber-400 border border-amber-500/40 text-xs font-black flex items-center justify-center shadow-xs">
+                    <span className="w-6 h-6 rounded-full bg-slate-950 text-red-400 border border-red-500/40 text-xs font-black flex items-center justify-center shadow-xs">
                       2
                     </span>
                     <h2 className="text-base font-extrabold text-slate-900">
                       Payment &amp; Delivery Method
                     </h2>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-200 flex items-center gap-1">
-                    <Lock className="w-3.5 h-3.5 text-amber-700" /> Manual UPI Verification
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-900 border border-red-200 flex items-center gap-1">
+                    <Lock className="w-3.5 h-3.5 text-red-600" /> Manual UPI Verification
                   </span>
                 </div>
 
                 {/* Delivery Information Highlights */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-amber-500/30 text-white space-y-3.5 shadow-md">
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-red-500/20 text-white space-y-3.5 shadow-md">
                   <div className="flex items-center justify-between">
-                    <div className="font-bold text-xs text-amber-400 flex items-center gap-1.5">
-                      <Lock className="w-4 h-4 text-amber-400" />
+                    <div className="font-bold text-xs text-red-400 flex items-center gap-1.5">
+                      <Lock className="w-4 h-4 text-red-400" />
                       <span>Direct Free Downloads Strictly Locked</span>
                     </div>
-                    <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/30">
+                    <span className="text-[10px] font-bold text-red-400 bg-red-950/80 px-2 py-0.5 rounded border border-red-500/30">
                       WhatsApp UPI Active
                     </span>
                   </div>
@@ -1147,7 +1147,7 @@ function CheckoutContent() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <Lock className="w-3.5 h-3.5 text-amber-400" />
+                        <Lock className="w-3.5 h-3.5 text-red-400" />
                         <span>Security Check</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
@@ -1157,7 +1157,7 @@ function CheckoutContent() {
 
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
+                        <Smartphone className="w-3.5 h-3.5 text-red-400" />
                         <span>All UPI Apps</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
@@ -1177,8 +1177,8 @@ function CheckoutContent() {
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200/80 flex items-center gap-2 text-xs text-amber-900 font-semibold">
-                  <AlertCircle className="w-4 h-4 text-amber-700 shrink-0" />
+                <div className="p-3 rounded-xl bg-rose-50/80 border border-rose-200/80 flex items-center gap-2 text-xs text-rose-900 font-semibold">
+                  <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
                   <span>Notice: Digital bundle links are only issued after verified payment. No unpaid downloads allowed.</span>
                 </div>
               </div>
@@ -1451,7 +1451,7 @@ function CheckoutContent() {
                   <button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(16,185,129,0.35)] hover:shadow-[0_14px_34px_rgba(16,185,129,0.5)] border border-emerald-400/50 hover:scale-[1.01] transition-all disabled:opacity-70 cursor-pointer"
+                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] transition-all disabled:opacity-70 cursor-pointer"
                   >
                     {isProcessing ? (
                       <span className="flex items-center gap-2">
@@ -1467,8 +1467,8 @@ function CheckoutContent() {
                   </button>
 
                   <div className="space-y-1.5 text-center text-[11px] text-slate-400 pt-2 font-medium">
-                    <p className="flex items-center justify-center gap-1 text-amber-600 font-bold">
-                      <Lock className="w-3.5 h-3.5 text-amber-600" />
+                    <p className="flex items-center justify-center gap-1 text-red-600 font-bold">
+                      <Lock className="w-3.5 h-3.5 text-red-600" />
                       Payment Required Prior to Access
                     </p>
                     <p>Official 24/7 Verified Support: +91 88072 81600</p>
@@ -1529,7 +1529,7 @@ function CheckoutContent() {
                 <button
                   type="submit"
                   disabled={isProcessing}
-                  className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(16,185,129,0.35)] hover:shadow-[0_14px_34px_rgba(16,185,129,0.5)] border border-emerald-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
+                  className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
                 >
                   {isProcessing ? (
                     <span className="flex items-center gap-2">
@@ -1545,7 +1545,7 @@ function CheckoutContent() {
                 </button>
 
                 <div className="flex items-center justify-center gap-1.5 text-[10px] sm:text-[11px] text-slate-500 font-medium text-center">
-                  <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <Lock className="w-3.5 h-3.5 text-red-600 shrink-0" />
                   <span>Payment Required Prior to Access · Official Support: +91 88072 81600</span>
                 </div>
               </div>
