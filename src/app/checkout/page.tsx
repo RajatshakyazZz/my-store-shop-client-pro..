@@ -21,6 +21,7 @@ import {
   X,
   Percent,
   Gift,
+  FolderOpen,
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useStoreSettings } from '@/context/StoreSettingsContext';
@@ -596,7 +597,7 @@ function CheckoutContent() {
 
     // Track GA4 add_payment_info
     track('add_payment_info', {
-      payment_type: 'Razorpay UPI / Netbanking / Cards',
+      payment_type: 'Direct Instant Access',
       currency: 'INR',
       value: checkoutTotal,
       items: allCheckoutItems.map((i, idx) => ({
@@ -650,8 +651,8 @@ function CheckoutContent() {
     };
 
     try {
-      // 1. Create Razorpay Order on server
-      const res = await fetch('/api/payment/razorpay/create-order', {
+      // Direct Instant Order Placement
+      const res = await fetch('/api/orders/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderPayload),
@@ -659,189 +660,56 @@ function CheckoutContent() {
 
       const data = await res.json();
 
-      if (!res.ok || !data.success || !data.razorpay_order_id) {
-        throw new Error(
-          data.error ||
-            'Could not initialize Razorpay payment. Please verify Razorpay API credentials in the Admin Portal.'
-        );
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Could not place order. Please try again.');
       }
 
-      // Store temporary pending order details for confirmation
-      localStorage.setItem('vaultzet_latest_order', JSON.stringify({
-        ...orderPayload,
-        orderId: orderNumber,
-        orderToken: data.order_token,
-        status: 'pending',
-      }));
+      // Store in local storage for instant offline / client unlock
+      try {
+        localStorage.setItem('vaultzet_latest_order', JSON.stringify({
+          ...orderPayload,
+          orderId: orderNumber,
+          orderToken: data.order_token,
+          status: 'completed',
+        }));
 
-      // Helper to dynamically load Razorpay SDK if not already loaded
-      const loadRazorpayScript = () => {
-        return new Promise<boolean>((resolve) => {
-          if (typeof window !== 'undefined' && (window as any).Razorpay) {
-            return resolve(true);
-          }
-          const script = document.createElement('script');
-          script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-          script.async = true;
-          script.onload = () => resolve(true);
-          script.onerror = () => resolve(false);
-          document.body.appendChild(script);
+        const existingRaw = localStorage.getItem('vaultzet_purchased_orders');
+        const list = existingRaw ? JSON.parse(existingRaw) : [];
+        const alreadyInLocal = list.some((o: any) => (o.orderNumber || o.order_id || o.orderId) === orderNumber);
+        if (!alreadyInLocal) {
+          list.unshift({
+            orderNumber,
+            order_id: orderNumber,
+            order_amount: checkoutTotal,
+            date_created: new Date().toISOString(),
+            customer: orderPayload.customer,
+            items: orderPayload.items,
+            hasBump: Boolean(orderPayload.orderBump),
+          });
+          localStorage.setItem('vaultzet_purchased_orders', JSON.stringify(list));
+        }
+
+        localStorage.setItem('vaultzet_customer_email', orderPayload.customer.email);
+
+        const rawSlugs = localStorage.getItem('vaultzet_unlocked_slugs');
+        const unlockedSlugsSet = new Set<string>(rawSlugs ? JSON.parse(rawSlugs) : []);
+        (orderPayload.items || []).forEach((it: any) => {
+          if (it.id) unlockedSlugsSet.add(String(it.id).toLowerCase());
+          if (it.slug) unlockedSlugsSet.add(String(it.slug).toLowerCase());
         });
-      };
-
-      const isLoaded = await loadRazorpayScript();
-      if (!isLoaded) {
-        throw new Error('Razorpay SDK failed to load. Please check your internet connection.');
+        localStorage.setItem('vaultzet_unlocked_slugs', JSON.stringify(Array.from(unlockedSlugsSet)));
+      } catch (storageErr) {
+        console.warn('Local storage write warning:', storageErr);
       }
 
-      // Active Background Status Poller for UPI QR Code cross-device scans
-      let pollInterval: any = null;
-      let isRedirecting = false;
-
-      const stopPolling = () => {
-        if (pollInterval) {
-          clearInterval(pollInterval);
-          pollInterval = null;
-        }
-      };
-
-      const doRedirectSuccess = (paymentId?: string, rzpOrderId?: string, rzpSig?: string) => {
-        if (isRedirecting) return;
-        isRedirecting = true;
-        stopPolling();
-        clearCart();
-        const pParam = paymentId ? `&razorpay_payment_id=${encodeURIComponent(paymentId)}` : '';
-        const rParam = rzpOrderId ? `&razorpay_order_id=${encodeURIComponent(rzpOrderId)}` : '';
-        const sParam = rzpSig ? `&razorpay_signature=${encodeURIComponent(rzpSig)}` : '';
-        window.location.href = `/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}${pParam}${rParam}${sParam}`;
-      };
-
-      const checkPaymentStatus = async (): Promise<boolean> => {
-        try {
-          const checkRes = await fetch(
-            `/api/payment/razorpay/check-status?order_id=${encodeURIComponent(orderNumber)}&razorpay_order_id=${encodeURIComponent(data.razorpay_order_id)}&token=${encodeURIComponent(data.order_token)}`,
-            { cache: 'no-store' }
-          );
-          if (!checkRes.ok) return false;
-          const checkData = await checkRes.json();
-          if (checkData.paid || (checkData.success && checkData.status === 'completed')) {
-            doRedirectSuccess(checkData.payment_id);
-            return true;
-          }
-        } catch (e) {
-          // ignore transient poll errors
-        }
-        return false;
-      };
-
-      // Start polling every 2.5s immediately when modal opens
-      pollInterval = setInterval(async () => {
-        if (isRedirecting) return;
-        await checkPaymentStatus();
-      }, 2500);
-
-      const cleanPhoneDigits = phone.trim().replace(/\D/g, '');
-      const formattedPrefillPhone = cleanPhoneDigits.length === 10
-        ? `+91${cleanPhoneDigits}`
-        : cleanPhoneDigits.startsWith('91')
-        ? `+${cleanPhoneDigits}`
-        : `+91${cleanPhoneDigits}`;
-
-      const logoAbsoluteUrl = typeof window !== 'undefined'
-        ? `${window.location.origin}/logo.png`
-        : 'https://myztore.in/logo.png';
-
-      const callbackUrl = typeof window !== 'undefined'
-        ? `${window.location.origin}/api/payment/razorpay/callback?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}`
-        : `https://myztore.in/api/payment/razorpay/callback?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}`;
-
-      const options = {
-        key: data.key_id,
-        amount: data.amount,
-        currency: data.currency || 'INR',
-        name: settings.storeName || 'Ztore Digital',
-        description: (orderPayload.items?.[0]?.title || 'Viral Reels Bundle').slice(0, 100),
-        image: logoAbsoluteUrl,
-        order_id: data.razorpay_order_id,
-        callback_url: callbackUrl,
-        redirect: true,
-        prefill: {
-          name: fullName.trim(),
-          email: email.trim().toLowerCase(),
-          contact: formattedPrefillPhone,
-        },
-        notes: {
-          order_id: String(orderNumber),
-          customer_name: fullName.trim(),
-          customer_email: email.trim().toLowerCase(),
-        },
-        theme: {
-          color: '#dc2626', // Attractive Red theme matching Ztore Digital
-        },
-        modal: {
-          confirm_close: true,
-          backdropclose: false,
-          ondismiss: async () => {
-            if (isRedirecting) return;
-            // Immediate check before giving up in case customer paid on phone and closed modal
-            const wasPaid = await checkPaymentStatus();
-            if (!wasPaid) {
-              stopPolling();
-              setIsProcessing(false);
-            }
-          },
-        },
-        retry: {
-          enabled: true,
-        },
-        handler: async (response: any) => {
-          stopPolling();
-          setIsProcessing(true);
-          const pId = response?.razorpay_payment_id || '';
-          const rOrderId = response?.razorpay_order_id || data.razorpay_order_id || '';
-          const sig = response?.razorpay_signature || '';
-
-          // Background verification call
-          fetch('/api/payment/razorpay/verify-order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              order_id: orderNumber,
-              razorpay_order_id: rOrderId,
-              razorpay_payment_id: pId,
-              razorpay_signature: sig,
-              token: data.order_token,
-            }),
-          }).catch(() => {});
-
-          doRedirectSuccess(pId, rOrderId, sig);
-        },
-      };
-
-      const rzpInstance = new (window as any).Razorpay(options);
-      rzpInstance.on('payment.failed', async (resp: any) => {
-        const wasPaid = await checkPaymentStatus();
-        if (!wasPaid) {
-          stopPolling();
-          const errorDesc = String(resp.error?.description || '').toLowerCase();
-          const isDomainBlocked = errorDesc.includes('does not match registered website') || errorDesc.includes('website does not match');
-
-          // If domain whitelisting is blocking in-app modal, seamless instant fallback to official Razorpay hosted link
-          if (isDomainBlocked && data.payment_link_url) {
-            window.location.href = data.payment_link_url;
-            return;
-          }
-
-          setIsProcessing(false);
-          setErrorMessage(resp.error?.description || 'Payment was unsuccessful or cancelled. Please try again.');
-        }
-      });
-      rzpInstance.open();
+      clearCart();
+      const redirectUrl = data.redirect_url || `/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}`;
+      window.location.href = redirectUrl;
     } catch (err: any) {
-      console.error('Razorpay order error:', err);
+      console.error('Order placement error:', err);
       setIsProcessing(false);
       setErrorMessage(
-        err.message || 'Payment initiation failed. Please check your connection and try again.'
+        err.message || 'Order placement failed. Please check your connection and try again.'
       );
     }
   };
@@ -855,7 +723,7 @@ function CheckoutContent() {
         </div>
         <h2 className="text-xl font-black text-slate-950">Loading Your Checkout...</h2>
         <p className="text-xs text-slate-500 max-w-sm">
-          Preparing bundle details and secure Razorpay payment gateway.
+          Preparing bundle details and instant checkout.
         </p>
       </div>
     );
@@ -919,10 +787,10 @@ function CheckoutContent() {
                   <span className="text-[11px] font-bold text-slate-500">Authorized Partner Checkout</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
-                  Secure Razorpay Checkout
+                  Instant Order Checkout
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-                  Fill your details below, pay securely via Razorpay, and get instant Google Drive access.
+                  Fill your details below to get instant Google Drive access to your bundle.
                 </p>
               </div>
               <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/80 self-start sm:self-center shrink-0">
@@ -937,7 +805,7 @@ function CheckoutContent() {
                   {isBuyNowMode ? 'Instant Buy Now Checkout' : 'Express Checkout'}
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-                  Zero hassle: Fill your details, pay securely via Razorpay, and get instant Google Drive access.
+                  Zero hassle: Fill your details to get instant Google Drive access to your bundle.
                 </p>
               </div>
               <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/80">
@@ -1017,11 +885,6 @@ function CheckoutContent() {
                   <span className="font-bold">Checkout Issue: </span>
                   {errorMessage}
                 </div>
-                {(errorMessage.includes('Razorpay') || errorMessage.includes('Key') || errorMessage.includes('credential')) && (
-                  <p className="text-[11px] text-rose-700 font-normal mt-1 leading-relaxed">
-                    Note: Agar aapne Admin Portal me Razorpay keys update ki hain, toh Admin Portal (Settings &gt; Integrations &gt; Razorpay Gateway) me Key ID &amp; Key Secret check karein.
-                  </p>
-                )}
               </div>
             </div>
           )}
@@ -1195,12 +1058,12 @@ function CheckoutContent() {
                       {isProcessing ? (
                         <span className="flex items-center gap-2">
                           <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>Connecting Razorpay Gateway...</span>
+                          <span>Placing Order &amp; Unlocking Files...</span>
                         </span>
                       ) : (
                         <>
-                          <Lock className="w-4 h-4 text-white" />
-                          <span>Pay ₹{checkoutTotal}.00 via Razorpay (Instant Access)</span>
+                          <Zap className="w-4 h-4 fill-white text-white" />
+                          <span>Buy Now — ₹{checkoutTotal}.00 (Instant Access)</span>
                         </>
                       )}
                     </button>
@@ -1272,7 +1135,7 @@ function CheckoutContent() {
                 </div>
               )}
 
-              {/* 3. Razorpay Payment Gateway Card */}
+              {/* 2. Direct Delivery & Instant Access Card */}
               <div className="rounded-3xl p-6 bg-white border border-slate-200/90 shadow-sm space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">
@@ -1280,58 +1143,58 @@ function CheckoutContent() {
                       2
                     </span>
                     <h2 className="text-base font-extrabold text-slate-900">
-                      Payment Method
+                      Delivery &amp; Access Method
                     </h2>
                   </div>
                   <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5" /> Razorpay Verified
+                    <ShieldCheck className="w-3.5 h-3.5" /> Instant Delivery
                   </span>
                 </div>
 
-                {/* Branded Razorpay Details Card */}
+                {/* Delivery Information Highlights */}
                 <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-red-500/20 text-white space-y-3.5 shadow-md">
                   <div className="flex items-center justify-between">
                     <div className="font-bold text-xs text-red-400 flex items-center gap-1.5">
-                      <CreditCard className="w-4 h-4 text-red-400" />
-                      <span>Razorpay Payment Gateway (India)</span>
+                      <FolderOpen className="w-4 h-4 text-red-400" />
+                      <span>Instant 1-Click Google Drive Access</span>
                     </div>
                     <span className="text-[10px] font-bold text-slate-400">
-                      RBI Regulated • Zero Extra Fee
+                      Lifetime Access Included
                     </span>
                   </div>
 
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Pay securely with any payment option of your choice. A fast, encrypted Razorpay checkout modal will open to complete payment via UPI, Cards, or NetBanking.
+                    Order confirm hote hi complete Google Drive folder access screen par unlock ho jayega aur aapke diye gaye Gmail par direct access link bhej diya jayega.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <Smartphone className="w-3.5 h-3.5 text-red-400" />
-                        <span>All UPI Apps</span>
+                        <FolderOpen className="w-3.5 h-3.5 text-red-400" />
+                        <span>Google Drive</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
-                        PhonePe, Google Pay, Paytm, CRED & QR
+                        Instant Drive Folder Link &amp; Download
                       </div>
                     </div>
 
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <CreditCard className="w-3.5 h-3.5 text-red-400" />
-                        <span>Cards</span>
+                        <Zap className="w-3.5 h-3.5 text-red-400" />
+                        <span>Lifetime Access</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
-                        RuPay, Visa, MasterCard & Maestro
+                        No expiry, 24/7 unlimited access
                       </div>
                     </div>
 
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <Building className="w-3.5 h-3.5 text-red-400" />
-                        <span>NetBanking</span>
+                        <ShieldCheck className="w-3.5 h-3.5 text-red-400" />
+                        <span>100% Verified</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
-                        50+ Indian Banks (SBI, HDFC, ICICI, etc.)
+                        Full 1080P HD videos without watermark
                       </div>
                     </div>
                   </div>
@@ -1339,7 +1202,7 @@ function CheckoutContent() {
 
                 <div className="p-3 rounded-xl bg-emerald-50/80 border border-emerald-200/80 flex items-center gap-2 text-xs text-emerald-800 font-semibold">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Instant Google Drive Bundle delivery upon payment confirmation.</span>
+                  <span>Instant Google Drive Bundle delivery upon order confirmation.</span>
                 </div>
               </div>
 
@@ -1616,12 +1479,12 @@ function CheckoutContent() {
                     {isProcessing ? (
                       <span className="flex items-center gap-2">
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Connecting Razorpay Gateway...
+                        Placing Order &amp; Unlocking Files...
                       </span>
                     ) : (
                       <>
-                        <Lock className="w-4 h-4 text-white" />
-                        <span>Pay ₹{checkoutTotal}.00 via Razorpay (Instant Access)</span>
+                        <Zap className="w-4 h-4 fill-white text-white" />
+                        <span>Buy Now — ₹{checkoutTotal}.00 (Instant Access)</span>
                       </>
                     )}
                   </button>
@@ -1631,7 +1494,7 @@ function CheckoutContent() {
                       <ShieldCheck className="w-4 h-4 text-emerald-600" />
                       Instant Google Drive Link Delivery
                     </p>
-                    <p>Protected by 256-bit SSL encryption &amp; Razorpay India Security</p>
+                    <p>Protected by 256-bit SSL encryption &amp; Guaranteed Instant Access</p>
                   </div>
                 </div>
               </div>
@@ -1694,12 +1557,12 @@ function CheckoutContent() {
                   {isProcessing ? (
                     <span className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Connecting Razorpay Gateway...
+                      Placing Order &amp; Unlocking Files...
                     </span>
                   ) : (
                     <>
-                      <Lock className="w-4 h-4 text-white" />
-                      <span>Pay ₹{checkoutTotal}.00 via Razorpay (Instant Access)</span>
+                      <Zap className="w-4 h-4 fill-white text-white" />
+                      <span>Buy Now — ₹{checkoutTotal}.00 (Instant Access)</span>
                     </>
                   )}
                 </button>
@@ -1721,9 +1584,6 @@ function CheckoutContent() {
 export default function CheckoutPage() {
   return (
     <>
-      {/* Razorpay India Secure Checkout preconnect */}
-      <link rel="preconnect" href="https://checkout.razorpay.com" />
-      <link rel="dns-prefetch" href="https://api.razorpay.com" />
       <Suspense
         fallback={
           <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center space-y-4 bg-[#faf9f6]">
@@ -1732,7 +1592,7 @@ export default function CheckoutPage() {
             </div>
             <h2 className="text-xl font-black text-slate-950">Loading Checkout...</h2>
             <p className="text-xs text-slate-500 max-w-sm">
-              Preparing bundle details and secure Razorpay payment gateway.
+              Preparing bundle details and instant checkout.
             </p>
           </div>
         }

@@ -104,9 +104,9 @@ const CUSTOMER_REVIEWS = [
     rating: 5,
     date: '1 week ago',
     verified: true,
-    title: 'Safe UPI payment & Lifetime Drive access',
+    title: 'Instant 1-Click Access & Lifetime Drive delivery',
     comment:
-      'Razorpay UPI se securely pay kiya aur turant Google Drive folder open ho gaya. Lifetime access mila hai, phone me 1-click download ho jata hai bina kisi watermark ke.',
+      'Order complete karte hi turant Google Drive folder open ho gaya. Lifetime access mila hai, phone me 1-click download ho jata hai bina kisi watermark ke.',
     helpful: 22,
   },
 ];
@@ -731,18 +731,17 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       <span>Drive link appears on screen immediately &amp; is sent to your email.</span>
                     </p>
 
-                    {/* Indian UPI Payment Badges Strip */}
+                    {/* Instant Access & Delivery Strip */}
                     <div className="pt-2 border-t border-slate-100 space-y-1.5 text-center">
                       <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                         <Lock className="w-3 text-emerald-600" />
-                        <span>Instant UPI Checkout via Razorpay</span>
+                        <span>Instant 1-Click Delivery • Google Drive</span>
                       </div>
                       <div className="flex items-center justify-center gap-1.5 flex-wrap text-[11px] font-bold text-slate-600">
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Google Pay</span>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">PhonePe</span>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Paytm</span>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">BHIM UPI</span>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Cards</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Google Drive Folder</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Lifetime Validity</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">1080P Full HD</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">No Watermark</span>
                       </div>
                     </div>
 
