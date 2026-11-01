@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { sendSaleSuccessTelegramAlert } from '@/lib/telegram';
+import { sendAbandonedOrPendingTelegramAlert, sendSaleSuccessTelegramAlert } from '@/lib/telegram';
 import { sendResellerSaleTelegramAlert } from '@/lib/telegramReseller';
 import { getResellerListingBySlug, getResellerProfile, getResellerWallet, recordSaleEarning } from '@/lib/resellerService';
 import { calculateCouponDiscount } from '@/lib/coupon';
@@ -147,44 +147,25 @@ export async function POST(request: Request) {
     const orderToken = generateOrderToken(orderNumber);
     const clientMeta = extractClientMetadata(request);
 
-    // 3. Resolve secure download links for all products
+    // 3. For locked manual/WhatsApp orders, do NOT expose Google Drive links in unpaid records
     const rawItems = items && items.length > 0
       ? items
       : [{ id: 'bundle', title: 'Viral Reels Bundle', price: Number(finalTotalAmount), license: 'personal' }];
 
-    const verifiedItems = await Promise.all(
-      rawItems.map(async (it: any) => {
-        const resolved = await resolveDriveFilesForProduct(it);
-        const resolvedThumb =
-          it.thumbnail ||
-          it.featured_image ||
-          it.image ||
-          it.coverImage ||
-          resolved.thumbnail ||
-          '';
+    const orderItems = rawItems.map((it: any) => ({
+      id: it.id || 'bundle',
+      title: it.title || 'Viral Reels Bundle',
+      slug: it.slug || (it as any).productSlug || '',
+      license: it.license || 'personal',
+      price: Number(it.price || 0),
+      format: it.format || 'MP4 Video',
+      resolution: it.resolution || '1080P FULL HD',
+      thumbnail: it.thumbnail || it.featured_image || it.image || it.coverImage || '',
+      googleDriveLink: null, // Strictly locked until payment is verified by store owner
+      files: [],
+    }));
 
-        return {
-          id: it.id || 'bundle',
-          title: it.title || 'Viral Reels Bundle',
-          slug: it.slug || (it as any).productSlug || '',
-          license: it.license || 'personal',
-          price: Number(it.price || 0),
-          format: resolved.format || it.format || 'MP4 Video',
-          resolution: resolved.resolution || it.resolution || '1080P FULL HD',
-          thumbnail: resolvedThumb,
-          featured_image: resolvedThumb,
-          googleDriveLink: resolved.primaryLink,
-          files: resolved.files,
-          access_instructions: [
-            'Click the Google Drive link to access your complete bundle folder instantly.',
-            'You can download individual video files or save the entire folder directly to your Drive.',
-            'Keep your checkout email saved — you can re-access all files anytime via the My Orders portal.',
-          ],
-        };
-      })
-    );
-
-    // 4. Persist Completed Order to Firestore
+    // 4. Persist PENDING / UNPAID Order to Firestore (Access Strictly Locked)
     if (db) {
       try {
         const orderRef = doc(db, 'orders', orderNumber);
@@ -195,13 +176,13 @@ export async function POST(request: Request) {
             email: cleanEmail,
             phone: cleanPhone,
           },
-          items: verifiedItems,
+          items: orderItems,
           orderBump: orderBump || null,
           totalAmount: Number(finalTotalAmount),
-          paymentMethod: 'Direct Instant Access',
-          payment_status: 'PAID',
-          status: 'completed',
-          paid_at: new Date().toISOString(),
+          paymentMethod: 'WhatsApp UPI (Pending Manual Payment)',
+          payment_status: 'UNPAID',
+          status: 'pending',
+          is_locked: true,
           createdAt: serverTimestamp(),
           timestampIso: new Date().toISOString(),
           purchase_event_id: `purchase_${orderNumber}`,
@@ -213,116 +194,46 @@ export async function POST(request: Request) {
           discount_amount: appliedCouponDetails?.discount_amount || 0,
           ...resellerAttribution,
         });
-
-        // Also persist to order_success_records for redundant offline recovery
-        await setDoc(
-          doc(db, 'order_success_records', orderNumber),
-          {
-            order_id: orderNumber,
-            orderNumber,
-            customer: {
-              fullName: cleanName,
-              email: cleanEmail,
-              phone: cleanPhone,
-            },
-            items: verifiedItems,
-            orderBump: orderBump || null,
-            totalAmount: Number(finalTotalAmount),
-            status: 'completed',
-            paymentMethod: 'Direct Instant Access',
-            payment_status: 'PAID',
-            created_at: new Date().toISOString(),
-            order_token: orderToken,
-          },
-          { merge: true }
-        );
       } catch (firestoreErr) {
-        console.warn('Could not save completed order to Firestore:', firestoreErr);
+        console.warn('Could not save pending order to Firestore:', firestoreErr);
       }
     }
 
-    // 5. Process Reseller Payout ledger if applicable
-    if (resellerAttribution.reseller_id) {
-      try {
-        const safeEarning = Number(resellerAttribution.reseller_earning || 0);
-        if (safeEarning > 0) {
-          await recordSaleEarning({
-            resellerId: resellerAttribution.reseller_id,
-            orderId: orderNumber,
-            listingId: resellerAttribution.reseller_listing_id,
-            productTitle: verifiedItems[0]?.title || 'Viral Reels Bundle',
-            amount: safeEarning,
-          });
+    // 5. Build official WhatsApp checkout URL with complete customer & order info
+    const supportNumber = '918807281600';
+    const itemsTitle = orderItems.map((i: any) => i.title).join(', ');
+    const waMessage = `Hi Ztore Digital! I want to purchase:\n📦 Bundle: ${itemsTitle}\n💰 Total: ₹${finalTotalAmount}.00\n🆔 Order ID: ${orderNumber}\n👤 Name: ${cleanName}\n📧 Gmail: ${cleanEmail}\n📱 Phone: ${cleanPhone}\n\nPlease share your UPI QR code / payment details so I can complete payment and get my Google Drive access.`;
+    const whatsappUrl = `https://wa.me/${supportNumber}?text=${encodeURIComponent(waMessage)}`;
 
-          const [profile, wallet] = await Promise.all([
-            getResellerProfile(resellerAttribution.reseller_id).catch(() => null),
-            getResellerWallet(resellerAttribution.reseller_id).catch(() => null),
-          ]);
-
-          await sendResellerSaleTelegramAlert({
-            orderNumber,
-            resellerId: resellerAttribution.reseller_id,
-            resellerName: profile?.displayName || 'Partner',
-            resellerPhone: profile?.phone || '',
-            productTitle: verifiedItems[0]?.title || 'Viral Reels Bundle',
-            totalAmount: Number(finalTotalAmount),
-            basePrice: Number(resellerAttribution.reseller_base_cost || 0),
-            resellerEarning: safeEarning,
-            customer: {
-              fullName: cleanName,
-              email: cleanEmail,
-              phone: cleanPhone,
-            },
-            availableBalance: wallet?.availableBalance ?? 0,
-            totalEarned: wallet?.totalEarned ?? 0,
-          });
-        }
-      } catch (rErr) {
-        console.warn('Reseller ledger record warning:', rErr);
-      }
-    }
-
-    // 6. Dispatch Instant Telegram Sale Alert to Store Owner
-    sendSaleSuccessTelegramAlert({
-      orderNumber,
-      customer: {
-        fullName: cleanName,
-        email: cleanEmail,
-        phone: cleanPhone,
+    // 6. Dispatch Alert to Store Owner that customer is waiting on WhatsApp to pay
+    sendAbandonedOrPendingTelegramAlert(
+      {
+        orderNumber,
+        customer: {
+          fullName: cleanName,
+          email: cleanEmail,
+          phone: cleanPhone,
+        },
+        items: orderItems,
+        orderBump: orderBump || null,
+        totalAmount: Number(finalTotalAmount),
+        paymentStatus: 'AWAITING_UPI_PAYMENT_ON_WHATSAPP',
+        paymentMethod: 'WhatsApp UPI',
       },
-      items: verifiedItems,
-      orderBump: orderBump || null,
-      totalAmount: Number(finalTotalAmount),
-      paymentStatus: 'PAID',
-      paymentMethod: 'Direct Instant Access',
-    }).catch((tErr) => {
-      console.warn('Telegram sale alert warning:', tErr);
-    });
-
-    // 7. Dispatch Meta CAPI Purchase event
-    sendMetaCapiPurchase({
-      orderId: orderNumber,
-      totalAmount: Number(finalTotalAmount),
-      currency: 'INR',
-      items: verifiedItems,
-      customer: {
-        fullName: cleanName,
-        email: cleanEmail,
-        phone: cleanPhone,
-      },
-      clientIp: clientMeta?.clientIp,
-      clientUserAgent: clientMeta?.clientUserAgent,
-      fbp: clientMeta?.fbp,
-      fbc: clientMeta?.fbc,
-    }).catch((capiErr) => {
-      console.warn('Meta CAPI event warning:', capiErr);
+      'checkout_initiated'
+    ).catch((tErr: any) => {
+      console.warn('Telegram pending alert warning:', tErr);
     });
 
     return NextResponse.json({
       success: true,
+      locked: true,
+      status: 'pending',
+      payment_status: 'UNPAID',
       order_id: orderNumber,
       order_token: orderToken,
-      redirect_url: `/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(orderToken)}`,
+      whatsapp_url: whatsappUrl,
+      message: 'Direct automated checkout is locked. Payment required via UPI on WhatsApp.',
     });
   } catch (error: any) {
     console.error('Error creating direct order:', error);

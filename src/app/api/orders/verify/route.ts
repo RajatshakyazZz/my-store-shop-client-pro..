@@ -42,9 +42,10 @@ export async function GET(request: Request) {
     }
 
     const isPaid =
-      storedOrder.status === 'completed' ||
-      storedOrder.payment_status === 'PAID' ||
-      storedOrder.razorpay_verified === true;
+      storedOrder.status === 'completed' &&
+      storedOrder.payment_status === 'PAID' &&
+      storedOrder.paymentMethod !== 'Direct Instant Access' &&
+      storedOrder.is_locked !== true;
 
     if (!isPaid) {
       return NextResponse.json({

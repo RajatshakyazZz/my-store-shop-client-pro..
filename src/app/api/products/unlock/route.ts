@@ -37,7 +37,11 @@ export async function POST(request: Request) {
       const snap = await getDoc(doc(db, 'orders', orderId)).catch(() => null);
       if (snap && snap.exists()) {
         const orderData = snap.data();
-        const isPaid = orderData.status === 'completed' || orderData.payment_status === 'PAID' || orderData.razorpay_verified === true;
+        const isPaid =
+          orderData.status === 'completed' &&
+          orderData.payment_status === 'PAID' &&
+          orderData.paymentMethod !== 'Direct Instant Access' &&
+          orderData.is_locked !== true;
         if (isPaid) {
           const items: any[] = Array.isArray(orderData.items) ? orderData.items : [];
           const hasItem = items.some((it) => {
@@ -67,7 +71,11 @@ export async function POST(request: Request) {
       if (snap && !snap.empty) {
         for (const d of snap.docs) {
           const orderData = d.data();
-          const isPaid = orderData.status === 'completed' || orderData.payment_status === 'PAID' || orderData.razorpay_verified === true;
+          const isPaid =
+          orderData.status === 'completed' &&
+          orderData.payment_status === 'PAID' &&
+          orderData.paymentMethod !== 'Direct Instant Access' &&
+          orderData.is_locked !== true;
           if (isPaid) {
             const items: any[] = Array.isArray(orderData.items) ? orderData.items : [];
             const hasItem = items.some((it) => {

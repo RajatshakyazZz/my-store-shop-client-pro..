@@ -651,7 +651,7 @@ function CheckoutContent() {
     };
 
     try {
-      // Direct Instant Order Placement
+      // Create pending order and redirect to WhatsApp for verified UPI payment
       const res = await fetch('/api/orders/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -661,55 +661,32 @@ function CheckoutContent() {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Could not place order. Please try again.');
+        throw new Error(data.error || 'Could not initiate order. Please try again.');
       }
 
-      // Store in local storage for instant offline / client unlock
+      // Strictly clear any free unlocked access keys to prevent unauthorized downloads
       try {
-        localStorage.setItem('vaultzet_latest_order', JSON.stringify({
-          ...orderPayload,
-          orderId: orderNumber,
-          orderToken: data.order_token,
-          status: 'completed',
-        }));
-
-        const existingRaw = localStorage.getItem('vaultzet_purchased_orders');
-        const list = existingRaw ? JSON.parse(existingRaw) : [];
-        const alreadyInLocal = list.some((o: any) => (o.orderNumber || o.order_id || o.orderId) === orderNumber);
-        if (!alreadyInLocal) {
-          list.unshift({
-            orderNumber,
-            order_id: orderNumber,
-            order_amount: checkoutTotal,
-            date_created: new Date().toISOString(),
-            customer: orderPayload.customer,
-            items: orderPayload.items,
-            hasBump: Boolean(orderPayload.orderBump),
-          });
-          localStorage.setItem('vaultzet_purchased_orders', JSON.stringify(list));
-        }
-
-        localStorage.setItem('vaultzet_customer_email', orderPayload.customer.email);
-
-        const rawSlugs = localStorage.getItem('vaultzet_unlocked_slugs');
-        const unlockedSlugsSet = new Set<string>(rawSlugs ? JSON.parse(rawSlugs) : []);
-        (orderPayload.items || []).forEach((it: any) => {
-          if (it.id) unlockedSlugsSet.add(String(it.id).toLowerCase());
-          if (it.slug) unlockedSlugsSet.add(String(it.slug).toLowerCase());
-        });
-        localStorage.setItem('vaultzet_unlocked_slugs', JSON.stringify(Array.from(unlockedSlugsSet)));
-      } catch (storageErr) {
-        console.warn('Local storage write warning:', storageErr);
-      }
+        localStorage.removeItem('vaultzet_latest_order');
+        localStorage.removeItem('vaultzet_unlocked_slugs');
+      } catch {}
 
       clearCart();
-      const redirectUrl = data.redirect_url || `/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}`;
-      window.location.href = redirectUrl;
+
+      // Redirect customer directly to official WhatsApp support to complete UPI payment
+      if (data.whatsapp_url) {
+        window.location.href = data.whatsapp_url;
+        return;
+      }
+
+      const supportNumber = '918807281600';
+      const itemsTitle = allCheckoutItems.map((i) => i?.product?.title || 'Reels Bundle').join(', ');
+      const fallbackMsg = `Hi Ztore Digital! I want to purchase:\n📦 Bundle: ${itemsTitle}\n💰 Total: ₹${checkoutTotal}.00\n🆔 Order ID: ${orderNumber}\n👤 Name: ${fullName.trim()}\n📧 Gmail: ${email.trim()}\n📱 Phone: ${phone.trim()}\n\nPlease share your UPI QR code so I can pay and get access.`;
+      window.location.href = `https://wa.me/${supportNumber}?text=${encodeURIComponent(fallbackMsg)}`;
     } catch (err: any) {
       console.error('Order placement error:', err);
       setIsProcessing(false);
       setErrorMessage(
-        err.message || 'Order placement failed. Please check your connection and try again.'
+        err.message || 'Order connection failed. Please check your connection and try again.'
       );
     }
   };
@@ -1053,27 +1030,27 @@ function CheckoutContent() {
                     <button
                       type="submit"
                       disabled={isProcessing}
-                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
+                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(16,185,129,0.35)] hover:shadow-[0_14px_34px_rgba(16,185,129,0.5)] border border-emerald-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
                     >
                       {isProcessing ? (
                         <span className="flex items-center gap-2">
                           <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>Placing Order &amp; Unlocking Files...</span>
+                          <span>Connecting to WhatsApp Support...</span>
                         </span>
                       ) : (
                         <>
-                          <Zap className="w-4 h-4 fill-white text-white" />
-                          <span>Buy Now — ₹{checkoutTotal}.00 (Instant Access)</span>
+                          <Lock className="w-4 h-4 text-white" />
+                          <span>Order &amp; Pay via WhatsApp UPI — ₹{checkoutTotal}.00</span>
                         </>
                       )}
                     </button>
                     <div className="flex items-center justify-center gap-2 text-[11px] text-slate-500 font-semibold text-center mt-2.5">
-                      <span className="flex items-center gap-1 text-emerald-700 font-bold">
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Instant Google Drive Delivery</span>
+                      <span className="flex items-center gap-1 text-amber-700 font-bold">
+                        <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                        <span>Payment Required Prior to Access</span>
                       </span>
                       <span>•</span>
-                      <span>256-bit SSL Security</span>
+                      <span>Support: +91 88072 81600</span>
                     </div>
                   </div>
                 </div>
@@ -1135,74 +1112,74 @@ function CheckoutContent() {
                 </div>
               )}
 
-              {/* 2. Direct Delivery & Instant Access Card */}
+              {/* 2. Payment & Delivery Notice */}
               <div className="rounded-3xl p-6 bg-white border border-slate-200/90 shadow-sm space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-slate-950 text-red-400 border border-red-500/40 text-xs font-black flex items-center justify-center shadow-xs">
+                    <span className="w-6 h-6 rounded-full bg-slate-950 text-amber-400 border border-amber-500/40 text-xs font-black flex items-center justify-center shadow-xs">
                       2
                     </span>
                     <h2 className="text-base font-extrabold text-slate-900">
-                      Delivery &amp; Access Method
+                      Payment &amp; Delivery Method
                     </h2>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5" /> Instant Delivery
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-200 flex items-center gap-1">
+                    <Lock className="w-3.5 h-3.5 text-amber-700" /> Manual UPI Verification
                   </span>
                 </div>
 
                 {/* Delivery Information Highlights */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-red-500/20 text-white space-y-3.5 shadow-md">
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-amber-500/30 text-white space-y-3.5 shadow-md">
                   <div className="flex items-center justify-between">
-                    <div className="font-bold text-xs text-red-400 flex items-center gap-1.5">
-                      <FolderOpen className="w-4 h-4 text-red-400" />
-                      <span>Instant 1-Click Google Drive Access</span>
+                    <div className="font-bold text-xs text-amber-400 flex items-center gap-1.5">
+                      <Lock className="w-4 h-4 text-amber-400" />
+                      <span>Direct Free Downloads Strictly Locked</span>
                     </div>
-                    <span className="text-[10px] font-bold text-slate-400">
-                      Lifetime Access Included
+                    <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/30">
+                      WhatsApp UPI Active
                     </span>
                   </div>
 
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Order confirm hote hi complete Google Drive folder access screen par unlock ho jayega aur aapke diye gaye Gmail par direct access link bhej diya jayega.
+                    Unpaid downloads rokne ke liye direct automated access locked hai. Apna Name, Gmail aur WhatsApp number daal kar button tap karein — aap seedhe verified WhatsApp helpline par UPI QR scan karke pay karenge aur turant verified Google Drive link receive karenge.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <FolderOpen className="w-3.5 h-3.5 text-red-400" />
-                        <span>Google Drive</span>
+                        <Lock className="w-3.5 h-3.5 text-amber-400" />
+                        <span>Security Check</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
-                        Instant Drive Folder Link &amp; Download
+                        Payment verification mandatory before files are unlocked
                       </div>
                     </div>
 
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <Zap className="w-3.5 h-3.5 text-red-400" />
-                        <span>Lifetime Access</span>
+                        <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>All UPI Apps</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
-                        No expiry, 24/7 unlimited access
+                        PhonePe, Google Pay, Paytm, CRED &amp; BHIM
                       </div>
                     </div>
 
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
                         <ShieldCheck className="w-3.5 h-3.5 text-red-400" />
-                        <span>100% Verified</span>
+                        <span>100% Lifetime Access</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
-                        Full 1080P HD videos without watermark
+                        Complete Google Drive access on your Gmail
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-emerald-50/80 border border-emerald-200/80 flex items-center gap-2 text-xs text-emerald-800 font-semibold">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Instant Google Drive Bundle delivery upon order confirmation.</span>
+                <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200/80 flex items-center gap-2 text-xs text-amber-900 font-semibold">
+                  <AlertCircle className="w-4 h-4 text-amber-700 shrink-0" />
+                  <span>Notice: Digital bundle links are only issued after verified payment. No unpaid downloads allowed.</span>
                 </div>
               </div>
 
@@ -1474,27 +1451,27 @@ function CheckoutContent() {
                   <button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] transition-all disabled:opacity-70 cursor-pointer"
+                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(16,185,129,0.35)] hover:shadow-[0_14px_34px_rgba(16,185,129,0.5)] border border-emerald-400/50 hover:scale-[1.01] transition-all disabled:opacity-70 cursor-pointer"
                   >
                     {isProcessing ? (
                       <span className="flex items-center gap-2">
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Placing Order &amp; Unlocking Files...
+                        Connecting to WhatsApp Support...
                       </span>
                     ) : (
                       <>
-                        <Zap className="w-4 h-4 fill-white text-white" />
-                        <span>Buy Now — ₹{checkoutTotal}.00 (Instant Access)</span>
+                        <Lock className="w-4 h-4 text-white" />
+                        <span>Order &amp; Pay via WhatsApp UPI — ₹{checkoutTotal}.00</span>
                       </>
                     )}
                   </button>
 
                   <div className="space-y-1.5 text-center text-[11px] text-slate-400 pt-2 font-medium">
-                    <p className="flex items-center justify-center gap-1 text-slate-600 font-bold">
-                      <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                      Instant Google Drive Link Delivery
+                    <p className="flex items-center justify-center gap-1 text-amber-600 font-bold">
+                      <Lock className="w-3.5 h-3.5 text-amber-600" />
+                      Payment Required Prior to Access
                     </p>
-                    <p>Protected by 256-bit SSL encryption &amp; Guaranteed Instant Access</p>
+                    <p>Official 24/7 Verified Support: +91 88072 81600</p>
                   </div>
                 </div>
               </div>
@@ -1552,24 +1529,24 @@ function CheckoutContent() {
                 <button
                   type="submit"
                   disabled={isProcessing}
-                  className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
+                  className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(16,185,129,0.35)] hover:shadow-[0_14px_34px_rgba(16,185,129,0.5)] border border-emerald-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
                 >
                   {isProcessing ? (
                     <span className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Placing Order &amp; Unlocking Files...
+                      Connecting to WhatsApp Support...
                     </span>
                   ) : (
                     <>
-                      <Zap className="w-4 h-4 fill-white text-white" />
-                      <span>Buy Now — ₹{checkoutTotal}.00 (Instant Access)</span>
+                      <Lock className="w-4 h-4 text-white" />
+                      <span>Order &amp; Pay via WhatsApp UPI — ₹{checkoutTotal}.00</span>
                     </>
                   )}
                 </button>
 
                 <div className="flex items-center justify-center gap-1.5 text-[10px] sm:text-[11px] text-slate-500 font-medium text-center">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Instant Google Drive Delivery · 256-bit SSL Security</span>
+                  <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <span>Payment Required Prior to Access · Official Support: +91 88072 81600</span>
                 </div>
               </div>
             </div>
