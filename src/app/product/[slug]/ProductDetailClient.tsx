@@ -747,26 +747,30 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       onClick={() => buyNow(p, 'personal')}
                       className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-base shadow-lg shadow-red-500/25 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <Lock className="w-4 h-4 text-white" />
-                      <span>Order &amp; Pay via WhatsApp UPI — ₹{activePrice}.00</span>
+                      <Zap className="w-4 h-4 fill-white" />
+                      <span>Buy Now — ₹{activePrice}.00</span>
+                      <span className="bg-white/95 px-2 py-0.5 rounded-md inline-flex items-center shadow-xs shrink-0 ml-1">
+                        <img src="/razorpay-logo.png" alt="Razorpay" className="h-3.5 w-auto object-contain" />
+                      </span>
                     </button>
 
                     <p className="text-center text-[11px] text-slate-500 font-medium flex items-center justify-center gap-1.5">
-                      <Lock className="w-3.5 h-3.5 text-red-600 shrink-0" />
-                      <span>Direct free downloads locked • Payment verified on WhatsApp prior to access.</span>
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>Instant Google Drive Delivery • Official Razorpay Secure Checkout</span>
                     </p>
 
                     {/* Instant Access & Delivery Strip */}
                     <div className="pt-2 border-t border-slate-100 space-y-1.5 text-center">
-                      <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-red-700 uppercase tracking-wider">
-                        <Lock className="w-3 text-red-600" />
-                        <span>Payment Verification Required Prior to Access</span>
+                      <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        <Lock className="w-3 text-emerald-600" />
+                        <span>Instant UPI Checkout via Razorpay</span>
                       </div>
                       <div className="flex items-center justify-center gap-1.5 flex-wrap text-[11px] font-bold text-slate-600">
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">PhonePe / GPay QR</span>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Verified Drive Delivery</span>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">1080P Full HD</span>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Support: +91 88072 81600</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Google Pay</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">PhonePe</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Paytm</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">BHIM UPI</span>
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Cards</span>
                       </div>
                     </div>
 
@@ -1450,10 +1454,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <button
                 type="button"
                 onClick={() => buyNow(p, 'personal')}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm shadow-md shadow-red-500/25 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm shadow-md shadow-red-500/25 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <Lock className="w-4 h-4 text-white" />
-                <span>Order via WhatsApp UPI — ₹{activePrice}</span>
+                <Zap className="w-4 h-4 fill-white" />
+                <span>Buy Now — ₹{activePrice}</span>
+                <span className="bg-white/95 px-1.5 py-0.5 rounded-md inline-flex items-center shadow-xs shrink-0">
+                  <img src="/razorpay-logo.png" alt="Razorpay" className="h-3 w-auto object-contain" />
+                </span>
               </button>
             )}
           </div>

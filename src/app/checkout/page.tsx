@@ -651,8 +651,8 @@ function CheckoutContent() {
     };
 
     try {
-      // Create pending order and redirect to WhatsApp for verified UPI payment
-      const res = await fetch('/api/orders/create', {
+      // 1. Create Razorpay Order on server
+      const res = await fetch('/api/payment/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderPayload),
@@ -660,33 +660,188 @@ function CheckoutContent() {
 
       const data = await res.json();
 
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Could not initiate order. Please try again.');
+      if (!res.ok || !data.success || !data.razorpay_order_id) {
+        throw new Error(
+          data.error ||
+            'Could not initialize Razorpay payment. Please verify Razorpay API credentials in the Admin Portal.'
+        );
       }
 
-      // Strictly clear any free unlocked access keys to prevent unauthorized downloads
-      try {
-        localStorage.removeItem('vaultzet_latest_order');
-        localStorage.removeItem('vaultzet_unlocked_slugs');
-      } catch {}
+      // Store temporary pending order details for confirmation
+      localStorage.setItem('vaultzet_latest_order', JSON.stringify({
+        ...orderPayload,
+        orderId: orderNumber,
+        orderToken: data.order_token,
+        status: 'pending',
+      }));
 
-      clearCart();
+      // Helper to dynamically load Razorpay SDK if not already loaded
+      const loadRazorpayScript = () => {
+        return new Promise<boolean>((resolve) => {
+          if (typeof window !== 'undefined' && (window as any).Razorpay) {
+            return resolve(true);
+          }
+          const script = document.createElement('script');
+          script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+          script.async = true;
+          script.onload = () => resolve(true);
+          script.onerror = () => resolve(false);
+          document.body.appendChild(script);
+        });
+      };
 
-      // Redirect customer directly to official WhatsApp support to complete UPI payment
-      if (data.whatsapp_url) {
-        window.location.href = data.whatsapp_url;
-        return;
+      const isLoaded = await loadRazorpayScript();
+      if (!isLoaded) {
+        throw new Error('Razorpay SDK failed to load. Please check your internet connection.');
       }
 
-      const supportNumber = '918807281600';
-      const itemsTitle = allCheckoutItems.map((i) => i?.product?.title || 'Reels Bundle').join(', ');
-      const fallbackMsg = `Hi Ztore Digital! I want to purchase:\n📦 Bundle: ${itemsTitle}\n💰 Total: ₹${checkoutTotal}.00\n🆔 Order ID: ${orderNumber}\n👤 Name: ${fullName.trim()}\n📧 Gmail: ${email.trim()}\n📱 Phone: ${phone.trim()}\n\nPlease share your UPI QR code so I can pay and get access.`;
-      window.location.href = `https://wa.me/${supportNumber}?text=${encodeURIComponent(fallbackMsg)}`;
+      // Active Background Status Poller for UPI QR Code cross-device scans
+      let pollInterval: any = null;
+      let isRedirecting = false;
+
+      const stopPolling = () => {
+        if (pollInterval) {
+          clearInterval(pollInterval);
+          pollInterval = null;
+        }
+      };
+
+      const doRedirectSuccess = (paymentId?: string, rzpOrderId?: string, rzpSig?: string) => {
+        if (isRedirecting) return;
+        isRedirecting = true;
+        stopPolling();
+        clearCart();
+        const pParam = paymentId ? `&razorpay_payment_id=${encodeURIComponent(paymentId)}` : '';
+        const rParam = rzpOrderId ? `&razorpay_order_id=${encodeURIComponent(rzpOrderId)}` : '';
+        const sParam = rzpSig ? `&razorpay_signature=${encodeURIComponent(rzpSig)}` : '';
+        window.location.href = `/order-success?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}${pParam}${rParam}${sParam}`;
+      };
+
+      const checkPaymentStatus = async (): Promise<boolean> => {
+        try {
+          const checkRes = await fetch(
+            `/api/payment/razorpay/check-status?order_id=${encodeURIComponent(orderNumber)}&razorpay_order_id=${encodeURIComponent(data.razorpay_order_id)}&token=${encodeURIComponent(data.order_token)}`,
+            { cache: 'no-store' }
+          );
+          if (!checkRes.ok) return false;
+          const checkData = await checkRes.json();
+          if (checkData.paid || (checkData.success && checkData.status === 'completed')) {
+            doRedirectSuccess(checkData.payment_id);
+            return true;
+          }
+        } catch (e) {
+          // ignore transient poll errors
+        }
+        return false;
+      };
+
+      // Start polling every 2.5s immediately when modal opens
+      pollInterval = setInterval(async () => {
+        if (isRedirecting) return;
+        await checkPaymentStatus();
+      }, 2500);
+
+      const cleanPhoneDigits = phone.trim().replace(/\D/g, '');
+      const formattedPrefillPhone = cleanPhoneDigits.length === 10
+        ? `+91${cleanPhoneDigits}`
+        : cleanPhoneDigits.startsWith('91')
+        ? `+${cleanPhoneDigits}`
+        : `+91${cleanPhoneDigits}`;
+
+      const logoAbsoluteUrl = typeof window !== 'undefined'
+        ? `${window.location.origin}/logo.png`
+        : 'https://myztore.in/logo.png';
+
+      const callbackUrl = typeof window !== 'undefined'
+        ? `${window.location.origin}/api/payment/razorpay/callback?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}`
+        : `https://myztore.in/api/payment/razorpay/callback?order_id=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(data.order_token)}`;
+
+      const options = {
+        key: data.key_id,
+        amount: data.amount,
+        currency: data.currency || 'INR',
+        name: settings.storeName || 'Ztore Digital',
+        description: (orderPayload.items?.[0]?.title || 'Viral Reels Bundle').slice(0, 100),
+        image: logoAbsoluteUrl,
+        order_id: data.razorpay_order_id,
+        callback_url: callbackUrl,
+        redirect: true,
+        prefill: {
+          name: fullName.trim(),
+          email: email.trim().toLowerCase(),
+          contact: formattedPrefillPhone,
+        },
+        notes: {
+          order_id: String(orderNumber),
+          customer_name: fullName.trim(),
+          customer_email: email.trim().toLowerCase(),
+        },
+        theme: {
+          color: '#dc2626', // Attractive Red theme matching Ztore Digital
+        },
+        modal: {
+          confirm_close: true,
+          backdropclose: false,
+          ondismiss: async () => {
+            if (isRedirecting) return;
+            const wasPaid = await checkPaymentStatus();
+            if (!wasPaid) {
+              stopPolling();
+              setIsProcessing(false);
+            }
+          },
+        },
+        retry: {
+          enabled: true,
+        },
+        handler: async (response: any) => {
+          stopPolling();
+          setIsProcessing(true);
+          const pId = response?.razorpay_payment_id || '';
+          const rOrderId = response?.razorpay_order_id || data.razorpay_order_id || '';
+          const sig = response?.razorpay_signature || '';
+
+          // Background verification call
+          fetch('/api/payment/razorpay/verify-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              order_id: orderNumber,
+              razorpay_order_id: rOrderId,
+              razorpay_payment_id: pId,
+              razorpay_signature: sig,
+              token: data.order_token,
+            }),
+          }).catch(() => {});
+
+          doRedirectSuccess(pId, rOrderId, sig);
+        },
+      };
+
+      const rzpInstance = new (window as any).Razorpay(options);
+      rzpInstance.on('payment.failed', async (resp: any) => {
+        const wasPaid = await checkPaymentStatus();
+        if (!wasPaid) {
+          stopPolling();
+          const errorDesc = String(resp.error?.description || '').toLowerCase();
+          const isDomainBlocked = errorDesc.includes('does not match registered website') || errorDesc.includes('website does not match');
+
+          // If domain whitelisting is blocking in-app modal, seamless instant fallback to official Razorpay hosted link
+          if (isDomainBlocked && data.payment_link_url) {
+            window.location.href = data.payment_link_url;
+            return;
+          }
+
+          setIsProcessing(false);
+          setErrorMessage(resp.error?.description || 'Payment was unsuccessful or cancelled. Please try again.');
+        }
+      });
+      rzpInstance.open();
     } catch (err: any) {
-      console.error('Order placement error:', err);
+      console.error('Razorpay order error:', err);
       setIsProcessing(false);
       setErrorMessage(
-        err.message || 'Order connection failed. Please check your connection and try again.'
+        err.message || 'Payment initiation failed. Please check your connection and try again.'
       );
     }
   };
@@ -1030,27 +1185,34 @@ function CheckoutContent() {
                     <button
                       type="submit"
                       disabled={isProcessing}
-                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
+                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-base flex items-center justify-center gap-2.5 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
                     >
                       {isProcessing ? (
                         <span className="flex items-center gap-2">
                           <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>Connecting to WhatsApp Support...</span>
+                          <span>Connecting Razorpay Gateway...</span>
                         </span>
                       ) : (
-                        <>
-                          <Lock className="w-4 h-4 text-white" />
-                          <span>Order &amp; Pay via WhatsApp UPI — ₹{checkoutTotal}.00</span>
-                        </>
+                        <span className="flex items-center justify-center gap-2 sm:gap-2.5 flex-wrap">
+                          <Lock className="w-4 h-4 text-white shrink-0" />
+                          <span>Pay ₹{checkoutTotal}.00 via</span>
+                          <span className="bg-white px-2 py-0.5 rounded-md inline-flex items-center shadow-xs shrink-0">
+                            <img
+                              src="/razorpay-logo.png"
+                              alt="Razorpay"
+                              className="h-3.5 sm:h-4 w-auto object-contain"
+                            />
+                          </span>
+                        </span>
                       )}
                     </button>
                     <div className="flex items-center justify-center gap-2 text-[11px] text-slate-500 font-semibold text-center mt-2.5">
-                      <span className="flex items-center gap-1 text-red-700 font-bold">
-                        <Lock className="w-3.5 h-3.5 text-red-600 shrink-0" />
-                        <span>Payment Required Prior to Access</span>
+                      <span className="flex items-center gap-1 text-slate-700 font-bold">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span>Secured by Razorpay India</span>
                       </span>
                       <span>•</span>
-                      <span>Support: +91 88072 81600</span>
+                      <span>Instant Google Drive Delivery</span>
                     </div>
                   </div>
                 </div>
@@ -1112,7 +1274,7 @@ function CheckoutContent() {
                 </div>
               )}
 
-              {/* 2. Payment & Delivery Notice */}
+              {/* 2. Razorpay Payment Gateway Card */}
               <div className="rounded-3xl p-6 bg-white border border-slate-200/90 shadow-sm space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">
@@ -1120,66 +1282,66 @@ function CheckoutContent() {
                       2
                     </span>
                     <h2 className="text-base font-extrabold text-slate-900">
-                      Payment &amp; Delivery Method
+                      Payment Method
                     </h2>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-900 border border-red-200 flex items-center gap-1">
-                    <Lock className="w-3.5 h-3.5 text-red-600" /> Manual UPI Verification
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5" /> Razorpay Verified
                   </span>
                 </div>
 
-                {/* Delivery Information Highlights */}
+                {/* Branded Razorpay Details Card */}
                 <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-red-500/20 text-white space-y-3.5 shadow-md">
                   <div className="flex items-center justify-between">
                     <div className="font-bold text-xs text-red-400 flex items-center gap-1.5">
-                      <Lock className="w-4 h-4 text-red-400" />
-                      <span>Direct Free Downloads Strictly Locked</span>
+                      <CreditCard className="w-4 h-4 text-red-400" />
+                      <span>Razorpay Payment Gateway (India)</span>
                     </div>
-                    <span className="text-[10px] font-bold text-red-400 bg-red-950/80 px-2 py-0.5 rounded border border-red-500/30">
-                      WhatsApp UPI Active
+                    <span className="text-[10px] font-bold text-slate-400">
+                      RBI Regulated • 256-Bit SSL
                     </span>
                   </div>
 
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Unpaid downloads rokne ke liye direct automated access locked hai. Apna Name, Gmail aur WhatsApp number daal kar button tap karein — aap seedhe verified WhatsApp helpline par UPI QR scan karke pay karenge aur turant verified Google Drive link receive karenge.
+                    Pay securely with any payment option of your choice. A fast, encrypted Razorpay checkout modal will open to complete payment via UPI QR, Google Pay, PhonePe, Cards, or NetBanking.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
-                    <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <Lock className="w-3.5 h-3.5 text-red-400" />
-                        <span>Security Check</span>
-                      </div>
-                      <div className="text-[11px] text-slate-400 font-medium">
-                        Payment verification mandatory before files are unlocked
-                      </div>
-                    </div>
-
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
                         <Smartphone className="w-3.5 h-3.5 text-red-400" />
                         <span>All UPI Apps</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
-                        PhonePe, Google Pay, Paytm, CRED &amp; BHIM
+                        PhonePe, Google Pay, Paytm, CRED &amp; QR
                       </div>
                     </div>
 
                     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <ShieldCheck className="w-3.5 h-3.5 text-red-400" />
-                        <span>100% Lifetime Access</span>
+                        <CreditCard className="w-3.5 h-3.5 text-red-400" />
+                        <span>Cards</span>
                       </div>
                       <div className="text-[11px] text-slate-400 font-medium">
-                        Complete Google Drive access on your Gmail
+                        RuPay, Visa, MasterCard &amp; Maestro
+                      </div>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1 shadow-xs">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-white">
+                        <Building className="w-3.5 h-3.5 text-red-400" />
+                        <span>NetBanking</span>
+                      </div>
+                      <div className="text-[11px] text-slate-400 font-medium">
+                        50+ Indian Banks (SBI, HDFC, ICICI, etc.)
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-rose-50/80 border border-rose-200/80 flex items-center gap-2 text-xs text-rose-900 font-semibold">
-                  <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
-                  <span>Notice: Digital bundle links are only issued after verified payment. No unpaid downloads allowed.</span>
+                <div className="p-3 rounded-xl bg-emerald-50/80 border border-emerald-200/80 flex items-center gap-2 text-xs text-emerald-800 font-semibold">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Instant Google Drive Bundle delivery upon payment confirmation.</span>
                 </div>
               </div>
 
@@ -1451,27 +1613,34 @@ function CheckoutContent() {
                   <button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] transition-all disabled:opacity-70 cursor-pointer"
+                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-[0_10px_28px_rgba(239,68,68,0.35)] hover:shadow-[0_14px_34px_rgba(239,68,68,0.5)] border border-red-400/50 hover:scale-[1.01] transition-all disabled:opacity-70 cursor-pointer"
                   >
                     {isProcessing ? (
                       <span className="flex items-center gap-2">
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Connecting to WhatsApp Support...
+                        <span>Connecting Razorpay Gateway...</span>
                       </span>
                     ) : (
-                      <>
-                        <Lock className="w-4 h-4 text-white" />
-                        <span>Order &amp; Pay via WhatsApp UPI — ₹{checkoutTotal}.00</span>
-                      </>
+                      <span className="flex items-center justify-center gap-2 sm:gap-2.5 flex-wrap">
+                        <Lock className="w-4 h-4 text-white shrink-0" />
+                        <span>Pay ₹{checkoutTotal}.00 via</span>
+                        <span className="bg-white px-2 py-0.5 rounded-md inline-flex items-center shadow-xs shrink-0">
+                          <img
+                            src="/razorpay-logo.png"
+                            alt="Razorpay"
+                            className="h-3.5 sm:h-4 w-auto object-contain"
+                          />
+                        </span>
+                      </span>
                     )}
                   </button>
 
                   <div className="space-y-1.5 text-center text-[11px] text-slate-400 pt-2 font-medium">
-                    <p className="flex items-center justify-center gap-1 text-red-600 font-bold">
-                      <Lock className="w-3.5 h-3.5 text-red-600" />
-                      Payment Required Prior to Access
+                    <p className="flex items-center justify-center gap-1 text-slate-600 font-bold">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                      Instant Google Drive Link Delivery
                     </p>
-                    <p>Official 24/7 Verified Support: +91 88072 81600</p>
+                    <p>Protected by 256-bit SSL encryption &amp; Razorpay India Security</p>
                   </div>
                 </div>
               </div>
@@ -1534,19 +1703,26 @@ function CheckoutContent() {
                   {isProcessing ? (
                     <span className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Connecting to WhatsApp Support...
+                      <span>Connecting Razorpay Gateway...</span>
                     </span>
                   ) : (
-                    <>
-                      <Lock className="w-4 h-4 text-white" />
-                      <span>Order &amp; Pay via WhatsApp UPI — ₹{checkoutTotal}.00</span>
-                    </>
+                    <span className="flex items-center justify-center gap-2 flex-wrap">
+                      <Lock className="w-4 h-4 text-white shrink-0" />
+                      <span>Pay ₹{checkoutTotal}.00 via</span>
+                      <span className="bg-white px-2 py-0.5 rounded-md inline-flex items-center shadow-xs shrink-0">
+                        <img
+                          src="/razorpay-logo.png"
+                          alt="Razorpay"
+                          className="h-3.5 w-auto object-contain"
+                        />
+                      </span>
+                    </span>
                   )}
                 </button>
 
                 <div className="flex items-center justify-center gap-1.5 text-[10px] sm:text-[11px] text-slate-500 font-medium text-center">
-                  <Lock className="w-3.5 h-3.5 text-red-600 shrink-0" />
-                  <span>Payment Required Prior to Access · Official Support: +91 88072 81600</span>
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Instant Google Drive Delivery · Secured by Razorpay</span>
                 </div>
               </div>
             </div>
@@ -1561,6 +1737,9 @@ function CheckoutContent() {
 export default function CheckoutPage() {
   return (
     <>
+      {/* Razorpay India Secure Checkout preconnect */}
+      <link rel="preconnect" href="https://checkout.razorpay.com" />
+      <link rel="dns-prefetch" href="https://api.razorpay.com" />
       <Suspense
         fallback={
           <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center space-y-4 bg-[#faf9f6]">
@@ -1569,7 +1748,7 @@ export default function CheckoutPage() {
             </div>
             <h2 className="text-xl font-black text-slate-950">Loading Checkout...</h2>
             <p className="text-xs text-slate-500 max-w-sm">
-              Preparing bundle details and instant checkout.
+              Preparing bundle details and secure Razorpay payment gateway.
             </p>
           </div>
         }

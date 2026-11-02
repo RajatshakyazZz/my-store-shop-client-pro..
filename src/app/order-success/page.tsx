@@ -159,10 +159,12 @@ function OrderSuccessContent() {
     const rzpOrderId = searchParams.get('razorpay_order_id') || '';
     const rzpSignature = searchParams.get('razorpay_signature') || '';
 
-    const orderVerifyUrl = `/api/orders/verify?order_id=${encodeURIComponent(targetId)}${rawToken ? `&token=${encodeURIComponent(rawToken)}` : ''}`;
     const razorpayVerifyUrl = `/api/payment/razorpay/verify-order?order_id=${encodeURIComponent(targetId)}${rawToken ? `&token=${encodeURIComponent(rawToken)}` : ''}${rzpPaymentId ? `&razorpay_payment_id=${encodeURIComponent(rzpPaymentId)}` : ''}${rzpOrderId ? `&razorpay_order_id=${encodeURIComponent(rzpOrderId)}` : ''}${rzpSignature ? `&razorpay_signature=${encodeURIComponent(rzpSignature)}` : ''}`;
+    const orderVerifyUrl = `/api/orders/verify?order_id=${encodeURIComponent(targetId)}${rawToken ? `&token=${encodeURIComponent(rawToken)}` : ''}`;
 
-    fetch(orderVerifyUrl)
+    const targetUrl = (rzpPaymentId || rzpOrderId) ? razorpayVerifyUrl : orderVerifyUrl;
+
+    fetch(targetUrl)
       .then(async (res) => {
         if (!res.ok) {
           return fetch(razorpayVerifyUrl).then((r) => r.json());
