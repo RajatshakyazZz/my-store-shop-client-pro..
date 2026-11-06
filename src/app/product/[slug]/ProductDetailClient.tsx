@@ -749,21 +749,18 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     >
                       <Zap className="w-4 h-4 fill-ink" />
                       <span>Buy Now — ₹{activePrice}.00</span>
-                      <span className="bg-white/95 px-2 py-0.5 rounded-md inline-flex items-center shadow-xs shrink-0 ml-1">
-                        <img src="/razorpay-logo.png" alt="Razorpay" className="h-3.5 w-auto object-contain" />
-                      </span>
                     </button>
 
                     <p className="text-center text-[11px] text-ink-400 font-medium flex items-center justify-center gap-1.5">
                       <ShieldCheck className="w-3.5 h-3.5 text-leaf-600 shrink-0" />
-                      <span>Instant Google Drive Delivery • Official Razorpay Secure Checkout</span>
+                      <span>Instant Google Drive Delivery • 100% Verified Access</span>
                     </p>
 
                     {/* Instant Access & Delivery Strip */}
                     <div className="pt-2 border-t border-canvas-200 space-y-1.5 text-center">
                       <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-ink-400 uppercase tracking-wider">
                         <Lock className="w-3 text-leaf-600" />
-                        <span>Instant UPI Checkout via Razorpay</span>
+                        <span>Instant WhatsApp Order &amp; Delivery</span>
                       </div>
                       <div className="flex items-center justify-center gap-1.5 flex-wrap text-[11px] font-bold text-ink-500">
                         <span className="px-2 py-0.5 rounded-md bg-canvas border border-canvas-200">Google Pay</span>
@@ -1458,9 +1455,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               >
                 <Zap className="w-4 h-4 fill-ink" />
                 <span>Buy Now — ₹{activePrice}</span>
-                <span className="bg-white/95 px-1.5 py-0.5 rounded-md inline-flex items-center shadow-xs shrink-0">
-                  <img src="/razorpay-logo.png" alt="Razorpay" className="h-3 w-auto object-contain" />
-                </span>
               </button>
             )}
           </div>

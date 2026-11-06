@@ -66,8 +66,8 @@ export default function Footer() {
       bg: 'bg-ink text-mint-500',
     },
     {
-      title: 'Secure Checkout',
-      subtitle: 'Verified Razorpay Gateway',
+      title: 'Direct Support',
+      subtitle: 'WhatsApp +91 8129797720',
       icon: ShieldCheck,
       bg: 'bg-ink text-mint-500',
     },
