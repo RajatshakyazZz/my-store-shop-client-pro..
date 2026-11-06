@@ -151,7 +151,7 @@ export default function WhatsappButton() {
 
           <div className="h-80 rounded-2xl bg-slate-950 border border-slate-800 relative p-4 flex flex-col justify-end">
             <div className="absolute top-4 left-4 text-[11px] text-slate-500 font-mono">
-              Ztore Digital (Mobile Viewport)
+              CreatorMint (Mobile Viewport)
             </div>
 
             {/* Floating button */}

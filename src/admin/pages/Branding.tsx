@@ -16,7 +16,7 @@ export default function Branding() {
   });
 
   const [form, setForm] = useState<StoreBranding>({
-    store_name: 'Ztore Digital',
+    store_name: 'CreatorMint',
     tagline: 'Premium Reels for Your Growth',
     logo_url: '/logo.png',
     favicon_url: '/favicon.ico',

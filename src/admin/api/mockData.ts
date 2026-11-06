@@ -10175,7 +10175,7 @@ export const initialContent: ContentItem[] = [
 ];
 
 export const initialBranding: StoreBranding = {
-  store_name: 'Ztore Digital',
+  store_name: 'CreatorMint',
   tagline: 'Premium Reels for Your Growth',
   logo_url: '/logo.png',
   favicon_url: '/favicon.ico',
@@ -10247,13 +10247,13 @@ export const initialPlugins: WpPlugin[] = [
     version: '2.0.0',
     active: true,
     has_update: false,
-    description: 'High-speed real-time Firestore database sync for Ztore Digital',
+    description: 'High-speed real-time Firestore database sync for CreatorMint',
   },
 ];
 
 export const initialThemes: WpTheme[] = [
   {
-    name: 'Ztore Digital Modern Dark Store',
+    name: 'CreatorMint Modern Dark Store',
     slug: 'vaultworld-dark',
     version: '1.0.0',
     active: true,
@@ -10263,7 +10263,7 @@ export const initialThemes: WpTheme[] = [
 ];
 
 export const initialConnectorStatus: ConnectorStatus = {
-  plugin_name: 'Ztore Digital Cloud Engine',
+  plugin_name: 'CreatorMint Cloud Engine',
   current_version: '2.0.0',
   latest_version: '2.0.0',
   update_available: false,
@@ -10310,7 +10310,7 @@ export const initialRankMath: RankMathConfig = {
     seo_analysis: true,
   },
   global_title_separator: '|',
-  homepage_meta_title: 'Ztore Digital | 220,000+ Viral Reels Bundles & Reseller Rights',
+  homepage_meta_title: 'CreatorMint | 220,000+ Viral Reels Bundles & Reseller Rights',
   homepage_meta_description: 'Download 220,000+ viral AI Reels, Spiritual, Aesthetic & Motivation bundles. Instant Google Drive access & Reseller Rights.',
 };
 
