@@ -21,6 +21,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  ReferenceLine,
 } from 'recharts';
 import { portalApi } from '../api/client';
 import StatCard from '../components/common/StatCard';
@@ -50,6 +51,49 @@ export default function Dashboard() {
     () => orders.filter((o: any) => o.status === 'completed'),
     [orders]
   );
+
+  // ── 7-Day Revenue Chart ──────────────────────────────────────────────────
+  // Build last-7-days buckets keyed by short date label (e.g. "Mon 06")
+  const liveRevenueTrend = React.useMemo(() => {
+    const today = new Date();
+    // Build 7 slots: index 0 = 6 days ago, index 6 = today
+    const slots = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(today);
+      d.setDate(today.getDate() - (6 - i));
+      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const label =
+        i === 6
+          ? 'Today'
+          : `${dayNames[d.getDay()]} ${String(d.getDate()).padStart(2, '0')}`;
+      return {
+        date: label,
+        revenue: 0,
+        orders: 0,
+        _dateKey: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`,
+      };
+    });
+
+    paidOrders.forEach((o: any) => {
+      // created_at may be a Firestore Timestamp, ISO string, or epoch ms
+      let ts: Date | null = null;
+      if (o.created_at?.toDate) ts = o.created_at.toDate();
+      else if (o.created_at?.seconds) ts = new Date(o.created_at.seconds * 1000);
+      else if (o.created_at) ts = new Date(o.created_at);
+      else if (o.createdAt) ts = new Date(o.createdAt);
+      if (!ts || isNaN(ts.getTime())) return;
+
+      const key = `${ts.getFullYear()}-${String(ts.getMonth() + 1).padStart(2, '0')}-${String(ts.getDate()).padStart(2, '0')}`;
+      const slot = slots.find((s) => s._dateKey === key);
+      if (slot) {
+        slot.revenue += Number(o.total || 0);
+        slot.orders += 1;
+      }
+    });
+
+    return slots.map(({ _dateKey, ...rest }) => rest); // drop internal key
+  }, [paidOrders]);
+
+  // ── KPI Metrics ──────────────────────────────────────────────────────────
   const liveNetRevenue = paidOrders.reduce((sum: number, o: any) => sum + Number(o.total || 0), 0);
   const liveTotalOrders = paidOrders.length;
   const liveActiveCustomers = new Set(
@@ -59,7 +103,24 @@ export default function Dashboard() {
     (o: any) => o.status === 'pending' || o.status === 'processing' || o.status === 'failed'
   ).length;
   const liveAvgAov = liveTotalOrders > 0 ? Math.round(liveNetRevenue / liveTotalOrders) : 0;
-  const liveRevenueTrend = [{ date: 'Today', revenue: liveNetRevenue, orders: liveTotalOrders }];
+
+  // Today-only revenue for the KPI card
+  const todayKey = (() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  })();
+  const todayRevenue = paidOrders
+    .filter((o: any) => {
+      let ts: Date | null = null;
+      if (o.created_at?.toDate) ts = o.created_at.toDate();
+      else if (o.created_at?.seconds) ts = new Date(o.created_at.seconds * 1000);
+      else if (o.created_at) ts = new Date(o.created_at);
+      else if (o.createdAt) ts = new Date(o.createdAt);
+      if (!ts || isNaN(ts.getTime())) return false;
+      const k = `${ts.getFullYear()}-${String(ts.getMonth() + 1).padStart(2, '0')}-${String(ts.getDate()).padStart(2, '0')}`;
+      return k === todayKey;
+    })
+    .reduce((sum: number, o: any) => sum + Number(o.total || 0), 0);
 
   const liveTopBundles = React.useMemo(() => {
     const map = new Map<string, { id: string | number; name: string; sales_count: number; revenue: number }>();
@@ -211,15 +272,15 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
         <StatCard
           title="Net Revenue Today"
-          value={formatCurrency(liveNetRevenue)}
-          subtitle="Real-time gross"
+          value={formatCurrency(todayRevenue)}
+          subtitle="Completed sales today"
           icon={IndianRupee}
           color="emerald"
         />
         <StatCard
           title="Total Orders"
           value={liveTotalOrders}
-          subtitle="Completed sales"
+          subtitle="All-time completed"
           icon={ShoppingCart}
           color="purple"
         />
@@ -247,7 +308,7 @@ export default function Dashboard() {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <h3 className="text-sm font-bold text-white">7-Day Revenue & Volume Curve</h3>
-              <p className="text-xs text-slate-400 font-medium">Daily completed transaction total in INR</p>
+              <p className="text-xs text-slate-400 font-medium">Daily completed sales revenue — last 7 days</p>
             </div>
             <span className="text-xs font-extrabold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
               Avg AOV: ₹{liveAvgAov}
@@ -262,14 +323,21 @@ export default function Dashboard() {
                     <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.4} />
                     <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.0} />
                   </linearGradient>
+                  <linearGradient id="ordersGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
+                  </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="date" stroke="#64748b" fontSize={11} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+                <ReferenceLine x="Today" stroke="#8b5cf6" strokeDasharray="4 2" strokeWidth={1.5} label={{ value: 'Today', position: 'insideTopRight', fontSize: 10, fill: '#8b5cf6' }} />
+                <XAxis dataKey="date" stroke="#64748b" fontSize={11} tickLine={false} axisLine={false} />
                 <YAxis
                   stroke="#64748b"
                   fontSize={11}
                   tickLine={false}
-                  tickFormatter={(v) => `₹${v / 1000}k`}
+                  axisLine={false}
+                  tickFormatter={(v) => v === 0 ? '₹0' : v >= 1000 ? `₹${(v / 1000).toFixed(1)}k` : `₹${v}`}
+                  width={52}
                 />
                 <Tooltip
                   contentStyle={{
@@ -279,7 +347,12 @@ export default function Dashboard() {
                     fontSize: '12px',
                     color: '#fff',
                   }}
-                  formatter={(value: any) => [`₹${value}`, 'Revenue']}
+                  formatter={(value: any, name: string) =>
+                    name === 'revenue'
+                      ? [`₹${Number(value).toLocaleString('en-IN')}`, 'Revenue']
+                      : [value, 'Orders']
+                  }
+                  labelStyle={{ color: '#94a3b8', fontWeight: 700, marginBottom: 4 }}
                 />
                 <Area
                   type="monotone"
