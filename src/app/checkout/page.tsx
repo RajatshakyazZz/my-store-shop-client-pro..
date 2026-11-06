@@ -38,6 +38,18 @@ import { resolveBundleSlug } from '@/lib/bundleResolver';
 import { fetchCustomProductBySlug } from '@/lib/customProducts';
 import { isMegaAllAccessBundle } from '@/lib/freeBundleOffer';
 
+declare global {
+  interface Window {
+    Cashfree?: (config: { mode: 'sandbox' | 'production' }) => {
+      checkout: (options: {
+        paymentSessionId: string;
+        redirectTarget?: '_self' | '_blank' | '_modal' | '_top';
+        returnUrl?: string;
+      }) => Promise<any>;
+    };
+  }
+}
+
 
 function CheckoutContent() {
   const router = useRouter();
@@ -652,74 +664,54 @@ function CheckoutContent() {
     };
 
     try {
-      // 1. Record order locally & in backend if possible
-      try {
-        await fetch('/api/orders/create', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(orderPayload),
-        });
-      } catch (e) {
-        console.warn('Backend order record notice:', e);
+      // 1. Create Cashfree payment order on backend
+      const response = await fetch('/api/payment/cashfree/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderPayload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success || !data.payment_session_id) {
+        throw new Error(data.error || 'Failed to initialize Cashfree payment session.');
       }
 
+      // 2. Persist order details to localStorage for instant order tracking & recovery
       localStorage.setItem('vaultzet_latest_order', JSON.stringify({
         ...orderPayload,
-        orderId: orderNumber,
-        status: 'pending_whatsapp',
+        orderId: data.order_id || orderNumber,
+        status: 'pending',
+        paymentSessionId: data.payment_session_id,
+        orderToken: data.order_token,
       }));
 
-      // 2. Prepare pre-filled WhatsApp message for client number 8129797720
-      const clientWaPhone = '918129797720';
-      const itemsList = allCheckoutItems
-        .map(
-          (i) =>
-            `• *${i?.product?.title || 'Reels Bundle'}* (${i?.license === 'reseller' ? 'Reseller License' : 'Personal Use'}) - ₹${i?.price}`
-        )
-        .join('\n');
-
-      const bumpText =
-        orderBumpAdded && activeBumpOffer
-          ? `\n• *Addon Bump Offer:* ${activeBumpOffer.title} - ₹${activeBumpOffer.discountPrice}`
-          : '';
-
-      const bonusText =
-        freeBundles && freeBundles.length > 0
-          ? `\n🎁 *Bonus Bundles Included:* ${freeBundles.map((b) => b.title).join(', ')}`
-          : '';
-
-      const couponText = appliedCoupon ? `\n🏷️ *Coupon Applied:* ${appliedCoupon.code} (-₹${couponDiscount})` : '';
-
-      const whatsappText = `*NEW ORDER REQUEST - CreatorMint* 🚀
-Order ID: #${orderNumber}
-
-📦 *Items:*
-${itemsList}${bumpText}${bonusText}${couponText}
-
-💰 *Payable Amount:* ₹${checkoutTotal}.00
-
-👤 *Customer Details:*
-• *Name:* ${fullName.trim()}
-• *Delivery Gmail:* ${email.trim()}
-• *Phone:* ${phone.trim() || 'Not specified'}
-
-💳 Please send your UPI QR / Payment details so I can complete payment and receive my instant Google Drive folder!`;
-
-      const whatsappUrl = `https://wa.me/${clientWaPhone}?text=${encodeURIComponent(whatsappText)}`;
-
-      track('whatsapp_checkout_submit', {
-        order_id: orderNumber,
+      track('cashfree_checkout_started', {
+        order_id: data.order_id || orderNumber,
         total: checkoutTotal,
         customer_email: email,
       });
 
-      setIsProcessing(false);
-      window.location.href = whatsappUrl;
+      const mode = (data.environment === 'SANDBOX' ? 'sandbox' : 'production') as 'sandbox' | 'production';
+
+      // 3. Launch Cashfree v3 Checkout Seamlessly
+      if (typeof window !== 'undefined' && typeof window.Cashfree === 'function') {
+        const cashfree = window.Cashfree({ mode });
+        const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+
+        await cashfree.checkout({
+          paymentSessionId: data.payment_session_id,
+          redirectTarget: isMobile ? '_self' : '_modal',
+        });
+        setIsProcessing(false);
+      } else {
+        // Direct fallback to Cashfree hosted checkout page
+        window.location.href = `https://payments.cashfree.com/order/#${encodeURIComponent(data.payment_session_id)}`;
+      }
     } catch (err: any) {
-      console.error('WhatsApp order initiation notice:', err);
+      console.error('Cashfree order initiation error:', err);
       setIsProcessing(false);
-      const fallbackUrl = `https://wa.me/918129797720?text=${encodeURIComponent(`Hi CreatorMint! I want to order reels bundles (Total: ₹${checkoutTotal}). My email: ${email}`)}`;
-      window.location.href = fallbackUrl;
+      setErrorMessage(err.message || 'Payment initiation failed. Please check your details and try again.');
     }
   };
 
@@ -1062,22 +1054,22 @@ ${itemsList}${bumpText}${bonusText}${couponText}
                     <button
                       type="submit"
                       disabled={isProcessing}
-                      className="w-full py-4 px-6 rounded-2xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-base flex items-center justify-center gap-2.5 shadow-[0_10px_28px_rgba(11,16,25,0.21)] hover:shadow-[0_14px_34px_rgba(11,16,25,0.22)] border border-leaf-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
+                      className="w-full py-4 px-6 rounded-2xl bg-mint-500 hover:bg-mint-400 text-ink font-black text-base flex items-center justify-center gap-2.5 shadow-[0_10px_28px_rgba(34,197,94,0.35)] hover:shadow-[0_14px_34px_rgba(34,197,94,0.45)] border border-leaf-400/50 hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
                     >
                       {isProcessing ? (
                         <span className="flex items-center gap-2">
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>Connecting Razorpay Gateway...</span>
+                          <Loader2 className="w-5 h-5 animate-spin text-ink" />
+                          <span>Connecting Cashfree Gateway...</span>
                         </span>
                       ) : (
                         <span className="flex items-center justify-center gap-2 sm:gap-2.5 flex-wrap">
                           <Lock className="w-4 h-4 text-ink shrink-0" />
                           <span>Pay ₹{checkoutTotal}.00 via</span>
-                          <span className="bg-white px-2 py-0.5 rounded-md inline-flex items-center shadow-xs shrink-0">
+                          <span className="bg-[#0D0323] px-2.5 py-1 rounded-lg inline-flex items-center shadow-xs shrink-0 border border-purple-900/40">
                             <img
-                              src="/razorpay-logo.png"
-                              alt="Razorpay"
-                              className="h-3.5 sm:h-4 w-auto object-contain"
+                              src="/cashfree-badge.png"
+                              alt="Cashfree Payments"
+                              className="h-4 sm:h-4.5 w-auto object-contain"
                             />
                           </span>
                         </span>
@@ -1086,7 +1078,7 @@ ${itemsList}${bumpText}${bonusText}${couponText}
                     <div className="flex items-center justify-center gap-2 text-[11px] text-ink-400 font-semibold text-center mt-2.5">
                       <span className="flex items-center gap-1 text-ink-600 font-bold">
                         <ShieldCheck className="w-3.5 h-3.5 text-leaf-600 shrink-0" />
-                        <span>Secured by Razorpay India</span>
+                        <span>Secured by Cashfree Payments India</span>
                       </span>
                       <span>•</span>
                       <span>Instant Google Drive Delivery</span>
@@ -1151,7 +1143,7 @@ ${itemsList}${bumpText}${bonusText}${couponText}
                 </div>
               )}
 
-              {/* 2. WhatsApp Direct Order & Payment Confirmation Card */}
+              {/* 2. Cashfree Payment Gateway Card */}
               <div className="rounded-3xl p-6 bg-white border border-canvas-200/90 shadow-sm space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-canvas-200">
                   <div className="flex items-center gap-2">
@@ -1159,66 +1151,75 @@ ${itemsList}${bumpText}${bonusText}${couponText}
                       2
                     </span>
                     <h2 className="text-base font-extrabold text-ink">
-                      Order &amp; Payment Method
+                      Payment Method
                     </h2>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
-                    <MessageCircle className="w-3.5 h-3.5 text-emerald-600" /> WhatsApp Direct Order
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-50 text-purple-900 border border-purple-200/80 flex items-center gap-1.5 shadow-2xs">
+                    <ShieldCheck className="w-3.5 h-3.5 text-purple-600" /> Official Cashfree Gateway
                   </span>
                 </div>
 
-                {/* Branded WhatsApp Order Details Card */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-ink via-ink-950 to-ink border border-emerald-500/30 text-white space-y-3.5 shadow-md">
-                  <div className="flex items-center justify-between">
-                    <div className="font-bold text-xs text-emerald-400 flex items-center gap-1.5">
-                      <MessageCircle className="w-4 h-4 text-emerald-400" />
-                      <span>Official WhatsApp Support Desk (+91 8129797720)</span>
+                {/* Branded Cashfree Gateway Details Card */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#0D0323] via-[#160538] to-[#0D0323] border border-purple-800/40 text-white space-y-3.5 shadow-md">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="flex items-center gap-2.5">
+                      <div className="bg-white/10 p-1.5 rounded-lg border border-white/15">
+                        <img
+                          src="/cashfree-badge.png"
+                          alt="Cashfree Payments"
+                          className="h-4.5 sm:h-5 w-auto object-contain"
+                        />
+                      </div>
+                      <span className="text-xs font-bold text-white tracking-wide">
+                        Cashfree Payments (India)
+                      </span>
                     </div>
-                    <span className="text-[10px] font-bold text-emerald-300 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/30">
-                      Active Now
+                    <span className="text-[10px] font-bold text-purple-200 bg-purple-950/70 px-2 py-0.5 rounded-full border border-purple-400/30 flex items-center gap-1">
+                      <Lock className="w-3 h-3 text-emerald-400" />
+                      256-Bit SSL Encrypted
                     </span>
                   </div>
 
-                  <p className="text-xs text-ink-300 leading-relaxed">
-                    Place your order directly via WhatsApp. Click the order button to send your bundle details to our team (+91 8129797720). You will immediately receive a verified UPI QR code (Google Pay, PhonePe, Paytm) and your instant Google Drive folder access link.
+                  <p className="text-xs text-purple-100/90 leading-relaxed">
+                    Pay securely via Reserve Bank of India (RBI) authorized <strong>Cashfree Payment Gateway</strong>. All payment modes are supported with zero convenience charges.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
-                    <div className="p-3 rounded-xl bg-ink/90 border border-ink-700 space-y-1 shadow-xs">
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Instant Chat</span>
-                      </div>
-                      <div className="text-[11px] text-ink-300 font-medium">
-                        Direct 1-on-1 support on +91 8129797720
-                      </div>
-                    </div>
-
-                    <div className="p-3 rounded-xl bg-ink/90 border border-ink-700 space-y-1 shadow-xs">
+                    <div className="p-3 rounded-xl bg-white/[0.06] border border-white/10 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
                         <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Fast UPI Pay</span>
+                        <span>Instant UPI</span>
                       </div>
-                      <div className="text-[11px] text-ink-300 font-medium">
-                        GPay, PhonePe, Paytm QR code sent in chat
+                      <div className="text-[11px] text-purple-200/70 font-medium">
+                        Google Pay, PhonePe, Paytm, BHIM QR
                       </div>
                     </div>
 
-                    <div className="p-3 rounded-xl bg-ink/90 border border-ink-700 space-y-1 shadow-xs">
+                    <div className="p-3 rounded-xl bg-white/[0.06] border border-white/10 space-y-1 shadow-xs">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                        <FolderOpen className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Drive Delivery</span>
+                        <CreditCard className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>Cards &amp; EMI</span>
                       </div>
-                      <div className="text-[11px] text-ink-300 font-medium">
-                        Instant Google Drive folder unlocked
+                      <div className="text-[11px] text-purple-200/70 font-medium">
+                        Visa, MasterCard, RuPay &amp; Maestro
+                      </div>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-white/[0.06] border border-white/10 space-y-1 shadow-xs">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-white">
+                        <Building className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>Net Banking</span>
+                      </div>
+                      <div className="text-[11px] text-purple-200/70 font-medium">
+                        50+ Top Indian Banks Supported
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-emerald-50/80 border border-emerald-200/80 flex items-center gap-2 text-xs text-emerald-900 font-semibold">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Click below to complete your order and chat directly on WhatsApp (+91 8129797720).</span>
+                <div className="p-3 rounded-xl bg-mint-50/80 border border-mint-200/80 flex items-center gap-2 text-xs text-leaf-900 font-semibold">
+                  <CheckCircle2 className="w-4 h-4 text-leaf-600 shrink-0" />
+                  <span>Google Drive download folder unlocks immediately on your screen &amp; sent to your Gmail upon payment.</span>
                 </div>
               </div>
 
@@ -1490,27 +1491,34 @@ ${itemsList}${bumpText}${bonusText}${couponText}
                   <button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full py-4 px-6 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-[0_10px_28px_rgba(37,211,102,0.35)] hover:shadow-[0_14px_34px_rgba(37,211,102,0.45)] hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
+                    className="w-full py-4 px-6 rounded-2xl bg-mint-500 hover:bg-mint-400 text-ink font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-[0_10px_28px_rgba(34,197,94,0.35)] hover:shadow-[0_14px_34px_rgba(34,197,94,0.45)] hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
                   >
                     {isProcessing ? (
                       <span className="flex items-center gap-2">
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Opening WhatsApp...</span>
+                        <Loader2 className="w-4 h-4 animate-spin text-ink" />
+                        <span>Connecting Cashfree...</span>
                       </span>
                     ) : (
                       <span className="flex items-center justify-center gap-2 sm:gap-2.5 flex-wrap">
-                        <MessageCircle className="w-5 h-5 fill-white text-white shrink-0" />
-                        <span>Order on WhatsApp (₹{checkoutTotal}.00)</span>
+                        <Lock className="w-4 h-4 text-ink shrink-0" />
+                        <span>Pay ₹{checkoutTotal}.00 via</span>
+                        <span className="bg-[#0D0323] px-2.5 py-1 rounded-lg inline-flex items-center shadow-xs shrink-0 border border-purple-900/40">
+                          <img
+                            src="/cashfree-badge.png"
+                            alt="Cashfree Payments"
+                            className="h-4 sm:h-4.5 w-auto object-contain"
+                          />
+                        </span>
                       </span>
                     )}
                   </button>
 
                   <div className="space-y-1.5 text-center text-[11px] text-ink-300 pt-2 font-medium">
-                    <p className="flex items-center justify-center gap-1 text-ink-500 font-bold">
-                      <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                      Direct WhatsApp Desk: +91 8129797720
+                    <p className="flex items-center justify-center gap-1 text-ink-600 font-bold">
+                      <ShieldCheck className="w-4 h-4 text-leaf-600" />
+                      Official Cashfree Gateway • 256-Bit SSL Secured
                     </p>
-                    <p>Instant UPI QR Payment &amp; Google Drive Delivery</p>
+                    <p>UPI, Cards, NetBanking • Instant Google Drive Delivery</p>
                   </div>
                 </div>
               </div>
@@ -1529,9 +1537,9 @@ ${itemsList}${bumpText}${bonusText}${couponText}
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                      <MessageCircle className="w-3 h-3 text-emerald-600" />
-                      <span>WhatsApp Order</span>
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-purple-900 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-200">
+                      <ShieldCheck className="w-3 h-3 text-purple-600" />
+                      <span>Cashfree Secured</span>
                     </span>
                   </div>
                 </div>
@@ -1568,24 +1576,31 @@ ${itemsList}${bumpText}${bonusText}${couponText}
                 <button
                   type="submit"
                   disabled={isProcessing}
-                  className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(37,211,102,0.35)] hover:shadow-[0_14px_34px_rgba(37,211,102,0.45)] hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
+                  className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-mint-500 hover:bg-mint-400 text-ink font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_10px_28px_rgba(34,197,94,0.35)] hover:shadow-[0_14px_34px_rgba(34,197,94,0.45)] hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
                 >
                   {isProcessing ? (
                     <span className="flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Opening WhatsApp...</span>
+                      <Loader2 className="w-4 h-4 animate-spin text-ink" />
+                      <span>Connecting Cashfree...</span>
                     </span>
                   ) : (
                     <span className="flex items-center justify-center gap-2 flex-wrap">
-                      <MessageCircle className="w-5 h-5 fill-white text-white shrink-0" />
-                      <span>Order on WhatsApp · ₹{checkoutTotal}.00</span>
+                      <Lock className="w-4 h-4 text-ink shrink-0" />
+                      <span>Pay ₹{checkoutTotal}.00 via</span>
+                      <span className="bg-[#0D0323] px-2 py-0.5 rounded-lg inline-flex items-center shadow-xs shrink-0 border border-purple-900/40">
+                        <img
+                          src="/cashfree-badge.png"
+                          alt="Cashfree Payments"
+                          className="h-3.5 sm:h-4 w-auto object-contain"
+                        />
+                      </span>
                     </span>
                   )}
                 </button>
 
                 <div className="flex items-center justify-center gap-1.5 text-[10px] sm:text-[11px] text-ink-400 font-medium text-center">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Direct WhatsApp Desk: +91 8129797720</span>
+                  <ShieldCheck className="w-3.5 h-3.5 text-leaf-600 shrink-0" />
+                  <span>RBI Authorized Gateway • Instant Google Drive Access</span>
                 </div>
               </div>
             </div>
@@ -1600,15 +1615,19 @@ ${itemsList}${bumpText}${bonusText}${couponText}
 export default function CheckoutPage() {
   return (
     <>
+      <Script
+        src="https://sdk.cashfree.com/js/v3/cashfree.js"
+        strategy="afterInteractive"
+      />
       <Suspense
         fallback={
           <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center space-y-4 bg-[#faf9f6]">
-            <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 animate-pulse">
-              <div className="w-8 h-8 rounded-full border-4 border-emerald-500 border-t-transparent animate-spin" />
+            <div className="w-16 h-16 rounded-full bg-mint-500/10 border border-mint-500/20 flex items-center justify-center text-leaf-600 animate-pulse">
+              <div className="w-8 h-8 rounded-full border-4 border-mint-500 border-t-transparent animate-spin" />
             </div>
             <h2 className="text-xl font-black text-ink">Loading Checkout...</h2>
             <p className="text-xs text-ink-400 max-w-sm">
-              Preparing bundle details and direct WhatsApp order.
+              Preparing bundle details and secure Cashfree checkout.
             </p>
           </div>
         }

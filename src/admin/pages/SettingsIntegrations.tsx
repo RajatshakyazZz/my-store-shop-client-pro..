@@ -155,15 +155,15 @@ export default function SettingsIntegrations() {
     onSuccess: () => {
       addToast({
         type: 'success',
-        title: 'Razorpay Saved to Cloud Database 🚀',
-        message: 'Razorpay credentials saved to Firestore! Live across all mobile devices, laptops & storefront checkout.',
+        title: 'Cashfree Saved to Cloud Database 🚀',
+        message: 'Cashfree credentials saved to Firestore! Live across all mobile devices, laptops & storefront checkout.',
       });
       queryClient.invalidateQueries({ queryKey: ['pg-bridge'] });
     },
     onError: (err: any) => {
       addToast({
         type: 'error',
-        title: 'Failed to update Razorpay Config',
+        title: 'Failed to update Cashfree Config',
         message: err.message,
       });
     },
@@ -399,13 +399,13 @@ export default function SettingsIntegrations() {
       addToast({
         type: 'warning',
         title: 'Missing Credentials',
-        message: 'Please enter your Razorpay Key ID and Key Secret first.',
+        message: 'Please enter your Cashfree App ID and Secret Key first.',
       });
       return;
     }
     addToast({
       type: 'info',
-      title: 'Razorpay Test Check',
+      title: 'Cashfree Test Check',
       message: `Environment: ${pgForm.environment || 'PRODUCTION'}. Ready for checkout.`,
     });
   };
@@ -417,7 +417,7 @@ export default function SettingsIntegrations() {
       addToast({
         type: 'warning',
         title: 'Credentials Required',
-        message: 'Please fill in both Razorpay Key ID and Key Secret before verifying.',
+        message: 'Please fill in both Cashfree App ID and Secret Key before verifying.',
       });
       return;
     }
@@ -436,14 +436,14 @@ export default function SettingsIntegrations() {
 
       addToast({
         type: 'success',
-        title: 'Razorpay Status Verified & Synced! 🚀',
+        title: 'Cashfree Status Verified & Synced! 🚀',
         message: `Environment: ${pgForm?.environment || 'PRODUCTION'}. Credentials are saved in database and active for live checkout.`,
       });
     } catch (err: any) {
       addToast({
         type: 'error',
         title: 'Verification Failed',
-        message: err.message || 'Could not verify Razorpay credentials.',
+        message: err.message || 'Could not verify Cashfree credentials.',
       });
     } finally {
       setIsVerifyingPg(false);
@@ -476,7 +476,7 @@ export default function SettingsIntegrations() {
       {/* Tabs - Touch-scrollable & edge-to-edge on mobile */}
       <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto admin-touch-scroll admin-no-scrollbar -mx-3.5 px-3.5 sm:mx-0 sm:px-0">
         {[
-          { id: 'pg', label: 'Razorpay Gateway', icon: CreditCard, color: 'text-purple-400' },
+          { id: 'pg', label: 'Cashfree Gateway', icon: CreditCard, color: 'text-purple-400' },
           { id: 'imgbb', label: 'ImgBB CDN', icon: ImageIcon, color: 'text-rose-400' },
           { id: 'telegram', label: 'Telegram Alerts & Bot', icon: Send, color: 'text-sky-400' },
           { id: 'meta', label: 'DNP Meta CAPI', icon: Radio, color: 'text-blue-400' },
@@ -503,7 +503,7 @@ export default function SettingsIntegrations() {
         })}
       </div>
 
-      {/* TAB 1: RAZORPAY PAYMENT GATEWAY */}
+      {/* TAB 1: CASHFREE PAYMENT GATEWAY */}
       {activeTab === 'pg' && pgForm && (
         <div className="space-y-6">
           <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-6">
@@ -512,7 +512,7 @@ export default function SettingsIntegrations() {
                 <div className="flex items-center gap-2">
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
                     <CreditCard className="w-5 h-5 text-purple-400" />
-                    Razorpay Payment Gateway (India)
+                    Cashfree Payment Gateway (India)
                   </h3>
                   <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
                     pgForm.enabled
@@ -530,19 +530,19 @@ export default function SettingsIntegrations() {
                   </span>
                 </div>
                 <p className="text-xs text-slate-400 mt-1">
-                  Primary payment engine powering UPI (PhonePe, Google Pay, Paytm, CRED), NetBanking &amp; Cards on Ztore Digital via Razorpay.
+                  Primary payment engine powering UPI (Google Pay, PhonePe, Paytm), Cards &amp; NetBanking on CreatorMint via Cashfree.
                 </p>
               </div>
 
               <div className="flex items-center gap-3 shrink-0">
                 <a
-                  href="https://dashboard.razorpay.com/#/app/keys"
+                  href="https://merchant.cashfree.com/merchants/login"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 border border-slate-700 transition-all flex items-center gap-1.5"
                 >
                   <ExternalLink className="w-3.5 h-3.5 text-purple-400" />
-                  <span>Razorpay Dashboard</span>
+                  <span>Cashfree Dashboard</span>
                 </a>
                 <button
                   type="button"
@@ -559,9 +559,9 @@ export default function SettingsIntegrations() {
             {/* Gateway Status Switch */}
             <div className="flex items-center justify-between p-4 rounded-xl bg-slate-950/80 border border-slate-800/80">
               <div className="space-y-0.5">
-                <div className="text-xs font-bold text-white">Enable Razorpay on Storefront</div>
+                <div className="text-xs font-bold text-white">Enable Cashfree on Storefront</div>
                 <div className="text-[11px] text-slate-400">
-                  When active, customers will checkout securely via Razorpay (UPI, Cards, NetBanking).
+                  When active, customers will checkout securely via Cashfree (UPI, Cards, NetBanking).
                 </div>
               </div>
               <button
@@ -584,7 +584,7 @@ export default function SettingsIntegrations() {
               <Database className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
               <div className="text-xs text-slate-300 leading-relaxed">
                 <span className="font-bold text-white">Direct Cloud Database Sync: </span>
-                Razorpay Key ID &amp; Key Secret database me save hote hain. Admin Panel me keys daalne ke baad ye keys checkout par instant live ho jayengi bina kisi code redeploy ke.
+                Cashfree App ID (Client ID) &amp; Secret Key database me save hote hain. Admin Panel me keys daalne ke baad ye keys checkout par instant live ho jayengi bina kisi code redeploy ke.
               </div>
             </div>
 
@@ -598,8 +598,8 @@ export default function SettingsIntegrations() {
                   onChange={(e) => setPgForm({ ...pgForm, environment: e.target.value as any })}
                   className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-medium"
                 >
-                  <option value="PRODUCTION">PRODUCTION (Live Mode - rzp_live_...)</option>
-                  <option value="TEST">TEST (Sandbox Test Mode - rzp_test_...)</option>
+                  <option value="PRODUCTION">PRODUCTION (Live Mode)</option>
+                  <option value="TEST">TEST (Sandbox Test Mode)</option>
                 </select>
                 <p className="text-[10px] text-slate-500 mt-1">Select PRODUCTION when receiving real customer payments.</p>
               </div>
@@ -607,11 +607,11 @@ export default function SettingsIntegrations() {
               <div>
                 <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
                   <Key className="w-3.5 h-3.5 text-purple-400" />
-                  <span>Razorpay Key ID *</span>
+                  <span>Cashfree App ID (Client ID) *</span>
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. rzp_live_xxxxxxxxxxxxxx"
+                  placeholder="e.g. CF_APP_xxxxxxxx or 12345678"
                   value={pgForm.key_id || pgForm.merchant_key || pgForm.app_id || ''}
                   onChange={(e) => {
                     const val = e.target.value.trim();
@@ -620,19 +620,19 @@ export default function SettingsIntegrations() {
                       key_id: val,
                       merchant_key: val,
                       app_id: val,
-                      environment: val.startsWith('rzp_test_') ? 'TEST' : pgForm.environment,
+                      environment: val.startsWith('TEST') ? 'TEST' : pgForm.environment,
                     });
                   }}
                   className="w-full mt-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
                 />
-                <p className="text-[10px] text-slate-500 mt-1">Found in Razorpay Dashboard &gt; Settings &gt; API Keys.</p>
+                <p className="text-[10px] text-slate-500 mt-1">Found in Cashfree Dashboard &gt; Developers &gt; API Keys.</p>
               </div>
 
               <div className="md:col-span-2">
                 <label className="text-xs font-bold text-slate-300 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <Lock className="w-3.5 h-3.5 text-purple-400" />
-                    <span>Razorpay Key Secret *</span>
+                    <span>Cashfree Secret Key (Client Secret) *</span>
                   </span>
                   <button
                     type="button"
@@ -646,7 +646,7 @@ export default function SettingsIntegrations() {
                 <div className="relative mt-1.5">
                   <input
                     type={showSecret ? 'text' : 'password'}
-                    placeholder="Your Razorpay Key Secret"
+                    placeholder="Your Cashfree Secret Key (e.g. cfsk_ma_prod_...)"
                     value={pgForm.key_secret || pgForm.merchant_salt || pgForm.secret_key || ''}
                     onChange={(e) => {
                       const val = e.target.value.trim();
@@ -660,7 +660,7 @@ export default function SettingsIntegrations() {
                     className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-purple-500 font-mono pr-10"
                   />
                 </div>
-                <p className="text-[10px] text-slate-500 mt-1">Never share your Key Secret. Stored securely and used for HMAC-SHA256 signature verification.</p>
+                <p className="text-[10px] text-slate-500 mt-1">Never share your Secret Key. Stored securely and used for HMAC-SHA256 signature verification.</p>
               </div>
             </div>
 
@@ -668,7 +668,7 @@ export default function SettingsIntegrations() {
             <div className="p-4 rounded-xl bg-purple-950/20 border border-purple-800/30">
               <div className="text-xs font-bold text-purple-300 flex items-center gap-1.5 mb-2">
                 <Sparkles className="w-4 h-4 text-purple-400" />
-                <span>Supported Customer Payment Methods via Razorpay India</span>
+                <span>Supported Customer Payment Methods via Cashfree Payments India</span>
               </div>
               <div className="flex flex-wrap gap-2 text-[11px] text-slate-300">
                 <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 flex items-center gap-1 font-medium">
@@ -700,7 +700,7 @@ export default function SettingsIntegrations() {
                 className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold shadow-md shadow-purple-600/20 transition-all disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
-                <span>{updatePgMutation.isPending ? 'Saving...' : 'Save Razorpay Gateway Config'}</span>
+                <span>{updatePgMutation.isPending ? 'Saving...' : 'Save Cashfree Gateway Config'}</span>
               </button>
             </div>
           </div>

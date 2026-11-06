@@ -259,6 +259,26 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* Official Payment Partner Badge Bar */}
+          <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs text-ink-300">
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-bold text-white/80">Secured Payments by</span>
+              <div className="bg-[#0D0323] px-2.5 py-1 rounded-lg border border-purple-900/50 inline-flex items-center shadow-xs">
+                <img
+                  src="/cashfree-badge.png"
+                  alt="Cashfree Payments"
+                  className="h-4 w-auto object-contain"
+                />
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 flex-wrap text-[10px] font-bold text-white/60">
+              <span className="px-2 py-0.5 rounded bg-white/[0.06] border border-white/10">UPI (GPay / PhonePe / Paytm)</span>
+              <span className="px-2 py-0.5 rounded bg-white/[0.06] border border-white/10">Credit &amp; Debit Cards</span>
+              <span className="px-2 py-0.5 rounded bg-white/[0.06] border border-white/10">50+ Banks NetBanking</span>
+              <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">256-Bit SSL</span>
+            </div>
+          </div>
+
           {/* Legal Links Bar with Mail */}
           <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-semibold text-ink-300">
             <Link href="/privacy-policy" prefetch={false} className="hover:text-mint-300 transition-colors">

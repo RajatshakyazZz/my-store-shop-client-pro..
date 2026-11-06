@@ -745,22 +745,29 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     <button
                       type="button"
                       onClick={() => buyNow(p, 'personal')}
-                      className="w-full py-4 px-6 rounded-2xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-base shadow-lg shadow-ink/10 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full py-4 px-6 rounded-2xl bg-mint-500 hover:bg-mint-400 text-ink font-black text-base shadow-[0_10px_28px_rgba(34,197,94,0.35)] hover:shadow-[0_14px_34px_rgba(34,197,94,0.45)] hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <Zap className="w-4 h-4 fill-ink" />
                       <span>Buy Now — ₹{activePrice}.00</span>
+                      <span className="bg-[#0D0323] px-2 py-0.5 rounded-md inline-flex items-center shadow-xs shrink-0 border border-purple-900/40 ml-1">
+                        <img
+                          src="/cashfree-badge.png"
+                          alt="Cashfree"
+                          className="h-3.5 w-auto object-contain"
+                        />
+                      </span>
                     </button>
 
                     <p className="text-center text-[11px] text-ink-400 font-medium flex items-center justify-center gap-1.5">
                       <ShieldCheck className="w-3.5 h-3.5 text-leaf-600 shrink-0" />
-                      <span>Instant Google Drive Delivery • 100% Verified Access</span>
+                      <span>Instant Google Drive Delivery • Official Cashfree Payments</span>
                     </p>
 
                     {/* Instant Access & Delivery Strip */}
                     <div className="pt-2 border-t border-canvas-200 space-y-1.5 text-center">
                       <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-ink-400 uppercase tracking-wider">
                         <Lock className="w-3 text-leaf-600" />
-                        <span>Instant WhatsApp Order &amp; Delivery</span>
+                        <span>Instant Cashfree Gateway (UPI, Cards &amp; NetBanking)</span>
                       </div>
                       <div className="flex items-center justify-center gap-1.5 flex-wrap text-[11px] font-bold text-ink-500">
                         <span className="px-2 py-0.5 rounded-md bg-canvas border border-canvas-200">Google Pay</span>
@@ -1451,10 +1458,17 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <button
                 type="button"
                 onClick={() => buyNow(p, 'personal')}
-                className="w-full py-3 px-4 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-sm shadow-md shadow-ink/10 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3 px-4 rounded-xl bg-mint-500 hover:bg-mint-400 text-ink font-black text-sm shadow-md shadow-ink/10 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Zap className="w-4 h-4 fill-ink" />
                 <span>Buy Now — ₹{activePrice}</span>
+                <span className="bg-[#0D0323] px-2 py-0.5 rounded-md inline-flex items-center shadow-xs shrink-0 border border-purple-900/40 ml-1">
+                  <img
+                    src="/cashfree-badge.png"
+                    alt="Cashfree"
+                    className="h-3 w-auto object-contain"
+                  />
+                </span>
               </button>
             )}
           </div>

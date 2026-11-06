@@ -2569,13 +2569,13 @@ class PortalApiClient {
   }
 
   // ==========================================
-  // 16. SETTINGS & INTEGRATIONS (Razorpay Gateway)
+  // 16. SETTINGS & INTEGRATIONS (Cashfree / PG Gateway)
   // ==========================================
   async getRazorpayConfig(): Promise<PgBridgeConfig> {
-    // 1. First attempt to fetch from server-side admin settings API (reads Firestore directly)
+    // 1. First attempt to fetch from server-side admin settings API
     if (typeof window !== 'undefined') {
       try {
-        const res = await fetch('/api/admin/settings/razorpay', {
+        const res = await fetch('/api/admin/settings/cashfree', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           cache: 'no-store',
@@ -2585,39 +2585,43 @@ class PortalApiClient {
           if (data.success && data.config) {
             const mapped: PgBridgeConfig = {
               enabled: typeof data.config.enabled === 'boolean' ? data.config.enabled : true,
-              key_id: data.config.key_id || data.config.merchant_key || data.config.app_id || '',
-              key_secret: data.config.key_secret || data.config.merchant_salt || data.config.secret_key || '',
-              merchant_key: data.config.key_id || data.config.merchant_key || data.config.app_id || '',
-              merchant_salt: data.config.key_secret || data.config.merchant_salt || data.config.secret_key || '',
-              app_id: data.config.key_id || data.config.app_id || '',
-              secret_key: data.config.key_secret || data.config.secret_key || '',
+              key_id: data.config.app_id || data.config.key_id || data.config.merchant_key || '',
+              key_secret: data.config.secret_key || data.config.key_secret || data.config.merchant_salt || '',
+              merchant_key: data.config.app_id || data.config.key_id || '',
+              merchant_salt: data.config.secret_key || data.config.key_secret || '',
+              app_id: data.config.app_id || data.config.key_id || '',
+              secret_key: data.config.secret_key || data.config.key_secret || '',
               environment: data.config.environment || 'PRODUCTION',
               return_url: data.config.return_url || '',
             };
+            this.saveSettingLocally('cashfree', mapped);
             this.saveSettingLocally('razorpay', mapped);
             this.saveSettingLocally('payu', mapped);
             return mapped;
           }
         }
       } catch (apiErr) {
-        console.warn('API /api/admin/settings/razorpay fetch error, falling back to Firestore/local:', apiErr);
+        console.warn('API /api/admin/settings/cashfree fetch error, falling back to Firestore/local:', apiErr);
       }
     }
 
-    // 2. Direct client Firestore query (store_settings/general, store_settings/razorpay, store_settings/payu)
+    // 2. Direct client Firestore query (store_settings/cashfree, store_settings/general, store_settings/razorpay)
     if (db) {
       try {
-        const [genSnap, rzpSnap, payuSnap] = await Promise.all([
+        const [cfSnap, genSnap, rzpSnap, payuSnap] = await Promise.all([
+          getDoc(doc(db, 'store_settings', 'cashfree')).catch(() => null),
           getDoc(doc(db, 'store_settings', 'general')).catch(() => null),
           getDoc(doc(db, 'store_settings', 'razorpay')).catch(() => null),
           getDoc(doc(db, 'store_settings', 'payu')).catch(() => null),
         ]);
 
         let data: any = null;
-        if (rzpSnap && rzpSnap.exists()) {
-          data = rzpSnap.data();
-        } else if (genSnap && genSnap.exists() && (genSnap.data()?.razorpay_key_id || genSnap.data()?.key_id)) {
+        if (cfSnap && cfSnap.exists()) {
+          data = cfSnap.data();
+        } else if (genSnap && genSnap.exists() && (genSnap.data()?.cashfree_app_id || genSnap.data()?.app_id)) {
           data = genSnap.data();
+        } else if (rzpSnap && rzpSnap.exists()) {
+          data = rzpSnap.data();
         } else if (payuSnap && payuSnap.exists()) {
           data = payuSnap.data();
         } else if (genSnap && genSnap.exists()) {
@@ -2625,8 +2629,8 @@ class PortalApiClient {
         }
 
         if (data) {
-          const key_id = data.razorpay_key_id || data.key_id || data.merchant_key || data.app_id || '';
-          const key_secret = data.razorpay_key_secret || data.key_secret || data.merchant_salt || data.secret_key || '';
+          const key_id = data.cashfree_app_id || data.app_id || data.client_id || data.key_id || data.merchant_key || '';
+          const key_secret = data.cashfree_secret_key || data.secret_key || data.client_secret || data.key_secret || data.merchant_salt || '';
           const mapped: PgBridgeConfig = {
             enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
             key_id,
@@ -2635,19 +2639,20 @@ class PortalApiClient {
             merchant_salt: key_secret,
             app_id: key_id,
             secret_key: key_secret,
-            environment: data.environment === 'TEST' || data.environment === 'SANDBOX' || key_id.startsWith('rzp_test_') ? 'TEST' : 'PRODUCTION',
+            environment: data.environment === 'TEST' || data.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
             return_url: data.return_url || '',
           };
+          this.saveSettingLocally('cashfree', mapped);
           this.saveSettingLocally('razorpay', mapped);
           this.saveSettingLocally('payu', mapped);
           return mapped;
         }
       } catch (e) {
-        console.warn('Firestore direct razorpay fetch error, using local cache:', e);
+        console.warn('Firestore direct cashfree fetch error, using local cache:', e);
       }
     }
 
-    return this.getSavedSetting('razorpay', this.getSavedSetting('payu', initialPgBridge));
+    return this.getSavedSetting('cashfree', this.getSavedSetting('razorpay', this.getSavedSetting('payu', initialPgBridge)));
   }
 
   async updateRazorpayConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
@@ -2661,38 +2666,42 @@ class PortalApiClient {
       merchant_salt: key_secret,
       app_id: key_id,
       secret_key: key_secret,
+      cashfree_app_id: key_id,
+      cashfree_secret_key: key_secret,
     };
 
+    this.saveSettingLocally('cashfree', clean);
     this.saveSettingLocally('razorpay', clean);
     this.saveSettingLocally('payu', clean);
 
-    // 1. Post to server-side admin settings API (persists to Firestore store_settings/general & razorpay securely)
+    // 1. Post to server-side admin settings API
     if (typeof window !== 'undefined') {
       try {
-        await fetch('/api/admin/settings/razorpay', {
+        await fetch('/api/admin/settings/cashfree', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(clean),
         });
       } catch (apiErr) {
-        console.warn('Network error saving Razorpay config to API route:', apiErr);
+        console.warn('Network error saving Cashfree config to API route:', apiErr);
       }
     }
 
-    // 2. Direct client Firestore persistence to store_settings/general
+    // 2. Direct client Firestore persistence to store_settings/cashfree & store_settings/general
     if (db) {
       try {
+        await setDoc(doc(db, 'store_settings', 'cashfree'), clean, { merge: true });
         await setDoc(doc(db, 'store_settings', 'general'), clean, { merge: true });
       } catch (e) {
-        console.warn('Firestore direct write to store_settings/general warning:', e);
+        console.warn('Firestore direct write to store_settings/cashfree warning:', e);
       }
     }
 
     await logAdminAction({
       adminEmail: 'smoothsalesin@gmail.com',
-      action: 'UPDATE_RAZORPAY_CONFIG',
+      action: 'UPDATE_CASHFREE_CONFIG',
       module: 'Payments',
-      details: `Updated Razorpay Gateway credentials (Env: ${clean.environment || 'PRODUCTION'}) in Cloud Database`,
+      details: `Updated Cashfree Gateway credentials (Env: ${clean.environment || 'PRODUCTION'}) in Cloud Database`,
     });
 
     return clean;
