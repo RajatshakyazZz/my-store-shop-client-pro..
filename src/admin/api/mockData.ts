@@ -10193,9 +10193,9 @@ export const initialSiteMode: SiteModeConfig = {
 };
 
 export const initialStoreSetup: StoreSetupConfig = {
-  store_name: 'Ztore Digital',
-  contact_email: 'ztoredigital@gmail.com',
-  support_whatsapp: '+91 8807281600',
+  store_name: 'CreatorMint',
+  contact_email: 'smoothsalesin@gmail.com',
+  support_whatsapp: '+91 8129797720',
   currency: 'INR',
   currency_symbol: '₹',
   price_format: '₹%s',
@@ -10220,8 +10220,8 @@ export const initialMetaPixel: MetaPixelConfig = {
 
 export const initialWhatsappButton: WhatsappButtonConfig = {
   enabled: true,
-  phone_number: '918807281600',
-  default_message: 'Hi Ztore Digital Support! I need quick help regarding my Ztore Digital order.',
+  phone_number: '918129797720',
+  default_message: 'Hi CreatorMint Support! I need quick help regarding my CreatorMint order.',
   position: 'bottom-right',
   show_popup_badge: true,
   popup_text: 'Need help? Chat on WhatsApp',

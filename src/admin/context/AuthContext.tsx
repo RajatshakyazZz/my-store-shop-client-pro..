@@ -53,16 +53,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setAdmin(parsed);
         } catch {
           setAdmin({
-            name: 'Ztore Digital Administrator',
-            email: 'ztoredigital@gmail.com',
+            name: 'CreatorMint Administrator',
+            email: 'smoothsalesin@gmail.com',
             role: 'SuperAdmin',
             source: 'portal-key',
           });
         }
       } else {
         setAdmin({
-          name: 'Ztore Digital Administrator',
-          email: 'ztoredigital@gmail.com',
+          name: 'CreatorMint Administrator',
+          email: 'smoothsalesin@gmail.com',
           role: 'SuperAdmin',
           source: 'portal-key',
         });
@@ -84,16 +84,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loginWithPassword = async (pass: string): Promise<boolean> => {
     setIsLoading(true);
     const configuredPassword =
-      (typeof process !== 'undefined' &&
-        (process.env.NEXT_PUBLIC_ADMIN_PASSWORD ||
-          (process.env as any).ADMIN_PASSWORD ||
-          (process.env as any).VITE_ADMIN_PASSWORD)) ||
-      'vaultzet@2026';
+      typeof process !== 'undefined'
+        ? (process.env.NEXT_PUBLIC_ADMIN_PASSWORD ||
+           (process.env as any).ADMIN_PASSWORD ||
+           (process.env as any).VITE_ADMIN_PASSWORD)
+        : undefined;
 
-    if ((configuredPassword && pass === configuredPassword) || pass === 'vaultworld@2026' || pass === 'vaultzet@2026') {
+    const isMatch = configuredPassword
+      ? pass === configuredPassword
+      : (pass === 'creatormint@2026' || pass === 'vaultzet@2026' || pass === 'vaultworld@2026');
+
+    if (isMatch) {
       const profile: AdminProfile = {
-        name: 'Ztore Digital Administrator',
-        email: 'ztoredigital@gmail.com',
+        name: 'CreatorMint Administrator',
+        email: 'smoothsalesin@gmail.com',
         role: 'SuperAdmin',
         source: 'portal-key',
       };
@@ -123,8 +127,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await portalApi.verifyKey(key);
       if (res.valid) {
         const profile: AdminProfile = {
-          name: res.user || 'Ztore Digital Administrator',
-          email: 'ztoredigital@gmail.com',
+          name: res.user || 'CreatorMint Administrator',
+          email: 'smoothsalesin@gmail.com',
           role: (res.role as AdminRole) || 'SuperAdmin',
           source: 'portal-key',
         };

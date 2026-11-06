@@ -77,7 +77,7 @@ export default function LightboxModal({
             {currentIndex + 1} / {items.length}
           </span>
           {current.badge && (
-            <span className="hidden sm:inline-block px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold border border-emerald-500/30">
+            <span className="hidden sm:inline-block px-2.5 py-1 rounded-full bg-mint-500/20 text-mint-300 text-xs font-semibold border border-mint-500/30">
               {current.badge}
             </span>
           )}
@@ -137,7 +137,7 @@ export default function LightboxModal({
       >
         {current.title && <div className="text-sm sm:text-base font-bold text-white">{current.title}</div>}
         {current.subtitle && (
-          <div className="text-xs sm:text-sm text-slate-300 font-medium mt-0.5">{current.subtitle}</div>
+          <div className="text-xs sm:text-sm text-ink-300 font-medium mt-0.5">{current.subtitle}</div>
         )}
       </div>
     </div>

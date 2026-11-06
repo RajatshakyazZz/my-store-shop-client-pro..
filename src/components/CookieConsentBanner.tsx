@@ -135,14 +135,14 @@ export default function CookieConsentBanner() {
       aria-label="Cookie and Privacy Consent"
       className="fixed bottom-20 left-3 right-3 sm:bottom-6 sm:left-6 sm:right-auto sm:max-w-md z-[9999] animate-in fade-in slide-in-from-bottom-5 duration-300"
     >
-      <div className="relative bg-slate-950/95 backdrop-blur-2xl border border-red-500/35 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-[0_25px_60px_rgba(0,0,0,0.85)] text-slate-100 max-h-[85vh] overflow-y-auto">
+      <div className="relative bg-ink-950/95 backdrop-blur-2xl border border-mint-500/35 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-[0_25px_60px_rgba(0,0,0,0.85)] text-slate-100 max-h-[85vh] overflow-y-auto">
         {/* Red top highlight glow */}
-        <div className="absolute -top-[1px] left-8 right-8 h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_12px_rgba(239,68,68,0.8)]" />
+        <div className="absolute -top-[1px] left-8 right-8 h-[2px] bg-gradient-to-r from-transparent via-mint-500 to-transparent shadow-[0_0_12px_rgba(11,16,25,0.22)]" />
 
         {/* Header row */}
         <div className="flex items-start justify-between gap-3 mb-2.5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-red-500/20 to-rose-500/10 border border-red-500/30 flex items-center justify-center shrink-0 text-red-400 shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-mint-500 flex items-center justify-center shrink-0 text-ink shadow-sm">
               <Cookie className="w-4 h-4" />
             </div>
             <div>
@@ -150,12 +150,12 @@ export default function CookieConsentBanner() {
                 <h3 className="text-sm font-extrabold text-white tracking-tight">
                   Cookie &amp; Privacy Choices
                 </h3>
-                <span className="hidden xs:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold">
+                <span className="hidden xs:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-mint-500/15 border border-mint-500/30 text-mint-300 text-[10px] font-bold">
                   <ShieldCheck className="w-3 h-3" />
                   DPDP &amp; GDPR
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 font-medium">
+              <p className="text-[11px] text-ink-300 font-medium">
                 We value your security and privacy
               </p>
             </div>
@@ -165,7 +165,7 @@ export default function CookieConsentBanner() {
           <button
             type="button"
             onClick={handleEssentialOnly}
-            className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors shrink-0"
+            className="w-7 h-7 rounded-lg bg-ink hover:bg-ink-800 text-ink-300 hover:text-white flex items-center justify-center transition-colors shrink-0"
             aria-label="Dismiss and accept essential only"
             title="Dismiss and keep essential only"
           >
@@ -174,34 +174,34 @@ export default function CookieConsentBanner() {
         </div>
 
         {/* Brief description */}
-        <p className="text-xs text-slate-300 leading-relaxed font-normal mb-3">
+        <p className="text-xs text-ink-300 leading-relaxed font-normal mb-3">
           We use essential cookies to power your cart, process instant UPI &amp; card checkouts, and deliver your Google Drive downloads. In compliance with the DPDP Act 2023 &amp; GDPR, you can choose which cookies to allow.
         </p>
 
         {/* Expandable Preferences Section */}
         {showCustomize && (
-          <div className="mb-3.5 space-y-2.5 pt-3 border-t border-slate-800/80">
+          <div className="mb-3.5 space-y-2.5 pt-3 border-t border-ink-700/80">
             {/* Category 1: Essential */}
-            <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs">
+            <div className="flex items-center justify-between p-2.5 rounded-xl bg-ink/80 border border-ink-700 text-xs">
               <div className="pr-2">
                 <p className="font-bold text-white flex items-center gap-1.5">
                   <span>Essential Store Cookies</span>
-                  <span className="text-[10px] text-red-400 font-medium">(Required)</span>
+                  <span className="text-[10px] text-leaf-400 font-medium">(Required)</span>
                 </p>
-                <p className="text-[11px] text-slate-400 mt-0.5">
+                <p className="text-[11px] text-ink-300 mt-0.5">
                   Cart management, payment verification &amp; order download tokens.
                 </p>
               </div>
-              <span className="shrink-0 px-2.5 py-1 rounded-md bg-red-500/15 text-red-400 border border-red-500/30 text-[10px] font-bold">
+              <span className="shrink-0 px-2.5 py-1 rounded-md bg-mint-500/15 text-leaf-400 border border-mint-500/30 text-[10px] font-bold">
                 Always Active
               </span>
             </div>
 
             {/* Category 2: Analytics */}
-            <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs">
+            <div className="flex items-center justify-between p-2.5 rounded-xl bg-ink/80 border border-ink-700 text-xs">
               <div className="pr-2">
                 <p className="font-bold text-white">Analytics &amp; Performance</p>
-                <p className="text-[11px] text-slate-400 mt-0.5">
+                <p className="text-[11px] text-ink-300 mt-0.5">
                   Helps us measure site speeds and popular bundle requests (GA4).
                 </p>
               </div>
@@ -209,7 +209,7 @@ export default function CookieConsentBanner() {
                 type="button"
                 onClick={() => setAnalyticsAllowed(!analyticsAllowed)}
                 className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                  analyticsAllowed ? 'bg-red-600' : 'bg-slate-700'
+                  analyticsAllowed ? 'bg-mint-500' : 'bg-ink-700'
                 }`}
                 aria-label="Toggle Analytics Cookies"
               >
@@ -222,10 +222,10 @@ export default function CookieConsentBanner() {
             </div>
 
             {/* Category 3: Marketing */}
-            <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs">
+            <div className="flex items-center justify-between p-2.5 rounded-xl bg-ink/80 border border-ink-700 text-xs">
               <div className="pr-2">
                 <p className="font-bold text-white">Marketing &amp; Attribution</p>
-                <p className="text-[11px] text-slate-400 mt-0.5">
+                <p className="text-[11px] text-ink-300 mt-0.5">
                   Prevents duplicate ad impressions and tracks campaign performance.
                 </p>
               </div>
@@ -233,7 +233,7 @@ export default function CookieConsentBanner() {
                 type="button"
                 onClick={() => setMarketingAllowed(!marketingAllowed)}
                 className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                  marketingAllowed ? 'bg-red-600' : 'bg-slate-700'
+                  marketingAllowed ? 'bg-mint-500' : 'bg-ink-700'
                 }`}
                 aria-label="Toggle Marketing Cookies"
               >
@@ -248,11 +248,11 @@ export default function CookieConsentBanner() {
         )}
 
         {/* Links and Customize toggle */}
-        <div className="flex items-center justify-between text-xs text-slate-400 mb-3 px-0.5">
+        <div className="flex items-center justify-between text-xs text-ink-300 mb-3 px-0.5">
           <Link
             href="/privacy-policy#cookies"
             prefetch={false}
-            className="text-red-400 hover:text-red-300 underline underline-offset-2 transition-colors font-semibold text-[11px]"
+            className="text-leaf-400 hover:text-leaf-300 underline underline-offset-2 transition-colors font-semibold text-[11px]"
           >
             Read Privacy &amp; Cookie Policy
           </Link>
@@ -260,9 +260,9 @@ export default function CookieConsentBanner() {
           <button
             type="button"
             onClick={() => setShowCustomize(!showCustomize)}
-            className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-400 hover:text-white transition-colors"
+            className="inline-flex items-center gap-1 text-[11px] font-semibold text-ink-300 hover:text-white transition-colors"
           >
-            <Settings2 className="w-3 h-3 text-red-400" />
+            <Settings2 className="w-3 h-3 text-leaf-400" />
             <span>{showCustomize ? 'Hide Details' : 'Customize'}</span>
             {showCustomize ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
           </button>
@@ -275,15 +275,15 @@ export default function CookieConsentBanner() {
               <button
                 type="button"
                 onClick={handleSaveCustom}
-                className="col-span-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 sm:py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-all active:scale-[0.98] border border-slate-700"
+                className="col-span-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 sm:py-2.5 rounded-xl bg-ink-800 hover:bg-ink-700 text-white font-bold text-xs transition-all active:scale-[0.98] border border-ink-600"
               >
-                <Check className="w-3.5 h-3.5 text-red-400" />
+                <Check className="w-3.5 h-3.5 text-leaf-400" />
                 <span>Save Choices</span>
               </button>
               <button
                 type="button"
                 onClick={handleAcceptAll}
-                className="col-span-1 inline-flex items-center justify-center gap-1 px-3 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs shadow-md shadow-red-500/25 transition-all hover:scale-[1.01] active:scale-[0.98]"
+                className="col-span-1 inline-flex items-center justify-center gap-1 px-3 py-2 sm:py-2.5 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-xs shadow-md shadow-ink/10 transition-all hover:scale-[1.01] active:scale-[0.98]"
               >
                 <span>Accept All</span>
               </button>
@@ -293,14 +293,14 @@ export default function CookieConsentBanner() {
               <button
                 type="button"
                 onClick={handleEssentialOnly}
-                className="col-span-1 inline-flex items-center justify-center px-3 py-2 sm:py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white font-bold text-xs transition-all active:scale-[0.98] border border-slate-800"
+                className="col-span-1 inline-flex items-center justify-center px-3 py-2 sm:py-2.5 rounded-xl bg-ink hover:bg-ink-800 text-ink-300 hover:text-white font-bold text-xs transition-all active:scale-[0.98] border border-ink-700"
               >
                 <span>Essential Only</span>
               </button>
               <button
                 type="button"
                 onClick={handleAcceptAll}
-                className="col-span-1 inline-flex items-center justify-center gap-1 px-3 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs shadow-md shadow-red-500/25 transition-all hover:scale-[1.01] active:scale-[0.98]"
+                className="col-span-1 inline-flex items-center justify-center gap-1 px-3 py-2 sm:py-2.5 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-xs shadow-md shadow-ink/10 transition-all hover:scale-[1.01] active:scale-[0.98]"
               >
                 <span>Accept All</span>
               </button>

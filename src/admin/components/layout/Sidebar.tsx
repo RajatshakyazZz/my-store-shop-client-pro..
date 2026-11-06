@@ -89,14 +89,14 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
         isLight ? 'border-slate-200 bg-white' : 'border-slate-800/80 bg-slate-950'
       }`}>
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-xl bg-black border border-amber-500/30 overflow-hidden flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0">
-            <img src="/logo.webp" alt="Ztore Digital Logo" className="w-full h-full object-cover" />
+          <div className="w-9 h-9 rounded-xl bg-black border border-mint-500/30 overflow-hidden flex items-center justify-center shadow-md shadow-mint-500/20 shrink-0">
+            <img src="/creatormint-mark.png" alt="CreatorMint Logo" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col min-w-0">
             <span className={`font-extrabold text-[15px] tracking-tight leading-none truncate ${
               isLight ? 'text-slate-950' : 'text-white'
             }`}>
-              Ztore Digital
+              CreatorMint
             </span>
             <span className="text-[11px] font-black text-amber-500 tracking-wide mt-1 truncate">
               COMMAND CENTER v2.0

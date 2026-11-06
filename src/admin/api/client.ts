@@ -2689,7 +2689,7 @@ class PortalApiClient {
     }
 
     await logAdminAction({
-      adminEmail: 'ztoredigital@gmail.com',
+      adminEmail: 'smoothsalesin@gmail.com',
       action: 'UPDATE_RAZORPAY_CONFIG',
       module: 'Payments',
       details: `Updated Razorpay Gateway credentials (Env: ${clean.environment || 'PRODUCTION'}) in Cloud Database`,
@@ -2810,7 +2810,7 @@ class PortalApiClient {
     } catch {}
 
     await logAdminAction({
-      adminEmail: 'ztoredigital@gmail.com',
+      adminEmail: 'smoothsalesin@gmail.com',
       action: 'UPDATE_IMGBB_CONFIG',
       module: 'Media CDN',
       details: apiKey ? 'Updated and synced ImgBB API key in cloud database' : 'Cleared ImgBB API key',

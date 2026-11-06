@@ -176,11 +176,11 @@ function ShopContent() {
     }
   };
 
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztoredigital.com').replace(/\/+$/, '');
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
   const itemListJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Ztore Digital Reels Bundles',
+    name: 'CreatorMint Reels Bundles',
     numberOfItems: filteredBundles.length,
     itemListElement: paginatedBundles.map((b, idx) => ({
       '@type': 'ListItem',
@@ -202,10 +202,10 @@ function ShopContent() {
         {/* Top Header & 3 Stat Cards */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-1">
           <div>
-            <h1 className="text-2xl sm:text-4xl font-black text-[#162048] tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-black text-[#0B1019] tracking-tight">
               All Reels Bundles
             </h1>
-            <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5 sm:mt-1">
+            <p className="text-xs sm:text-sm text-ink-400 font-medium mt-0.5 sm:mt-1">
               Search and find high-quality viral reels bundles ready to download and publish.
             </p>
           </div>
@@ -213,45 +213,45 @@ function ShopContent() {
           {/* 3 Counter Cards in a compact row */}
           <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {/* Counter 1: Published Bundles */}
-            <div className="bg-white border border-slate-200/90 rounded-2xl p-2.5 sm:py-2.5 sm:px-4 shadow-sm flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-red-50 text-red-600 border border-red-200/60 flex items-center justify-center shrink-0">
-                <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-red-500/20" />
+            <div className="bg-white border border-canvas-200/90 rounded-2xl p-2.5 sm:py-2.5 sm:px-4 shadow-sm flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-leaf-50 text-leaf-600 border border-leaf-200/60 flex items-center justify-center shrink-0">
+                <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-leaf-500/20" />
               </div>
               <div className="min-w-0">
-                <div className="text-xs sm:text-base font-black text-slate-950 leading-tight truncate">
+                <div className="text-xs sm:text-base font-black text-ink leading-tight truncate">
                   {allBundles.length}+
                 </div>
-                <div className="text-[9px] sm:text-[11px] font-semibold text-slate-500 truncate">
+                <div className="text-[9px] sm:text-[11px] font-semibold text-ink-400 truncate">
                   Total Bundles
                 </div>
               </div>
             </div>
 
             {/* Counter 2: Instant Access */}
-            <div className="bg-white border border-slate-200/90 rounded-2xl p-2.5 sm:py-2.5 sm:px-4 shadow-sm flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-red-50 border border-red-200/60 text-red-700 flex items-center justify-center shrink-0">
+            <div className="bg-white border border-canvas-200/90 rounded-2xl p-2.5 sm:py-2.5 sm:px-4 shadow-sm flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-leaf-50 border border-leaf-200/60 text-leaf-700 flex items-center justify-center shrink-0">
                 <HardDrive className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
               <div className="min-w-0">
-                <div className="text-xs sm:text-base font-black text-slate-950 leading-tight truncate">
+                <div className="text-xs sm:text-base font-black text-ink leading-tight truncate">
                   Google Drive
                 </div>
-                <div className="text-[9px] sm:text-[11px] font-semibold text-slate-500 truncate">
+                <div className="text-[9px] sm:text-[11px] font-semibold text-ink-400 truncate">
                   Instant Access
                 </div>
               </div>
             </div>
 
             {/* Counter 3: Starting from */}
-            <div className="bg-white border border-slate-200/90 rounded-2xl p-2.5 sm:py-2.5 sm:px-4 shadow-sm flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-red-50 border border-red-200/60 text-red-700 flex items-center justify-center shrink-0">
+            <div className="bg-white border border-canvas-200/90 rounded-2xl p-2.5 sm:py-2.5 sm:px-4 shadow-sm flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-leaf-50 border border-leaf-200/60 text-leaf-700 flex items-center justify-center shrink-0">
                 <IndianRupee className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
               <div className="min-w-0">
-                <div className="text-xs sm:text-base font-black text-slate-950 leading-tight truncate">
+                <div className="text-xs sm:text-base font-black text-ink leading-tight truncate">
                   ₹49.00
                 </div>
-                <div className="text-[9px] sm:text-[11px] font-semibold text-slate-500 truncate">
+                <div className="text-[9px] sm:text-[11px] font-semibold text-ink-400 truncate">
                   Starting from
                 </div>
               </div>
@@ -262,9 +262,9 @@ function ShopContent() {
         <FreeBundleOfferBanner variant="home" />
 
         {/* PROMINENT SEARCH BAR: Enter to Search + Dedicated Search Button + Instant Live Dropdown */}
-        <div ref={shopSearchRef} className="relative rounded-3xl bg-white border border-slate-200/90 p-3.5 sm:p-6 shadow-sm space-y-3.5 z-30">
+        <div ref={shopSearchRef} className="relative rounded-3xl bg-white border border-canvas-200/90 p-3.5 sm:p-6 shadow-sm space-y-3.5 z-30">
           <form onSubmit={handleSearchSubmit} className="relative flex items-center">
-            <div className="absolute inset-y-0 left-0 pl-3.5 sm:pl-5 flex items-center pointer-events-none text-red-600">
+            <div className="absolute inset-y-0 left-0 pl-3.5 sm:pl-5 flex items-center pointer-events-none text-leaf-600">
               <Search className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             
@@ -279,7 +279,7 @@ function ShopContent() {
                 if (searchTerm.trim()) setIsDropdownOpen(true);
               }}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full pl-10 sm:pl-13 pr-28 sm:pr-36 py-3 sm:py-3.5 rounded-2xl bg-slate-50/70 border-2 border-slate-200 focus:border-red-500 focus:ring-4 focus:ring-red-500/10 text-xs sm:text-base font-bold text-slate-950 placeholder:text-slate-400 focus:outline-none shadow-sm transition-all"
+              className="w-full pl-10 sm:pl-13 pr-28 sm:pr-36 py-3 sm:py-3.5 rounded-2xl bg-canvas-50/70 border-2 border-canvas-200 focus:border-mint-500 focus:ring-4 focus:ring-mint-500/10 text-xs sm:text-base font-bold text-ink placeholder:text-ink-300 focus:outline-none shadow-sm transition-all"
             />
 
             {/* Clear Button (X) + Dedicated Search Action Button */}
@@ -288,7 +288,7 @@ function ShopContent() {
                 <button
                   type="button"
                   onClick={handleClearSearch}
-                  className="p-1.5 sm:p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                  className="p-1.5 sm:p-2 rounded-xl text-ink-300 hover:text-ink-600 hover:bg-canvas transition-colors cursor-pointer"
                   title="Clear search"
                   aria-label="Clear search"
                 >
@@ -298,7 +298,7 @@ function ShopContent() {
 
               <button
                 type="submit"
-                className="px-3.5 sm:px-5 py-2 sm:py-2 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white text-xs sm:text-sm font-black shadow-md shadow-red-500/20 transition-all flex items-center gap-1.5 shrink-0 active:scale-95 cursor-pointer"
+                className="px-3.5 sm:px-5 py-2 sm:py-2 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink text-xs sm:text-sm font-black shadow-md shadow-ink/10 transition-all flex items-center gap-1.5 shrink-0 active:scale-95 cursor-pointer"
               >
                 <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
                 <span>Search</span>
@@ -308,43 +308,43 @@ function ShopContent() {
 
           {/* Instant Dropdown Results Popup */}
           {isDropdownOpen && searchTerm.trim() && (
-            <div className="absolute top-[68px] sm:top-[78px] left-3.5 sm:left-6 right-3.5 sm:right-6 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150">
-              <div className="p-2.5 sm:p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-                <span className="text-[11px] sm:text-xs font-extrabold text-red-800 uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-red-600" />
+            <div className="absolute top-[68px] sm:top-[78px] left-3.5 sm:left-6 right-3.5 sm:right-6 bg-white rounded-2xl shadow-2xl border border-canvas-200 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150">
+              <div className="p-2.5 sm:p-3 bg-canvas-50 border-b border-canvas-200 flex items-center justify-between">
+                <span className="text-[11px] sm:text-xs font-extrabold text-leaf-800 uppercase tracking-wider flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-leaf-600" />
                   <span>{searchResults.length} Bundle{searchResults.length !== 1 ? 's' : ''} Found</span>
                 </span>
                 {searchResults.length > 0 && (
-                  <span className="text-[10px] sm:text-[11px] text-slate-400 font-semibold">Click product to open</span>
+                  <span className="text-[10px] sm:text-[11px] text-ink-300 font-semibold">Click product to open</span>
                 )}
               </div>
 
-              <div className="max-h-80 overflow-y-auto divide-y divide-slate-100 p-1 sm:p-1.5">
+              <div className="max-h-80 overflow-y-auto divide-y divide-canvas-200 p-1 sm:p-1.5">
                 {searchResults.slice(0, 5).map((bundle) => (
                   <Link
                     key={bundle.id}
                     href={`/product/${bundle.slug}`}
                     onClick={() => setIsDropdownOpen(false)}
-                    className="flex items-center gap-3 p-2 sm:p-2.5 rounded-xl hover:bg-red-50/70 transition-colors group"
+                    className="flex items-center gap-3 p-2 sm:p-2.5 rounded-xl hover:bg-leaf-50/70 transition-colors group"
                   >
                     <img
                       src={bundle.thumbnail}
                       alt={bundle.title}
-                      className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl object-cover shrink-0 bg-slate-900 border border-slate-200"
+                      className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl object-cover shrink-0 bg-ink border border-canvas-200"
                     />
                     <div className="min-w-0 flex-1">
-                      <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1 group-hover:text-red-600 transition-colors">
+                      <h4 className="text-xs sm:text-sm font-bold text-ink line-clamp-1 group-hover:text-leaf-600 transition-colors">
                         {bundle.title}
                       </h4>
                       <div className="flex items-center gap-2 mt-0.5 sm:mt-1">
-                        <span className="text-[10px] font-bold text-red-800 bg-red-50 border border-red-200/60 px-2 py-0.5 rounded-md">
+                        <span className="text-[10px] font-bold text-leaf-800 bg-leaf-50 border border-leaf-200/60 px-2 py-0.5 rounded-md">
                           {bundle.reelCount}+ Reels
                         </span>
-                        <span className="text-xs sm:text-sm font-black text-slate-950">
+                        <span className="text-xs sm:text-sm font-black text-ink">
                           ₹{bundle.personalPrice || 49}
                         </span>
                         {bundle.personalOriginalPrice && (
-                          <span className="text-[10px] sm:text-[11px] text-slate-400 line-through">
+                          <span className="text-[10px] sm:text-[11px] text-ink-300 line-through">
                             ₹{bundle.personalOriginalPrice}
                           </span>
                         )}
@@ -354,9 +354,9 @@ function ShopContent() {
                 ))}
 
                 {searchResults.length === 0 && (
-                  <div className="py-6 sm:py-8 text-center text-xs text-slate-500 space-y-1">
-                    <p className="font-bold text-slate-700">No matching bundles found</p>
-                    <p className="text-[11px] text-slate-400">Try searching AI, Horror, Gym, Premanand, Cartoon, Car</p>
+                  <div className="py-6 sm:py-8 text-center text-xs text-ink-400 space-y-1">
+                    <p className="font-bold text-ink-600">No matching bundles found</p>
+                    <p className="text-[11px] text-ink-300">Try searching AI, Horror, Gym, Premanand, Cartoon, Car</p>
                   </div>
                 )}
               </div>
@@ -365,7 +365,7 @@ function ShopContent() {
                 <button
                   type="button"
                   onClick={() => handleSearchSubmit()}
-                  className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white text-xs sm:text-sm font-black text-center block transition-all cursor-pointer"
+                  className="w-full py-2.5 sm:py-3 bg-mint-500 hover:bg-mint-300 text-ink text-xs sm:text-sm font-black text-center block transition-all cursor-pointer"
                 >
                   View all {searchResults.length} results in Shop &rarr;
                 </button>
@@ -375,8 +375,8 @@ function ShopContent() {
 
           {/* Quick 1-Tap Search Filter Tags */}
           <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5">
-            <span className="text-[11px] sm:text-xs font-extrabold text-slate-600 shrink-0 flex items-center gap-1">
-              <TrendingUp className="w-3 h-3 text-red-600" />
+            <span className="text-[11px] sm:text-xs font-extrabold text-ink-500 shrink-0 flex items-center gap-1">
+              <TrendingUp className="w-3 h-3 text-leaf-600" />
               <span>Popular:</span>
             </span>
             {POPULAR_SEARCH_TAGS.map((tag) => {
@@ -388,8 +388,8 @@ function ShopContent() {
                   onClick={() => handlePopularTagClick(tag.query)}
                   className={`px-3 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-red-600 text-white border border-red-500 shadow-xs font-black'
-                      : 'bg-white border border-slate-200 text-slate-700 hover:bg-red-50/70 hover:border-red-300 hover:text-red-600'
+                      ? 'bg-mint-500 text-ink border border-mint-500 shadow-xs font-black'
+                      : 'bg-white border border-canvas-200 text-ink-600 hover:bg-leaf-50/70 hover:border-leaf-300 hover:text-leaf-600'
                   }`}
                 >
                   {tag.label}
@@ -400,19 +400,19 @@ function ShopContent() {
         </div>
 
         {/* Toolbar: Showing Count + Sort Dropdown */}
-        <div className="flex flex-row items-center justify-between gap-2 bg-white p-3 sm:px-5 rounded-2xl border border-slate-200/90 shadow-2xs">
+        <div className="flex flex-row items-center justify-between gap-2 bg-white p-3 sm:px-5 rounded-2xl border border-canvas-200/90 shadow-2xs">
           <div className="flex items-center gap-2 truncate">
-            <span className="text-[11px] sm:text-[13px] font-bold text-slate-700 truncate">
+            <span className="text-[11px] sm:text-[13px] font-bold text-ink-600 truncate">
               Showing {filteredBundles.length > 0 ? (safePage - 1) * ITEMS_PER_PAGE + 1 : 0}–
               {Math.min(safePage * ITEMS_PER_PAGE, filteredBundles.length)} of {filteredBundles.length} bundles
             </span>
             {searchTerm && (
-              <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-red-50 text-red-800 border border-red-200">
+              <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-leaf-50 text-leaf-800 border border-leaf-200">
                 <span>&ldquo;{searchTerm}&rdquo;</span>
                 <button
                   type="button"
                   onClick={handleClearSearch}
-                  className="hover:text-red-600"
+                  className="hover:text-leaf-600"
                   aria-label="Remove search"
                 >
                   <X className="w-3 h-3" />
@@ -422,14 +422,14 @@ function ShopContent() {
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <span className="text-[11px] sm:text-xs font-bold text-slate-500 hidden sm:inline">Sort by:</span>
+            <span className="text-[11px] sm:text-xs font-bold text-ink-400 hidden sm:inline">Sort by:</span>
             <select
               value={sortBy}
               onChange={(e) => {
                 setSortBy(e.target.value as any);
                 setCurrentPage(1);
               }}
-              className="px-2.5 sm:px-3.5 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-red-500 shadow-2xs cursor-pointer"
+              className="px-2.5 sm:px-3.5 py-1.5 rounded-xl border border-canvas-200 text-xs font-bold text-ink bg-white focus:outline-none focus:ring-2 focus:ring-mint-500 shadow-2xs cursor-pointer"
             >
               <option value="popular">Popular</option>
               <option value="price-low">Price: Low to High</option>
@@ -441,19 +441,19 @@ function ShopContent() {
 
         {/* Empty State */}
         {paginatedBundles.length === 0 && (
-          <div className="py-16 text-center bg-white rounded-3xl border border-slate-200/90 p-8 space-y-3">
-            <div className="w-14 h-14 rounded-2xl bg-red-50 text-red-700 border border-red-200/60 flex items-center justify-center mx-auto text-2xl">
+          <div className="py-16 text-center bg-white rounded-3xl border border-canvas-200/90 p-8 space-y-3">
+            <div className="w-14 h-14 rounded-2xl bg-leaf-50 text-leaf-700 border border-leaf-200/60 flex items-center justify-center mx-auto text-2xl">
               🔍
             </div>
-            <h3 className="text-lg font-bold text-slate-950">
+            <h3 className="text-lg font-bold text-ink">
               {searchTerm ? `No bundles found for "${searchTerm}"` : 'No bundles found'}
             </h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+            <p className="text-xs text-ink-400 max-w-sm mx-auto">
               Try searching with another keyword like AI, Horror, Gym, Premanand, Cartoon, or Cars.
             </p>
             <button
               onClick={handleClearSearch}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-black hover:from-red-700 hover:to-rose-700 transition-colors shadow-sm cursor-pointer"
+              className="px-5 py-2.5 rounded-xl bg-mint-500 text-ink text-xs font-black hover:bg-mint-300 transition-colors shadow-sm cursor-pointer"
             >
               Show All Bundles
             </button>
@@ -480,7 +480,7 @@ function ShopContent() {
             return (
               <div
                 key={bundle.id}
-                className="bg-white rounded-2xl sm:rounded-[24px] border border-slate-200/90 shadow-[0_2px_12px_rgba(15,23,42,0.03)] hover:shadow-[0_12px_28px_rgba(239,68,68,0.14)] hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden group"
+                className="bg-white rounded-2xl sm:rounded-[24px] border border-canvas-200/90 shadow-[0_2px_12px_rgba(11,16,25,0.03)] hover:shadow-[0_12px_28px_rgba(11,16,25,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden group"
               >
                 {/* Thumbnail with Ribbon & Resolution Badge */}
                 <Link
@@ -498,7 +498,7 @@ function ShopContent() {
                       ],
                     })
                   }
-                  className="relative aspect-[4/3] overflow-hidden bg-slate-900 block"
+                  className="relative aspect-[4/3] overflow-hidden bg-ink block"
                 >
                   <img
                     src={optimizeImageUrl(bundle.thumbnail, 384, 75)}
@@ -513,17 +513,17 @@ function ShopContent() {
                   {/* Diagonal Ribbon: BEST SELLER or TRENDING or HOT */}
                   <div className="absolute top-0 right-0 overflow-hidden w-20 h-20 sm:w-24 sm:h-24 pointer-events-none">
                     {isBestSelling ? (
-                      <div className="absolute transform rotate-45 bg-gradient-to-r from-red-600 via-rose-600 to-red-600 text-white font-black text-[7px] sm:text-[8px] py-0.5 sm:py-1 right-[-34px] sm:right-[-32px] top-[14px] sm:top-[18px] w-[110px] sm:w-[120px] text-center shadow-md flex items-center justify-center gap-0.5">
+                      <div className="absolute transform rotate-45 bg-mint-500 text-ink font-black text-[7px] sm:text-[8px] py-0.5 sm:py-1 right-[-34px] sm:right-[-32px] top-[14px] sm:top-[18px] w-[110px] sm:w-[120px] text-center shadow-md flex items-center justify-center gap-0.5">
                         <span>★</span>
                         <span>BEST SELLER</span>
                       </div>
                     ) : isTrending ? (
-                      <div className="absolute transform rotate-45 bg-gradient-to-r from-slate-950 to-slate-900 text-red-400 border border-red-500/30 font-black text-[7px] sm:text-[8px] py-0.5 sm:py-1 right-[-34px] sm:right-[-32px] top-[14px] sm:top-[18px] w-[110px] sm:w-[120px] text-center shadow-md flex items-center justify-center gap-0.5">
+                      <div className="absolute transform rotate-45 bg-gradient-to-r from-ink-950 to-ink text-leaf-400 border border-mint-500/30 font-black text-[7px] sm:text-[8px] py-0.5 sm:py-1 right-[-34px] sm:right-[-32px] top-[14px] sm:top-[18px] w-[110px] sm:w-[120px] text-center shadow-md flex items-center justify-center gap-0.5">
                         <span>↗</span>
                         <span>TRENDING</span>
                       </div>
                     ) : (
-                      <div className="absolute transform rotate-45 bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-[7.5px] sm:text-[9px] py-0.5 sm:py-1 right-[-34px] sm:right-[-32px] top-[14px] sm:top-[18px] w-[110px] sm:w-[120px] text-center shadow-md flex items-center justify-center gap-0.5">
+                      <div className="absolute transform rotate-45 bg-mint-500 text-ink font-black text-[7.5px] sm:text-[9px] py-0.5 sm:py-1 right-[-34px] sm:right-[-32px] top-[14px] sm:top-[18px] w-[110px] sm:w-[120px] text-center shadow-md flex items-center justify-center gap-0.5">
                         <span>🔥</span>
                         <span>HOT</span>
                       </div>
@@ -532,7 +532,7 @@ function ShopContent() {
 
                   {/* HD / 1080P Pill */}
                   <span className="absolute bottom-1.5 right-1.5 sm:bottom-2.5 sm:right-2.5 px-1.5 py-0.5 sm:px-2 rounded-md text-[9px] sm:text-[10px] font-black bg-black/80 text-white backdrop-blur-md border border-white/20 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-mint-500" />
                     <span>{String(bundle.resolution || '').includes('1080') ? '1080P' : 'HD'}</span>
                   </span>
                 </Link>
@@ -557,17 +557,17 @@ function ShopContent() {
                         })
                       }
                     >
-                      <h3 className="font-extrabold text-xs sm:text-[14px] text-slate-900 hover:text-red-600 transition-colors line-clamp-2 leading-snug min-h-[32px] sm:min-h-[40px]">
+                      <h3 className="font-extrabold text-xs sm:text-[14px] text-ink hover:text-leaf-600 transition-colors line-clamp-2 leading-snug min-h-[32px] sm:min-h-[40px]">
                         {bundle.title}
                       </h3>
                     </Link>
 
                     {/* Meta Tags */}
                     <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
-                      <span className="px-1.5 sm:px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-extrabold bg-red-50 text-red-800 border border-red-200/50">
+                      <span className="px-1.5 sm:px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-extrabold bg-leaf-50 text-leaf-800 border border-leaf-200/50">
                         {bundle.reelCount}+ Reels
                       </span>
-                      <span className="px-1.5 sm:px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold bg-slate-100 text-slate-600 flex items-center gap-0.5">
+                      <span className="px-1.5 sm:px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold bg-canvas text-ink-500 flex items-center gap-0.5">
                         <Film className="w-2.5 h-2.5" />
                         <span>MP4</span>
                       </span>
@@ -575,17 +575,17 @@ function ShopContent() {
                   </div>
 
                   {/* Pricing & Dual Action Buttons */}
-                  <div className="pt-2 border-t border-slate-100 space-y-2 sm:space-y-2.5">
+                  <div className="pt-2 border-t border-canvas-200 space-y-2 sm:space-y-2.5">
                     <div className="flex items-baseline justify-between gap-1 flex-wrap">
                       <div className="flex items-baseline gap-1.5">
-                        <span className="text-[10px] sm:text-xs text-slate-400 line-through font-semibold">
+                        <span className="text-[10px] sm:text-xs text-ink-300 line-through font-semibold">
                           ₹{bundle.personalOriginalPrice}.00
                         </span>
-                        <span className="text-sm sm:text-lg font-black text-slate-950">
+                        <span className="text-sm sm:text-lg font-black text-ink">
                           ₹{bundle.personalPrice}.00
                         </span>
                       </div>
-                      <span className="px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <span className="px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] font-extrabold bg-mint-50 text-leaf-700 border border-mint-200">
                         {discount}% OFF
                       </span>
                     </div>
@@ -595,7 +595,7 @@ function ShopContent() {
                       <button
                         type="button"
                         onClick={() => addToCart(bundle, 'personal')}
-                        className="p-2 sm:p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-red-50 hover:border-red-300 text-slate-700 hover:text-red-700 transition-colors shadow-2xs shrink-0 flex items-center justify-center active:scale-95 cursor-pointer"
+                        className="p-2 sm:p-2.5 rounded-xl border border-canvas-200 bg-canvas-50 hover:bg-leaf-50 hover:border-leaf-300 text-ink-600 hover:text-leaf-700 transition-colors shadow-2xs shrink-0 flex items-center justify-center active:scale-95 cursor-pointer"
                         aria-label="Add to cart"
                         title="Add to cart"
                       >
@@ -605,7 +605,7 @@ function ShopContent() {
                       <button
                         type="button"
                         onClick={() => buyNow(bundle, 'personal')}
-                        className="flex-1 py-2 sm:py-2.5 px-2 sm:px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-[11px] sm:text-xs flex items-center justify-center shadow-md shadow-red-500/20 transition-all active:scale-95 cursor-pointer"
+                        className="flex-1 py-2 sm:py-2.5 px-2 sm:px-4 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-[11px] sm:text-xs flex items-center justify-center shadow-md shadow-ink/10 transition-all active:scale-95 cursor-pointer"
                       >
                         Buy Now
                       </button>
@@ -625,7 +625,7 @@ function ShopContent() {
               type="button"
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={safePage === 1}
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-slate-200 bg-white text-slate-700 flex items-center justify-center text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors cursor-pointer"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-canvas-200 bg-white text-ink-600 flex items-center justify-center text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-canvas-50 transition-colors cursor-pointer"
               aria-label="Previous Page"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -646,8 +646,8 @@ function ShopContent() {
                     onClick={() => setCurrentPage(pageNum)}
                     className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl text-xs font-black transition-colors cursor-pointer ${
                       isActive
-                        ? 'bg-red-600 text-white border border-red-500 shadow-sm'
-                        : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                        ? 'bg-mint-500 text-ink border border-mint-500 shadow-sm'
+                        : 'bg-white border border-canvas-200 text-ink-600 hover:bg-canvas-50'
                     }`}
                   >
                     {pageNum}
@@ -657,7 +657,7 @@ function ShopContent() {
 
               if (pageNum === safePage - 2 || pageNum === safePage + 2) {
                 return (
-                  <span key={pageNum} className="text-slate-400 text-xs px-1">
+                  <span key={pageNum} className="text-ink-300 text-xs px-1">
                     ...
                   </span>
                 );
@@ -670,7 +670,7 @@ function ShopContent() {
               type="button"
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={safePage === totalPages}
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-gray-200 bg-white text-gray-700 flex items-center justify-center text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-canvas-200 bg-white text-ink-600 flex items-center justify-center text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-canvas-50 transition-colors"
               aria-label="Next Page"
             >
               <ChevronRight className="w-4 h-4" />
@@ -679,34 +679,34 @@ function ShopContent() {
         )}
 
         {/* 3 Trust / Value Cards */}
-        <div className="rounded-3xl bg-white border border-slate-200/90 p-4 sm:p-6 shadow-sm space-y-3.5 mt-8">
+        <div className="rounded-3xl bg-white border border-canvas-200/90 p-4 sm:p-6 shadow-sm space-y-3.5 mt-8">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-red-50 text-red-600 border border-red-200/60 flex items-center justify-center shrink-0">
-              <Zap className="w-4 h-4 fill-red-500/20" />
+            <div className="w-8 h-8 rounded-xl bg-leaf-50 text-leaf-600 border border-leaf-200/60 flex items-center justify-center shrink-0">
+              <Zap className="w-4 h-4 fill-leaf-500/20" />
             </div>
             <div>
-              <h4 className="text-xs sm:text-sm font-extrabold text-[#162048]">Instant Access</h4>
-              <p className="text-[11px] sm:text-xs text-gray-500 font-medium">Get Google Drive files immediately after payment</p>
+              <h4 className="text-xs sm:text-sm font-extrabold text-[#0B1019]">Instant Access</h4>
+              <p className="text-[11px] sm:text-xs text-ink-400 font-medium">Get Google Drive files immediately after payment</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 border border-rose-200/60 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-leaf-50 text-leaf-600 border border-leaf-200/60 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs sm:text-sm font-extrabold text-[#162048]">High Quality</h4>
-              <p className="text-[11px] sm:text-xs text-gray-500 font-medium">Curated 1080P Full HD watermark-free digital content</p>
+              <h4 className="text-xs sm:text-sm font-extrabold text-[#0B1019]">High Quality</h4>
+              <p className="text-[11px] sm:text-xs text-ink-400 font-medium">Curated 1080P Full HD watermark-free digital content</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200/60 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-mint-50 text-leaf-600 border border-mint-200/60 flex items-center justify-center shrink-0">
               <RotateCcw className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs sm:text-sm font-extrabold text-[#162048]">Regular Updates</h4>
-              <p className="text-[11px] sm:text-xs text-gray-500 font-medium">New bundles added regularly with lifetime access</p>
+              <h4 className="text-xs sm:text-sm font-extrabold text-[#0B1019]">Regular Updates</h4>
+              <p className="text-[11px] sm:text-xs text-ink-400 font-medium">New bundles added regularly with lifetime access</p>
             </div>
           </div>
         </div>
@@ -718,7 +718,7 @@ function ShopContent() {
 
 export default function ShopPage() {
   return (
-    <Suspense fallback={<div className="py-20 text-center text-sm font-bold text-gray-500">Loading catalog...</div>}>
+    <Suspense fallback={<div className="py-20 text-center text-sm font-bold text-ink-400">Loading catalog...</div>}>
       <ShopContent />
     </Suspense>
   );

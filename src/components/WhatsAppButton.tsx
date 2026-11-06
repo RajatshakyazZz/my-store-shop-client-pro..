@@ -61,7 +61,7 @@ export default function WhatsAppButton({
   }
 
   // Resolve dynamic phone number: prop > admin settings > fallback
-  const rawPhone = phoneNumber || settings?.supportWhatsapp || '8807281600';
+  const rawPhone = phoneNumber || settings?.supportWhatsapp || '8129797720';
 
   let cleanPhone = rawPhone.replace(/[^0-9]/g, '');
   if (cleanPhone.length === 10) {
@@ -70,7 +70,7 @@ export default function WhatsAppButton({
     cleanPhone = '91' + cleanPhone.slice(1);
   }
 
-  const effectiveStoreName = storeName || settings?.storeName || 'Ztore Digital';
+  const effectiveStoreName = storeName || settings?.storeName || 'CreatorMint';
   const effectiveDefaultMessage = defaultMessage || settings?.whatsappDefaultMessage;
 
   // Determine intelligent positioning based on current route
@@ -146,14 +146,14 @@ export default function WhatsAppButton({
         <div
           role="dialog"
           aria-label="WhatsApp Live Chat"
-          className="absolute bottom-16 right-0 w-[320px] sm:w-[350px] max-w-[calc(100vw-2rem)] rounded-2xl sm:rounded-3xl shadow-2xl bg-white border border-slate-100 overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          className="absolute bottom-16 right-0 w-[320px] sm:w-[350px] max-w-[calc(100vw-2rem)] rounded-2xl sm:rounded-3xl shadow-2xl bg-white border border-canvas-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200"
           style={{ boxShadow: '0 20px 45px -10px rgba(18, 140, 126, 0.3), 0 8px 20px -6px rgba(0,0,0,0.15)' }}
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-[#075E54] to-[#128C7E] px-4 py-3.5 text-white flex items-center justify-between shadow-md">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <div className="w-10 h-10 rounded-full overflow-hidden shadow-md shrink-0 border border-white/20 flex items-center justify-center bg-red-600">
+                <div className="w-10 h-10 rounded-full overflow-hidden shadow-md shrink-0 border border-white/20 flex items-center justify-center bg-mint-500">
                   <img
                     src="/logo.png"
                     alt={effectiveStoreName}
@@ -197,27 +197,27 @@ export default function WhatsAppButton({
           >
             {/* Date Pill */}
             <div className="text-center">
-              <span className="text-[10px] font-bold text-slate-500 bg-white/80 backdrop-blur-sm px-2.5 py-0.5 rounded-full shadow-xs">
+              <span className="text-[10px] font-bold text-ink-400 bg-white/80 backdrop-blur-sm px-2.5 py-0.5 rounded-full shadow-xs">
                 Today
               </span>
             </div>
 
             {/* Support Message Bubble */}
             <div className="flex flex-col items-start max-w-[90%]">
-              <div className="bg-white rounded-2xl rounded-tl-xs p-3 shadow-sm border border-slate-200/50 text-[#111B21]">
+              <div className="bg-white rounded-2xl rounded-tl-xs p-3 shadow-sm border border-canvas-200/50 text-[#111B21]">
                 <p className="text-xs leading-relaxed font-medium">
                   👋 <strong className="font-bold text-[#075E54]">Namaste!</strong> Welcome to {effectiveStoreName}.
                 </p>
-                <p className="text-xs leading-relaxed mt-1 text-slate-700">
+                <p className="text-xs leading-relaxed mt-1 text-ink-600">
                   {productTitle ? (
                     <>
-                      Interested in <strong className="text-slate-900 font-bold">{productTitle}</strong>? Have any questions about commercial rights or instant Google Drive access?
+                      Interested in <strong className="text-ink font-bold">{productTitle}</strong>? Have any questions about commercial rights or instant Google Drive access?
                     </>
                   ) : (
                     settings?.whatsappPopupText || 'Need assistance with our viral reels bundles or instant download links? We are live 24/7!'
                   )}
                 </p>
-                <div className="flex items-center justify-end gap-1 mt-1 text-[9px] text-slate-400 font-semibold">
+                <div className="flex items-center justify-end gap-1 mt-1 text-[9px] text-ink-300 font-semibold">
                   <span>Just now</span>
                   <CheckCheck className="w-3.5 h-3.5 text-[#53bdeb]" />
                 </div>
@@ -226,22 +226,22 @@ export default function WhatsAppButton({
 
             {/* Quick Inquiry Chips */}
             <div className="space-y-1.5 pt-1">
-              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider px-1">Quick Questions:</p>
+              <p className="text-[10px] font-bold text-ink-400 uppercase tracking-wider px-1">Quick Questions:</p>
               {QUICK_PROMPTS.map((prompt, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleOpenWhatsApp(prompt.text)}
-                  className="w-full text-left text-[11px] font-semibold text-slate-700 bg-white/95 hover:bg-emerald-50 hover:text-[#075E54] border border-slate-200/70 hover:border-emerald-300 rounded-xl px-2.5 py-2 transition-all shadow-xs flex items-center justify-between group active:scale-[0.98]"
+                  className="w-full text-left text-[11px] font-semibold text-ink-600 bg-white/95 hover:bg-mint-50 hover:text-[#075E54] border border-canvas-200/70 hover:border-mint-500 rounded-xl px-2.5 py-2 transition-all shadow-xs flex items-center justify-between group active:scale-[0.98]"
                 >
                   <span className="line-clamp-1">{prompt.label}</span>
-                  <Send className="w-3 h-3 text-slate-400 group-hover:text-[#25D366] shrink-0 ml-1 transition-colors" />
+                  <Send className="w-3 h-3 text-ink-300 group-hover:text-[#25D366] shrink-0 ml-1 transition-colors" />
                 </button>
               ))}
             </div>
           </div>
 
           {/* Footer Action */}
-          <div className="p-3 bg-white border-t border-slate-100 space-y-2">
+          <div className="p-3 bg-white border-t border-canvas-200 space-y-2">
             <div className="flex items-center gap-2">
               <input
                 type="text"
@@ -251,7 +251,7 @@ export default function WhatsAppButton({
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') handleOpenWhatsApp();
                 }}
-                className="flex-1 text-xs bg-slate-100 hover:bg-slate-50 focus:bg-white border border-slate-200 focus:border-[#25D366] rounded-xl px-3 py-2 text-slate-800 placeholder-slate-400 outline-none transition-all"
+                className="flex-1 text-xs bg-canvas hover:bg-canvas-50 focus:bg-white border border-canvas-200 focus:border-[#25D366] rounded-xl px-3 py-2 text-ink placeholder-slate-400 outline-none transition-all"
               />
               <button
                 onClick={() => handleOpenWhatsApp()}
@@ -277,27 +277,27 @@ export default function WhatsAppButton({
       {!isOpen && showTooltip && !hasInteracted && (
         <div
           onClick={handleFloatingClick}
-          className="absolute bottom-16 right-0 mb-1 w-64 bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-xl border border-emerald-100 flex items-start gap-2.5 cursor-pointer animate-in fade-in slide-in-from-bottom-2 duration-300 group hover:shadow-2xl transition-all"
+          className="absolute bottom-16 right-0 mb-1 w-64 bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-xl border border-mint-200 flex items-start gap-2.5 cursor-pointer animate-in fade-in slide-in-from-bottom-2 duration-300 group hover:shadow-2xl transition-all"
         >
           <div className="w-8 h-8 rounded-full bg-[#25D366]/10 text-[#25D366] flex items-center justify-center shrink-0 mt-0.5">
             <WhatsAppSvgIcon className="w-4 h-4 fill-current" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-extrabold text-slate-900">Need Instant Help?</span>
+              <span className="text-[11px] font-extrabold text-ink">Need Instant Help?</span>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowTooltip(false);
                   setHasInteracted(true);
                 }}
-                className="text-slate-400 hover:text-slate-600 -mr-1 -mt-1 p-1"
+                className="text-ink-300 hover:text-ink-500 -mr-1 -mt-1 p-1"
                 aria-label="Dismiss tooltip"
               >
                 <X className="w-3 h-3" />
               </button>
             </div>
-            <p className="text-[10px] text-slate-500 font-medium leading-tight mt-0.5">
+            <p className="text-[10px] text-ink-400 font-medium leading-tight mt-0.5">
               Chat directly with our support team on WhatsApp.
             </p>
           </div>

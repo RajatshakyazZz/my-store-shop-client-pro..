@@ -26,12 +26,13 @@ export interface FirebaseConfigObject {
   storageBucket: string;
   messagingSenderId: string;
   appId: string;
+  measurementId?: string;
 }
 
 export function getEffectiveFirebaseConfig(): FirebaseConfigObject {
   if (typeof window !== 'undefined') {
     try {
-      const stored = localStorage.getItem('vaultzet_firebase_config');
+      const stored = localStorage.getItem('creatormint_firebase_config') || localStorage.getItem('vaultzet_firebase_config');
       if (stored) {
         const parsed = JSON.parse(stored);
         if (parsed.apiKey && parsed.projectId) {
@@ -46,34 +47,38 @@ export function getEffectiveFirebaseConfig(): FirebaseConfigObject {
   return {
     apiKey:
       (typeof process !== 'undefined' && (process.env.NEXT_PUBLIC_FIREBASE_API_KEY || (process.env as any).VITE_FIREBASE_API_KEY)) ||
-      'AIzaSyDemoAdminPortalKey_Vaultzet_2026',
+      'AIzaSyD8rz1-VaHEaS-ZpEMeShK-v1CG66BFz9s',
     authDomain:
       (typeof process !== 'undefined' && (process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || (process.env as any).VITE_FIREBASE_AUTH_DOMAIN)) ||
-      'vaultzet-5873e.firebaseapp.com',
+      'creator-mint-bf2b1.firebaseapp.com',
     projectId:
       (typeof process !== 'undefined' && (process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || (process.env as any).VITE_FIREBASE_PROJECT_ID)) ||
-      'vaultzet-5873e',
+      'creator-mint-bf2b1',
     storageBucket:
       (typeof process !== 'undefined' && (process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || (process.env as any).VITE_FIREBASE_STORAGE_BUCKET)) ||
-      'vaultzet-5873e.firebasestorage.app',
+      'creator-mint-bf2b1.firebasestorage.app',
     messagingSenderId:
       (typeof process !== 'undefined' && (process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || (process.env as any).VITE_FIREBASE_MESSAGING_SENDER_ID)) ||
-      '1029384756',
+      '720751971659',
     appId:
       (typeof process !== 'undefined' && (process.env.NEXT_PUBLIC_FIREBASE_APP_ID || (process.env as any).VITE_FIREBASE_APP_ID)) ||
-      '1:1029384756:web:8a9b0c1d2e3f4a5b',
+      '1:720751971659:web:2b924dce33742132796cce',
+    measurementId:
+      (typeof process !== 'undefined' && (process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || (process.env as any).VITE_FIREBASE_MEASUREMENT_ID)) ||
+      'G-90HTFP4RB2',
   };
 }
 
 export function saveCustomFirebaseConfig(config: FirebaseConfigObject) {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('vaultzet_firebase_config', JSON.stringify(config));
+    localStorage.setItem('creatormint_firebase_config', JSON.stringify(config));
     window.location.reload();
   }
 }
 
 export function clearCustomFirebaseConfig() {
   if (typeof window !== 'undefined') {
+    localStorage.removeItem('creatormint_firebase_config');
     localStorage.removeItem('vaultzet_firebase_config');
     window.location.reload();
   }

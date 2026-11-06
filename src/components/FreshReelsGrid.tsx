@@ -34,19 +34,17 @@ export default function FreshReelsGrid() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Outer Section Card Wrapper */}
-        <div className="rounded-[28px] sm:rounded-[36px] bg-slate-50 border border-slate-200/90 p-4 sm:p-6 space-y-6 shadow-sm">
+        <div className="rounded-[28px] sm:rounded-[36px] bg-white border border-canvas-200 p-3 sm:p-5 space-y-5 sm:space-y-6 shadow-[0_24px_48px_-36px_rgba(11,16,25,0.35)]">
           
           {/* Header Banner */}
-          <div className="rounded-[20px] bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 p-4 sm:p-5 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[0_10px_28px_rgba(2,6,23,0.35)] border border-red-500/30">
+          <div className="rounded-[22px] cm-ink-panel px-5 py-5 sm:px-7 sm:py-6 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[0_20px_40px_-26px_rgba(7,10,17,0.8)]">
             <div className="flex items-center gap-3">
-              {/* Red bar indicator on left */}
-              <div className="w-[5px] h-10 bg-red-500 rounded-full shrink-0 shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
               <div>
-                <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight flex items-center gap-2">
+                <h2 className="font-display text-[22px] sm:text-[28px] font-extrabold text-white tracking-[-0.025em] leading-tight flex items-center gap-2.5">
                   <span>Fresh Reels, Ready to Post</span>
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/40 font-bold hidden sm:inline-block">NEW DROP</span>
+                  <span className="font-sans text-[10px] px-2 py-0.5 rounded-full bg-volt text-ink font-extrabold tracking-[0.1em] hidden sm:inline-block">NEW DROP</span>
                 </h2>
-                <p className="text-xs sm:text-[13px] text-slate-300 font-medium mt-0.5">
+                <p className="text-xs sm:text-[13px] text-ink-300 font-medium mt-0.5">
                   Freshly curated reels bundles to keep your posting schedule consistent and viral.
                 </p>
               </div>
@@ -55,10 +53,10 @@ export default function FreshReelsGrid() {
             <Link
               href="/shop"
               prefetch={false}
-              className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-red-300 border border-red-500/40 text-xs font-bold transition-all shrink-0 flex items-center gap-1.5"
+              className="group pl-4 pr-1.5 py-1.5 rounded-full bg-mint-500 hover:bg-mint-300 text-ink text-xs font-extrabold transition-colors shrink-0 flex items-center gap-2"
             >
               <span>View All Catalog</span>
-              <ArrowRight className="w-3.5 h-3.5 text-red-300" />
+              <span className="w-6 h-6 rounded-full bg-ink text-mint-300 flex items-center justify-center transition-transform group-hover:translate-x-0.5"><ArrowRight className="w-3.5 h-3.5" /></span>
             </Link>
           </div>
 
@@ -79,13 +77,13 @@ export default function FreshReelsGrid() {
               return (
                 <div
                   key={bundle.id}
-                  className="bg-white rounded-2xl sm:rounded-[24px] border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-red-400/60 hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden group"
+                  className="bg-white rounded-2xl sm:rounded-[24px] border border-canvas-200/90 shadow-sm hover:shadow-xl hover:border-leaf-400/60 hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden group"
                 >
                   {/* Thumbnail */}
                   <Link
                     href={`/product/${bundle.slug}`}
                     prefetch={false}
-                    className="relative aspect-[4/3] overflow-hidden bg-slate-900 block"
+                    className="relative aspect-[4/3] overflow-hidden bg-ink block"
                   >
                     <img
                       src={optimizeImageUrl(bundle.thumbnail, 384, 75)}
@@ -100,12 +98,12 @@ export default function FreshReelsGrid() {
                     {/* Corner Ribbon */}
                     <div className="absolute top-0 right-0 overflow-hidden w-20 h-20 sm:w-24 sm:h-24 pointer-events-none">
                       {isTrending ? (
-                        <div className="absolute transform rotate-45 bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-[7px] sm:text-[8px] py-0.5 sm:py-1 right-[-34px] sm:right-[-32px] top-[14px] sm:top-[18px] w-[110px] sm:w-[120px] text-center shadow-md flex items-center justify-center gap-0.5">
+                        <div className="absolute transform rotate-45 bg-mint-500 text-ink font-black text-[7px] sm:text-[8px] py-0.5 sm:py-1 right-[-34px] sm:right-[-32px] top-[14px] sm:top-[18px] w-[110px] sm:w-[120px] text-center shadow-md flex items-center justify-center gap-0.5">
                           <span>👑</span>
                           <span>TRENDING</span>
                         </div>
                       ) : (
-                        <div className="absolute transform rotate-45 bg-gradient-to-r from-rose-600 to-red-600 text-white font-black text-[7.5px] sm:text-[9px] py-0.5 sm:py-1 right-[-34px] sm:right-[-32px] top-[14px] sm:top-[18px] w-[110px] sm:w-[120px] text-center shadow-md flex items-center justify-center gap-0.5">
+                        <div className="absolute transform rotate-45 bg-mint-500 text-ink font-black text-[7.5px] sm:text-[9px] py-0.5 sm:py-1 right-[-34px] sm:right-[-32px] top-[14px] sm:top-[18px] w-[110px] sm:w-[120px] text-center shadow-md flex items-center justify-center gap-0.5">
                           <span>🔥</span>
                           <span>HOT</span>
                         </div>
@@ -114,7 +112,7 @@ export default function FreshReelsGrid() {
 
                     {/* 1080P Badge in Bottom Right with green dot */}
                     <span className="absolute bottom-1.5 right-1.5 sm:bottom-2.5 sm:right-2.5 px-1.5 py-0.5 sm:px-2 rounded-md text-[9px] sm:text-[10px] font-black bg-black/80 text-white backdrop-blur-md border border-white/20 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-mint-500" />
                       <span>{String(bundle.resolution || '').includes('1080') ? '1080P' : 'HD'}</span>
                     </span>
                   </Link>
@@ -123,17 +121,17 @@ export default function FreshReelsGrid() {
                   <div className="p-2.5 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3.5">
                     <div className="space-y-1.5 sm:space-y-2">
                       <Link href={`/product/${bundle.slug}`} prefetch={false}>
-                        <h3 className="font-extrabold text-xs sm:text-[14px] text-slate-900 hover:text-red-600 transition-colors line-clamp-2 leading-snug min-h-[32px] sm:min-h-[40px]">
+                        <h3 className="font-extrabold text-xs sm:text-[14px] text-ink hover:text-leaf-600 transition-colors line-clamp-2 leading-snug min-h-[32px] sm:min-h-[40px]">
                           {bundle.title}
                         </h3>
                       </Link>
 
                       {/* Meta Pills */}
                       <div className="flex items-center gap-1.5 pt-0.5 flex-wrap">
-                        <span className="px-1.5 sm:px-2.5 py-0.5 rounded-md text-[9px] sm:text-[11px] font-black bg-red-50 text-red-900 border border-red-200/50">
+                        <span className="px-1.5 sm:px-2.5 py-0.5 rounded-md text-[9px] sm:text-[11px] font-black bg-leaf-50 text-leaf-900 border border-leaf-200/50">
                           {bundle.reelCount}+ Reels
                         </span>
-                        <span className="px-1.5 sm:px-2 py-0.5 rounded-md text-[9px] sm:text-[11px] font-bold bg-slate-100 text-slate-700 flex items-center gap-0.5">
+                        <span className="px-1.5 sm:px-2 py-0.5 rounded-md text-[9px] sm:text-[11px] font-bold bg-canvas text-ink-600 flex items-center gap-0.5">
                           <Film className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                           <span>MP4</span>
                         </span>
@@ -141,17 +139,17 @@ export default function FreshReelsGrid() {
                     </div>
 
                     {/* Pricing & Buttons */}
-                    <div className="pt-2 border-t border-slate-100 space-y-2 sm:space-y-2.5">
+                    <div className="pt-2 border-t border-canvas-200 space-y-2 sm:space-y-2.5">
                       <div className="flex items-baseline justify-between gap-1 flex-wrap">
                         <div className="flex items-baseline gap-1.5">
-                          <span className="text-[10px] sm:text-xs text-slate-400 line-through font-semibold">
+                          <span className="text-[10px] sm:text-xs text-ink-300 line-through font-semibold">
                             ₹{bundle.personalOriginalPrice}.00
                           </span>
-                          <span className="text-sm sm:text-xl font-black text-slate-950">
+                          <span className="text-sm sm:text-xl font-black text-ink">
                             ₹{bundle.personalPrice}.00
                           </span>
                         </div>
-                        <span className="px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] font-black bg-emerald-50 text-emerald-700 border border-emerald-200/50">
+                        <span className="px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] font-black bg-mint-50 text-leaf-700 border border-mint-200/50">
                           {discount}% OFF
                         </span>
                       </div>
@@ -160,16 +158,16 @@ export default function FreshReelsGrid() {
                         <button
                           type="button"
                           onClick={() => addToCart(bundle, 'personal')}
-                          className="py-2 sm:py-2.5 px-1.5 sm:px-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-800 border border-slate-200 font-bold text-[10px] sm:text-xs flex items-center justify-center gap-1 transition-colors"
+                          className="py-2 sm:py-2.5 px-1.5 sm:px-2 rounded-xl bg-canvas hover:bg-canvas-200/80 text-ink border border-canvas-200 font-bold text-[10px] sm:text-xs flex items-center justify-center gap-1 transition-colors"
                         >
-                          <ShoppingCart className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-red-600 shrink-0" />
+                          <ShoppingCart className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-leaf-600 shrink-0" />
                           <span className="truncate">Add to Cart</span>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => buyNow(bundle, 'personal')}
-                          className="py-2 sm:py-2.5 px-1.5 sm:px-2 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-[10px] sm:text-xs flex items-center justify-center gap-1 shadow-md shadow-red-500/25 active:scale-95 transition-all"
+                          className="py-2 sm:py-2.5 px-1.5 sm:px-2 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-[10px] sm:text-xs flex items-center justify-center gap-1 shadow-md shadow-ink/10 active:scale-95 transition-all"
                         >
                           <span className="truncate">Buy Now</span>
                           <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[2.5] shrink-0" />

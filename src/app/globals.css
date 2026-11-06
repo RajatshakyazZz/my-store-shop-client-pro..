@@ -4,20 +4,30 @@
 @import '../admin/index.css';
 
 :root {
-  --rb-bg: #f8fafc;
-  --rb-text: #0f172a;
-  --rb-muted: #64748b;
-  --rb-red: #dc2626;
-  --rb-red-light: #ef4444;
-  --rb-red-dark: #b91c1c;
-  --rb-red-soft: #fef2f2;
-  --rb-purple: #dc2626;
-  --rb-purple-light: #ef4444;
-  --rb-purple-dark: #b91c1c;
-  --rb-purple-soft: #fef2f2;
-  --rb-pink: #f43f5e;
-  --rb-green: #059669;
-  --rb-line: #e2e8f0;
+  /* CreatorMint palette — derived from client reference swatches */
+  --cm-ink: #0b1019;
+  --cm-ink-2: #151c27;
+  --cm-lime: #9ae600;
+  --cm-lime-light: #bbf451;
+  --cm-lime-deep: #467600;
+  --cm-volt: #ffff00;
+  --cm-canvas: #f4f6ef;
+  --cm-line: #e3e8da;
+
+  --rb-bg: var(--cm-canvas);
+  --rb-text: var(--cm-ink);
+  --rb-muted: #5b6472;
+  --rb-red: var(--cm-lime);
+  --rb-red-light: var(--cm-lime-light);
+  --rb-red-dark: var(--cm-lime-deep);
+  --rb-red-soft: #f7fee7;
+  --rb-purple: var(--cm-lime);
+  --rb-purple-light: var(--cm-lime-light);
+  --rb-purple-dark: var(--cm-lime-deep);
+  --rb-purple-soft: #f7fee7;
+  --rb-pink: var(--cm-volt);
+  --rb-green: var(--cm-lime-deep);
+  --rb-line: var(--cm-line);
 }
 
 html {
@@ -29,7 +39,8 @@ html {
 body {
   background-color: var(--rb-bg);
   color: var(--rb-text);
-  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans), 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  caret-color: var(--cm-lime-deep);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -54,15 +65,32 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: var(--cm-canvas);
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #c9d1bd;
   border-radius: 999px;
+  border: 2px solid var(--cm-canvas);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #dc2626;
+  background: var(--cm-ink);
 }
+
+/* Display type */
+h1, h2, .font-display {
+  font-family: var(--font-display), var(--font-sans), 'Inter', sans-serif;
+  font-optical-sizing: auto;
+}
+
+/* Keyboard focus — lime ring with ink offset, consistent across the store */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--cm-lime);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+/* Tabular figures for prices / counters */
+.tabular { font-variant-numeric: tabular-nums; }
 
 /* Mask gradient for continuous marquee */
 .marquee-mask {
@@ -106,37 +134,36 @@ body {
   display: inline-block;
   width: 3px;
   height: 1.1em;
-  background: #dc2626;
+  background: var(--cm-lime);
   margin-left: 4px;
   vertical-align: middle;
   animation: blink 0.8s infinite;
 }
 
-/* Button glow - Signature Red Luxe */
-.btn-gradient-primary {
-  background: linear-gradient(105deg, #dc2626 0%, #ef4444 45%, #f43f5e 80%, #dc2626 100%);
-  color: #ffffff;
-  font-weight: 800;
-  box-shadow: 0 10px 24px rgba(220, 38, 38, 0.35);
-  transition: all 0.2s ease-in-out;
-}
-.btn-gradient-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(220, 38, 38, 0.48);
-}
-
+/* Primary CTA — electric lime with ink text */
+.btn-gradient-primary,
 .btn-gradient-orange,
 .btn-gradient-red {
-  background: linear-gradient(105deg, #dc2626 0%, #ef4444 45%, #f43f5e 80%, #dc2626 100%);
-  color: #ffffff;
+  background: var(--cm-lime);
+  color: var(--cm-ink);
   font-weight: 800;
-  box-shadow: 0 10px 24px rgba(220, 38, 38, 0.35);
-  transition: all 0.2s ease-in-out;
+  box-shadow: 0 10px 22px -10px rgba(11, 16, 25, 0.45), inset 0 -2px 0 rgba(11, 16, 25, 0.12);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, background-color 0.2s ease;
 }
+.btn-gradient-primary:hover,
 .btn-gradient-orange:hover,
 .btn-gradient-red:hover {
+  background: var(--cm-lime-light);
   transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(220, 38, 38, 0.48);
+  box-shadow: 0 16px 28px -12px rgba(11, 16, 25, 0.5), inset 0 -2px 0 rgba(11, 16, 25, 0.12);
+}
+
+/* Section surface with faint dot grain used on dark ink panels */
+.cm-ink-panel {
+  background-color: var(--cm-ink);
+  background-image:
+    radial-gradient(rgba(187, 244, 81, 0.07) 1px, transparent 1px);
+  background-size: 18px 18px;
 }
 
 /* Glassmorphism */

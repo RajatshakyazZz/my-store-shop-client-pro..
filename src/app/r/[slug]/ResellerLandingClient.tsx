@@ -51,16 +51,16 @@ const THEME_STYLES: Record<
   }
 > = {
   dark: {
-    bg: 'bg-[#0b0819]',
+    bg: 'bg-[#0B1019]',
     cardBg: 'bg-[#15102a]/80 backdrop-blur-xl',
-    cardBorder: 'border-purple-500/20',
+    cardBorder: 'border-mint-500/20',
     textPrimary: 'text-white',
-    textSecondary: 'text-purple-200/70',
-    badgeBg: 'bg-purple-500/10',
-    badgeText: 'text-purple-300',
-    badgeBorder: 'border-purple-500/30',
-    ctaGradient: 'from-[#6734f7] via-[#8445f8] to-[#ec288d]',
-    accentGlow: 'shadow-[0_0_35px_rgba(103,52,247,0.35)]',
+    textSecondary: 'text-leaf-200/70',
+    badgeBg: 'bg-mint-500/10',
+    badgeText: 'text-leaf-300',
+    badgeBorder: 'border-mint-500/30',
+    ctaGradient: 'from-[#467600] via-[#8445f8] to-[#9AE600]',
+    accentGlow: 'shadow-[0_0_35px_rgba(11,16,25,0.35)]',
     accentText: 'text-[#a87ffb]',
   },
   midnight: {
@@ -72,22 +72,22 @@ const THEME_STYLES: Record<
     badgeBg: 'bg-cyan-500/10',
     badgeText: 'text-cyan-300',
     badgeBorder: 'border-cyan-500/30',
-    ctaGradient: 'from-cyan-500 via-blue-600 to-indigo-600',
+    ctaGradient: 'from-cyan-500 via-blue-600 to-mint-500',
     accentGlow: 'shadow-[0_0_35px_rgba(6,182,212,0.35)]',
     accentText: 'text-cyan-400',
   },
   neon: {
     bg: 'bg-[#09080e]',
     cardBg: 'bg-[#140e1f]/80 backdrop-blur-xl',
-    cardBorder: 'border-fuchsia-500/25',
+    cardBorder: 'border-mint-500/25',
     textPrimary: 'text-white',
-    textSecondary: 'text-fuchsia-200/70',
-    badgeBg: 'bg-fuchsia-500/10',
-    badgeText: 'text-fuchsia-300',
-    badgeBorder: 'border-fuchsia-500/30',
-    ctaGradient: 'from-fuchsia-500 via-pink-600 to-purple-600',
+    textSecondary: 'text-leaf-200/70',
+    badgeBg: 'bg-mint-500/10',
+    badgeText: 'text-leaf-300',
+    badgeBorder: 'border-mint-500/30',
+    ctaGradient: 'from-mint-500 via-mint-500 to-mint-500',
     accentGlow: 'shadow-[0_0_35px_rgba(217,70,239,0.35)]',
-    accentText: 'text-fuchsia-400',
+    accentText: 'text-leaf-400',
   },
   sunset: {
     bg: 'bg-[#100b0d]',
@@ -98,35 +98,35 @@ const THEME_STYLES: Record<
     badgeBg: 'bg-amber-500/10',
     badgeText: 'text-amber-300',
     badgeBorder: 'border-amber-500/30',
-    ctaGradient: 'from-amber-500 via-orange-600 to-rose-600',
+    ctaGradient: 'from-amber-500 via-orange-600 to-mint-500',
     accentGlow: 'shadow-[0_0_35px_rgba(245,158,11,0.35)]',
     accentText: 'text-amber-400',
   },
   emerald: {
     bg: 'bg-[#05110d]',
     cardBg: 'bg-[#0a1e17]/80 backdrop-blur-xl',
-    cardBorder: 'border-emerald-500/25',
+    cardBorder: 'border-mint-500/25',
     textPrimary: 'text-white',
     textSecondary: 'text-emerald-200/70',
-    badgeBg: 'bg-emerald-500/10',
-    badgeText: 'text-emerald-300',
-    badgeBorder: 'border-emerald-500/30',
-    ctaGradient: 'from-emerald-500 via-teal-600 to-cyan-600',
-    accentGlow: 'shadow-[0_0_35px_rgba(16,185,129,0.35)]',
-    accentText: 'text-emerald-400',
+    badgeBg: 'bg-mint-500/10',
+    badgeText: 'text-mint-300',
+    badgeBorder: 'border-mint-500/30',
+    ctaGradient: 'from-mint-500 via-mint-500 to-cyan-600',
+    accentGlow: 'shadow-[0_0_35px_rgba(154,230,0,0.35)]',
+    accentText: 'text-mint-300',
   },
   minimal: {
     bg: 'bg-[#0f1115]',
     cardBg: 'bg-[#181b22]/80 backdrop-blur-xl',
-    cardBorder: 'border-slate-700/50',
+    cardBorder: 'border-ink-600/50',
     textPrimary: 'text-white',
-    textSecondary: 'text-slate-400',
-    badgeBg: 'bg-indigo-500/10',
-    badgeText: 'text-indigo-300',
-    badgeBorder: 'border-indigo-500/30',
-    ctaGradient: 'from-indigo-500 to-violet-600',
+    textSecondary: 'text-ink-300',
+    badgeBg: 'bg-mint-500/10',
+    badgeText: 'text-leaf-300',
+    badgeBorder: 'border-mint-500/30',
+    ctaGradient: 'from-mint-500 to-mint-500',
     accentGlow: 'shadow-[0_0_30px_rgba(99,102,241,0.3)]',
-    accentText: 'text-indigo-400',
+    accentText: 'text-leaf-400',
   },
 };
 
@@ -361,11 +361,11 @@ export default function ResellerLandingClient({
   const savingsCalculated = originalPriceCalculated - Number(listing.resalePrice);
 
   return (
-    <div className={`min-h-screen ${theme.bg} ${theme.textPrimary} relative selection:bg-purple-500/30 selection:text-white pb-24 md:pb-12`}>
+    <div className={`min-h-screen ${theme.bg} ${theme.textPrimary} relative selection:bg-mint-500/30 selection:text-white pb-24 md:pb-12`}>
       {/* Background ambient decorative blurs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-purple-600/15 blur-[120px]" />
-        <div className="absolute top-1/3 -right-40 w-96 h-96 rounded-full bg-pink-600/10 blur-[140px]" />
+        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-mint-500/15 blur-[120px]" />
+        <div className="absolute top-1/3 -right-40 w-96 h-96 rounded-full bg-mint-500/10 blur-[140px]" />
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[500px] h-64 rounded-full bg-blue-600/10 blur-[150px]" />
       </div>
 
@@ -374,8 +374,8 @@ export default function ResellerLandingClient({
         <div className="max-w-6xl mx-auto flex items-center justify-between text-xs">
           <div className="flex items-center gap-2 text-white/80 font-bold text-[11px] sm:text-xs">
             <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint-500 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-mint-500"></span>
             </span>
             <span>⚡ Instant Automated Delivery via Google Drive</span>
           </div>
@@ -386,7 +386,7 @@ export default function ResellerLandingClient({
           >
             {shareCopied ? (
               <>
-                <Check className="w-3.5 h-3.5 text-green-400" />
+                <Check className="w-3.5 h-3.5 text-mint-300" />
                 <span>Link Copied!</span>
               </>
             ) : (
@@ -413,7 +413,7 @@ export default function ResellerLandingClient({
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-slate-900/60">
+                <div className="w-full h-full flex items-center justify-center bg-ink/60">
                   <Video className="w-16 h-16 text-white/30" />
                 </div>
               )}
@@ -421,7 +421,7 @@ export default function ResellerLandingClient({
               {/* Promo Badge Tag */}
               {listing.promoBadge && (
                 <div className="absolute top-4 left-4 z-20">
-                  <span className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-red-600 to-pink-600 text-white text-xs font-black shadow-lg uppercase tracking-wider flex items-center gap-1.5 border border-white/20">
+                  <span className="px-3.5 py-1.5 rounded-full bg-mint-500 text-ink text-xs font-black shadow-lg uppercase tracking-wider flex items-center gap-1.5 border border-white/20">
                     <Flame className="w-3.5 h-3.5 fill-current animate-pulse" />
                     <span>{listing.promoBadge}</span>
                   </span>
@@ -431,10 +431,10 @@ export default function ResellerLandingClient({
               {/* Format Overlay */}
               <div className="absolute bottom-4 left-4 right-4 z-20 p-3 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-between text-[11px] font-bold">
                 <span className="flex items-center gap-1.5 text-white/90">
-                  <Video className="w-3.5 h-3.5 text-purple-400" />
+                  <Video className="w-3.5 h-3.5 text-leaf-400" />
                   <span>1080x1920 Full HD</span>
                 </span>
-                <span className="text-green-400 flex items-center gap-1">
+                <span className="text-mint-300 flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>No Watermark</span>
                 </span>
@@ -450,7 +450,7 @@ export default function ResellerLandingClient({
                     onClick={() => setActiveImage(img)}
                     className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
                       activeImage === img
-                        ? 'border-purple-400 scale-105 shadow-md'
+                        ? 'border-leaf-400 scale-105 shadow-md'
                         : 'border-white/10 opacity-70 hover:opacity-100'
                     }`}
                   >
@@ -495,7 +495,7 @@ export default function ResellerLandingClient({
                   <span className="text-white/50">(340+ verified creators)</span>
                 </div>
                 <span>•</span>
-                <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                <span className="text-mint-300 font-semibold flex items-center gap-1">
                   <Download className="w-3 h-3" /> 1,280+ Downloads
                 </span>
               </div>
@@ -518,7 +518,7 @@ export default function ResellerLandingClient({
                   </div>
                 </div>
 
-                <div className="px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-black">
+                <div className="px-3.5 py-1.5 rounded-full bg-mint-500/10 border border-mint-500/20 text-mint-300 text-xs font-black">
                   Save ₹{savingsCalculated} (60% OFF)
                 </div>
               </div>
@@ -536,11 +536,11 @@ export default function ResellerLandingClient({
               {/* Guarantees list */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px] text-white/70 pt-1 font-medium">
                 <span className="flex items-center gap-1.5">
-                  <FolderOpen className="w-3.5 h-3.5 text-purple-400" />
+                  <FolderOpen className="w-3.5 h-3.5 text-leaf-400" />
                   <span>Google Drive Access</span>
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Lock className="w-3.5 h-3.5 text-emerald-400" />
+                  <Lock className="w-3.5 h-3.5 text-mint-300" />
                   <span>256-Bit SSL Checkout</span>
                 </span>
                 <span className="flex items-center gap-1.5 col-span-2 sm:col-span-1">
@@ -558,7 +558,7 @@ export default function ResellerLandingClient({
               <div className="space-y-2">
                 {benefitsList.map((benefit, idx) => (
                   <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-white/90 font-medium">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-mint-300 shrink-0 mt-0.5" />
                     <span>{benefit}</span>
                   </div>
                 ))}
@@ -594,7 +594,7 @@ export default function ResellerLandingClient({
                   key={idx}
                   className={`p-5 rounded-2xl border ${theme.cardBorder} ${theme.cardBg} space-y-2`}
                 >
-                  <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-black text-xs">
+                  <div className="w-8 h-8 rounded-xl bg-mint-500/10 text-leaf-400 flex items-center justify-center font-black text-xs">
                     {idx + 1}
                   </div>
                   <p className="text-xs sm:text-sm font-bold text-white/90 leading-snug">
@@ -614,17 +614,17 @@ export default function ResellerLandingClient({
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
             <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1.5">
-              <span className="text-[10px] font-black uppercase text-purple-400">Step 1</span>
+              <span className="text-[10px] font-black uppercase text-leaf-400">Step 1</span>
               <h4 className="text-xs font-black">Complete Secure Checkout</h4>
               <p className="text-[11px] text-white/60">Pay seamlessly using UPI (Google Pay, PhonePe, Paytm), Cards, or NetBanking.</p>
             </div>
             <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1.5">
-              <span className="text-[10px] font-black uppercase text-purple-400">Step 2</span>
+              <span className="text-[10px] font-black uppercase text-leaf-400">Step 2</span>
               <h4 className="text-xs font-black">Instant Link Access</h4>
               <p className="text-[11px] text-white/60">Directly after payment, your unique Google Drive access link opens on screen and is delivered to your email.</p>
             </div>
             <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1.5">
-              <span className="text-[10px] font-black uppercase text-purple-400">Step 3</span>
+              <span className="text-[10px] font-black uppercase text-leaf-400">Step 3</span>
               <h4 className="text-xs font-black">Download & Post</h4>
               <p className="text-[11px] text-white/60">Save to your phone or computer and start scheduling reels across all social media platforms immediately.</p>
             </div>
@@ -659,7 +659,7 @@ export default function ResellerLandingClient({
         {/* Seller Disclosure & Legal Safeguard */}
         <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02] text-center text-[11px] text-white/50 space-y-1 max-w-2xl mx-auto">
           <p className="font-semibold text-white/70">
-            Authorized Reseller Listing • Powered by Ztore Digital Digital Storefront
+            Authorized Reseller Listing • Powered by CreatorMint Digital Storefront
           </p>
           <p>
             Orders are securely processed with 256-bit SSL encryption.
@@ -691,10 +691,10 @@ export default function ResellerLandingClient({
       {listing.whatsappButtonEnabled !== false && (
         <WhatsAppButton
           isResellerPage={true}
-          phoneNumber={listing.whatsappNumber || '918807281600'}
-          storeName={listing.resellerName ? `${listing.resellerName} • Ztore Digital Partner` : 'Ztore Digital Support'}
+          phoneNumber={listing.whatsappNumber || '918129797720'}
+          storeName={listing.resellerName ? `${listing.resellerName} • CreatorMint Partner` : 'CreatorMint Support'}
           productTitle={listing.customTitle}
-          defaultMessage={`Hi! I am browsing "${listing.customTitle}" on Ztore Digital. Can you please assist me?`}
+          defaultMessage={`Hi! I am browsing "${listing.customTitle}" on CreatorMint. Can you please assist me?`}
           positionClassName="bottom-20 md:bottom-6 right-4 sm:right-6"
         />
       )}

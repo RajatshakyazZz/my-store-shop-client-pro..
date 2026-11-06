@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: ResellerPageProps): Promise<M
 
   if (!listing || listing.status === 'archived') {
     return {
-      title: 'Product Not Found | Ztore Digital',
+      title: 'Product Not Found | CreatorMint',
       description: 'The requested product listing is currently unavailable.',
       robots: { index: false, follow: false },
     };
@@ -24,13 +24,13 @@ export async function generateMetadata({ params }: ResellerPageProps): Promise<M
 
   if (listing.status !== 'active') {
     return {
-      title: `${listing.customTitle} (Unavailable) | Ztore Digital`,
+      title: `${listing.customTitle} (Unavailable) | CreatorMint`,
       description: 'This product listing is temporarily paused by the seller.',
       robots: { index: false, follow: false },
     };
   }
 
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztoredigital.com').replace(/\/+$/, '');
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
   const canonicalUrl = `${siteUrl}/r/${listing.slug}`;
   const title = `${listing.customHeadline || listing.customTitle} — Instant Download`;
   const description =
@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: ResellerPageProps): Promise<M
       url: canonicalUrl,
       title,
       description,
-      siteName: 'Ztore Digital',
+      siteName: 'CreatorMint',
       images: [
         {
           url: imageUrl,

@@ -200,9 +200,9 @@ export async function POST(request: Request) {
     }
 
     // 5. Build official WhatsApp checkout URL with complete customer & order info
-    const supportNumber = '918807281600';
+    const supportNumber = '918129797720';
     const itemsTitle = orderItems.map((i: any) => i.title).join(', ');
-    const waMessage = `Hi Ztore Digital! I want to purchase:\n📦 Bundle: ${itemsTitle}\n💰 Total: ₹${finalTotalAmount}.00\n🆔 Order ID: ${orderNumber}\n👤 Name: ${cleanName}\n📧 Gmail: ${cleanEmail}\n📱 Phone: ${cleanPhone}\n\nPlease share your UPI QR code / payment details so I can complete payment and get my Google Drive access.`;
+    const waMessage = `Hi CreatorMint! I want to purchase:\n📦 Bundle: ${itemsTitle}\n💰 Total: ₹${finalTotalAmount}.00\n🆔 Order ID: ${orderNumber}\n👤 Name: ${cleanName}\n📧 Gmail: ${cleanEmail}\n📱 Phone: ${cleanPhone}\n\nPlease share your UPI QR code / payment details so I can complete payment and get my Google Drive access.`;
     const whatsappUrl = `https://wa.me/${supportNumber}?text=${encodeURIComponent(waMessage)}`;
 
     // 6. Dispatch Alert to Store Owner that customer is waiting on WhatsApp to pay

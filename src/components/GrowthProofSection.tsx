@@ -202,14 +202,14 @@ export default function GrowthProofSection({
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Background Ambient Glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[650px] h-[350px] sm:h-[650px] bg-purple-600/15 rounded-full blur-[140px] sm:blur-[180px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[280px] h-[280px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[650px] h-[350px] sm:h-[650px] bg-mint-500/15 rounded-full blur-[140px] sm:blur-[180px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[280px] h-[280px] bg-mint-500/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         {/* Header Block */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs sm:text-sm font-black tracking-widest uppercase mb-4 shadow-[0_0_20px_rgba(168,85,247,0.2)]">
-            <Sparkles className="w-4 h-4 text-purple-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-mint-500/10 border border-mint-500/30 text-leaf-300 text-xs sm:text-sm font-black tracking-widest uppercase mb-4 shadow-[0_0_20px_rgba(168,85,247,0.2)]">
+            <Sparkles className="w-4 h-4 text-leaf-400 animate-pulse" />
             <span>{badge}</span>
           </div>
 
@@ -217,7 +217,7 @@ export default function GrowthProofSection({
             {headline}
           </h2>
 
-          <p className="text-xs sm:text-base text-slate-400 mt-3 sm:mt-4 max-w-2xl mx-auto font-normal leading-relaxed">
+          <p className="text-xs sm:text-base text-ink-300 mt-3 sm:mt-4 max-w-2xl mx-auto font-normal leading-relaxed">
             {subheadline}
           </p>
         </div>
@@ -234,7 +234,7 @@ export default function GrowthProofSection({
           onMouseUp={handleTouchEnd}
         >
           {/* Centered Phone Radial Glow */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[420px] h-[280px] sm:h-[420px] rounded-full bg-purple-700/25 blur-[90px] sm:blur-[120px] pointer-events-none" />
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[420px] h-[280px] sm:h-[420px] rounded-full bg-mint-700/25 blur-[90px] sm:blur-[120px] pointer-events-none" />
 
           {/* Phone Items Strip */}
           <div className="absolute inset-0 flex items-center justify-center">
@@ -248,7 +248,7 @@ export default function GrowthProofSection({
 
               if (slot === 'center') {
                 slotClass =
-                  'z-30 opacity-100 filter-none cursor-pointer [transform:translate(-50%,-50%)_translateZ(100px)_scale(1)] md:[transform:translate(-50%,-50%)_translateZ(120px)_scale(1)] shadow-[0_30px_90px_rgba(0,0,0,0.8),0_0_40px_rgba(168,85,247,0.25)] ring-2 ring-purple-500/40';
+                  'z-30 opacity-100 filter-none cursor-pointer [transform:translate(-50%,-50%)_translateZ(100px)_scale(1)] md:[transform:translate(-50%,-50%)_translateZ(120px)_scale(1)] shadow-[0_30px_90px_rgba(0,0,0,0.8),0_0_40px_rgba(168,85,247,0.25)] ring-2 ring-mint-500/40';
                 zIndex = 30;
               } else if (slot === 'left1') {
                 slotClass =
@@ -285,16 +285,16 @@ export default function GrowthProofSection({
                     }
                   }}
                   style={{ zIndex }}
-                  className={`absolute left-1/2 top-1/2 w-[225px] h-[450px] sm:w-[265px] sm:h-[530px] md:w-[315px] md:h-[630px] rounded-[24px] sm:rounded-[28px] overflow-hidden bg-slate-900 border border-white/10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform ${slotClass}`}
+                  className={`absolute left-1/2 top-1/2 w-[225px] h-[450px] sm:w-[265px] sm:h-[530px] md:w-[315px] md:h-[630px] rounded-[24px] sm:rounded-[28px] overflow-hidden bg-ink border border-white/10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform ${slotClass}`}
                 >
                   {/* Smartphone Screen Top Notch Bar */}
                   <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-black/60 backdrop-blur-md rounded-full z-20 pointer-events-none flex items-center justify-center">
-                    <div className="w-2.5 h-2.5 rounded-full bg-slate-800 mr-2" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-slate-800" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-ink-800 mr-2" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-ink-800" />
                   </div>
 
                   {/* Main Screenshot Image */}
-                  <div className="relative w-full h-full bg-slate-950">
+                  <div className="relative w-full h-full bg-ink-950">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={item.image}
@@ -313,7 +313,7 @@ export default function GrowthProofSection({
                     {/* Tap to Zoom Indicator (Only Center) */}
                     {isCenter && (
                       <div className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/60 backdrop-blur-md text-white/90 border border-white/20 hover:bg-black/80 transition-transform active:scale-95 shadow-lg">
-                        <Maximize2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-300" />
+                        <Maximize2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-leaf-300" />
                       </div>
                     )}
 
@@ -342,15 +342,15 @@ export default function GrowthProofSection({
                       )}
 
                       {item.tag && (
-                        <span className="inline-block px-2 py-0.5 rounded-md bg-purple-500/30 text-purple-200 text-[10px] sm:text-xs font-bold uppercase tracking-wider border border-purple-500/40 mb-1.5">
+                        <span className="inline-block px-2 py-0.5 rounded-md bg-mint-500/30 text-leaf-200 text-[10px] sm:text-xs font-bold uppercase tracking-wider border border-mint-500/40 mb-1.5">
                           {item.tag}
                         </span>
                       )}
                       <div className="flex items-center gap-1.5 font-bold text-sm sm:text-base text-white truncate">
-                        <Instagram className="w-4 h-4 text-pink-400 shrink-0" />
+                        <Instagram className="w-4 h-4 text-leaf-400 shrink-0" />
                         <span className="truncate">{item.title}</span>
                       </div>
-                      <div className="flex items-center justify-between text-xs sm:text-sm text-slate-300 font-medium mt-1">
+                      <div className="flex items-center justify-between text-xs sm:text-sm text-ink-300 font-medium mt-1">
                         {item.followers && (
                           <span className="font-extrabold text-amber-400 flex items-center gap-1">
                             <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
@@ -358,7 +358,7 @@ export default function GrowthProofSection({
                           </span>
                         )}
                         {item.metric && (
-                          <span className="text-[11px] sm:text-xs text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                          <span className="text-[11px] sm:text-xs text-mint-300 font-bold bg-mint-500/10 px-2 py-0.5 rounded border border-mint-500/20">
                             {item.metric}
                           </span>
                         )}
@@ -377,7 +377,7 @@ export default function GrowthProofSection({
                 e.stopPropagation();
                 prevSlide();
               }}
-              className="absolute left-2 sm:left-6 md:left-12 z-40 p-2.5 sm:p-3.5 rounded-full bg-black/60 hover:bg-purple-600 text-white border border-white/20 backdrop-blur-md shadow-2xl transition-all hover:scale-110 active:scale-95"
+              className="absolute left-2 sm:left-6 md:left-12 z-40 p-2.5 sm:p-3.5 rounded-full bg-black/60 hover:bg-mint-300 text-white border border-white/20 backdrop-blur-md shadow-2xl transition-all hover:scale-110 active:scale-95"
               aria-label="Previous growth proof"
             >
               <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -391,7 +391,7 @@ export default function GrowthProofSection({
                 e.stopPropagation();
                 nextSlide();
               }}
-              className="absolute right-2 sm:right-6 md:right-12 z-40 p-2.5 sm:p-3.5 rounded-full bg-black/60 hover:bg-purple-600 text-white border border-white/20 backdrop-blur-md shadow-2xl transition-all hover:scale-110 active:scale-95"
+              className="absolute right-2 sm:right-6 md:right-12 z-40 p-2.5 sm:p-3.5 rounded-full bg-black/60 hover:bg-mint-300 text-white border border-white/20 backdrop-blur-md shadow-2xl transition-all hover:scale-110 active:scale-95"
               aria-label="Next growth proof"
             >
               <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -408,7 +408,7 @@ export default function GrowthProofSection({
                 onClick={() => setCurrentIndex(idx)}
                 className={`h-2 transition-all rounded-full ${
                   idx === currentIndex
-                    ? 'w-8 bg-purple-500 shadow-[0_0_12px_rgba(168,85,247,0.8)]'
+                    ? 'w-8 bg-mint-500 shadow-[0_0_12px_rgba(168,85,247,0.8)]'
                     : 'w-2 bg-white/20 hover:bg-white/40'
                 }`}
                 aria-label={`Go to proof slide ${idx + 1}`}
@@ -419,7 +419,7 @@ export default function GrowthProofSection({
 
         {/* Mobile Swipe Hint */}
         {total > 1 && (
-          <div className="text-center mt-3 text-xs text-slate-500 md:hidden flex items-center justify-center gap-1.5">
+          <div className="text-center mt-3 text-xs text-ink-400 md:hidden flex items-center justify-center gap-1.5">
             <span>👈 Swipe left or right to explore proofs 👉</span>
           </div>
         )}

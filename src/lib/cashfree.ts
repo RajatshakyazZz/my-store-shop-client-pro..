@@ -191,7 +191,7 @@ export async function createCashfreePgOrder(
     order_meta: {
       return_url: finalReturnUrl,
     },
-    order_note: params.orderNote || 'Ztore Digital Digital Assets Bundle',
+    order_note: params.orderNote || 'CreatorMint Digital Assets Bundle',
   };
 
   const response = await fetch(baseUrl, {

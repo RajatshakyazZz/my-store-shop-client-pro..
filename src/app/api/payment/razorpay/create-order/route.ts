@@ -226,7 +226,7 @@ export async function POST(request: Request) {
 
     const firstItemTitle = items && items[0]?.title
       ? String(items[0].title).replace(/[^a-zA-Z0-9\s_-]/g, ' ')
-      : 'Ztore Digital Reels Bundle';
+      : 'CreatorMint Reels Bundle';
 
     // 1. Create Razorpay Order via REST API
     const { order: rzpOrder, keyId } = await createRazorpayOrder({

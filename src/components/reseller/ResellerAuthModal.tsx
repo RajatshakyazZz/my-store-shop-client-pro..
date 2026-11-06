@@ -66,10 +66,10 @@ export default function ResellerAuthModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-purple-100 overflow-hidden">
+      <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-leaf-100 overflow-hidden">
         
         {/* Header gradient banner */}
-        <div className="relative p-6 pb-5 bg-gradient-to-br from-[#6734f7] via-[#942bf6] to-[#ec288d] text-white">
+        <div className="relative p-6 pb-5 bg-gradient-to-br from-[#467600] via-[#8BD300] to-[#9AE600] text-white">
           <button
             type="button"
             onClick={onClose}
@@ -80,7 +80,7 @@ export default function ResellerAuthModal({
 
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-[11px] font-black uppercase tracking-wider mb-2">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Ztore Digital Reseller Program</span>
+            <span>CreatorMint Reseller Program</span>
           </div>
 
           <h3 className="text-xl font-black tracking-tight leading-tight">
@@ -100,14 +100,14 @@ export default function ResellerAuthModal({
 
         {/* Tab switcher */}
         {tab !== 'forgot' && (
-          <div className="flex border-b border-gray-100 bg-gray-50/70 p-1">
+          <div className="flex border-b border-canvas-200 bg-canvas-50/70 p-1">
             <button
               type="button"
               onClick={() => { setTab('signup'); setError(null); }}
               className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all ${
                 tab === 'signup'
-                  ? 'bg-white text-[#6734f7] shadow-sm'
-                  : 'text-gray-500 hover:text-gray-900'
+                  ? 'bg-white text-[#467600] shadow-sm'
+                  : 'text-ink-400 hover:text-ink'
               }`}
             >
               Sign Up
@@ -117,8 +117,8 @@ export default function ResellerAuthModal({
               onClick={() => { setTab('signin'); setError(null); }}
               className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all ${
                 tab === 'signin'
-                  ? 'bg-white text-[#6734f7] shadow-sm'
-                  : 'text-gray-500 hover:text-gray-900'
+                  ? 'bg-white text-[#467600] shadow-sm'
+                  : 'text-ink-400 hover:text-ink'
               }`}
             >
               Sign In
@@ -136,7 +136,7 @@ export default function ResellerAuthModal({
           )}
 
           {successMsg && (
-            <div className="p-3 rounded-xl bg-green-50 border border-green-200 text-green-700 text-xs flex items-start gap-2">
+            <div className="p-3 rounded-xl bg-mint-50 border border-mint-200 text-leaf-700 text-xs flex items-start gap-2">
               <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
               <span>{successMsg}</span>
             </div>
@@ -144,50 +144,50 @@ export default function ResellerAuthModal({
 
           {tab === 'signup' && (
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Full Name</label>
+              <label className="block text-xs font-bold text-ink-600 mb-1">Full Name</label>
               <div className="relative">
-                <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                <User className="absolute left-3 top-3 w-4 h-4 text-ink-300" />
                 <input
                   type="text"
                   required
                   placeholder="e.g. Rahul Sharma"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 transition-all font-medium"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-canvas-200 text-sm focus:outline-none focus:border-[#467600] focus:ring-2 focus:ring-leaf-100 transition-all font-medium"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Email Address</label>
+            <label className="block text-xs font-bold text-ink-600 mb-1">Email Address</label>
             <div className="relative">
-              <Mail className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+              <Mail className="absolute left-3 top-3 w-4 h-4 text-ink-300" />
               <input
                 type="email"
                 required
                 placeholder="yourname@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 transition-all font-medium"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-canvas-200 text-sm focus:outline-none focus:border-[#467600] focus:ring-2 focus:ring-leaf-100 transition-all font-medium"
               />
             </div>
           </div>
 
           {tab === 'signup' && (
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">
-                WhatsApp Number <span className="text-gray-400 font-normal">(for payout alerts)</span>
+              <label className="block text-xs font-bold text-ink-600 mb-1">
+                WhatsApp Number <span className="text-ink-300 font-normal">(for payout alerts)</span>
               </label>
               <div className="relative">
-                <Phone className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                <Phone className="absolute left-3 top-3 w-4 h-4 text-ink-300" />
                 <input
                   type="tel"
                   placeholder="10-digit mobile number"
                   maxLength={10}
                   value={phone}
                   onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 transition-all font-medium"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-canvas-200 text-sm focus:outline-none focus:border-[#467600] focus:ring-2 focus:ring-leaf-100 transition-all font-medium"
                 />
               </div>
             </div>
@@ -196,26 +196,26 @@ export default function ResellerAuthModal({
           {tab !== 'forgot' && (
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="text-xs font-bold text-gray-700">Password</label>
+                <label className="text-xs font-bold text-ink-600">Password</label>
                 {tab === 'signin' && (
                   <button
                     type="button"
                     onClick={() => { setTab('forgot'); setError(null); }}
-                    className="text-[11px] font-bold text-[#6734f7] hover:underline"
+                    className="text-[11px] font-bold text-[#467600] hover:underline"
                   >
                     Forgot?
                   </button>
                 )}
               </div>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                <Lock className="absolute left-3 top-3 w-4 h-4 text-ink-300" />
                 <input
                   type="password"
                   required
                   placeholder="At least 6 characters"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 transition-all font-medium"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-canvas-200 text-sm focus:outline-none focus:border-[#467600] focus:ring-2 focus:ring-leaf-100 transition-all font-medium"
                 />
               </div>
             </div>
@@ -224,7 +224,7 @@ export default function ResellerAuthModal({
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#6734f7] via-[#942bf6] to-[#ec288d] text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
+            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#467600] via-[#8BD300] to-[#9AE600] text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
           >
             {isLoading ? (
               <span>Processing...</span>
@@ -247,15 +247,15 @@ export default function ResellerAuthModal({
             <button
               type="button"
               onClick={() => { setTab('signin'); setError(null); }}
-              className="w-full py-2 text-xs font-bold text-gray-500 hover:text-gray-900 text-center"
+              className="w-full py-2 text-xs font-bold text-ink-400 hover:text-ink text-center"
             >
               Back to Sign In
             </button>
           )}
 
           {tab === 'signup' && (
-            <p className="text-[11px] text-gray-400 text-center leading-relaxed">
-              By joining, you agree to Ztore Digital Reseller Terms. You earn the margin above base price with instant payout requests.
+            <p className="text-[11px] text-ink-300 text-center leading-relaxed">
+              By joining, you agree to CreatorMint Reseller Terms. You earn the margin above base price with instant payout requests.
             </p>
           )}
         </form>

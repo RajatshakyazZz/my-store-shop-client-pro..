@@ -243,7 +243,7 @@ export async function POST(request: Request) {
     const isLocalhost = hostHeader.includes('localhost');
     const returnBaseUrl = isLocalhost
       ? `http://${hostHeader}`
-      : (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztoredigital.com');
+      : (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app');
 
     const orderToken = generateOrderToken(orderNumber);
 

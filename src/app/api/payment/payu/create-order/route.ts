@@ -226,13 +226,13 @@ export async function POST(request: Request) {
     const isLocalhost = hostHeader.includes('localhost');
     const siteBase = isLocalhost
       ? `http://${hostHeader}`
-      : (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.ztoredigital.com').replace(/\/+$/, '');
+      : (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
 
     const orderToken = generateOrderToken(orderNumber);
 
     const firstItemTitle = items && items[0]?.title
       ? String(items[0].title).replace(/[^a-zA-Z0-9\s_-]/g, ' ')
-      : 'Ztore Digital Reels Bundle';
+      : 'CreatorMint Reels Bundle';
 
     // 1. Generate PayU Checkout Payload
     const payuPayload = await createPayUPaymentPayload({

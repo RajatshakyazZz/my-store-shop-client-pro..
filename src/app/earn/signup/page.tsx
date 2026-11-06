@@ -47,16 +47,16 @@ function SignupContent() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-8 sm:py-12 pb-24">
-      <div className="w-full max-w-md bg-white rounded-3xl border border-red-100 shadow-xl overflow-hidden">
+      <div className="w-full max-w-md bg-white rounded-3xl border border-leaf-100 shadow-xl overflow-hidden">
         
         {/* Banner */}
-        <div className="p-8 pb-6 bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white text-center">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-[11px] font-black uppercase tracking-wider mb-3">
+        <div className="p-8 pb-6 bg-mint-500 text-ink text-center">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ink/10 text-[11px] font-black uppercase tracking-wider mb-3">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Resell & Earn Today</span>
           </div>
           <h1 className="text-2xl font-black tracking-tight">Create Reseller Account</h1>
-          <p className="text-xs text-white/90 mt-1 max-w-xs mx-auto">
+          <p className="text-xs text-ink mt-1 max-w-xs mx-auto">
             Set your custom price on 222,000+ reels & keep 100% of your margin.
           </p>
         </div>
@@ -71,63 +71,63 @@ function SignupContent() {
           )}
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Full Name</label>
+            <label className="block text-xs font-bold text-ink-600 mb-1">Full Name</label>
             <div className="relative">
-              <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+              <User className="absolute left-3 top-3 w-4 h-4 text-ink-300" />
               <input
                 type="text"
                 required
                 placeholder="Rahul Sharma"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 font-medium"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-canvas-200 text-sm focus:outline-none focus:border-mint-500 focus:ring-2 focus:ring-leaf-100 font-medium"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Email Address</label>
+            <label className="block text-xs font-bold text-ink-600 mb-1">Email Address</label>
             <div className="relative">
-              <Mail className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+              <Mail className="absolute left-3 top-3 w-4 h-4 text-ink-300" />
               <input
                 type="email"
                 required
                 placeholder="yourname@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 font-medium"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-canvas-200 text-sm focus:outline-none focus:border-mint-500 focus:ring-2 focus:ring-leaf-100 font-medium"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">
-              WhatsApp / Mobile Number <span className="text-gray-400 font-normal">(for payout alerts)</span>
+            <label className="block text-xs font-bold text-ink-600 mb-1">
+              WhatsApp / Mobile Number <span className="text-ink-300 font-normal">(for payout alerts)</span>
             </label>
             <div className="relative">
-              <Phone className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+              <Phone className="absolute left-3 top-3 w-4 h-4 text-ink-300" />
               <input
                 type="tel"
                 placeholder="10-digit mobile number"
                 maxLength={10}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 font-medium"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-canvas-200 text-sm focus:outline-none focus:border-mint-500 focus:ring-2 focus:ring-leaf-100 font-medium"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Password</label>
+            <label className="block text-xs font-bold text-ink-600 mb-1">Password</label>
             <div className="relative">
-              <Lock className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+              <Lock className="absolute left-3 top-3 w-4 h-4 text-ink-300" />
               <input
                 type="password"
                 required
                 placeholder="At least 6 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 font-medium"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-canvas-200 text-sm focus:outline-none focus:border-mint-500 focus:ring-2 focus:ring-leaf-100 font-medium"
               />
             </div>
           </div>
@@ -135,7 +135,7 @@ function SignupContent() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-red-500/25 hover:shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
+            className="w-full py-3.5 rounded-xl bg-mint-500 text-ink font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-ink/10 hover:shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
           >
             {isLoading ? <span>Creating Account...</span> : (
               <>
@@ -146,17 +146,17 @@ function SignupContent() {
           </button>
 
           <div className="text-center pt-2">
-            <span className="text-xs text-gray-500">Already have an account? </span>
+            <span className="text-xs text-ink-400">Already have an account? </span>
             <Link
               href={`/earn/login${redirectUrl ? `?redirect=${encodeURIComponent(redirectUrl)}` : ''}`}
-              className="text-xs font-black text-red-600 hover:underline"
+              className="text-xs font-black text-leaf-600 hover:underline"
             >
               Sign In
             </Link>
           </div>
 
-          <div className="pt-4 border-t border-gray-100 flex items-center justify-center gap-2 text-gray-400 text-[11px]">
-            <ShieldCheck className="w-3.5 h-3.5 text-green-600" />
+          <div className="pt-4 border-t border-canvas-200 flex items-center justify-center gap-2 text-ink-300 text-[11px]">
+            <ShieldCheck className="w-3.5 h-3.5 text-leaf-600" />
             <span>Zero Upfront Inventory • Instant Reseller Access</span>
           </div>
         </form>

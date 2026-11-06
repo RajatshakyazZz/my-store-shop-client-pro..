@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ztoredigital.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app';
 
   return {
     rules: [

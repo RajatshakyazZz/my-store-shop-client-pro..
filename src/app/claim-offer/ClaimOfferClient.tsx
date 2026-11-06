@@ -94,26 +94,26 @@ export default function ClaimOfferClient() {
   const claimedCount = freeBundles.length;
 
   return (
-    <div className="min-h-screen bg-slate-50/50 text-[#182247] pb-24 sm:pb-16">
+    <div className="min-h-screen bg-canvas-50/50 text-[#0B1019] pb-24 sm:pb-16">
       {/* =========================================================================
           1. STICKY TOP OFFER BAR & LIVE CART VALUE TRACKER
           ========================================================================= */}
-      <section className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white py-6 sm:py-9 px-4 sm:px-6 relative overflow-hidden shadow-lg border-b border-red-500/20">
+      <section className="cm-ink-panel text-white py-6 sm:py-9 px-4 sm:px-6 relative overflow-hidden shadow-lg border-b border-mint-500/20">
         {/* Subtle decorative glow */}
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-48 bg-red-600/20 blur-[100px] pointer-events-none rounded-full" />
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-48 bg-mint-500/20 blur-[100px] pointer-events-none rounded-full" />
 
         <div className="max-w-5xl mx-auto space-y-4 relative z-10 text-center sm:text-left">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-950/80 border border-red-500/40 text-red-200 text-xs font-black uppercase tracking-wider">
-                <Gift className="w-3.5 h-3.5 text-red-400" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mint-950/80 border border-mint-500/40 text-leaf-200 text-xs font-black uppercase tracking-wider">
+                <Gift className="w-3.5 h-3.5 text-leaf-400" />
                 <span>Special Promotion</span>
               </div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
-                Add minimum <span className="text-red-400">₹{minCart}</span> value in cart to claim{' '}
-                <span className="text-rose-300">{freeQty} free {freeQty === 1 ? 'bundle' : 'bundles'}</span>
+                Add minimum <span className="text-leaf-400">₹{minCart}</span> value in cart to claim{' '}
+                <span className="text-leaf-300">{freeQty} free {freeQty === 1 ? 'bundle' : 'bundles'}</span>
               </h1>
-              <p className="text-xs sm:text-sm text-slate-300 max-w-2xl font-medium">
+              <p className="text-xs sm:text-sm text-ink-300 max-w-2xl font-medium">
                 Add any bundles to reach ₹{minCart}. As soon as your cart reaches ₹{minCart}, you will get a popup to unlock and choose any {freeQty} bundles for 100% FREE!
               </p>
             </div>
@@ -124,9 +124,9 @@ export default function ClaimOfferClient() {
                 <button
                   type="button"
                   onClick={() => setIsFreeBundleModalOpen(true)}
-                  className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs sm:text-sm shadow-xl shadow-red-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+                  className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-xs sm:text-sm shadow-xl shadow-ink/10 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
                 >
-                  <Sparkles className="w-4 h-4 text-red-100" />
+                  <Sparkles className="w-4 h-4 text-leaf-100" />
                   <span>
                     {claimedCount > 0 ? `Change Free Bundles (${claimedCount}/${freeQty})` : `🎉 Claim ${freeQty} Free Bundles (₹0)`}
                   </span>
@@ -137,7 +137,7 @@ export default function ClaimOfferClient() {
                   onClick={() => setIsCartOpen(true)}
                   className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs sm:text-sm border border-white/20 transition-all"
                 >
-                  <ShoppingCart className="w-4 h-4 text-red-300" />
+                  <ShoppingCart className="w-4 h-4 text-leaf-300" />
                   <span>View Cart (₹{subtotal})</span>
                 </button>
               )}
@@ -148,17 +148,17 @@ export default function ClaimOfferClient() {
           <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 space-y-2.5">
             <div className="flex flex-wrap items-center justify-between text-xs sm:text-sm font-bold gap-2">
               <span className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                <span className="w-2 h-2 rounded-full bg-mint-500 animate-ping" />
                 <span>Cart Value: <strong className="text-white text-base">₹{subtotal}</strong> / ₹149</span>
               </span>
               <span>
                 {isQualifiedForFreeOffer ? (
-                  <span className="text-emerald-400 font-extrabold flex items-center gap-1.5">
+                  <span className="text-mint-300 font-extrabold flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4" />
                     Offer Unlocked! (2 Free Bundles Ready)
                   </span>
                 ) : (
-                  <span className="text-red-300 font-extrabold">
+                  <span className="text-leaf-300 font-extrabold">
                     Add ₹{remainingToQualify} more to unlock 2 free bundles!
                   </span>
                 )}
@@ -170,22 +170,22 @@ export default function ClaimOfferClient() {
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
                   isQualifiedForFreeOffer
-                    ? 'bg-gradient-to-r from-emerald-400 to-teal-400'
-                    : 'bg-gradient-to-r from-red-500 via-rose-500 to-red-600'
+                    ? 'bg-gradient-to-r from-mint-500 to-mint-500'
+                    : 'bg-mint-500'
                 }`}
                 style={{ width: `${freeOfferProgress}%` }}
               />
             </div>
 
             {claimedCount > 0 && (
-              <div className="pt-1 flex items-center justify-between text-xs text-rose-200">
+              <div className="pt-1 flex items-center justify-between text-xs text-leaf-200">
                 <span>
                   🎁 Claimed Free Gifts: <strong className="text-white">{claimedCount} of 2</strong> ({freeBundles.map(b => b.title).join(', ')})
                 </span>
                 <button
                   type="button"
                   onClick={() => setIsFreeBundleModalOpen(true)}
-                  className="underline text-red-300 hover:text-white font-bold"
+                  className="underline text-leaf-300 hover:text-white font-bold"
                 >
                   Edit Selection
                 </button>
@@ -204,19 +204,19 @@ export default function ClaimOfferClient() {
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
           {/* Search Box */}
           <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-ink-300 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search bundles to add (AI, Motivation, Gym, Horror)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-9 py-2.5 rounded-2xl text-xs sm:text-sm bg-white border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 text-slate-900 placeholder:text-slate-400 shadow-sm"
+              className="w-full pl-9 pr-9 py-2.5 rounded-2xl text-xs sm:text-sm bg-white border border-canvas-200 focus:outline-none focus:ring-2 focus:ring-mint-500/20 focus:border-mint-500 text-ink placeholder:text-ink-300 shadow-sm"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-300 hover:text-ink-500"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -224,8 +224,8 @@ export default function ClaimOfferClient() {
           </div>
 
           {/* Quick info chip */}
-          <div className="text-xs text-slate-600 font-medium flex items-center gap-1.5 self-start md:self-auto">
-            <Zap className="w-3.5 h-3.5 text-red-500 fill-red-500" />
+          <div className="text-xs text-ink-500 font-medium flex items-center gap-1.5 self-start md:self-auto">
+            <Zap className="w-3.5 h-3.5 text-leaf-500 fill-leaf-500" />
             <span>Showing {eligibleBundles.length} eligible store bundles</span>
           </div>
         </div>
@@ -239,8 +239,8 @@ export default function ClaimOfferClient() {
               onClick={() => setSelectedCategory(cat)}
               className={`px-3.5 py-1.5 rounded-full font-bold whitespace-nowrap transition-colors capitalize ${
                 selectedCategory === cat
-                  ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-sm'
-                  : 'bg-white text-slate-600 border border-slate-200 hover:border-red-400 hover:text-red-600'
+                  ? 'bg-mint-500 text-ink shadow-sm'
+                  : 'bg-white text-ink-500 border border-canvas-200 hover:border-leaf-400 hover:text-leaf-600'
               }`}
             >
               {cat === 'all' ? 'All Niches' : cat}
@@ -264,7 +264,7 @@ export default function ClaimOfferClient() {
               >
                 <div>
                   {/* Thumbnail */}
-                  <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-100 mb-3.5">
+                  <div className="relative aspect-video rounded-2xl overflow-hidden bg-canvas mb-3.5">
                     <img
                       src={optimizeImageUrl(bundle.thumbnail, 400, 75)}
                       alt={bundle.title}
@@ -286,39 +286,39 @@ export default function ClaimOfferClient() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="font-extrabold text-sm sm:text-[15px] text-[#182247] leading-snug line-clamp-2">
+                  <h3 className="font-extrabold text-sm sm:text-[15px] text-[#0B1019] leading-snug line-clamp-2">
                     {bundle.title}
                   </h3>
 
                   {/* Price */}
                   <div className="flex items-baseline gap-2 mt-2">
-                    <span className="text-lg font-black text-[#182247] tabular-nums">
+                    <span className="text-lg font-black text-[#0B1019] tabular-nums">
                       ₹{bundle.personalPrice}
                     </span>
-                    <span className="text-xs text-slate-400 line-through tabular-nums">
+                    <span className="text-xs text-ink-300 line-through tabular-nums">
                       ₹{bundle.personalOriginalPrice || Math.round(bundle.personalPrice * 1.5)}
                     </span>
-                    <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-green-100 text-green-700">
+                    <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-mint-100 text-leaf-700">
                       Save {Math.round((1 - bundle.personalPrice / (bundle.personalOriginalPrice || bundle.personalPrice * 1.5)) * 100)}%
                     </span>
                   </div>
 
                   {/* MANDATORY OFFER LINE REQUIRED BY USER */}
-                  <div className="mt-3 p-2.5 rounded-xl bg-red-50/70 border border-red-200/60 flex items-center gap-2 text-[11px] font-bold text-red-900 leading-tight">
-                    <Gift className="w-3.5 h-3.5 shrink-0 text-red-600" />
+                  <div className="mt-3 p-2.5 rounded-xl bg-leaf-50/70 border border-leaf-200/60 flex items-center gap-2 text-[11px] font-bold text-leaf-900 leading-tight">
+                    <Gift className="w-3.5 h-3.5 shrink-0 text-leaf-600" />
                     <span>Add minimum ₹{minCart} value in cart to claim {freeQty} free {freeQty === 1 ? 'bundle' : 'bundles'}</span>
                   </div>
                 </div>
 
                 {/* ADD TO CART ACTION BUTTON */}
-                <div className="pt-4 mt-2 border-t border-slate-100 flex items-center gap-2">
+                <div className="pt-4 mt-2 border-t border-canvas-200 flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => addToCart(bundle, 'personal')}
                     className={`flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-[13px] flex items-center justify-center gap-2 transition-all shadow-sm ${
                       isInCart
-                        ? 'bg-red-50 text-red-700 border border-red-200 hover:bg-red-100'
-                        : 'bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white shadow-md shadow-red-500/25 hover:scale-[1.01] active:scale-[0.99]'
+                        ? 'bg-leaf-50 text-leaf-700 border border-leaf-200 hover:bg-leaf-100'
+                        : 'bg-mint-500 hover:bg-mint-300 text-ink shadow-md shadow-ink/10 hover:scale-[1.01] active:scale-[0.99]'
                     }`}
                   >
                     {isInCart ? (
@@ -336,7 +336,7 @@ export default function ClaimOfferClient() {
 
                   <Link
                     href={`/product/${bundle.slug || bundle.id}`}
-                    className="p-3 rounded-xl border border-slate-200 text-slate-500 hover:text-red-600 hover:border-red-300 hover:bg-red-50/30 transition-colors"
+                    className="p-3 rounded-xl border border-canvas-200 text-ink-400 hover:text-leaf-600 hover:border-leaf-300 hover:bg-leaf-50/30 transition-colors"
                     title="View details"
                   >
                     <ArrowRight className="w-4 h-4" />
@@ -351,24 +351,24 @@ export default function ClaimOfferClient() {
       {/* =========================================================================
           4. STICKY BOTTOM QUICK ACTION BAR
           ========================================================================= */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-3 shadow-[0_-6px_20px_rgba(0,0,0,0.06)]">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-canvas-200 px-4 py-3 shadow-[0_-6px_20px_rgba(0,0,0,0.06)]">
         <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-xs sm:text-sm font-black text-[#182247]">
-                Cart Total: <span className="text-red-600 text-base sm:text-lg">₹{subtotal}</span>
+              <span className="text-xs sm:text-sm font-black text-[#0B1019]">
+                Cart Total: <span className="text-leaf-600 text-base sm:text-lg">₹{subtotal}</span>
               </span>
-              <span className="text-slate-300">|</span>
+              <span className="text-ink-300">|</span>
               <span className="text-xs text-[#4e4668] font-bold truncate">
                 {isQualifiedForFreeOffer ? (
-                  <span className="text-emerald-600 font-extrabold">🎉 {freeQty} Free Bundles Unlocked!</span>
+                  <span className="text-leaf-600 font-extrabold">🎉 {freeQty} Free Bundles Unlocked!</span>
                 ) : (
                   <span>Add ₹{remainingToQualify} for {freeQty} Free Bundles</span>
                 )}
               </span>
             </div>
             {claimedCount > 0 && (
-              <p className="text-[11px] text-emerald-700 font-bold mt-0.5">
+              <p className="text-[11px] text-leaf-700 font-bold mt-0.5">
                 ✓ {claimedCount} of {freeQty} Free Gifts Selected
               </p>
             )}
@@ -380,13 +380,13 @@ export default function ClaimOfferClient() {
                 <button
                   type="button"
                   onClick={() => setIsFreeBundleModalOpen(true)}
-                  className="px-4 py-2.5 rounded-xl bg-red-50 border border-red-200 text-red-700 font-black text-xs hover:bg-red-100 transition-all"
+                  className="px-4 py-2.5 rounded-xl bg-leaf-50 border border-leaf-200 text-leaf-700 font-black text-xs hover:bg-leaf-100 transition-all"
                 >
                   {claimedCount > 0 ? `Free Gifts (${claimedCount}/${freeQty})` : `🎁 Claim ${freeQty} Free`}
                 </button>
                 <Link
                   href="/checkout"
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs sm:text-sm shadow-md shadow-red-500/25 flex items-center gap-1.5"
+                  className="px-5 py-2.5 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-xs sm:text-sm shadow-md shadow-ink/10 flex items-center gap-1.5"
                 >
                   <span>Checkout</span>
                   <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -396,7 +396,7 @@ export default function ClaimOfferClient() {
               <button
                 type="button"
                 onClick={() => setIsCartOpen(true)}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs sm:text-sm shadow-md shadow-red-500/25 flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-xs sm:text-sm shadow-md shadow-ink/10 flex items-center gap-1.5"
               >
                 <ShoppingCart className="w-4 h-4" />
                 <span>View Cart ({items.length})</span>

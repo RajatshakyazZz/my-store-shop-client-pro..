@@ -171,24 +171,24 @@ export default function ResellerProductsPage() {
   return (
     <div className="space-y-6 pb-20 sm:pb-8">
       {/* Header */}
-      <div className="p-5 sm:p-8 rounded-3xl bg-white border border-purple-100 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-5 sm:p-8 rounded-3xl bg-white border border-leaf-100 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5 flex-wrap">
-            <h1 className="text-xl sm:text-2xl font-black text-[#162048]">My Reseller Products</h1>
+            <h1 className="text-xl sm:text-2xl font-black text-[#0B1019]">My Reseller Products</h1>
             {profile?.resellerUid && (
               <span className="font-mono text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-700 border border-amber-500/20 font-bold">
                 🆔 {profile.resellerUid}
               </span>
             )}
           </div>
-          <p className="text-xs text-slate-500 mt-1 font-medium">
+          <p className="text-xs text-ink-400 mt-1 font-medium">
             Manage your custom links, adjust selling prices, and track individual sales performance.
           </p>
         </div>
 
         <Link
           href="/earn/create"
-          className="px-5 py-3 rounded-2xl bg-gradient-to-r from-[#6734f7] to-[#ec288d] text-white text-xs font-black flex items-center justify-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-transform shrink-0"
+          className="px-5 py-3 rounded-2xl bg-gradient-to-r from-[#467600] to-[#9AE600] text-white text-xs font-black flex items-center justify-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-transform shrink-0"
         >
           <PlusCircle className="w-4 h-4" />
           <span>New Product Link</span>
@@ -198,34 +198,34 @@ export default function ResellerProductsPage() {
       {/* Search Bar if listings exist */}
       {listings.length > 0 && (
         <div className="relative max-w-md">
-          <Search className="absolute left-3.5 top-3 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3.5 top-3 w-4 h-4 text-ink-300" />
           <input
             type="text"
             placeholder="Search your links by title or slug..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-purple-100 text-xs font-medium text-[#162048] focus:outline-none focus:border-[#6734f7] focus:ring-2 focus:ring-purple-100 shadow-xs"
+            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-leaf-100 text-xs font-medium text-[#0B1019] focus:outline-none focus:border-[#467600] focus:ring-2 focus:ring-leaf-100 shadow-xs"
           />
         </div>
       )}
 
       {/* Main Content Area */}
-      <div className="rounded-3xl bg-white border border-purple-100 shadow-xs overflow-hidden">
+      <div className="rounded-3xl bg-white border border-leaf-100 shadow-xs overflow-hidden">
         {isLoading ? (
-          <div className="p-12 text-center text-xs text-gray-400 font-bold">
+          <div className="p-12 text-center text-xs text-ink-300 font-bold">
             Loading your reseller products...
           </div>
         ) : listings.length === 0 ? (
           <div className="p-10 sm:p-14 text-center space-y-3">
-            <Package className="w-12 h-12 text-purple-200 mx-auto" />
-            <h3 className="text-sm font-black text-[#162048]">No Reseller Products Found</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto font-medium">
+            <Package className="w-12 h-12 text-leaf-200 mx-auto" />
+            <h3 className="text-sm font-black text-[#0B1019]">No Reseller Products Found</h3>
+            <p className="text-xs text-ink-400 max-w-sm mx-auto font-medium">
               You haven&apos;t created any reseller listings yet. Choose a product and start sharing your link!
             </p>
             <div className="pt-2">
               <Link
                 href="/earn/create"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#6734f7] text-white text-xs font-black shadow-sm hover:scale-105 active:scale-95 transition-transform"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#467600] text-white text-xs font-black shadow-sm hover:scale-105 active:scale-95 transition-transform"
               >
                 <PlusCircle className="w-4 h-4" />
                 <span>Create First Link</span>
@@ -233,7 +233,7 @@ export default function ResellerProductsPage() {
             </div>
           </div>
         ) : filteredListings.length === 0 ? (
-          <div className="p-8 text-center text-xs text-gray-500 font-medium">
+          <div className="p-8 text-center text-xs text-ink-400 font-medium">
             No products match &ldquo;{searchQuery}&rdquo;.
           </div>
         ) : (
@@ -241,7 +241,7 @@ export default function ResellerProductsPage() {
             {/* ------------------------------------------------------------- */}
             {/* MOBILE VIEW: RESPONSIVE CARDS (Clean, Touch-Friendly, No Clip) */}
             {/* ------------------------------------------------------------- */}
-            <div className="block md:hidden divide-y divide-purple-50">
+            <div className="block md:hidden divide-y divide-leaf-50">
               {filteredListings.map((l) => {
                 const views = l.viewsCount || 0;
                 const sales = l.salesCount || 0;
@@ -255,36 +255,36 @@ export default function ResellerProductsPage() {
                         <img
                           src={l.coverImage}
                           alt={l.customTitle}
-                          className="w-14 h-14 rounded-2xl object-cover bg-slate-900 border border-purple-100 shrink-0"
+                          className="w-14 h-14 rounded-2xl object-cover bg-ink border border-leaf-100 shrink-0"
                         />
                       ) : (
-                        <div className="w-14 h-14 rounded-2xl bg-purple-100 text-[#6734f7] flex items-center justify-center shrink-0">
+                        <div className="w-14 h-14 rounded-2xl bg-leaf-100 text-[#467600] flex items-center justify-center shrink-0">
                           <Package className="w-6 h-6" />
                         </div>
                       )}
 
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between gap-2">
-                          <h4 className="font-bold text-xs text-[#162048] line-clamp-1">{l.customTitle}</h4>
+                          <h4 className="font-bold text-xs text-[#0B1019] line-clamp-1">{l.customTitle}</h4>
                           <span
                             className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider shrink-0 ${
                               l.status === 'active'
-                                ? 'bg-green-50 text-green-700 border border-green-200'
+                                ? 'bg-mint-50 text-leaf-700 border border-mint-200'
                                 : 'bg-amber-50 text-amber-700 border border-amber-200'
                             }`}
                           >
                             {l.status}
                           </span>
                         </div>
-                        <span className="text-[10px] text-purple-600 font-mono font-bold block mt-0.5 truncate select-all">
+                        <span className="text-[10px] text-leaf-600 font-mono font-bold block mt-0.5 truncate select-all">
                           /r/{l.slug}
                         </span>
 
                         {/* Price & Margin Pill */}
                         <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                          <span className="text-[11px] font-black text-[#162048]">₹{l.resalePrice}</span>
-                          <span className="text-[10px] text-gray-400">(Base ₹{l.basePrice})</span>
-                          <span className="text-[10px] font-black text-green-700 px-2 py-0.5 rounded-md bg-green-50 border border-green-200">
+                          <span className="text-[11px] font-black text-[#0B1019]">₹{l.resalePrice}</span>
+                          <span className="text-[10px] text-ink-300">(Base ₹{l.basePrice})</span>
+                          <span className="text-[10px] font-black text-leaf-700 px-2 py-0.5 rounded-md bg-mint-50 border border-mint-200">
                             +₹{l.grossMargin} Profit
                           </span>
                         </div>
@@ -292,18 +292,18 @@ export default function ResellerProductsPage() {
                     </div>
 
                     {/* Stats Bar */}
-                    <div className="grid grid-cols-3 p-2.5 rounded-2xl bg-purple-50/50 border border-purple-100 text-center text-[10px]">
+                    <div className="grid grid-cols-3 p-2.5 rounded-2xl bg-leaf-50/50 border border-leaf-100 text-center text-[10px]">
                       <div>
-                        <span className="text-gray-400 block font-bold">Views</span>
-                        <span className="font-black text-[#162048]">{views}</span>
+                        <span className="text-ink-300 block font-bold">Views</span>
+                        <span className="font-black text-[#0B1019]">{views}</span>
                       </div>
-                      <div className="border-x border-purple-100">
-                        <span className="text-gray-400 block font-bold">Clicks</span>
-                        <span className="font-black text-[#162048]">{l.ctaClicksCount || 0}</span>
+                      <div className="border-x border-leaf-100">
+                        <span className="text-ink-300 block font-bold">Clicks</span>
+                        <span className="font-black text-[#0B1019]">{l.ctaClicksCount || 0}</span>
                       </div>
                       <div>
-                        <span className="text-gray-400 block font-bold">Sales</span>
-                        <span className="font-black text-green-600 font-bold">{sales}</span>
+                        <span className="text-ink-300 block font-bold">Sales</span>
+                        <span className="font-black text-leaf-600 font-bold">{sales}</span>
                       </div>
                     </div>
 
@@ -315,8 +315,8 @@ export default function ResellerProductsPage() {
                         onClick={() => copyToClipboard(l.slug)}
                         className={`py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs ${
                           isCopied
-                            ? 'bg-green-600 text-white'
-                            : 'bg-[#6734f7] hover:bg-[#5827dc] text-white active:scale-95'
+                            ? 'bg-mint-500 text-ink'
+                            : 'bg-[#467600] hover:bg-[#3A6300] text-white active:scale-95'
                         }`}
                       >
                         {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -328,7 +328,7 @@ export default function ResellerProductsPage() {
                         href={typeof window !== 'undefined' ? getWhatsAppShareUrl(l, window.location.origin) : '#'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="py-2.5 px-3 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs active:scale-95 transition-transform"
+                        className="py-2.5 px-3 rounded-xl bg-[#25D366] hover:bg-[#9AE600] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs active:scale-95 transition-transform"
                       >
                         <MessageCircle className="w-3.5 h-3.5" />
                         <span>WhatsApp</span>
@@ -342,7 +342,7 @@ export default function ResellerProductsPage() {
                         <button
                           type="button"
                           onClick={() => openEditModal(l)}
-                          className="px-3 py-1.5 rounded-lg border border-purple-200 text-[#6734f7] bg-purple-50/50 hover:bg-purple-100 text-xs font-bold flex items-center gap-1"
+                          className="px-3 py-1.5 rounded-lg border border-leaf-200 text-[#467600] bg-leaf-50/50 hover:bg-leaf-100 text-xs font-bold flex items-center gap-1"
                         >
                           <Edit2 className="w-3 h-3" />
                           <span>Edit</span>
@@ -352,7 +352,7 @@ export default function ResellerProductsPage() {
                         <button
                           type="button"
                           onClick={() => handleToggleStatus(l)}
-                          className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 text-xs font-bold flex items-center gap-1"
+                          className="px-3 py-1.5 rounded-lg border border-canvas-200 text-ink-600 hover:bg-canvas-50 text-xs font-bold flex items-center gap-1"
                         >
                           {l.status === 'active' ? (
                             <>
@@ -361,7 +361,7 @@ export default function ResellerProductsPage() {
                             </>
                           ) : (
                             <>
-                              <PlayCircle className="w-3 h-3 text-green-600" />
+                              <PlayCircle className="w-3 h-3 text-leaf-600" />
                               <span>Resume</span>
                             </>
                           )}
@@ -372,7 +372,7 @@ export default function ResellerProductsPage() {
                           type="button"
                           onClick={() => setShareListing(l)}
                           title="Share Options"
-                          className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50"
+                          className="p-2 rounded-lg border border-canvas-200 text-ink-500 hover:bg-canvas-50"
                         >
                           <Share2 className="w-3.5 h-3.5" />
                         </button>
@@ -384,7 +384,7 @@ export default function ResellerProductsPage() {
                           href={`/r/${l.slug}`}
                           target="_blank"
                           title="Open Live Page"
-                          className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50"
+                          className="p-2 rounded-lg border border-canvas-200 text-ink-500 hover:bg-canvas-50"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                         </Link>
@@ -411,7 +411,7 @@ export default function ResellerProductsPage() {
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-purple-100 text-gray-400 font-extrabold uppercase text-[10px] bg-purple-50/30">
+                  <tr className="border-b border-leaf-100 text-ink-300 font-extrabold uppercase text-[10px] bg-leaf-50/30">
                     <th className="py-3.5 px-4">Product</th>
                     <th className="py-3.5 px-3">Base</th>
                     <th className="py-3.5 px-3">Price</th>
@@ -423,46 +423,46 @@ export default function ResellerProductsPage() {
                     <th className="py-3.5 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-purple-50">
+                <tbody className="divide-y divide-leaf-50">
                   {filteredListings.map((l) => {
                     const views = l.viewsCount || 0;
                     const sales = l.salesCount || 0;
                     const isCopied = copiedSlug === l.slug;
 
                     return (
-                      <tr key={l.id} className="hover:bg-purple-50/30 transition-colors">
+                      <tr key={l.id} className="hover:bg-leaf-50/30 transition-colors">
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-3">
                             {l.coverImage ? (
                               <img
                                 src={l.coverImage}
                                 alt={l.customTitle}
-                                className="w-12 h-12 rounded-xl object-cover bg-slate-900 border border-purple-100 shrink-0"
+                                className="w-12 h-12 rounded-xl object-cover bg-ink border border-leaf-100 shrink-0"
                               />
                             ) : (
-                              <div className="w-12 h-12 rounded-xl bg-purple-100 text-[#6734f7] flex items-center justify-center shrink-0">
+                              <div className="w-12 h-12 rounded-xl bg-leaf-100 text-[#467600] flex items-center justify-center shrink-0">
                                 <Package className="w-5 h-5" />
                               </div>
                             )}
                             <div className="min-w-0 max-w-xs">
-                              <h4 className="font-bold text-[#162048] line-clamp-1">{l.customTitle}</h4>
-                              <span className="text-[10px] text-purple-600 font-mono font-bold">/r/{l.slug}</span>
+                              <h4 className="font-bold text-[#0B1019] line-clamp-1">{l.customTitle}</h4>
+                              <span className="text-[10px] text-leaf-600 font-mono font-bold">/r/{l.slug}</span>
                             </div>
                           </div>
                         </td>
 
-                        <td className="py-3.5 px-3 font-bold text-gray-500">₹{l.basePrice}</td>
-                        <td className="py-3.5 px-3 font-black text-[#162048]">₹{l.resalePrice}</td>
-                        <td className="py-3.5 px-3 font-black text-green-600">+₹{l.grossMargin}</td>
-                        <td className="py-3.5 px-3 text-center font-medium text-slate-600">{views}</td>
-                        <td className="py-3.5 px-3 text-center font-medium text-slate-600">{l.ctaClicksCount || 0}</td>
-                        <td className="py-3.5 px-3 text-center font-bold text-green-600">{sales}</td>
+                        <td className="py-3.5 px-3 font-bold text-ink-400">₹{l.basePrice}</td>
+                        <td className="py-3.5 px-3 font-black text-[#0B1019]">₹{l.resalePrice}</td>
+                        <td className="py-3.5 px-3 font-black text-leaf-600">+₹{l.grossMargin}</td>
+                        <td className="py-3.5 px-3 text-center font-medium text-ink-500">{views}</td>
+                        <td className="py-3.5 px-3 text-center font-medium text-ink-500">{l.ctaClicksCount || 0}</td>
+                        <td className="py-3.5 px-3 text-center font-bold text-leaf-600">{sales}</td>
 
                         <td className="py-3.5 px-3">
                           <span
                             className={`px-2.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider ${
                               l.status === 'active'
-                                ? 'bg-green-50 text-green-700 border border-green-200'
+                                ? 'bg-mint-50 text-leaf-700 border border-mint-200'
                                 : 'bg-amber-50 text-amber-700 border border-amber-200'
                             }`}
                           >
@@ -479,14 +479,14 @@ export default function ResellerProductsPage() {
                               title="Copy Shareable Link"
                               className={`px-2.5 py-1.5 rounded-lg font-bold text-[11px] flex items-center gap-1 transition-colors ${
                                 isCopied
-                                  ? 'bg-green-100 text-green-700'
-                                  : 'bg-purple-50 hover:bg-purple-100 text-[#6734f7]'
+                                  ? 'bg-mint-100 text-leaf-700'
+                                  : 'bg-leaf-50 hover:bg-leaf-100 text-[#467600]'
                               }`}
                             >
                               {isCopied ? (
                                 <>
-                                  <Check className="w-3 h-3 text-green-600" />
-                                  <span className="text-green-600">Copied</span>
+                                  <Check className="w-3 h-3 text-leaf-600" />
+                                  <span className="text-leaf-600">Copied</span>
                                 </>
                               ) : (
                                 <>
@@ -502,7 +502,7 @@ export default function ResellerProductsPage() {
                               target="_blank"
                               rel="noopener noreferrer"
                               title="Share on WhatsApp"
-                              className="p-1.5 rounded-lg text-[#25D366] hover:bg-green-50 transition-colors"
+                              className="p-1.5 rounded-lg text-[#25D366] hover:bg-mint-50 transition-colors"
                             >
                               <MessageCircle className="w-4 h-4" />
                             </a>
@@ -512,7 +512,7 @@ export default function ResellerProductsPage() {
                               type="button"
                               onClick={() => setShareListing(l)}
                               title="All Share Options"
-                              className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                              className="p-1.5 rounded-lg text-ink-300 hover:text-ink-600 hover:bg-canvas transition-colors"
                             >
                               <Share2 className="w-4 h-4" />
                             </button>
@@ -522,7 +522,7 @@ export default function ResellerProductsPage() {
                               href={`/r/${l.slug}`}
                               target="_blank"
                               title="Open Live Product Landing Page"
-                              className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                              className="p-1.5 rounded-lg text-ink-300 hover:text-ink-600 hover:bg-canvas transition-colors"
                             >
                               <ExternalLink className="w-4 h-4" />
                             </Link>
@@ -532,7 +532,7 @@ export default function ResellerProductsPage() {
                               type="button"
                               onClick={() => openEditModal(l)}
                               title="Quick Edit Title & Price"
-                              className="p-1.5 rounded-lg text-gray-400 hover:text-[#6734f7] hover:bg-purple-50 transition-colors"
+                              className="p-1.5 rounded-lg text-ink-300 hover:text-[#467600] hover:bg-leaf-50 transition-colors"
                             >
                               <Edit2 className="w-4 h-4" />
                             </button>
@@ -542,12 +542,12 @@ export default function ResellerProductsPage() {
                               type="button"
                               onClick={() => handleToggleStatus(l)}
                               title={l.status === 'active' ? 'Pause Listing' : 'Resume Listing'}
-                              className="p-1.5 rounded-lg text-gray-400 hover:text-amber-600 hover:bg-amber-50 transition-colors"
+                              className="p-1.5 rounded-lg text-ink-300 hover:text-amber-600 hover:bg-amber-50 transition-colors"
                             >
                               {l.status === 'active' ? (
                                 <PauseCircle className="w-4 h-4" />
                               ) : (
-                                <PlayCircle className="w-4 h-4 text-green-600" />
+                                <PlayCircle className="w-4 h-4 text-leaf-600" />
                               )}
                             </button>
 
@@ -556,7 +556,7 @@ export default function ResellerProductsPage() {
                               type="button"
                               onClick={() => setDeletingListing(l)}
                               title="Delete Reseller Link"
-                              className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                              className="p-1.5 rounded-lg text-ink-300 hover:text-red-600 hover:bg-red-50 transition-colors"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -577,18 +577,18 @@ export default function ResellerProductsPage() {
       {/* ------------------------------------------------------------- */}
       {editingListing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="w-full max-w-md bg-white rounded-3xl p-6 border border-purple-100 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-purple-50 pb-3">
+          <div className="w-full max-w-md bg-white rounded-3xl p-6 border border-leaf-100 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-leaf-50 pb-3">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-purple-100 text-[#6734f7] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-leaf-100 text-[#467600] flex items-center justify-center">
                   <Edit2 className="w-4 h-4" />
                 </div>
-                <h3 className="text-sm font-black text-[#162048]">Quick Edit Listing</h3>
+                <h3 className="text-sm font-black text-[#0B1019]">Quick Edit Listing</h3>
               </div>
               <button
                 type="button"
                 onClick={() => setEditingListing(null)}
-                className="w-8 h-8 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center"
+                className="w-8 h-8 rounded-xl bg-canvas hover:bg-canvas-200 text-ink-400 flex items-center justify-center"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -603,29 +603,29 @@ export default function ResellerProductsPage() {
 
             <form onSubmit={handleSaveEdit} className="space-y-4 text-xs font-medium">
               <div>
-                <label className="block font-bold text-gray-700 mb-1">Product Title</label>
+                <label className="block font-bold text-ink-600 mb-1">Product Title</label>
                 <input
                   type="text"
                   required
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-[#162048] focus:outline-none focus:border-[#6734f7]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-canvas-200 text-xs font-bold text-[#0B1019] focus:outline-none focus:border-[#467600]"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-gray-700 mb-1">Your Selling Price (₹)</label>
+                <label className="block font-bold text-ink-600 mb-1">Your Selling Price (₹)</label>
                 <input
                   type="number"
                   min={editingListing.basePrice + 1}
                   required
                   value={editPrice}
                   onChange={(e) => setEditPrice(Number(e.target.value))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm font-black text-[#162048] focus:outline-none focus:border-[#6734f7]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-canvas-200 text-sm font-black text-[#0B1019] focus:outline-none focus:border-[#467600]"
                 />
-                <div className="mt-1.5 p-2 rounded-xl bg-purple-50/70 border border-purple-100 flex items-center justify-between text-[11px]">
-                  <span className="text-gray-500 font-medium">Wholesale Base: ₹{editingListing.basePrice}</span>
-                  <span className="font-black text-green-600">
+                <div className="mt-1.5 p-2 rounded-xl bg-leaf-50/70 border border-leaf-100 flex items-center justify-between text-[11px]">
+                  <span className="text-ink-400 font-medium">Wholesale Base: ₹{editingListing.basePrice}</span>
+                  <span className="font-black text-leaf-600">
                     Your Margin: +₹{Math.max(0, editPrice - editingListing.basePrice)}
                   </span>
                 </div>
@@ -635,14 +635,14 @@ export default function ResellerProductsPage() {
                 <button
                   type="button"
                   onClick={() => setEditingListing(null)}
-                  className="px-4 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-50 transition-colors"
+                  className="px-4 py-2.5 rounded-xl border border-canvas-200 text-xs font-bold text-ink-500 hover:bg-canvas-50 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isUpdating}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#6734f7] to-[#ec288d] text-white text-xs font-black shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#467600] to-[#9AE600] text-white text-xs font-black shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-50"
                 >
                   {isUpdating ? 'Saving...' : 'Save Changes'}
                 </button>
@@ -657,14 +657,14 @@ export default function ResellerProductsPage() {
       {/* ------------------------------------------------------------- */}
       {deletingListing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="w-full max-w-sm bg-white rounded-3xl p-6 border border-red-100 shadow-2xl space-y-4 text-center">
-            <div className="w-12 h-12 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center mx-auto shadow-sm">
+          <div className="w-full max-w-sm bg-white rounded-3xl p-6 border border-leaf-100 shadow-2xl space-y-4 text-center">
+            <div className="w-12 h-12 rounded-2xl bg-leaf-100 text-leaf-600 flex items-center justify-center mx-auto shadow-sm">
               <Trash2 className="w-6 h-6" />
             </div>
 
             <div className="space-y-1">
-              <h3 className="text-base font-black text-[#162048]">Delete Reseller Link?</h3>
-              <p className="text-xs text-gray-500 font-medium">
+              <h3 className="text-base font-black text-[#0B1019]">Delete Reseller Link?</h3>
+              <p className="text-xs text-ink-400 font-medium">
                 Are you sure you want to permanently delete &ldquo;{deletingListing.customTitle}&rdquo;?
               </p>
               <p className="text-[11px] text-red-600 font-mono mt-1">
@@ -677,7 +677,7 @@ export default function ResellerProductsPage() {
                 type="button"
                 onClick={() => setDeletingListing(null)}
                 disabled={isDeleting}
-                className="py-2.5 px-4 rounded-xl border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-50 transition-colors"
+                className="py-2.5 px-4 rounded-xl border border-canvas-200 text-xs font-bold text-ink-500 hover:bg-canvas-50 transition-colors"
               >
                 Keep Link
               </button>
@@ -699,23 +699,23 @@ export default function ResellerProductsPage() {
       {/* ------------------------------------------------------------- */}
       {shareListing && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150">
-          <div className="max-w-md w-full bg-white rounded-3xl p-6 shadow-2xl space-y-5 border border-purple-100">
+          <div className="max-w-md w-full bg-white rounded-3xl p-6 shadow-2xl space-y-5 border border-leaf-100">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-purple-100 text-[#6734f7] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-leaf-100 text-[#467600] flex items-center justify-center">
                   <Share2 className="w-4 h-4" />
                 </div>
-                <h3 className="text-sm font-black text-[#162048]">Share Reseller Listing</h3>
+                <h3 className="text-sm font-black text-[#0B1019]">Share Reseller Listing</h3>
               </div>
               <button
                 onClick={() => setShareListing(null)}
-                className="w-8 h-8 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center"
+                className="w-8 h-8 rounded-xl bg-canvas hover:bg-canvas-200 text-ink-400 flex items-center justify-center"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-purple-50/60 border border-purple-100 flex items-center gap-3">
+            <div className="p-3.5 rounded-2xl bg-leaf-50/60 border border-leaf-100 flex items-center gap-3">
               {shareListing.coverImage && (
                 <img
                   src={shareListing.coverImage}
@@ -724,8 +724,8 @@ export default function ResellerProductsPage() {
                 />
               )}
               <div className="min-w-0">
-                <h4 className="font-bold text-xs text-[#162048] truncate">{shareListing.customTitle}</h4>
-                <p className="text-[11px] text-green-600 font-black">
+                <h4 className="font-bold text-xs text-[#0B1019] truncate">{shareListing.customTitle}</h4>
+                <p className="text-[11px] text-leaf-600 font-black">
                   Price: ₹{shareListing.resalePrice} (Your Margin: +₹{shareListing.grossMargin})
                 </p>
               </div>
@@ -737,7 +737,7 @@ export default function ResellerProductsPage() {
                 href={typeof window !== 'undefined' ? getWhatsAppShareUrl(shareListing, window.location.origin) : '#'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-black flex items-center justify-center gap-2 transition-all shadow-sm"
+                className="py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#9AE600] text-white text-xs font-black flex items-center justify-center gap-2 transition-all shadow-sm"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>WhatsApp Share</span>
@@ -746,7 +746,7 @@ export default function ResellerProductsPage() {
               <button
                 type="button"
                 onClick={() => handleNativeShare(shareListing)}
-                className="py-3 px-4 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black flex items-center justify-center gap-2 transition-all shadow-sm"
+                className="py-3 px-4 rounded-xl bg-ink hover:bg-black text-white text-xs font-black flex items-center justify-center gap-2 transition-all shadow-sm"
               >
                 <Share2 className="w-4 h-4" />
                 <span>Device Share</span>
@@ -754,18 +754,18 @@ export default function ResellerProductsPage() {
             </div>
 
             {/* Copy Promotional Caption */}
-            <div className="space-y-2 pt-2 border-t border-purple-100">
-              <label className="text-[11px] font-black uppercase tracking-wider text-slate-500 block">
+            <div className="space-y-2 pt-2 border-t border-leaf-100">
+              <label className="text-[11px] font-black uppercase tracking-wider text-ink-400 block">
                 Ready-to-Post Promotional Caption
               </label>
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-700 whitespace-pre-line font-mono max-h-36 overflow-y-auto">
+              <div className="p-3 rounded-xl bg-canvas-50 border border-canvas-200 text-[11px] text-ink-600 whitespace-pre-line font-mono max-h-36 overflow-y-auto">
                 {typeof window !== 'undefined' ? generateShareText(shareListing, window.location.origin) : ''}
               </div>
               <button
                 onClick={() => handleCopyCaption(shareListing)}
-                className="w-full py-2.5 rounded-xl bg-purple-100 hover:bg-purple-200 text-[#6734f7] text-xs font-bold flex items-center justify-center gap-2 transition-colors"
+                className="w-full py-2.5 rounded-xl bg-leaf-100 hover:bg-leaf-200 text-[#467600] text-xs font-bold flex items-center justify-center gap-2 transition-colors"
               >
-                {copiedCaption ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedCaption ? <Check className="w-3.5 h-3.5 text-leaf-600" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedCaption ? 'Caption Copied!' : 'Copy Caption & Link'}</span>
               </button>
             </div>

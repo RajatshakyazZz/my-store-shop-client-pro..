@@ -62,7 +62,7 @@ export async function POST(request: Request) {
       timeStyle: 'medium',
     });
 
-    const msg = `⚡🔔 <b>ZTORE DIGITAL STORE — TELEGRAM BOT TEST ALERT</b> 🚀
+    const msg = `⚡🔔 <b>CREATORMINT STORE — TELEGRAM BOT TEST ALERT</b> 🚀
 ━━━━━━━━━━━━━━━━━━━━━━
 ✅ <b>Bot Connection:</b> Active & Verified
 📱 <b>Admin Chat IDs:</b> ${targetChatIds.join(', ')}

@@ -3,10 +3,10 @@ import { TrendingUp, Users, Star, Award } from 'lucide-react';
 
 export default function CreatorProof() {
   const stats = [
-    { value: '14.2M+', label: 'Organic Views Generated', icon: TrendingUp, color: 'text-red-700 bg-red-50 border border-red-200/50' },
-    { value: '3,850+', label: 'Creators & Agencies', icon: Users, color: 'text-slate-900 bg-slate-100 border border-slate-200' },
-    { value: '4.9 / 5', label: 'Average User Rating', icon: Star, color: 'text-red-600 bg-red-50 border border-red-200/50' },
-    { value: '100%', label: 'Watermark-Free HD Quality', icon: Award, color: 'text-emerald-700 bg-emerald-50 border border-emerald-200' },
+    { value: '14.2M+', label: 'Organic Views Generated', icon: TrendingUp, color: 'text-leaf-700 bg-leaf-50 border border-leaf-200/50' },
+    { value: '3,850+', label: 'Creators & Agencies', icon: Users, color: 'text-ink bg-canvas border border-canvas-200' },
+    { value: '4.9 / 5', label: 'Average User Rating', icon: Star, color: 'text-leaf-600 bg-leaf-50 border border-leaf-200/50' },
+    { value: '100%', label: 'Watermark-Free HD Quality', icon: Award, color: 'text-leaf-700 bg-mint-50 border border-mint-200' },
   ];
 
   const testimonials = [
@@ -34,18 +34,18 @@ export default function CreatorProof() {
   ];
 
   return (
-    <section className="py-14 sm:py-20 border-t border-slate-100 [contain:layout_style]">
+    <section className="py-14 sm:py-20 border-t border-canvas-200 [contain:layout_style]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Heading */}
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-red-50 text-red-900 border border-red-200/60 text-xs font-black uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-leaf-50 text-leaf-900 border border-leaf-200/60 text-xs font-black uppercase tracking-wider mb-2">
             📊 Proven Results
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-black text-ink tracking-tight">
             Creator Growth in Real Numbers
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 mt-1 font-medium">
+          <p className="text-sm sm:text-base text-ink-500 mt-1 font-medium">
             See how creators and page owners are dominating the algorithm with our ready-to-post reels.
           </p>
         </div>
@@ -57,13 +57,13 @@ export default function CreatorProof() {
             return (
               <div
                 key={i}
-                className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-sm text-center flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(239,68,68,0.1)] transition-all"
+                className="p-6 rounded-3xl bg-white border border-canvas-200/80 shadow-sm text-center flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(11,16,25,0.06)] transition-all"
               >
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${stat.color} mb-1`}>
                   <Icon className="w-6 h-6" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-slate-950">{stat.value}</div>
-                <div className="text-xs font-semibold text-slate-500">{stat.label}</div>
+                <div className="text-2xl sm:text-3xl font-black text-ink">{stat.value}</div>
+                <div className="text-xs font-semibold text-ink-400">{stat.label}</div>
               </div>
             );
           })}
@@ -74,23 +74,23 @@ export default function CreatorProof() {
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow"
+              className="p-6 sm:p-7 rounded-3xl bg-white border border-canvas-200/80 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow"
             >
               <div className="space-y-3">
-                <div className="inline-block px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
+                <div className="inline-block px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-mint-50 text-leaf-800 border border-mint-200">
                   {t.metric}
                 </div>
-                <p className="text-sm text-slate-800 font-medium leading-relaxed italic">
+                <p className="text-sm text-ink font-medium leading-relaxed italic">
                   "{t.quote}"
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+              <div className="pt-4 border-t border-canvas-200 flex items-center justify-between">
                 <div>
-                  <h3 className="font-extrabold text-sm text-slate-950">{t.name}</h3>
-                  <p className="text-xs text-red-700 font-bold">{t.channel}</p>
+                  <h3 className="font-extrabold text-sm text-ink">{t.name}</h3>
+                  <p className="text-xs text-leaf-700 font-bold">{t.channel}</p>
                 </div>
-                <span className="text-xs font-bold text-slate-500">{t.followers}</span>
+                <span className="text-xs font-bold text-ink-400">{t.followers}</span>
               </div>
             </div>
           ))}

@@ -172,21 +172,20 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-[0_2px_10px_rgba(20,10,50,0.02)]">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-canvas-200 shadow-[0_6px_18px_-14px_rgba(11,16,25,0.25)]">
       {/* Top Promotional Coupon Header Bar ("OFF20" for 20% Off on all products) */}
       {isCouponBannerVisible && (
-        <div className="relative bg-gradient-to-r from-[#180407] via-[#2d090f] to-[#180407] border-b border-red-900/40 text-white overflow-hidden">
+        <div className="relative bg-ink border-b border-white/5 text-white overflow-hidden">
           {/* Subtle diagonal ambient glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_80%_at_50%_-20%,rgba(239,68,68,0.25),rgba(255,255,255,0))] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_140%_at_50%_-30%,rgba(154,230,0,0.16),rgba(255,255,255,0))] pointer-events-none" />
 
           <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-2.5 relative flex items-center justify-between gap-2 text-xs">
             {/* Left: Flame + Mega Sale Pill */}
             <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 z-10">
-              <span className="w-5 h-5 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center shrink-0">
-                <Sparkles className="w-3.5 h-3.5 fill-red-400 text-red-400" />
+              <span className="w-5 h-5 rounded-full bg-volt text-ink flex items-center justify-center shrink-0">
+                <Sparkles className="w-3 h-3 fill-ink text-ink" />
               </span>
-              <span className="px-2 sm:px-2.5 py-0.5 rounded-full border border-red-500/40 bg-red-500/15 text-[10px] font-black uppercase tracking-wider text-red-200 shadow-2xs flex items-center gap-1">
-                <span>🔥</span>
+              <span className="hidden min-[380px]:flex px-2 sm:px-2.5 py-0.5 rounded-full border border-mint-500/35 bg-mint-500/10 text-[10px] font-black uppercase tracking-[0.12em] text-leaf-300 items-center gap-1">
                 <span>MEGA SALE</span>
               </span>
             </div>
@@ -196,7 +195,7 @@ export default function Header() {
               <div className="animate-diwali-ltr font-bold text-[11px] sm:text-xs md:text-[13px] text-white tracking-wide">
                 <span>🔥 Mega Sale: </span>
                 <span>Flat </span>
-                <span className="text-red-400 font-extrabold underline decoration-red-500/50">20% Extra Discount</span>
+                <span className="text-mint-300 font-extrabold underline decoration-mint-300/40 underline-offset-4">20% Extra Discount</span>
                 <span> on All Reels Bundles! ✨</span>
               </div>
             </div>
@@ -206,19 +205,19 @@ export default function Header() {
               <button
                 type="button"
                 onClick={handleCopyCoupon}
-                className="px-2.5 sm:px-3 py-1 rounded-lg bg-white hover:bg-slate-50 border border-white/90 text-slate-900 shadow-xs flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer select-none group"
+                className="px-2.5 sm:px-3 py-1 rounded-full bg-volt hover:bg-mint-300 text-ink flex items-center gap-1.5 transition-colors active:scale-95 cursor-pointer select-none group"
                 title="Click to copy code and auto-apply discount"
               >
-                <span className="text-[9px] sm:text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
+                <span className="text-[9px] sm:text-[10px] font-bold text-ink/60 uppercase tracking-wider">
                   CODE
                 </span>
-                <span className="text-xs font-black text-red-950 tracking-wider">
+                <span className="text-xs font-black text-ink tracking-wider">
                   {isCopied ? 'COPIED!' : 'OFF20'}
                 </span>
                 {isCopied ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <Check className="w-3.5 h-3.5 text-ink shrink-0" />
                 ) : (
-                  <Copy className="w-3.5 h-3.5 text-red-600 group-hover:scale-110 transition-transform shrink-0" />
+                  <Copy className="w-3.5 h-3.5 text-ink group-hover:scale-110 transition-transform shrink-0" />
                 )}
               </button>
 
@@ -241,20 +240,20 @@ export default function Header() {
           
           {/* Brand Logo matching screenshot */}
           <Link href="/" prefetch={false} className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden flex items-center justify-center shadow-md shadow-red-500/25 group-hover:scale-105 transition-transform shrink-0">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[13px] overflow-hidden flex items-center justify-center shadow-[0_8px_18px_-8px_rgba(11,16,25,0.55)] group-hover:-rotate-6 transition-transform duration-300 shrink-0">
               <img
-                src="/logo.png"
-                alt={settings.storeName || 'Ztore Digital'}
+                src="/creatormint-mark.png"
+                alt={settings.storeName || 'CreatorMint'}
                 width={44}
                 height={44}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-black text-[16px] sm:text-[17px] text-slate-900 tracking-tight leading-tight">
-                {settings.storeName || 'Ztore Digital'}
+              <span className="font-display font-extrabold text-[17px] sm:text-[19px] text-ink tracking-[-0.02em] leading-tight">
+                {settings.storeName || 'CreatorMint'}
               </span>
-              <span className="text-[11px] sm:text-[12px] font-medium text-slate-500 tracking-tight">
+              <span className="hidden min-[400px]:block text-[11px] sm:text-[12px] font-medium text-ink-400 tracking-tight">
                 {settings.tagline || 'Everything You Need, All in One Place.'}
               </span>
             </div>
@@ -270,12 +269,12 @@ export default function Header() {
                   href={link.href}
                   prefetch={false}
                   className={`text-[15px] font-bold transition-all relative py-1 ${
-                    isActive ? 'text-slate-900 font-extrabold' : 'text-slate-600 hover:text-red-600'
+                    isActive ? 'text-ink font-extrabold' : 'text-ink-500 hover:text-ink'
                   }`}
                 >
                   {link.name}
                   {isActive && (
-                    <span className="absolute -bottom-1 left-0 right-0 h-[3px] bg-red-600 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
+                    <span className="absolute -bottom-1.5 left-0 right-0 h-[3px] bg-mint-500 rounded-full" />
                   )}
                 </Link>
               );
@@ -288,9 +287,9 @@ export default function Header() {
             <div ref={desktopSearchRef} className="relative hidden sm:block">
               <form
                 onSubmit={handleSearchSubmit}
-                className="flex items-center bg-slate-50 hover:bg-slate-100/80 focus-within:bg-white border border-slate-200 rounded-full pl-3.5 pr-2 py-0.5 focus-within:ring-2 focus-within:ring-red-500/20 focus-within:border-red-500 transition-all"
+                className="flex items-center bg-canvas hover:bg-canvas-200/70 focus-within:bg-white border border-canvas-200 rounded-full pl-3.5 pr-2 py-0.5 focus-within:ring-4 focus-within:ring-mint-500/25 focus-within:border-ink transition-all"
               >
-                <Search className="w-4 h-4 text-red-600 shrink-0" />
+                <Search className="w-4 h-4 text-ink-500 shrink-0" />
                 <input
                   type="text"
                   autoComplete="off"
@@ -302,14 +301,14 @@ export default function Header() {
                     if (searchQuery.trim()) setIsDropdownOpen(true);
                   }}
                   onChange={(e) => handleSearchChange(e.target.value)}
-                  className="w-44 lg:w-56 py-2 px-2 bg-transparent text-[13px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none"
+                  className="w-44 lg:w-56 py-2 px-2 bg-transparent text-[13px] font-medium text-ink placeholder:text-ink-300 focus:outline-none"
                 />
                 {searchQuery ? (
                   <button
                     type="button"
                     onClick={handleClearSearch}
                     aria-label="Clear search"
-                    className="p-1 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors shrink-0"
+                    className="p-1 rounded-full text-ink-300 hover:text-ink-600 hover:bg-canvas transition-colors shrink-0"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -318,43 +317,43 @@ export default function Header() {
 
               {/* Instant Dropdown Results for Desktop */}
               {isDropdownOpen && searchQuery.trim() && (
-                <div className="absolute top-full right-0 mt-2 w-80 lg:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150">
-                  <div className="p-2.5 bg-gradient-to-r from-red-50 to-rose-50 border-b border-red-100 flex items-center justify-between">
-                    <span className="text-[11px] font-black text-red-900 uppercase tracking-wider flex items-center gap-1">
-                      <Sparkles className="w-3 h-3 text-red-600" />
+                <div className="absolute top-full right-0 mt-2 w-80 lg:w-96 bg-white rounded-2xl shadow-2xl border border-canvas-200 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="p-2.5 bg-mint-50 border-b border-mint-100 flex items-center justify-between">
+                    <span className="text-[11px] font-black text-ink uppercase tracking-wider flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-leaf-600" />
                       <span>{searchResults.length} Bundle{searchResults.length !== 1 ? 's' : ''} Found</span>
                     </span>
                     {searchResults.length > 0 && (
-                      <span className="text-[10px] text-slate-500 font-medium">Click to open</span>
+                      <span className="text-[10px] text-ink-400 font-medium">Click to open</span>
                     )}
                   </div>
 
-                  <div className="max-h-80 overflow-y-auto divide-y divide-red-50 p-1">
+                  <div className="max-h-80 overflow-y-auto divide-y divide-leaf-50 p-1">
                     {searchResults.slice(0, 5).map((bundle) => (
                       <Link
                         key={bundle.id}
                         href={`/product/${bundle.slug}`}
                         onClick={() => setIsDropdownOpen(false)}
-                        className="flex items-center gap-3 p-2 rounded-xl hover:bg-red-50/60 transition-colors group"
+                        className="flex items-center gap-3 p-2 rounded-xl hover:bg-leaf-50/60 transition-colors group"
                       >
                         <img
                           src={bundle.thumbnail}
                           alt={bundle.title}
-                          className="w-11 h-11 rounded-lg object-cover shrink-0 bg-slate-900 border border-slate-200"
+                          className="w-11 h-11 rounded-lg object-cover shrink-0 bg-ink border border-canvas-200"
                         />
                         <div className="min-w-0 flex-1">
-                          <h4 className="text-xs font-bold text-slate-900 line-clamp-1 group-hover:text-red-700 transition-colors">
+                          <h4 className="text-xs font-bold text-ink line-clamp-1 group-hover:text-leaf-700 transition-colors">
                             {bundle.title}
                           </h4>
                           <div className="flex items-center gap-2 mt-0.5">
-                            <span className="text-[10px] font-bold text-red-800 bg-red-100/70 px-1.5 py-0.5 rounded">
+                            <span className="text-[10px] font-bold text-leaf-800 bg-leaf-100/70 px-1.5 py-0.5 rounded">
                               {bundle.reelCount}+ Reels
                             </span>
-                            <span className="text-xs font-black text-slate-900">
+                            <span className="text-xs font-black text-ink">
                               ₹{bundle.personalPrice || 49}
                             </span>
                             {bundle.personalOriginalPrice && (
-                              <span className="text-[10px] text-gray-400 line-through">
+                              <span className="text-[10px] text-ink-300 line-through">
                                 ₹{bundle.personalOriginalPrice}
                               </span>
                             )}
@@ -364,9 +363,9 @@ export default function Header() {
                     ))}
 
                     {searchResults.length === 0 && (
-                      <div className="py-6 text-center text-xs text-gray-500 space-y-1">
-                        <p className="font-semibold text-gray-700">No matching bundles</p>
-                        <p className="text-[11px] text-gray-400">Try AI, Horror, Gym, Premanand, Car</p>
+                      <div className="py-6 text-center text-xs text-ink-400 space-y-1">
+                        <p className="font-semibold text-ink-600">No matching bundles</p>
+                        <p className="text-[11px] text-ink-300">Try AI, Horror, Gym, Premanand, Car</p>
                       </div>
                     )}
                   </div>
@@ -375,7 +374,7 @@ export default function Header() {
                     <button
                       type="button"
                       onClick={handleViewAllResults}
-                      className="w-full py-2.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs text-center block transition-all"
+                      className="w-full py-2.5 bg-ink hover:bg-ink-700 text-mint-300 font-black text-xs text-center block transition-colors"
                     >
                       View all {searchResults.length} results in Shop &rarr;
                     </button>
@@ -392,22 +391,22 @@ export default function Header() {
                 if (isMobileMenuOpen) setIsMobileMenuOpen(false);
               }}
               aria-label="Search"
-              className="sm:hidden w-9 h-9 rounded-xl bg-red-50 text-red-800 border border-red-200/60 flex items-center justify-center hover:bg-red-100 transition-colors shrink-0"
+              className="sm:hidden w-9 h-9 rounded-xl bg-canvas text-ink border border-canvas-200 flex items-center justify-center hover:bg-canvas-200 transition-colors shrink-0"
             >
-              <Search className="w-4 h-4 text-red-600" />
+              <Search className="w-4 h-4 text-ink" />
             </button>
 
             {/* Mobile Cart Button */}
             <Link
               href="/cart"
               prefetch={false}
-              className="sm:hidden px-2.5 h-9 rounded-xl bg-red-50 text-red-900 border border-red-200/60 flex items-center gap-1.5 hover:bg-red-100 transition-colors text-xs font-bold relative shrink-0"
+              className="sm:hidden px-2.5 h-9 rounded-xl bg-ink text-white flex items-center gap-1.5 hover:bg-ink-700 transition-colors text-xs font-bold relative shrink-0"
               aria-label="Cart"
             >
-              <ShoppingCart className="w-4 h-4 text-red-600" />
+              <ShoppingCart className="w-4 h-4 text-mint-500" />
               <span>Cart</span>
               {cartCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-red-600 text-[9px] font-black text-white flex items-center justify-center shadow-xs">
+                <span className="min-w-4 h-4 px-1 rounded-full bg-mint-500 text-[9px] font-black text-ink flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
@@ -417,13 +416,13 @@ export default function Header() {
             <Link
               href="/cart"
               prefetch={false}
-              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 hover:bg-red-50/50 border border-slate-200 hover:border-red-200 text-slate-900 font-bold text-sm transition-all group"
+              className="hidden sm:flex items-center gap-2 pl-4 pr-4 py-2.5 rounded-full bg-ink hover:bg-ink-700 text-white font-bold text-sm transition-colors group"
               aria-label="Cart"
             >
               <div className="relative">
-                <ShoppingCart className="w-4 h-4 text-red-600 group-hover:scale-110 transition-transform" />
+                <ShoppingCart className="w-4 h-4 text-mint-500 group-hover:-rotate-12 transition-transform" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2.5 w-4 h-4 rounded-full bg-red-600 text-[10px] font-black text-white flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2.5 min-w-4 h-4 px-1 rounded-full bg-volt ring-2 ring-ink text-[10px] font-black text-ink flex items-center justify-center">
                     {cartCount}
                   </span>
                 )}
@@ -439,7 +438,7 @@ export default function Header() {
               }}
               aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={isMobileMenuOpen}
-              className="md:hidden px-2.5 h-9 rounded-xl border border-slate-200 text-slate-900 flex items-center gap-1.5 hover:bg-slate-100 text-xs font-bold shrink-0"
+              className="md:hidden px-2.5 h-9 rounded-xl border border-canvas-200 text-ink flex items-center gap-1.5 hover:bg-canvas text-xs font-bold shrink-0"
             >
               {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
               <span>Menu</span>
@@ -449,12 +448,12 @@ export default function Header() {
 
         {/* Mobile Search Dropdown Bar with Instant Keystroke Search & Product Preview List */}
         {isMobileSearchOpen && (
-          <div className="sm:hidden border-t border-slate-100 bg-white py-2.5 px-1 animate-in fade-in duration-150">
+          <div className="sm:hidden border-t border-canvas-200 bg-white py-2.5 px-1 animate-in fade-in duration-150">
             <form
               onSubmit={handleSearchSubmit}
-              className="flex items-center bg-slate-50 border border-slate-200 rounded-full pl-3 pr-2 py-0.5 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
+              className="flex items-center bg-canvas-50 border border-canvas-200 rounded-full pl-3 pr-2 py-0.5 focus-within:border-mint-500 focus-within:ring-2 focus-within:ring-mint-500/20"
             >
-              <Search className="w-4 h-4 text-red-600 shrink-0" />
+              <Search className="w-4 h-4 text-leaf-600 shrink-0" />
               <input
                 type="text"
                 autoFocus
@@ -463,18 +462,18 @@ export default function Header() {
                 placeholder="Type to search bundles instantly..."
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full py-1.5 px-2 bg-transparent text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none"
+                className="w-full py-1.5 px-2 bg-transparent text-xs font-medium text-ink placeholder:text-ink-300 focus:outline-none"
               />
               {searchQuery ? (
                 <button
                   type="button"
                   onClick={handleClearSearch}
-                  className="p-1 rounded-full text-gray-400 hover:text-gray-700"
+                  className="p-1 rounded-full text-ink-300 hover:text-ink-600"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
               ) : (
-                <div className="w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center shrink-0">
+                <div className="w-7 h-7 rounded-full bg-volt text-ink flex items-center justify-center shrink-0">
                   <Search className="w-3 h-3" />
                 </div>
               )}
@@ -482,8 +481,8 @@ export default function Header() {
 
             {/* Mobile Instant Results List */}
             {searchQuery.trim() && (
-              <div className="mt-2.5 bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden animate-in fade-in duration-150">
-                <div className="p-2 bg-red-50/80 border-b border-red-100 flex items-center justify-between text-[11px] font-bold text-red-900">
+              <div className="mt-2.5 bg-white rounded-2xl border border-canvas-200 shadow-lg overflow-hidden animate-in fade-in duration-150">
+                <div className="p-2 bg-leaf-50/80 border-b border-leaf-100 flex items-center justify-between text-[11px] font-bold text-leaf-900">
                   <span>
                     {searchResults.length} Bundle{searchResults.length !== 1 ? 's' : ''} Found
                   </span>
@@ -491,14 +490,14 @@ export default function Header() {
                     <button
                       type="button"
                       onClick={handleViewAllResults}
-                      className="text-[10px] text-red-800 underline font-extrabold"
+                      className="text-[10px] text-leaf-800 underline font-extrabold"
                     >
                       See All in Shop &rarr;
                     </button>
                   )}
                 </div>
 
-                <div className="max-h-64 overflow-y-auto divide-y divide-slate-100 p-1">
+                <div className="max-h-64 overflow-y-auto divide-y divide-canvas-200 p-1">
                   {searchResults.slice(0, 5).map((bundle) => (
                     <Link
                       key={bundle.id}
@@ -507,22 +506,22 @@ export default function Header() {
                         setIsMobileSearchOpen(false);
                         setIsDropdownOpen(false);
                       }}
-                      className="flex items-center gap-2.5 p-2 rounded-xl active:bg-red-100/70 transition-colors"
+                      className="flex items-center gap-2.5 p-2 rounded-xl active:bg-leaf-100/70 transition-colors"
                     >
                       <img
                         src={bundle.thumbnail}
                         alt={bundle.title}
-                        className="w-10 h-10 rounded-lg object-cover shrink-0 bg-slate-900 border border-slate-200"
+                        className="w-10 h-10 rounded-lg object-cover shrink-0 bg-ink border border-canvas-200"
                       />
                       <div className="min-w-0 flex-1">
-                        <h4 className="text-xs font-bold text-slate-900 line-clamp-1">
+                        <h4 className="text-xs font-bold text-ink line-clamp-1">
                           {bundle.title}
                         </h4>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="text-[9px] font-bold text-red-800 bg-red-100/70 px-1 py-0.2 rounded">
+                          <span className="text-[9px] font-bold text-leaf-800 bg-leaf-100/70 px-1 py-0.2 rounded">
                             {bundle.reelCount}+ Reels
                           </span>
-                          <span className="text-xs font-black text-slate-900">
+                          <span className="text-xs font-black text-ink">
                             ₹{bundle.personalPrice || 49}
                           </span>
                         </div>
@@ -531,7 +530,7 @@ export default function Header() {
                   ))}
 
                   {searchResults.length === 0 && (
-                    <div className="py-4 text-center text-xs text-gray-500">
+                    <div className="py-4 text-center text-xs text-ink-400">
                       No bundles found. Try AI, Horror, Gym, Premanand...
                     </div>
                   )}
@@ -541,7 +540,7 @@ export default function Header() {
                   <button
                     type="button"
                     onClick={handleViewAllResults}
-                    className="w-full py-2 bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-xs text-center block"
+                    className="w-full py-2 bg-ink text-mint-300 font-black text-xs text-center block"
                   >
                     View all {searchResults.length} results in Shop &rarr;
                   </button>
@@ -553,14 +552,14 @@ export default function Header() {
 
         {/* Mobile menu dropdown */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-100 bg-white px-4 py-4 space-y-3">
+          <div className="md:hidden border-t border-canvas-200 bg-white px-4 py-4 space-y-3">
             <div className="space-y-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-3.5 py-2.5 rounded-xl text-[15px] font-bold transition-colors text-slate-900 hover:bg-red-50 hover:text-red-600 active:bg-red-100"
+                  className="block px-3.5 py-2.5 rounded-xl text-[15px] font-bold transition-colors text-ink hover:bg-mint-50 active:bg-mint-100"
                 >
                   {link.name}
                 </Link>

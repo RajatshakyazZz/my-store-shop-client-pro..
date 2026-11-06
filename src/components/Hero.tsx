@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Play, ArrowRight, FolderKanban, Film, ShieldCheck } from 'lucide-react';
+import { Play, ArrowRight, Zap, ShieldCheck, Download } from 'lucide-react';
 import { BUNDLE_PRODUCTS } from '@/data/bundles';
 import { optimizeImageUrl } from '@/lib/imageOptimized';
 
@@ -72,299 +72,159 @@ export default function Hero() {
   const centerCard = BUNDLE_PRODUCTS[(activeOffset + 1) % totalBundles];
   const rightCard = BUNDLE_PRODUCTS[(activeOffset + 2) % totalBundles];
 
+  const renderCard = (
+    card: (typeof BUNDLE_PRODUCTS)[number] | undefined,
+    pos: 'left' | 'center' | 'right'
+  ) => {
+    if (!card) return null;
+    const isCenter = pos === 'center';
+    const posClass =
+      pos === 'left'
+        ? 'absolute z-10 -rotate-[8deg] -translate-x-[54px] sm:-translate-x-[74px] lg:-translate-x-[86px] translate-y-2 opacity-90 hover:opacity-100'
+        : pos === 'right'
+        ? 'absolute z-10 rotate-[8deg] translate-x-[54px] sm:translate-x-[74px] lg:translate-x-[86px] translate-y-2 opacity-90 hover:opacity-100'
+        : 'relative z-20 -translate-y-1 sm:-translate-y-2';
+    const sizeClass = isCenter
+      ? 'w-[128px] sm:w-[172px] lg:w-[198px] rounded-[22px] sm:rounded-[28px] border-[3px] sm:border-[4px] border-mint-500 shadow-[0_30px_60px_-24px_rgba(154,230,0,0.55)]'
+      : 'w-[104px] sm:w-[142px] lg:w-[162px] rounded-[18px] sm:rounded-[24px] border-[3px] sm:border-[4px] border-ink-700 shadow-[0_24px_40px_-20px_rgba(0,0,0,0.8)]';
+    return (
+      <Link
+        href={`/product/${card.slug}`}
+        prefetch={false}
+        key={`${pos}-${card.id}`}
+        className={`${posClass} ${sizeClass} aspect-[9/16] overflow-hidden transition-all duration-500 hover:scale-[1.03] block bg-ink-800 group`}
+      >
+        <img
+          src={optimizeImageUrl(card.thumbnail, 384, 75)}
+          alt={card.title}
+          width={384}
+          height={683}
+          fetchPriority="high"
+          decoding="async"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent flex flex-col justify-between p-2.5 sm:p-3.5 text-white">
+          <div />
+          <div
+            className={`${
+              isCenter ? 'w-9 h-9 sm:w-12 sm:h-12 bg-volt' : 'w-7 h-7 sm:w-9 sm:h-9 bg-white/90'
+            } rounded-full flex items-center justify-center mx-auto text-ink shadow-[0_10px_20px_-8px_rgba(0,0,0,0.6)] transition-transform group-hover:scale-110`}
+          >
+            <Play className={`${isCenter ? 'w-3.5 h-3.5 sm:w-4 sm:h-4' : 'w-2.5 h-2.5 sm:w-3.5 sm:h-3.5'} fill-ink ml-0.5`} />
+          </div>
+          <div>
+            <span className="text-[7.5px] sm:text-[9px] font-bold uppercase tracking-[0.16em] text-mint-300 block mb-0.5 sm:mb-1">
+              {isCenter ? 'Hot preview' : 'Preview'}
+            </span>
+            <p className={`${isCenter ? 'text-[10.5px] sm:text-[12.5px] font-black' : 'text-[9px] sm:text-[11px] font-extrabold'} text-white line-clamp-2 leading-snug`}>
+              {card.title}
+            </p>
+          </div>
+        </div>
+      </Link>
+    );
+  };
+
+  const stats = [
+    { icon: Zap, value: `${totalBundles || 131}`, label: 'Published bundles' },
+    { icon: Download, value: '222K+', label: 'Ready-to-post reels' },
+    { icon: ShieldCheck, value: '1080P', label: 'Max quality' },
+  ];
+
   return (
     <section className="pt-2 pb-2 sm:pt-6 sm:pb-6">
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
-        
-        {/* Main Hero Card Container */}
-        <div
-          className="relative rounded-[24px] sm:rounded-[36px] bg-gradient-to-br from-[#ffffff] via-[#fffcfc] to-[#fef2f2] border border-red-500/20 shadow-[0_12px_40px_rgba(239,68,68,0.06)] p-4 sm:p-10 lg:px-12 lg:py-11 overflow-hidden"
-          style={{
-            backgroundImage:
-              'linear-gradient(to right, rgba(239, 68, 68, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(239, 68, 68, 0.05) 1px, transparent 1px)',
-            backgroundSize: '26px 26px',
-          }}
-        >
-          {/* Ambient Warm Red Glow on the Right Side (Behind the 3 Phones) */}
+        <div className="cm-ink-panel relative rounded-[26px] sm:rounded-[38px] p-5 sm:p-10 lg:px-14 lg:py-14 overflow-hidden isolate">
+          {/* Lime aura behind the phone stack */}
           <div
-            className="pointer-events-none absolute -right-16 top-0 bottom-0 w-full lg:w-[58%] z-0"
+            className="pointer-events-none absolute -right-24 -top-10 w-[640px] h-[640px] max-w-[120%] -z-10 opacity-80"
             style={{
               background:
-                'radial-gradient(circle at 65% 48%, rgba(244, 63, 94, 0.28) 0%, rgba(239, 68, 68, 0.16) 38%, rgba(254, 226, 226, 0.22) 68%, transparent 100%)',
+                'radial-gradient(circle at 50% 50%, rgba(154,230,0,0.22) 0%, rgba(154,230,0,0.08) 38%, transparent 66%)',
             }}
           />
+          {/* Thin lime edge highlight */}
+          <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-mint-500/50 to-transparent" />
 
-          {/* Subtle bottom-left warm red glow */}
-          <div className="pointer-events-none absolute -left-12 -bottom-24 w-80 h-60 rounded-full bg-red-400/10 blur-2xl z-0" />
-
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-6 items-center">
-            
+          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-7 sm:gap-10 lg:gap-6 items-center">
             {/* Left Content */}
-            <div className="lg:col-span-7 space-y-3.5 sm:space-y-6">
-              
-              {/* Heading */}
+            <div className="lg:col-span-7 space-y-5 sm:space-y-7">
               <div>
-                <h1 className="text-[32px] sm:text-[50px] lg:text-[62px] font-black text-slate-950 tracking-[-0.03em] leading-[1.06]">
+                <h1 className="font-display text-[36px] sm:text-[56px] lg:text-[68px] font-extrabold text-white tracking-[-0.035em] leading-[1.02]">
                   Viral Reels.
                 </h1>
-                <div className="text-[32px] sm:text-[50px] lg:text-[62px] font-black tracking-[-0.03em] leading-[1.08] mt-0.5 flex items-center min-h-[38px] sm:min-h-[64px]">
-                  <span className="bg-gradient-to-r from-red-600 via-rose-600 to-red-600 bg-clip-text text-transparent pb-1">
-                    {displayText}
-                  </span>
-                  <span className="w-[3px] h-[0.88em] bg-red-600 ml-1.5 inline-block animate-pulse shrink-0" />
+                <div className="font-display text-[36px] sm:text-[56px] lg:text-[68px] font-extrabold tracking-[-0.035em] leading-[1.06] mt-0.5 flex items-center min-h-[42px] sm:min-h-[66px] lg:min-h-[76px]">
+                  <span className="text-mint-500 pb-1">{displayText}</span>
+                  <span className="w-[4px] h-[0.82em] bg-volt ml-1.5 inline-block animate-pulse shrink-0 rounded-full" />
                 </div>
               </div>
 
-              {/* Subtitle */}
-              <p className="text-[13px] sm:text-[15.5px] text-slate-600 font-medium max-w-xl leading-[1.5] sm:leading-[1.6]">
+              <p className="text-[14px] sm:text-[16.5px] text-ink-300 font-medium max-w-[34rem] leading-[1.6]">
                 Download high-converting, professional reels bundles for Instagram, YouTube Shorts and Facebook. Pick your niche, preview sample videos, and get instant cloud access after purchase.
               </p>
 
-              {/* Action Buttons - Side by Side on Mobile */}
-              <div className="grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:items-center sm:gap-3.5 pt-0.5 sm:pt-1">
+              <div className="flex flex-col min-[400px]:flex-row min-[400px]:flex-wrap items-stretch min-[400px]:items-center gap-2.5 sm:gap-3">
                 <Link
                   href="/shop"
                   prefetch={false}
-                  className="px-3 sm:px-6 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-extrabold text-[12.5px] sm:text-[14px] flex items-center justify-center gap-1.5 sm:gap-2.5 shadow-[0_10px_24px_rgba(225,29,72,0.35)] hover:scale-[1.02] active:scale-95 transition-all"
+                  className="group pl-5 sm:pl-6 pr-1.5 py-1.5 rounded-full bg-mint-500 hover:bg-mint-300 text-ink font-extrabold text-[14px] sm:text-[15px] flex items-center justify-between min-[400px]:justify-center gap-4 shadow-[0_18px_36px_-16px_rgba(154,230,0,0.65)] active:scale-[0.98] transition-colors"
                 >
-                  <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg bg-black/15 flex items-center justify-center text-[11px] sm:text-xs leading-none shrink-0 font-black">
-                    🔥
+                  <span>Browse Bundles</span>
+                  <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-volt flex items-center justify-center shrink-0 ring-1 ring-ink/10 transition-transform duration-300 group-hover:translate-x-0.5">
+                    <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                   </span>
-                  <span className="truncate">Browse Bundles</span>
-                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 stroke-[2.5]" />
                 </Link>
 
                 <a
                   href="#rbui-preview"
-                  className="px-3 sm:px-6 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl bg-white text-slate-900 border border-slate-300 hover:border-red-500 hover:text-red-600 font-extrabold text-[12.5px] sm:text-[14px] flex items-center justify-center gap-1.5 sm:gap-2.5 shadow-xs hover:shadow-md transition-all hover:bg-red-50/40 active:scale-95"
+                  className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-full border border-white/15 hover:border-mint-500/60 bg-white/[0.04] hover:bg-white/[0.08] text-white font-bold text-[14px] sm:text-[15px] flex items-center justify-center gap-2.5 transition-colors active:scale-[0.98]"
                 >
-                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-slate-950 flex items-center justify-center text-white shrink-0">
-                    <Play className="w-2 h-2 sm:w-2.5 sm:h-2.5 fill-white ml-0.5" />
-                  </div>
-                  <span className="truncate">View Previews</span>
+                  <span className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-ink shrink-0">
+                    <Play className="w-2.5 h-2.5 fill-ink ml-0.5" />
+                  </span>
+                  <span>View Previews</span>
                 </a>
               </div>
 
-              {/* 3 Glossy Stat Cards on Desktop */}
-              <div className="hidden lg:grid grid-cols-3 gap-3.5 pt-3 max-w-xl">
-                {/* Published Bundles (Vivid Red Gradient) */}
-                <div className="relative overflow-hidden p-3.5 rounded-[20px] bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white flex flex-col items-center text-center shadow-[0_10px_24px_rgba(225,29,72,0.25)]">
-                  <div className="absolute -right-5 -bottom-6 w-20 h-20 rounded-full bg-white/20 pointer-events-none" />
-                  <div className="w-9 h-9 rounded-xl bg-white/20 border border-white/25 flex items-center justify-center shrink-0 mb-1">
-                    <FolderKanban className="w-4 h-4 text-white" />
+              {/* Proof strip */}
+              <dl className="grid grid-cols-3 max-w-xl pt-5 sm:pt-6 border-t border-white/10">
+                {stats.map(({ icon: Icon, value, label }, i) => (
+                  <div key={label} className={`${i > 0 ? 'pl-3 sm:pl-6 border-l border-white/10' : ''} pr-2 flex flex-col-reverse justify-end gap-1.5`}>
+                    <dt className="flex items-center gap-1.5 text-[10px] sm:text-[12px] font-semibold text-ink-300">
+                      <Icon className="w-3.5 h-3.5 text-mint-500 shrink-0" />
+                      <span className="truncate">{label}</span>
+                    </dt>
+                    <dd className="font-display tabular text-[22px] sm:text-[30px] font-extrabold text-white tracking-[-0.02em] leading-none">
+                      {value}
+                    </dd>
                   </div>
-                  <div className="leading-tight relative z-10">
-                    <div className="text-[20px] font-black tracking-tight">{totalBundles || 131}</div>
-                    <div className="text-[10px] font-black text-white/95 mt-0.5">Published Bundles</div>
-                  </div>
-                </div>
-
-                {/* Ready-to-Post Reels (Obsidian Slate) */}
-                <div className="relative overflow-hidden p-3.5 rounded-[20px] bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 text-white flex flex-col items-center text-center shadow-[0_10px_24px_rgba(15,23,42,0.3)]">
-                  <div className="absolute -right-5 -bottom-6 w-20 h-20 rounded-full bg-red-500/10 pointer-events-none" />
-                  <div className="w-9 h-9 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0 mb-1">
-                    <Film className="w-4 h-4 text-rose-400" />
-                  </div>
-                  <div className="leading-tight relative z-10">
-                    <div className="text-[20px] font-black tracking-tight text-white">222K+</div>
-                    <div className="text-[10px] font-bold text-white/90 mt-0.5">Ready-to-Post Reels</div>
-                  </div>
-                </div>
-
-                {/* Up to 1080P Maximum Quality (Emerald) */}
-                <div className="relative overflow-hidden p-3.5 rounded-[20px] bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex flex-col items-center text-center shadow-[0_10px_24px_rgba(16,185,129,0.22)]">
-                  <div className="absolute -right-5 -bottom-6 w-20 h-20 rounded-full bg-white/12 pointer-events-none" />
-                  <div className="w-9 h-9 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center shrink-0 mb-1">
-                    <ShieldCheck className="w-4 h-4 text-white" />
-                  </div>
-                  <div className="leading-tight relative z-10">
-                    <div className="text-[16px] font-black tracking-tight leading-none">Up to 1080P</div>
-                    <div className="text-[10px] font-bold text-white/90 mt-1">Maximum Quality</div>
-                  </div>
-                </div>
-              </div>
-
+                ))}
+              </dl>
             </div>
 
-            {/* Right: 3 Phone Stack with Red Aura */}
+            {/* Right: phone stack */}
             <div
-              className="lg:col-span-5 flex flex-col items-center justify-center relative mt-1 sm:mt-0"
+              className="lg:col-span-5 flex flex-col items-center justify-center relative"
               onMouseEnter={() => setIsRotating(false)}
               onMouseLeave={() => setIsRotating(true)}
             >
-              {/* Extra Concentrated Red Glow Directly Behind the 3 Phones */}
-              <div
-                className="pointer-events-none absolute inset-0 -m-6 rounded-full opacity-90 z-0"
-                style={{
-                  background:
-                    'radial-gradient(circle at 50% 50%, rgba(244, 63, 94, 0.35) 0%, rgba(239, 68, 68, 0.18) 45%, transparent 72%)',
-                }}
-              />
-
-              {/* 3 Phone Cards Container */}
-              <div className="relative z-10 w-full max-w-[340px] sm:max-w-[380px] h-[235px] sm:h-[310px] lg:h-[340px] flex items-center justify-center">
-                
-                {/* Left Card (-8deg tilt, tucked behind center card) */}
-                {leftCard && (
-                  <Link
-                    href={`/product/${leftCard.slug}`}
-                    prefetch={false}
-                    key={`left-${leftCard.id}`}
-                    className="absolute z-10 w-[104px] sm:w-[142px] lg:w-[162px] aspect-[9/16] rounded-[16px] sm:rounded-[24px] overflow-hidden shadow-[0_12px_28px_rgba(30,15,70,0.2)] sm:shadow-[0_20px_45px_rgba(30,15,70,0.22)] border-[3.5px] sm:border-[5px] border-white transform -rotate-[8deg] -translate-x-[52px] sm:-translate-x-[72px] lg:-translate-x-[82px] translate-y-1 sm:translate-y-2 transition-all hover:scale-95 duration-500 block bg-slate-900 group"
-                  >
-                    <img
-                      src={optimizeImageUrl(leftCard.thumbnail, 384, 75)}
-                      alt={leftCard.title}
-                      width={384}
-                      height={683}
-                      fetchPriority="high"
-                      decoding="async"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-transparent flex flex-col justify-between p-2 sm:p-3 text-white">
-                      <div />
-                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-white/95 shadow-md flex items-center justify-center mx-auto text-red-600">
-                        <Play className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 fill-red-600 ml-0.5" />
-                      </div>
-                      <div>
-                        <span className="text-[7px] sm:text-[8.5px] font-extrabold uppercase tracking-[0.12em] text-white/80 block mb-0.5">
-                          HOT PREVIEW
-                        </span>
-                        <p className="text-[9px] sm:text-[11px] font-extrabold text-white line-clamp-2 leading-tight">
-                          {leftCard.title}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                )}
-
-                {/* Right Card (+8deg tilt, tucked behind center card) */}
-                {rightCard && (
-                  <Link
-                    href={`/product/${rightCard.slug}`}
-                    prefetch={false}
-                    key={`right-${rightCard.id}`}
-                    className="absolute z-10 w-[104px] sm:w-[142px] lg:w-[162px] aspect-[9/16] rounded-[16px] sm:rounded-[24px] overflow-hidden shadow-[0_12px_28px_rgba(30,15,70,0.2)] sm:shadow-[0_20px_45px_rgba(30,15,70,0.22)] border-[3.5px] sm:border-[5px] border-white transform rotate-[8deg] translate-x-[52px] sm:translate-x-[72px] lg:translate-x-[82px] translate-y-1 sm:translate-y-2 transition-all hover:scale-95 duration-500 block bg-slate-900 group"
-                  >
-                    <img
-                      src={optimizeImageUrl(rightCard.thumbnail, 384, 75)}
-                      alt={rightCard.title}
-                      width={384}
-                      height={683}
-                      fetchPriority="high"
-                      decoding="async"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-transparent flex flex-col justify-between p-2 sm:p-3 text-white">
-                      <div />
-                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-white/95 shadow-md flex items-center justify-center mx-auto text-red-600">
-                        <Play className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 fill-red-600 ml-0.5" />
-                      </div>
-                      <div>
-                        <span className="text-[7px] sm:text-[8.5px] font-extrabold uppercase tracking-[0.12em] text-white/80 block mb-0.5">
-                          PREVIEW
-                        </span>
-                        <p className="text-[9px] sm:text-[11px] font-extrabold text-white line-clamp-2 leading-tight">
-                          {rightCard.title}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                )}
-
-                {/* Center Upright Card (Front, vibrant Red border matching screenshot!) */}
-                {centerCard && (
-                  <Link
-                    href={`/product/${centerCard.slug}`}
-                    prefetch={false}
-                    key={`center-${centerCard.id}`}
-                    className="relative z-20 w-[126px] sm:w-[170px] lg:w-[195px] aspect-[9/16] rounded-[20px] sm:rounded-[26px] overflow-hidden shadow-[0_16px_36px_rgba(239,68,68,0.28)] sm:shadow-[0_26px_60px_rgba(239,68,68,0.32)] border-[4.5px] sm:border-[6px] border-red-500 -translate-y-1 sm:-translate-y-2 transition-all hover:scale-[1.03] duration-500 block bg-slate-900 group"
-                  >
-                    <img
-                      src={optimizeImageUrl(centerCard.thumbnail, 384, 75)}
-                      alt={centerCard.title}
-                      width={384}
-                      height={683}
-                      fetchPriority="high"
-                      decoding="async"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent flex flex-col justify-between p-2.5 sm:p-3.5 text-white">
-                      <div />
-
-                      <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-white/95 shadow-lg flex items-center justify-center mx-auto text-red-600">
-                        <Play className="w-3 h-3 sm:w-4 sm:h-4 fill-red-600 ml-0.5" />
-                      </div>
-
-                      <div>
-                        <span className="text-[7.5px] sm:text-[9px] font-extrabold uppercase tracking-[0.14em] text-white/85 block mb-0.5 sm:mb-1">
-                          HOT PREVIEW
-                        </span>
-                        <p className="text-[10.5px] sm:text-[12.5px] font-black text-white line-clamp-2 leading-snug">
-                          {centerCard.title}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                )}
-
+              <div className="relative w-full max-w-[340px] sm:max-w-[380px] h-[245px] sm:h-[320px] lg:h-[352px] flex items-center justify-center">
+                {renderCard(leftCard, 'left')}
+                {renderCard(rightCard, 'right')}
+                {renderCard(centerCard, 'center')}
               </div>
 
-              {/* Bottom Quality Badges */}
-              <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-3 mt-2 sm:mt-3">
-                <span className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-[11px] font-extrabold bg-white/95 text-slate-900 border border-slate-200 shadow-sm">
+              <div className="flex items-center justify-center gap-2 mt-3 sm:mt-4">
+                <span className="px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold bg-white/[0.06] text-white border border-white/10">
                   9:16 Vertical
                 </span>
-                <span className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-[11px] font-extrabold bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-sm">
+                <span className="px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-[11px] font-extrabold bg-volt text-ink">
                   1080P Full HD
                 </span>
               </div>
-
-              {/* 3 Glossy Color Stat Cards on Mobile */}
-              <div className="grid lg:hidden grid-cols-3 gap-2 pt-2.5 sm:pt-3 w-full max-w-md relative z-10">
-                {/* Published Bundles (Vivid Red) */}
-                <div className="relative overflow-hidden p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white flex flex-col items-center text-center shadow-[0_8px_20px_rgba(225,29,72,0.2)]">
-                  <div className="absolute -right-5 -bottom-6 w-16 h-16 rounded-full bg-white/20 pointer-events-none" />
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white/20 border border-white/25 flex items-center justify-center shrink-0 mb-1">
-                    <FolderKanban className="w-3.5 h-3.5 text-white" />
-                  </div>
-                  <div className="leading-tight relative z-10">
-                    <div className="text-[14px] sm:text-[16px] font-black tracking-tight">{totalBundles || 131}</div>
-                    <div className="text-[8.5px] sm:text-[9px] font-bold text-white/90 mt-0.5 line-clamp-1">Published Bundles</div>
-                  </div>
-                </div>
-
-                {/* Ready-to-Post Reels (Obsidian Slate) */}
-                <div className="relative overflow-hidden p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 text-white flex flex-col items-center text-center shadow-[0_8px_20px_rgba(15,23,42,0.25)]">
-                  <div className="absolute -right-5 -bottom-6 w-16 h-16 rounded-full bg-red-500/10 pointer-events-none" />
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0 mb-1">
-                    <Film className="w-3.5 h-3.5 text-rose-400" />
-                  </div>
-                  <div className="leading-tight relative z-10">
-                    <div className="text-[14px] sm:text-[16px] font-black tracking-tight text-white">222K+</div>
-                    <div className="text-[8.5px] sm:text-[9px] font-bold text-white/90 mt-0.5 line-clamp-1">Ready-to-Post Reels</div>
-                  </div>
-                </div>
-
-                {/* Up to 1080P Maximum Quality (Emerald) */}
-                <div className="relative overflow-hidden p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex flex-col items-center text-center shadow-[0_8px_20px_rgba(16,185,129,0.2)]">
-                  <div className="absolute -right-5 -bottom-6 w-16 h-16 rounded-full bg-white/12 pointer-events-none" />
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white/15 border border-white/25 flex items-center justify-center shrink-0 mb-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-white" />
-                  </div>
-                  <div className="leading-tight relative z-10">
-                    <div className="text-[12px] sm:text-[13px] font-black tracking-tight leading-none">Up to 1080P</div>
-                    <div className="text-[8.5px] sm:text-[9px] font-bold text-white/90 mt-1 line-clamp-1">Maximum Quality</div>
-                  </div>
-                </div>
-              </div>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
     </section>
   );

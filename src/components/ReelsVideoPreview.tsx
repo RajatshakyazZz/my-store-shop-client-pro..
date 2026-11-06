@@ -103,18 +103,17 @@ export default function ReelsVideoPreview() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Outer Section Card Wrapper */}
-        <div className="rounded-[28px] sm:rounded-[36px] bg-slate-50 border border-slate-200/90 p-4 sm:p-6 space-y-6 shadow-sm">
+        <div className="rounded-[28px] sm:rounded-[36px] bg-white border border-canvas-200 p-3 sm:p-5 space-y-5 sm:space-y-6 shadow-[0_24px_48px_-36px_rgba(11,16,25,0.35)]">
           
           {/* Header Banner */}
-          <div className="rounded-[20px] bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 p-4 sm:p-5 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[0_10px_28px_rgba(2,6,23,0.35)] border border-red-500/30">
+          <div className="rounded-[22px] cm-ink-panel px-5 py-5 sm:px-7 sm:py-6 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[0_20px_40px_-26px_rgba(7,10,17,0.8)]">
             <div className="flex items-center gap-3">
-              <div className="w-[5px] h-10 bg-red-500 rounded-full shrink-0 shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
               <div>
-                <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight flex items-center gap-2">
+                <h2 className="font-display text-[22px] sm:text-[28px] font-extrabold text-white tracking-[-0.025em] leading-tight flex items-center gap-2.5">
                   <span>Preview the Reels Before You Buy</span>
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/40 font-bold hidden sm:inline-block">LIVE DEMO</span>
+                  <span className="font-sans text-[10px] px-2 py-0.5 rounded-full bg-volt text-ink font-extrabold tracking-[0.1em] hidden sm:inline-block">LIVE DEMO</span>
                 </h2>
-                <p className="text-xs sm:text-[13px] text-slate-300 font-medium mt-0.5">
+                <p className="text-xs sm:text-[13px] text-ink-300 font-medium mt-0.5">
                   Watch real samples, check video quality, and choose the bundle that fits your content.
                 </p>
               </div>
@@ -123,10 +122,10 @@ export default function ReelsVideoPreview() {
             <Link
               href="/reels"
               prefetch={false}
-              className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-red-300 border border-red-500/40 text-xs font-bold transition-all shrink-0 flex items-center gap-1.5"
+              className="group pl-4 pr-1.5 py-1.5 rounded-full bg-mint-500 hover:bg-mint-300 text-ink text-xs font-extrabold transition-colors shrink-0 flex items-center gap-2"
             >
               <span>View All Previews</span>
-              <ArrowRight className="w-3.5 h-3.5 text-red-300" />
+              <span className="w-6 h-6 rounded-full bg-ink text-mint-300 flex items-center justify-center transition-transform group-hover:translate-x-0.5"><ArrowRight className="w-3.5 h-3.5" /></span>
             </Link>
           </div>
 
@@ -146,7 +145,7 @@ export default function ReelsVideoPreview() {
               return (
                 <div
                   key={item.id}
-                  className="w-48 sm:w-52 aspect-[9/16] rounded-[26px] bg-[#101426] p-2.5 shadow-xl border-[3px] border-[#1c223c] relative flex flex-col justify-between overflow-hidden shrink-0 group select-none"
+                  className="w-48 sm:w-52 aspect-[9/16] rounded-[26px] bg-[#10161F] p-2.5 shadow-xl border-[3px] border-[#1E2733] relative flex flex-col justify-between overflow-hidden shrink-0 group select-none"
                 >
                   {/* YouTube Iframe OR Lazy Poster / HTML5 Video on Play */}
                   {isYouTube && ytId ? (
@@ -233,11 +232,11 @@ export default function ReelsVideoPreview() {
                         isPlaying ? 'opacity-0 hover:opacity-100 bg-black/20' : 'opacity-100 bg-black/30'
                       }`}
                     >
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-r from-red-600 to-rose-600 shadow-xl shadow-red-500/40 flex items-center justify-center text-white transform group-hover:scale-110 transition-transform">
+                      <div className="w-12 h-12 rounded-full bg-mint-500 shadow-xl shadow-ink/10 flex items-center justify-center text-ink transform group-hover:scale-110 transition-transform">
                         {isPlaying ? (
-                          <Pause className="w-5 h-5 fill-white" />
+                          <Pause className="w-5 h-5 fill-ink" />
                         ) : (
-                          <Play className="w-5 h-5 fill-white ml-0.5" />
+                          <Play className="w-5 h-5 fill-ink ml-0.5" />
                         )}
                       </div>
                     </div>
@@ -248,7 +247,7 @@ export default function ReelsVideoPreview() {
                     <Link
                       href={getProductUrlForReel(item)}
                       prefetch={false}
-                      className="text-xs font-bold text-white hover:text-red-400 hover:underline truncate max-w-[95px] transition-colors"
+                      className="text-xs font-bold text-white hover:text-leaf-400 hover:underline truncate max-w-[95px] transition-colors"
                       title={item.bundleTitle || item.title}
                     >
                       {item.bundleTitle || item.title}
@@ -257,7 +256,7 @@ export default function ReelsVideoPreview() {
                     <button
                       type="button"
                       onClick={() => handleBuy(item)}
-                      className="px-2.5 py-1 rounded-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white text-[11px] font-black shrink-0 flex items-center gap-0.5 shadow-md active:scale-95 transition-all"
+                      className="px-2.5 py-1 rounded-full bg-mint-500 hover:bg-mint-300 text-ink text-[11px] font-black shrink-0 flex items-center gap-0.5 shadow-md active:scale-95 transition-all"
                     >
                       <span>Buy Now</span>
                       <span className="text-[13px] leading-none">›</span>

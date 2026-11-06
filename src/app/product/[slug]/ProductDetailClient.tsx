@@ -407,19 +407,19 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const getAudienceIcon = (icon: string) => {
     switch (icon) {
       case 'creator':
-        return <Video className="w-4 h-4 text-purple-600" />;
+        return <Video className="w-4 h-4 text-leaf-600" />;
       case 'affiliate':
-        return <TrendingUp className="w-4 h-4 text-pink-600" />;
+        return <TrendingUp className="w-4 h-4 text-leaf-600" />;
       case 'manager':
         return <Layers className="w-4 h-4 text-blue-600" />;
       case 'theme':
-        return <Sparkles className="w-4 h-4 text-emerald-600" />;
+        return <Sparkles className="w-4 h-4 text-leaf-600" />;
       case 'family':
         return <Heart className="w-4 h-4 text-orange-600" />;
       case 'agency':
-        return <Target className="w-4 h-4 text-red-600" />;
+        return <Target className="w-4 h-4 text-leaf-600" />;
       default:
-        return <Sparkles className="w-4 h-4 text-red-600" />;
+        return <Sparkles className="w-4 h-4 text-leaf-600" />;
     }
   };
 
@@ -429,33 +429,33 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-3 sm:pt-6 space-y-6 sm:space-y-10">
         
         {/* Navigation / Breadcrumb */}
-        <div className="flex items-center justify-between gap-3 text-xs font-semibold text-slate-500">
+        <div className="flex items-center justify-between gap-3 text-xs font-semibold text-ink-400">
           <nav aria-label="Breadcrumb" className="hidden sm:flex items-center gap-2">
-            <Link href="/" className="hover:text-red-600 transition-colors">Home</Link>
-            <span className="text-slate-300">/</span>
-            <Link href="/shop" className="hover:text-red-600 transition-colors">Shop</Link>
-            <span className="text-slate-300">/</span>
+            <Link href="/" className="hover:text-leaf-600 transition-colors">Home</Link>
+            <span className="text-ink-300">/</span>
+            <Link href="/shop" className="hover:text-leaf-600 transition-colors">Shop</Link>
+            <span className="text-ink-300">/</span>
             <Link
               href={`/category/${p.categorySlug || 'ai-reels'}`}
-              className="hover:text-red-600 transition-colors"
+              className="hover:text-leaf-600 transition-colors"
             >
               {p.category || 'Reels Bundle'}
             </Link>
-            <span className="text-slate-300">/</span>
-            <span className="text-slate-800 font-bold truncate max-w-xs">{p.title}</span>
+            <span className="text-ink-300">/</span>
+            <span className="text-ink font-bold truncate max-w-xs">{p.title}</span>
           </nav>
 
           {/* Mobile Back Header */}
           <div className="flex sm:hidden items-center justify-between w-full">
             <Link
               href="/shop"
-              className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-white border border-slate-200 text-slate-700 text-xs font-bold shadow-2xs active:scale-95 transition-transform"
+              className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-white border border-canvas-200 text-ink-600 text-xs font-bold shadow-2xs active:scale-95 transition-transform"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Store</span>
             </Link>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50 text-red-700 border border-red-200 text-[11px] font-bold">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-leaf-50 text-leaf-700 border border-leaf-200 text-[11px] font-bold">
+              <span className="w-1.5 h-1.5 rounded-full bg-mint-500 animate-pulse" />
               <span>Instant Delivery</span>
             </span>
           </div>
@@ -466,7 +466,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           
           {/* LEFT: Clean Image & Gallery */}
           <div className="lg:col-span-6 space-y-3">
-            <div className="relative aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-100 border border-slate-200/90 shadow-sm">
+            <div className="relative aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden bg-canvas border border-canvas-200/90 shadow-sm">
               <img
                 src={optimizeImageUrl(currentImage, 1024)}
                 alt={`${p.title} preview`}
@@ -488,7 +488,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               </div>
 
               <div className="absolute top-3 right-3">
-                <span className="px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-wider bg-rose-600 text-white shadow-xs">
+                <span className="px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-wider bg-mint-500 text-ink shadow-xs">
                   {discountPercent}% OFF
                 </span>
               </div>
@@ -502,10 +502,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     key={idx}
                     type="button"
                     onClick={() => setSelectedImage(img)}
-                    className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-slate-50 cursor-pointer ${
+                    className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-canvas-50 cursor-pointer ${
                       currentImage === img
-                        ? 'border-red-500 ring-2 ring-red-200'
-                        : 'border-slate-200 opacity-70 hover:opacity-100'
+                        ? 'border-mint-500 ring-2 ring-leaf-200'
+                        : 'border-canvas-200 opacity-70 hover:opacity-100'
                     }`}
                   >
                     <img
@@ -525,33 +525,33 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {hasVideoPreview && (
               <a
                 href="#view-samples"
-                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 hover:from-slate-900 hover:to-slate-800 text-red-300 border border-red-500/40 font-extrabold text-xs flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.01] active:scale-[0.99] group cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-xl bg-ink hover:bg-ink-700 text-leaf-300 border border-white/[0.06] font-extrabold text-xs flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.01] active:scale-[0.99] group cursor-pointer"
               >
-                <span className="w-5 h-5 rounded-full bg-red-500/20 text-red-300 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Play className="w-3 h-3 fill-red-400 text-red-400 ml-0.5" />
+                <span className="w-5 h-5 rounded-full bg-mint-500/20 text-leaf-300 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Play className="w-3 h-3 fill-leaf-400 text-leaf-400 ml-0.5" />
                 </span>
                 <span>
                   Watch Reel Samples & Video Preview{' '}
                   {parsedVideos.length > 1 ? `(${parsedVideos.length} Samples)` : '(1080P)'}
                 </span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-300 font-bold border border-red-500/30">
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-mint-500/20 text-leaf-300 font-bold border border-mint-500/30">
                   LIVE DEMO
                 </span>
               </a>
             )}
 
             {/* Clean Trust Reassurance Strip */}
-            <div className="grid grid-cols-3 gap-2 p-3 rounded-2xl bg-white border border-slate-200/80 shadow-2xs text-center text-xs">
-              <div className="flex items-center justify-center gap-1.5 py-1 font-semibold text-slate-700">
-                <FolderOpen className="w-3.5 h-3.5 text-red-600 shrink-0" />
+            <div className="grid grid-cols-3 gap-2 p-3 rounded-2xl bg-white border border-canvas-200/80 shadow-2xs text-center text-xs">
+              <div className="flex items-center justify-center gap-1.5 py-1 font-semibold text-ink-600">
+                <FolderOpen className="w-3.5 h-3.5 text-leaf-600 shrink-0" />
                 <span className="text-[11px] sm:text-xs">Google Drive</span>
               </div>
-              <div className="flex items-center justify-center gap-1.5 py-1 font-semibold text-slate-700 border-x border-slate-100">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <div className="flex items-center justify-center gap-1.5 py-1 font-semibold text-ink-600 border-x border-canvas-200">
+                <ShieldCheck className="w-3.5 h-3.5 text-leaf-600 shrink-0" />
                 <span className="text-[11px] sm:text-xs">Safe UPI</span>
               </div>
-              <div className="flex items-center justify-center gap-1.5 py-1 font-semibold text-slate-700">
-                <Sparkles className="w-3.5 h-3.5 text-red-500 shrink-0" />
+              <div className="flex items-center justify-center gap-1.5 py-1 font-semibold text-ink-600">
+                <Sparkles className="w-3.5 h-3.5 text-leaf-500 shrink-0" />
                 <span className="text-[11px] sm:text-xs">No Watermark</span>
               </div>
             </div>
@@ -559,54 +559,54 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
           {/* RIGHT: Unified Purchase Card */}
           <div className="lg:col-span-6">
-            <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-sm space-y-5">
+            <div className="bg-white rounded-2xl sm:rounded-3xl border border-canvas-200/90 p-5 sm:p-7 shadow-sm space-y-5">
               
               {/* Category, Rating & Title */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full bg-red-50 text-red-900 font-extrabold text-[11px] uppercase tracking-wider border border-red-200/60">
+                    <span className="px-2.5 py-0.5 rounded-full bg-leaf-50 text-leaf-900 font-extrabold text-[11px] uppercase tracking-wider border border-leaf-200/60">
                       {p.category || 'Reels Bundle'}
                     </span>
-                    <span className="text-slate-300">•</span>
+                    <span className="text-ink-300">•</span>
                     <div className="flex items-center gap-1 text-xs font-bold text-amber-500">
                       <span>★ 4.9</span>
-                      <span className="text-slate-400 font-medium text-[11px]">({p.reviewCount || 200}+ verified reviews)</span>
+                      <span className="text-ink-300 font-medium text-[11px]">({p.reviewCount || 200}+ verified reviews)</span>
                     </div>
                   </div>
-                  <span className="text-[11px] font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded-md border border-red-200">
+                  <span className="text-[11px] font-bold text-leaf-700 bg-leaf-50 px-2 py-0.5 rounded-md border border-leaf-200">
                     Verified Digital Bundle
                   </span>
                 </div>
 
-                <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug">
+                <h1 className="text-xl sm:text-2xl font-black text-ink tracking-tight leading-snug">
                   {p.title}
                 </h1>
 
                 {p.shortDescription && (
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                  <p className="text-xs sm:text-sm text-ink-500 leading-relaxed font-normal">
                     {p.shortDescription}
                   </p>
                 )}
               </div>
 
               {/* Pricing Box */}
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/70 flex items-center justify-between gap-3">
+              <div className="p-4 rounded-2xl bg-canvas-50 border border-canvas-200/70 flex items-center justify-between gap-3">
                 <div>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-black text-slate-900 tracking-tight">
+                    <span className="text-3xl font-black text-ink tracking-tight">
                       ₹{activePrice}.00
                     </span>
-                    <span className="text-sm text-slate-400 line-through font-semibold">
+                    <span className="text-sm text-ink-300 line-through font-semibold">
                       ₹{originalPrice}.00
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-500 font-medium mt-0.5">
+                  <p className="text-[11px] text-ink-400 font-medium mt-0.5">
                     One-time payment · Lifetime Google Drive access
                   </p>
                 </div>
                 <div className="text-right">
-                  <span className="inline-block px-2.5 py-1 rounded-lg bg-red-100 text-red-800 text-xs font-black">
+                  <span className="inline-block px-2.5 py-1 rounded-lg bg-leaf-100 text-leaf-800 text-xs font-black">
                     Save ₹{savingsAmount}
                   </span>
                 </div>
@@ -616,41 +616,41 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <FreeBundleOfferBanner variant="product" />
 
               {/* Key Highlights */}
-              <div className="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
-                <div className="flex items-center gap-1.5 p-2 rounded-xl bg-slate-50 border border-slate-200/80">
-                  <Check className="w-3.5 h-3.5 text-red-600 shrink-0" />
+              <div className="grid grid-cols-2 gap-2 text-xs font-bold text-ink-600">
+                <div className="flex items-center gap-1.5 p-2 rounded-xl bg-canvas-50 border border-canvas-200/80">
+                  <Check className="w-3.5 h-3.5 text-leaf-600 shrink-0" />
                   <span>{p.reelCount || 1000}+ HD Video Clips</span>
                 </div>
-                <div className="flex items-center gap-1.5 p-2 rounded-xl bg-slate-50 border border-slate-200/80">
-                  <Check className="w-3.5 h-3.5 text-red-600 shrink-0" />
+                <div className="flex items-center gap-1.5 p-2 rounded-xl bg-canvas-50 border border-canvas-200/80">
+                  <Check className="w-3.5 h-3.5 text-leaf-600 shrink-0" />
                   <span>100% Watermark-Free</span>
                 </div>
-                <div className="flex items-center gap-1.5 p-2 rounded-xl bg-slate-50 border border-slate-200/80">
-                  <Check className="w-3.5 h-3.5 text-red-600 shrink-0" />
+                <div className="flex items-center gap-1.5 p-2 rounded-xl bg-canvas-50 border border-canvas-200/80">
+                  <Check className="w-3.5 h-3.5 text-leaf-600 shrink-0" />
                   <span>9:16 Vertical (Reels/Shorts)</span>
                 </div>
-                <div className="flex items-center gap-1.5 p-2 rounded-xl bg-slate-50 border border-slate-200/80">
-                  <Check className="w-3.5 h-3.5 text-red-600 shrink-0" />
+                <div className="flex items-center gap-1.5 p-2 rounded-xl bg-canvas-50 border border-canvas-200/80">
+                  <Check className="w-3.5 h-3.5 text-leaf-600 shrink-0" />
                   <span>Instant Drive Link Access</span>
                 </div>
               </div>
 
               {/* UNLOCKED HERO CARD (When Product is Purchased & Unlocked) */}
               {isUnlocked && (
-                <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-emerald-50 via-teal-50/40 to-emerald-50 border-2 border-emerald-400/80 shadow-xl shadow-emerald-500/10 space-y-4 animate-fadeIn">
+                <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-mint-50 via-mint-50/40 to-mint-50 border-2 border-mint-500/80 shadow-xl shadow-ink/10 space-y-4 animate-fadeIn">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center shadow-lg shadow-emerald-600/30 shrink-0">
+                    <div className="w-12 h-12 rounded-2xl bg-mint-500 text-ink flex items-center justify-center shadow-lg shadow-ink/10 shrink-0">
                       <CheckCircle2 className="w-6 h-6 stroke-[3]" />
                     </div>
                     <div className="min-w-0">
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase tracking-wider">
-                        <Sparkles className="w-3 h-3 text-emerald-600" />
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-mint-100 text-leaf-800 text-[10px] font-black uppercase tracking-wider">
+                        <Sparkles className="w-3 h-3 text-leaf-600" />
                         <span>Lifetime Access Unlocked</span>
                       </div>
-                      <h3 className="text-lg font-black text-slate-900 tracking-tight mt-0.5">
+                      <h3 className="text-lg font-black text-ink tracking-tight mt-0.5">
                         You Own This Reels Bundle!
                       </h3>
-                      <p className="text-xs text-slate-600 font-medium">
+                      <p className="text-xs text-ink-500 font-medium">
                         Instant Google Drive access active {unlockedOrderNumber ? `(Order #${unlockedOrderNumber})` : ''}
                       </p>
                     </div>
@@ -659,25 +659,25 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   {/* Multiple Drive Files or Single Folder */}
                   {unlockedFiles.length > 1 ? (
                     <div className="space-y-2 pt-1">
-                      <p className="text-[11px] font-extrabold text-slate-700 uppercase tracking-wider">
+                      <p className="text-[11px] font-extrabold text-ink-600 uppercase tracking-wider">
                         Included Google Drive Folders ({unlockedFiles.length}):
                       </p>
                       {unlockedFiles.map((f, idx) => (
                         <div
                           key={f.id || idx}
-                          className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-white border border-emerald-200/80 shadow-sm"
+                          className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-white border border-mint-200/80 shadow-sm"
                         >
                           <div className="min-w-0">
-                            <strong className="block text-xs font-bold text-slate-900 truncate">
+                            <strong className="block text-xs font-bold text-ink truncate">
                               {f.name || `Drive Folder Part ${idx + 1}`}
                             </strong>
-                            <span className="text-[10px] text-slate-400 font-medium">Direct Cloud Access</span>
+                            <span className="text-[10px] text-ink-300 font-medium">Direct Cloud Access</span>
                           </div>
                           <a
                             href={f.file_url || unlockedDriveLink || 'https://drive.google.com'}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-black shadow-md shadow-emerald-600/20 shrink-0 transition-transform hover:scale-[1.02]"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink text-xs font-black shadow-md shadow-ink/10 shrink-0 transition-transform hover:scale-[1.02]"
                           >
                             <Download className="w-3.5 h-3.5 stroke-[2.5]" />
                             <span>Open</span>
@@ -692,23 +692,23 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                         href={unlockedDriveLink || (p as any).googleDriveLink || 'https://drive.google.com'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white font-black text-sm sm:text-base shadow-xl shadow-emerald-600/25 flex items-center justify-center gap-2.5 transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                        className="w-full py-4 px-6 rounded-2xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-sm sm:text-base shadow-xl shadow-ink/10 flex items-center justify-center gap-2.5 transition-transform hover:scale-[1.02] active:scale-[0.98]"
                       >
                         <FolderOpen className="w-5 h-5 stroke-[2.5]" />
                         <span>Open Google Drive &amp; Access Reels Now</span>
                         <ExternalLink className="w-4 h-4 opacity-80" />
                       </a>
 
-                      <div className="flex items-center justify-center gap-4 text-xs font-bold text-slate-500 pt-1">
+                      <div className="flex items-center justify-center gap-4 text-xs font-bold text-ink-400 pt-1">
                         <button
                           type="button"
                           onClick={handleCopyDriveLink}
-                          className="hover:text-emerald-700 flex items-center gap-1 transition-colors cursor-pointer py-1"
+                          className="hover:text-leaf-700 flex items-center gap-1 transition-colors cursor-pointer py-1"
                         >
                           {copiedLink ? (
                             <>
-                              <Check className="w-3.5 h-3.5 text-emerald-600" />
-                              <span className="text-emerald-700">Link Copied!</span>
+                              <Check className="w-3.5 h-3.5 text-leaf-600" />
+                              <span className="text-leaf-700">Link Copied!</span>
                             </>
                           ) : (
                             <>
@@ -718,7 +718,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                           )}
                         </button>
                         <span>•</span>
-                        <Link href="/my-order" className="hover:text-slate-900 flex items-center gap-1 transition-colors">
+                        <Link href="/my-order" className="hover:text-ink flex items-center gap-1 transition-colors">
                           <span>View in My Orders</span>
                           <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
@@ -735,7 +735,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     href={unlockedDriveLink || (p as any).googleDriveLink || 'https://drive.google.com'}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-500 text-white font-black text-base shadow-lg shadow-emerald-500/25 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-4 px-6 rounded-2xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-base shadow-lg shadow-ink/10 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <CheckCircle2 className="w-5 h-5" />
                     <span>Access Google Drive (100% Unlocked)</span>
@@ -745,32 +745,32 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     <button
                       type="button"
                       onClick={() => buyNow(p, 'personal')}
-                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-base shadow-lg shadow-red-500/25 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full py-4 px-6 rounded-2xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-base shadow-lg shadow-ink/10 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <Zap className="w-4 h-4 fill-white" />
+                      <Zap className="w-4 h-4 fill-ink" />
                       <span>Buy Now — ₹{activePrice}.00</span>
                       <span className="bg-white/95 px-2 py-0.5 rounded-md inline-flex items-center shadow-xs shrink-0 ml-1">
                         <img src="/razorpay-logo.png" alt="Razorpay" className="h-3.5 w-auto object-contain" />
                       </span>
                     </button>
 
-                    <p className="text-center text-[11px] text-slate-500 font-medium flex items-center justify-center gap-1.5">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <p className="text-center text-[11px] text-ink-400 font-medium flex items-center justify-center gap-1.5">
+                      <ShieldCheck className="w-3.5 h-3.5 text-leaf-600 shrink-0" />
                       <span>Instant Google Drive Delivery • Official Razorpay Secure Checkout</span>
                     </p>
 
                     {/* Instant Access & Delivery Strip */}
-                    <div className="pt-2 border-t border-slate-100 space-y-1.5 text-center">
-                      <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                        <Lock className="w-3 text-emerald-600" />
+                    <div className="pt-2 border-t border-canvas-200 space-y-1.5 text-center">
+                      <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-ink-400 uppercase tracking-wider">
+                        <Lock className="w-3 text-leaf-600" />
                         <span>Instant UPI Checkout via Razorpay</span>
                       </div>
-                      <div className="flex items-center justify-center gap-1.5 flex-wrap text-[11px] font-bold text-slate-600">
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Google Pay</span>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">PhonePe</span>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Paytm</span>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">BHIM UPI</span>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200">Cards</span>
+                      <div className="flex items-center justify-center gap-1.5 flex-wrap text-[11px] font-bold text-ink-500">
+                        <span className="px-2 py-0.5 rounded-md bg-canvas border border-canvas-200">Google Pay</span>
+                        <span className="px-2 py-0.5 rounded-md bg-canvas border border-canvas-200">PhonePe</span>
+                        <span className="px-2 py-0.5 rounded-md bg-canvas border border-canvas-200">Paytm</span>
+                        <span className="px-2 py-0.5 rounded-md bg-canvas border border-canvas-200">BHIM UPI</span>
+                        <span className="px-2 py-0.5 rounded-md bg-canvas border border-canvas-200">Cards</span>
                       </div>
                     </div>
 
@@ -779,7 +779,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       <button
                         type="button"
                         onClick={() => setShowEmailUnlock(!showEmailUnlock)}
-                        className="text-[11px] font-bold text-slate-500 hover:text-red-700 transition-colors inline-flex items-center gap-1 cursor-pointer py-1"
+                        className="text-[11px] font-bold text-ink-400 hover:text-leaf-700 transition-colors inline-flex items-center gap-1 cursor-pointer py-1"
                       >
                         <KeyRound className="w-3.5 h-3.5" />
                         <span>Already bought this bundle? Unlock with Gmail →</span>
@@ -788,9 +788,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       {showEmailUnlock && (
                         <form
                           onSubmit={handleManualUnlock}
-                          className="mt-2.5 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/90 text-left space-y-2 animate-fadeIn"
+                          className="mt-2.5 p-3.5 rounded-2xl bg-canvas-50 border border-canvas-200/90 text-left space-y-2 animate-fadeIn"
                         >
-                          <label className="block text-[11px] font-bold text-slate-700">
+                          <label className="block text-[11px] font-bold text-ink-600">
                             Enter the Gmail address you used during checkout:
                           </label>
                           <div className="flex gap-2">
@@ -799,13 +799,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                               placeholder="e.g. yourname@gmail.com"
                               value={unlockEmailInput}
                               onChange={(e) => setUnlockEmailInput(e.target.value)}
-                              className="flex-1 px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-red-500"
+                              className="flex-1 px-3 py-2 rounded-xl bg-white border border-canvas-300 text-xs text-ink focus:outline-none focus:border-mint-500"
                               required
                             />
                             <button
                               type="submit"
                               disabled={isUnlocking}
-                              className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shrink-0 disabled:opacity-50 cursor-pointer"
+                              className="px-4 py-2 rounded-xl bg-ink hover:bg-ink-800 text-white font-bold text-xs shrink-0 disabled:opacity-50 cursor-pointer"
                             >
                               {isUnlocking ? 'Checking...' : 'Unlock'}
                             </button>
@@ -829,29 +829,29 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         {hasVideoPreview && (
           <section
             id="view-samples"
-            className="bg-gradient-to-br from-slate-950 via-[#0d1222] to-slate-950 rounded-2xl sm:rounded-3xl border border-red-500/30 p-5 sm:p-8 shadow-[0_12px_40px_rgba(0,0,0,0.35)] text-white space-y-6 relative overflow-hidden [contain:layout_style]"
+            className="bg-gradient-to-br from-ink-950 via-ink-900 to-ink-950 rounded-2xl sm:rounded-3xl border border-mint-500/30 p-5 sm:p-8 shadow-[0_12px_40px_rgba(0,0,0,0.35)] text-white space-y-6 relative overflow-hidden [contain:layout_style]"
           >
             {/* Ambient glow backgrounds */}
-            <div className="absolute -top-32 -right-32 w-80 h-80 bg-red-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -top-32 -right-32 w-80 h-80 bg-mint-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-mint-500/10 rounded-full blur-3xl pointer-events-none" />
 
             {/* Header banner */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-5 relative z-10">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-ink-700/80 pb-5 relative z-10">
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/15 text-red-300 border border-red-500/30 text-[11px] font-extrabold uppercase tracking-wider">
-                  <Play className="w-3 h-3 fill-red-300" />
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mint-500/15 text-leaf-300 border border-mint-500/30 text-[11px] font-extrabold uppercase tracking-wider">
+                  <Play className="w-3 h-3 fill-leaf-300" />
                   <span>
                     Official Sample {parsedVideos.length > 1 ? `Reels (${parsedVideos.length} Available)` : 'Reel'}
                   </span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-leaf-400 animate-pulse" />
                 </div>
                 <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2.5">
                   <span>View Samples Before You Buy</span>
-                  <span className="text-[11px] px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold hidden sm:inline-block">
+                  <span className="text-[11px] px-2 py-0.5 rounded-md bg-mint-500/20 text-mint-300 border border-mint-500/30 font-bold hidden sm:inline-block">
                     {p.resolution || '1080P'} Full HD
                   </span>
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-300 font-medium">
+                <p className="text-xs sm:text-sm text-ink-300 font-medium">
                   {parsedVideos.length > 1
                     ? `Watch all ${parsedVideos.length} real sample preview reels below. 100% watermark-free, vertical 9:16 format.`
                     : 'Check the real video quality, audio synchronization, and 9:16 vertical reels included in this bundle.'}
@@ -864,7 +864,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     href={unlockedDriveLink || (p as any).googleDriveLink || 'https://drive.google.com'}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:w-auto py-3 px-5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-500 text-white font-black text-xs sm:text-sm shadow-lg shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                    className="w-full sm:w-auto py-3 px-5 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-xs sm:text-sm shadow-lg shadow-ink/10 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
                   >
                     <FolderOpen className="w-4 h-4" />
                     <span>Access Google Drive (Unlocked)</span>
@@ -873,9 +873,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   <button
                     type="button"
                     onClick={() => buyNow(p, 'personal')}
-                    className="w-full sm:w-auto py-3 px-5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs sm:text-sm shadow-lg shadow-red-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                    className="w-full sm:w-auto py-3 px-5 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-xs sm:text-sm shadow-lg shadow-ink/10 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
                   >
-                    <Zap className="w-4 h-4 fill-white" />
+                    <Zap className="w-4 h-4 fill-ink" />
                     <span>Buy This Bundle — ₹{activePrice}.00</span>
                   </button>
                 )}
@@ -885,8 +885,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {/* Multiple Samples Selector Bar (if > 1 video) */}
             {parsedVideos.length > 1 && (
               <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none relative z-10 pt-1">
-                <span className="text-xs font-bold text-slate-300 shrink-0 flex items-center gap-1.5 mr-1">
-                  <Film className="w-3.5 h-3.5 text-red-400" />
+                <span className="text-xs font-bold text-ink-300 shrink-0 flex items-center gap-1.5 mr-1">
+                  <Film className="w-3.5 h-3.5 text-leaf-400" />
                   <span>Select Sample:</span>
                 </span>
                 {parsedVideos.map((vid, idx) => {
@@ -898,11 +898,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       onClick={() => setActiveSampleIdx(idx)}
                       className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold flex items-center gap-1.5 shrink-0 transition-all cursor-pointer ${
                         isActive
-                          ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md shadow-red-500/25 scale-[1.03]'
-                          : 'bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80'
+                          ? 'bg-mint-500 text-ink shadow-md shadow-ink/10 scale-[1.03]'
+                          : 'bg-ink-800/80 hover:bg-ink-800 text-ink-300 hover:text-white border border-ink-600/80'
                       }`}
                     >
-                      <Play className={`w-3 h-3 ${isActive ? 'fill-white text-white' : 'fill-slate-400 text-slate-400'}`} />
+                      <Play className={`w-3 h-3 ${isActive ? 'fill-white text-white' : 'fill-slate-400 text-ink-300'}`} />
                       <span>Sample #{idx + 1}</span>
                       {isActive && (
                         <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse ml-0.5" />
@@ -917,10 +917,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center relative z-10">
               {/* Video Smartphone Mockup / Player Frame */}
               <div className="lg:col-span-5 flex justify-center">
-                <div className="w-full max-w-[290px] sm:max-w-[320px] aspect-[9/16] rounded-[34px] bg-slate-950 border-[3.5px] border-slate-700/80 shadow-[0_15px_50px_rgba(0,0,0,0.7)] p-2 relative flex flex-col justify-between overflow-hidden">
+                <div className="w-full max-w-[290px] sm:max-w-[320px] aspect-[9/16] rounded-[34px] bg-ink-950 border-[3.5px] border-ink-600/80 shadow-[0_15px_50px_rgba(0,0,0,0.7)] p-2 relative flex flex-col justify-between overflow-hidden">
                   {/* Phone top notch */}
-                  <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-slate-950 rounded-full z-30 flex items-center justify-center pointer-events-none border border-slate-800">
-                    <div className="w-2.5 h-2.5 rounded-full bg-slate-900 border border-slate-700" />
+                  <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-ink-950 rounded-full z-30 flex items-center justify-center pointer-events-none border border-ink-700">
+                    <div className="w-2.5 h-2.5 rounded-full bg-ink border border-ink-600" />
                   </div>
 
                   {/* Inner Video Container */}
@@ -965,7 +965,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       <span className="px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md border border-white/10 font-bold">
                         {parsedVideos.length > 1 ? `Sample ${safeActiveIdx + 1} of ${parsedVideos.length}` : `${p.reelCount || 1000}+ Reels`}
                       </span>
-                      <span className="px-2 py-0.5 rounded-md bg-emerald-500/80 backdrop-blur-md text-white font-extrabold">
+                      <span className="px-2 py-0.5 rounded-md bg-mint-500/80 backdrop-blur-md text-white font-extrabold">
                         No Watermark
                       </span>
                     </div>
@@ -976,55 +976,55 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               {/* Right Details: Specifications & Instant Guarantee */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="space-y-2">
-                  <span className="text-xs font-black uppercase tracking-wider text-red-400">
+                  <span className="text-xs font-black uppercase tracking-wider text-leaf-400">
                     What You See is What You Get
                   </span>
                   <h3 className="text-lg sm:text-xl font-black text-white leading-snug">
                     Every Reel Rendered in 100% Crisp Quality, Ready to Publish
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                  <p className="text-xs sm:text-sm text-ink-300 leading-relaxed font-normal">
                     Download and publish these reels straight to Instagram, YouTube Shorts, or Facebook without any editing required. All videos come fully compiled with engaging visuals, high retention pacing, and sound.
                   </p>
                 </div>
 
                 {/* Feature Bullets */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                  <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-red-300">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <div className="p-3 rounded-xl bg-ink/90 border border-ink-700 space-y-1">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-leaf-300">
+                      <CheckCircle2 className="w-4 h-4 text-mint-300 shrink-0" />
                       <span>Zero Watermark / Logo</span>
                     </div>
-                    <p className="text-[11px] text-slate-400">
+                    <p className="text-[11px] text-ink-300">
                       100% clean video files ready to put your own logo or brand name.
                     </p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-red-300">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <div className="p-3 rounded-xl bg-ink/90 border border-ink-700 space-y-1">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-leaf-300">
+                      <CheckCircle2 className="w-4 h-4 text-mint-300 shrink-0" />
                       <span>9:16 Vertical HD Format</span>
                     </div>
-                    <p className="text-[11px] text-slate-400">
+                    <p className="text-[11px] text-ink-300">
                       Perfect 1080x1920 dimension optimized for maximum reach and engagement.
                     </p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-red-300">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <div className="p-3 rounded-xl bg-ink/90 border border-ink-700 space-y-1">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-leaf-300">
+                      <CheckCircle2 className="w-4 h-4 text-mint-300 shrink-0" />
                       <span>Trending Audio Included</span>
                     </div>
-                    <p className="text-[11px] text-slate-400">
+                    <p className="text-[11px] text-ink-300">
                       Syncs seamlessly with current trending algorithms across social networks.
                     </p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-red-300">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <div className="p-3 rounded-xl bg-ink/90 border border-ink-700 space-y-1">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-leaf-300">
+                      <CheckCircle2 className="w-4 h-4 text-mint-300 shrink-0" />
                       <span>Instant Google Drive Access</span>
                     </div>
-                    <p className="text-[11px] text-slate-400">
+                    <p className="text-[11px] text-ink-300">
                       Download link opens instantly upon payment completion and is emailed.
                     </p>
                   </div>
@@ -1037,7 +1037,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       href={unlockedDriveLink || (p as any).googleDriveLink || 'https://drive.google.com'}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full sm:w-auto py-3 px-6 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-500 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full sm:w-auto py-3 px-6 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <FolderOpen className="w-4 h-4" />
                       <span>Open Google Drive (Unlocked)</span>
@@ -1046,14 +1046,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     <button
                       type="button"
                       onClick={() => buyNow(p, 'personal')}
-                      className="w-full sm:w-auto py-3 px-6 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full sm:w-auto py-3 px-6 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <Zap className="w-4 h-4 fill-white" />
+                      <Zap className="w-4 h-4 fill-ink" />
                       <span>Instant Checkout — ₹{activePrice}.00</span>
                     </button>
                   )}
-                  <span className="text-[11px] text-slate-400 flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="text-[11px] text-ink-300 flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-mint-300" />
                     <span>One-time payment • Lifetime access</span>
                   </span>
                 </div>
@@ -1063,46 +1063,46 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         )}
 
         {/* SECTION 1: HOW IT WORKS (3 Simple Steps) */}
-        <section className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-5">
+        <section className="bg-white rounded-2xl sm:rounded-3xl border border-canvas-200/90 p-5 sm:p-7 shadow-xs space-y-5">
           <div className="text-center sm:text-left">
-            <span className="text-xs font-black uppercase tracking-wider text-red-700 block">
+            <span className="text-xs font-black uppercase tracking-wider text-leaf-700 block">
               100% Instant Delivery
             </span>
-            <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight mt-0.5">
+            <h2 className="text-lg sm:text-xl font-black text-ink tracking-tight mt-0.5">
               How You Receive Your Content
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-ink-400 mt-0.5">
               Instant Google Drive access in 3 simple steps:
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 space-y-2">
-              <div className="w-7 h-7 rounded-lg bg-red-100 text-red-900 font-black text-xs flex items-center justify-center">
+            <div className="p-4 rounded-xl bg-canvas-50 border border-canvas-200/70 space-y-2">
+              <div className="w-7 h-7 rounded-lg bg-leaf-100 text-leaf-900 font-black text-xs flex items-center justify-center">
                 1
               </div>
-              <h3 className="text-xs sm:text-sm font-bold text-slate-900">30-Second Checkout</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+              <h3 className="text-xs sm:text-sm font-bold text-ink">30-Second Checkout</h3>
+              <p className="text-xs text-ink-400 leading-relaxed">
                 Enter your email and pay securely via GPay, PhonePe, Paytm, or Card. No registration required.
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 space-y-2">
-              <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 font-black text-xs flex items-center justify-center">
+            <div className="p-4 rounded-xl bg-canvas-50 border border-canvas-200/70 space-y-2">
+              <div className="w-7 h-7 rounded-lg bg-mint-100 text-leaf-700 font-black text-xs flex items-center justify-center">
                 2
               </div>
-              <h3 className="text-xs sm:text-sm font-bold text-slate-900">Instant Drive Link</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+              <h3 className="text-xs sm:text-sm font-bold text-ink">Instant Drive Link</h3>
+              <p className="text-xs text-ink-400 leading-relaxed">
                 As soon as payment succeeds, the Google Drive download button appears on your screen and is emailed.
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 space-y-2">
+            <div className="p-4 rounded-xl bg-canvas-50 border border-canvas-200/70 space-y-2">
               <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 font-black text-xs flex items-center justify-center">
                 3
               </div>
-              <h3 className="text-xs sm:text-sm font-bold text-slate-900">Download & Post</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+              <h3 className="text-xs sm:text-sm font-bold text-ink">Download & Post</h3>
+              <p className="text-xs text-ink-400 leading-relaxed">
                 Download clips directly to your phone or laptop. All files are 100% watermark-free and commercial-ready.
               </p>
             </div>
@@ -1110,38 +1110,38 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         </section>
 
         {/* SECTION 2: BUNDLE DETAILS & DESCRIPTION */}
-        <section className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-5">
+        <section className="bg-white rounded-2xl sm:rounded-3xl border border-canvas-200/90 p-5 sm:p-7 shadow-xs space-y-5">
           <div>
-            <span className="text-xs font-black uppercase tracking-wider text-red-700 block">
+            <span className="text-xs font-black uppercase tracking-wider text-leaf-700 block">
               Bundle Specifications
             </span>
-            <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight mt-0.5">
+            <h2 className="text-lg sm:text-xl font-black text-ink tracking-tight mt-0.5">
               Everything Included in This Bundle
             </h2>
           </div>
 
           {/* Quick Metrics */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/70">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Quantity</span>
-              <strong className="text-sm font-black text-slate-900">{p.reelCount || 1000}+ Videos</strong>
+            <div className="p-3 rounded-xl bg-canvas-50 border border-canvas-200/70">
+              <span className="text-[10px] font-bold text-ink-300 uppercase tracking-wider block">Quantity</span>
+              <strong className="text-sm font-black text-ink">{p.reelCount || 1000}+ Videos</strong>
             </div>
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/70">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Resolution</span>
-              <strong className="text-sm font-black text-slate-900">{p.resolution || '1080P'} Full HD</strong>
+            <div className="p-3 rounded-xl bg-canvas-50 border border-canvas-200/70">
+              <span className="text-[10px] font-bold text-ink-300 uppercase tracking-wider block">Resolution</span>
+              <strong className="text-sm font-black text-ink">{p.resolution || '1080P'} Full HD</strong>
             </div>
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/70">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Format</span>
-              <strong className="text-sm font-black text-slate-900">9:16 Vertical MP4</strong>
+            <div className="p-3 rounded-xl bg-canvas-50 border border-canvas-200/70">
+              <span className="text-[10px] font-bold text-ink-300 uppercase tracking-wider block">Format</span>
+              <strong className="text-sm font-black text-ink">9:16 Vertical MP4</strong>
             </div>
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/70">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Watermark</span>
-              <strong className="text-sm font-black text-emerald-700">Zero (Clean)</strong>
+            <div className="p-3 rounded-xl bg-canvas-50 border border-canvas-200/70">
+              <span className="text-[10px] font-bold text-ink-300 uppercase tracking-wider block">Watermark</span>
+              <strong className="text-sm font-black text-leaf-700">Zero (Clean)</strong>
             </div>
           </div>
 
           {/* Description Text */}
-          <div className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
+          <div className="space-y-4 text-xs sm:text-sm text-ink-500 leading-relaxed">
             {p.description ? (
               <div className="whitespace-pre-line">{p.description}</div>
             ) : (
@@ -1150,11 +1150,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
             {/* Contents Bullets */}
             <div className="pt-2 space-y-2">
-              <h4 className="text-xs sm:text-sm font-bold text-slate-900">Content specifications:</h4>
+              <h4 className="text-xs sm:text-sm font-bold text-ink">Content specifications:</h4>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                 {details.contents.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-slate-700">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                  <li key={idx} className="flex items-start gap-2 text-ink-600">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-leaf-600 shrink-0 mt-0.5" />
                     <span><strong>{item.label}:</strong> {item.value}</span>
                   </li>
                 ))}
@@ -1164,12 +1164,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         </section>
 
         {/* SECTION 3: WHO IS THIS FOR */}
-        <section className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-4">
+        <section className="bg-white rounded-2xl sm:rounded-3xl border border-canvas-200/90 p-5 sm:p-7 shadow-xs space-y-4">
           <div>
-            <span className="text-xs font-black uppercase tracking-wider text-red-700 block">
+            <span className="text-xs font-black uppercase tracking-wider text-leaf-700 block">
               Audience
             </span>
-            <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight mt-0.5">
+            <h2 className="text-lg sm:text-xl font-black text-ink tracking-tight mt-0.5">
               Who is This Bundle Best For?
             </h2>
           </div>
@@ -1178,14 +1178,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {details.audienceCards.slice(0, 3).map((card, idx) => (
               <div
                 key={idx}
-                className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-3"
+                className="p-3.5 rounded-xl bg-canvas-50 border border-canvas-200/70 flex items-start gap-3"
               >
-                <span className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center shrink-0">
+                <span className="w-8 h-8 rounded-lg bg-white border border-canvas-200 flex items-center justify-center shrink-0">
                   {getAudienceIcon(card.icon)}
                 </span>
                 <div>
-                  <h3 className="text-xs font-bold text-slate-900 mb-0.5">{card.title}</h3>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">{card.description}</p>
+                  <h3 className="text-xs font-bold text-ink mb-0.5">{card.title}</h3>
+                  <p className="text-[11px] text-ink-400 leading-relaxed">{card.description}</p>
                 </div>
               </div>
             ))}
@@ -1203,20 +1203,20 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         />
 
         {/* SECTION 4: VERIFIED CUSTOMER REVIEWS */}
-        <section className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+        <section className="bg-white rounded-2xl sm:rounded-3xl border border-canvas-200/90 p-5 sm:p-7 shadow-xs space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-canvas-200 pb-4">
             <div>
-              <span className="text-xs font-black uppercase tracking-wider text-purple-700 block">
+              <span className="text-xs font-black uppercase tracking-wider text-leaf-700 block">
                 Verified Reviews
               </span>
-              <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight mt-0.5">
+              <h2 className="text-lg sm:text-xl font-black text-ink tracking-tight mt-0.5">
                 Creator Feedback & Ratings
               </h2>
             </div>
-            <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200/80 self-start sm:self-auto">
+            <div className="flex items-center gap-2 bg-canvas-50 px-3 py-1.5 rounded-xl border border-canvas-200/80 self-start sm:self-auto">
               <span className="text-amber-500 font-black text-sm">★ 4.9 / 5</span>
-              <span className="text-slate-300">•</span>
-              <span className="text-xs text-slate-500 font-medium">200+ Verified Buyers</span>
+              <span className="text-ink-300">•</span>
+              <span className="text-xs text-ink-400 font-medium">200+ Verified Buyers</span>
             </div>
           </div>
 
@@ -1226,39 +1226,39 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               return (
                 <div
                   key={rev.id}
-                  className="p-4 rounded-xl bg-slate-50/60 border border-slate-200/70 space-y-2.5 flex flex-col justify-between"
+                  className="p-4 rounded-xl bg-canvas-50/60 border border-canvas-200/70 space-y-2.5 flex flex-col justify-between"
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-full bg-purple-600 text-white font-bold text-xs flex items-center justify-center">
+                        <div className="w-7 h-7 rounded-full bg-mint-500 text-ink font-bold text-xs flex items-center justify-center">
                           {rev.author.charAt(0)}
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-slate-900 flex items-center gap-1">
+                          <div className="text-xs font-bold text-ink flex items-center gap-1">
                             <span>{rev.author}</span>
-                            <BadgeCheck className="w-3 h-3 text-emerald-600" />
+                            <BadgeCheck className="w-3 h-3 text-leaf-600" />
                           </div>
-                          <div className="text-[10px] text-slate-400 font-medium">{rev.role}</div>
+                          <div className="text-[10px] text-ink-300 font-medium">{rev.role}</div>
                         </div>
                       </div>
-                      <span className="text-[10px] text-slate-400">{rev.date}</span>
+                      <span className="text-[10px] text-ink-300">{rev.date}</span>
                     </div>
 
                     <div className="text-amber-400 text-xs">★★★★★</div>
-                    <h4 className="text-xs font-bold text-slate-900">{rev.title}</h4>
-                    <p className="text-xs text-slate-600 leading-relaxed">{rev.comment}</p>
+                    <h4 className="text-xs font-bold text-ink">{rev.title}</h4>
+                    <p className="text-xs text-ink-500 leading-relaxed">{rev.comment}</p>
                   </div>
 
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-                    <span className="text-emerald-700 font-semibold flex items-center gap-1">
+                  <div className="pt-2 border-t border-canvas-200 flex items-center justify-between text-[11px] text-ink-400">
+                    <span className="text-leaf-700 font-semibold flex items-center gap-1">
                       <Check className="w-3 h-3" />
                       Verified Purchase
                     </span>
                     <button
                       type="button"
                       onClick={() => handleHelpful(rev.id)}
-                      className="inline-flex items-center gap-1 text-slate-500 hover:text-slate-800 text-[11px] cursor-pointer"
+                      className="inline-flex items-center gap-1 text-ink-400 hover:text-ink text-[11px] cursor-pointer"
                     >
                       <ThumbsUp className="w-3 h-3" />
                       <span>Helpful ({currentHelpful})</span>
@@ -1271,12 +1271,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         </section>
 
         {/* SECTION 5: FREQUENTLY ASKED QUESTIONS */}
-        <section className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs space-y-4">
+        <section className="bg-white rounded-2xl sm:rounded-3xl border border-canvas-200/90 p-5 sm:p-7 shadow-xs space-y-4">
           <div>
-            <span className="text-xs font-black uppercase tracking-wider text-purple-700 block">
+            <span className="text-xs font-black uppercase tracking-wider text-leaf-700 block">
               FAQ
             </span>
-            <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight mt-0.5">
+            <h2 className="text-lg sm:text-xl font-black text-ink tracking-tight mt-0.5">
               Frequently Asked Questions
             </h2>
           </div>
@@ -1287,20 +1287,20 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               return (
                 <div
                   key={index}
-                  className="rounded-xl border border-slate-200/80 bg-white overflow-hidden"
+                  className="rounded-xl border border-canvas-200/80 bg-white overflow-hidden"
                 >
                   <button
                     type="button"
                     onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                    className="w-full p-3.5 text-left font-bold text-xs sm:text-sm text-slate-900 flex justify-between items-center gap-3 hover:bg-slate-50 cursor-pointer"
+                    className="w-full p-3.5 text-left font-bold text-xs sm:text-sm text-ink flex justify-between items-center gap-3 hover:bg-canvas-50 cursor-pointer"
                   >
                     <span>{faq.question}</span>
-                    <span className="text-purple-600 font-black text-sm shrink-0">
+                    <span className="text-leaf-600 font-black text-sm shrink-0">
                       {isOpen ? '−' : '+'}
                     </span>
                   </button>
                   {isOpen && (
-                    <div className="p-3.5 pt-0 text-xs text-slate-600 leading-relaxed border-t border-slate-100 bg-slate-50/50">
+                    <div className="p-3.5 pt-0 text-xs text-ink-500 leading-relaxed border-t border-canvas-200 bg-canvas-50/50">
                       {faq.answer}
                     </div>
                   )}
@@ -1311,16 +1311,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         </section>
 
         {/* SECTION 6: WHATSAPP DIRECT SUPPORT ASSISTANCE */}
-        <section className="rounded-2xl p-4 sm:p-5 bg-emerald-50/80 border border-emerald-200/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <section className="rounded-2xl p-4 sm:p-5 bg-mint-50/80 border border-mint-200/80 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-3 text-center sm:text-left">
-            <span className="w-9 h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
-              <MessageCircle className="w-4 h-4 fill-white" />
+            <span className="w-9 h-9 rounded-full bg-mint-500 text-ink flex items-center justify-center shrink-0">
+              <MessageCircle className="w-4 h-4 fill-ink" />
             </span>
             <div>
-              <h3 className="text-xs sm:text-sm font-bold text-emerald-950">
+              <h3 className="text-xs sm:text-sm font-bold text-leaf-950">
                 Need any help or have a question before buying?
               </h3>
-              <p className="text-[11px] text-emerald-800">
+              <p className="text-[11px] text-leaf-800">
                 Our support team is available on WhatsApp to assist you immediately.
               </p>
             </div>
@@ -1332,7 +1332,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-2xs transition-all flex items-center gap-1.5 active:scale-95 shrink-0"
+            className="px-4 py-2 rounded-xl bg-mint-500 hover:bg-mint-500 text-ink text-xs font-bold shadow-2xs transition-all flex items-center gap-1.5 active:scale-95 shrink-0"
           >
             <span>Chat on WhatsApp</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -1342,12 +1342,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         {/* SECTION 7: RELATED PRODUCTS */}
         <section className="space-y-4 pt-2">
           <div className="flex items-center justify-between">
-            <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+            <h2 className="text-base sm:text-lg font-black text-ink tracking-tight">
               Related Bundles
             </h2>
             <Link
               href="/shop"
-              className="text-xs font-bold text-purple-700 hover:underline flex items-center gap-0.5"
+              className="text-xs font-bold text-leaf-700 hover:underline flex items-center gap-0.5"
             >
               <span>View All</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -1358,11 +1358,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {relatedBundles.map((rel) => (
               <article
                 key={rel.id}
-                className="bg-white rounded-xl border border-slate-200/80 overflow-hidden shadow-2xs hover:shadow-sm transition-all flex flex-col justify-between p-2.5 space-y-2 group"
+                className="bg-white rounded-xl border border-canvas-200/80 overflow-hidden shadow-2xs hover:shadow-sm transition-all flex flex-col justify-between p-2.5 space-y-2 group"
               >
                 <Link
                   href={`/product/${rel.slug}`}
-                  className="block aspect-[4/3] rounded-lg overflow-hidden bg-slate-100 relative"
+                  className="block aspect-[4/3] rounded-lg overflow-hidden bg-canvas relative"
                 >
                   <img
                     src={optimizeImageUrl(rel.thumbnail, 400)}
@@ -1379,19 +1379,19 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
                 <div className="space-y-1">
                   <Link href={`/product/${rel.slug}`}>
-                    <h3 className="font-bold text-xs text-slate-900 line-clamp-2 hover:text-red-600 transition-colors leading-snug">
+                    <h3 className="font-bold text-xs text-ink line-clamp-2 hover:text-leaf-600 transition-colors leading-snug">
                       {rel.title}
                     </h3>
                   </Link>
 
                   <div className="flex items-center justify-between pt-1">
-                    <span className="font-black text-xs sm:text-sm text-slate-900">
+                    <span className="font-black text-xs sm:text-sm text-ink">
                       ₹{rel.personalPrice}.00
                     </span>
                     <button
                       type="button"
                       onClick={() => buyNow(rel, 'personal')}
-                      className="px-2.5 py-1 rounded-md bg-gradient-to-r from-red-600 to-rose-600 text-white text-[10px] font-black shadow-2xs active:scale-95 transition-transform cursor-pointer"
+                      className="px-2.5 py-1 rounded-md bg-mint-500 text-ink text-[10px] font-black shadow-2xs active:scale-95 transition-transform cursor-pointer"
                     >
                       Buy Now
                     </button>
@@ -1407,8 +1407,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       {/* MOBILE STICKY BOTTOM BAR (Locked Directly Above MobileBottomNav) */}
       <aside
         aria-label="Sticky Action Bar"
-        className={`fixed bottom-[74px] left-2.5 right-2.5 z-40 md:hidden bg-slate-950/95 backdrop-blur-xl ${
-          isUnlocked ? 'border border-emerald-500/50' : 'border border-red-500/30'
+        className={`fixed bottom-[74px] left-2.5 right-2.5 z-40 md:hidden bg-ink-950/95 backdrop-blur-xl ${
+          isUnlocked ? 'border border-mint-500/50' : 'border border-mint-500/30'
         } rounded-2xl px-3.5 py-2.5 shadow-[0_-8px_30px_rgba(0,0,0,0.6)]`}
       >
         <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
@@ -1416,8 +1416,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           <div className="flex flex-col shrink-0 min-w-0">
             {isUnlocked ? (
               <div>
-                <span className="text-[9px] font-bold text-emerald-400 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                <span className="text-[9px] font-bold text-mint-300 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-mint-300" />
                   Unlocked
                 </span>
                 <span className="text-xs font-black text-white truncate block max-w-[120px]">
@@ -1426,13 +1426,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               </div>
             ) : (
               <div>
-                <span className="text-[9px] font-bold text-rose-400 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                <span className="text-[9px] font-bold text-leaf-400 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-mint-500 animate-pulse" />
                   Instant Access
                 </span>
                 <div className="flex items-baseline gap-1.5 mt-0.5">
                   <span className="text-xl font-black text-white">₹{activePrice}.00</span>
-                  <span className="text-xs text-slate-400 line-through font-semibold">₹{originalPrice}.00</span>
+                  <span className="text-xs text-ink-300 line-through font-semibold">₹{originalPrice}.00</span>
                 </div>
               </div>
             )}
@@ -1445,7 +1445,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 href={unlockedDriveLink || (p as any).googleDriveLink || 'https://drive.google.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-500 text-white font-black text-xs sm:text-sm shadow-md shadow-emerald-500/25 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-3 px-4 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-xs sm:text-sm shadow-md shadow-ink/10 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <FolderOpen className="w-4 h-4" />
                 <span>Open Drive Folder</span>
@@ -1454,9 +1454,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <button
                 type="button"
                 onClick={() => buyNow(p, 'personal')}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm shadow-md shadow-red-500/25 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3 px-4 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-sm shadow-md shadow-ink/10 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <Zap className="w-4 h-4 fill-white" />
+                <Zap className="w-4 h-4 fill-ink" />
                 <span>Buy Now — ₹{activePrice}</span>
                 <span className="bg-white/95 px-1.5 py-0.5 rounded-md inline-flex items-center shadow-xs shrink-0">
                   <img src="/razorpay-logo.png" alt="Razorpay" className="h-3 w-auto object-contain" />
@@ -1563,7 +1563,7 @@ function ReelDirectVideoPlayer({
       {/* Paused state subtle indicator */}
       {!isPlaying && !showAnimation && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 bg-black/35">
-          <div className="w-14 h-14 rounded-full bg-red-600/95 text-white flex items-center justify-center shadow-lg shadow-red-500/40">
+          <div className="w-14 h-14 rounded-full bg-mint-500/95 text-ink flex items-center justify-center shadow-lg shadow-ink/10">
             <Play className="w-7 h-7 fill-white ml-1" />
           </div>
         </div>
@@ -1578,7 +1578,7 @@ function ReelDirectVideoPlayer({
           title={isMuted ? 'Unmute sound' : 'Mute sound'}
         >
           {isMuted ? (
-            <VolumeX className="w-4 h-4 text-red-400" />
+            <VolumeX className="w-4 h-4 text-leaf-400" />
           ) : (
             <Volume2 className="w-4 h-4 text-white" />
           )}
@@ -1588,7 +1588,7 @@ function ReelDirectVideoPlayer({
       {/* Bottom Progress Bar */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 z-30">
         <div
-          className="h-full bg-gradient-to-r from-red-500 to-rose-500 transition-[width] duration-100"
+          className="h-full bg-mint-500 transition-[width] duration-100"
           style={{ width: `${progress}%` }}
         />
       </div>

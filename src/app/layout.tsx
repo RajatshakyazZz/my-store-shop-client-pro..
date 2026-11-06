@@ -1,12 +1,26 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { Suspense } from 'react';
+import { Inter, Bricolage_Grotesque } from 'next/font/google';
 import './globals.css';
 import StoreLayoutShell from '@/components/StoreLayoutShell';
 import AnalyticsTracker from '@/components/AnalyticsTracker';
 import MetaPixelTracker from '@/components/MetaPixelTracker';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.ztoredigital.com';
+const fontSans = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
+});
+
+const fontDisplay = Bricolage_Grotesque({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['500', '600', '700', '800'],
+  variable: '--font-display',
+});
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app';
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || '';
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || 'G-7RMXL2RZ4J';
 const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION || 'googlef90de30240e3b03b';
@@ -18,21 +32,21 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   viewportFit: 'cover',
-  themeColor: '#0f172a',
+  themeColor: '#0B1019',
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Ztore Digital | Buy Viral Reels Bundles in India – 222,000+ Ready-to-Post Reels',
-    template: '%s | Ztore Digital',
+    default: 'CreatorMint | Buy Viral Reels Bundles in India – 222,000+ Ready-to-Post Reels',
+    template: '%s | CreatorMint',
   },
   description:
     'Download 222,000+ viral ready-to-post vertical reels bundles for Instagram Reels, YouTube Shorts & Facebook across 129+ niches. Zero watermarks, commercial & reseller rights, and instant Google Drive access.',
   keywords: [
-    'ztore digital',
-    'ztoredigital',
-    'ztore digital store',
+    'creatormint',
+    'creator mint',
+    'creator mint store',
     'viral reels bundle',
     'ai reels bundle',
     'instagram reels bundle india',
@@ -44,9 +58,9 @@ export const metadata: Metadata = {
     'digital products resell india',
     'watermark free reels download',
   ],
-  authors: [{ name: 'Ztore Digital', url: SITE_URL }],
-  creator: 'Ztore Digital',
-  publisher: 'Ztore Digital',
+  authors: [{ name: 'CreatorMint', url: SITE_URL }],
+  creator: 'CreatorMint',
+  publisher: 'CreatorMint',
   alternates: {
     canonical: SITE_URL,
   },
@@ -65,30 +79,30 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_IN',
     url: SITE_URL,
-    siteName: 'Ztore Digital',
-    title: 'Ztore Digital | 222,000+ Viral Reels Bundles – Instant Download',
+    siteName: 'CreatorMint',
+    title: 'CreatorMint | 222,000+ Viral Reels Bundles – Instant Download',
     description:
       'Over 222,000+ vertical HD reels across 129+ niches with zero watermarks & full commercial rights. Instant Google Drive delivery.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ztore Digital | Viral Reels Bundles – Instant Google Drive Access',
+    title: 'CreatorMint | Viral Reels Bundles – Instant Google Drive Access',
     description:
       'Grow faster on Instagram & YouTube Shorts with 222,000+ ready-to-post HD reels bundles.',
   },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Ztore Digital',
+    title: 'CreatorMint',
   },
   icons: {
     icon: [
-      { url: '/favicon.ico?v=3', sizes: 'any' },
-      { url: '/favicon.png?v=3', type: 'image/png' },
-      { url: '/logo.png?v=3', type: 'image/png' },
+      { url: '/favicon.ico?v=6', sizes: 'any' },
+      { url: '/favicon.png?v=6', type: 'image/png' },
+      { url: '/icon.png?v=6', type: 'image/png' },
     ],
-    shortcut: '/favicon.ico?v=3',
-    apple: '/apple-icon.png?v=3',
+    shortcut: '/favicon.ico?v=6',
+    apple: '/apple-icon.png?v=6',
   },
   verification: {
     google: GSC_VERIFICATION,
@@ -111,7 +125,7 @@ export default function RootLayout({
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
         url: SITE_URL,
-        name: 'Ztore Digital',
+        name: 'CreatorMint',
         description:
           'India’s #1 marketplace for ready-to-post viral Instagram Reels & YouTube Shorts bundles with instant Google Drive delivery.',
         potentialAction: {
@@ -123,17 +137,17 @@ export default function RootLayout({
       {
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
-        name: 'Ztore Digital',
+        name: 'CreatorMint',
         url: SITE_URL,
         logo: `${SITE_URL}/logo.png`,
         sameAs: [
-          'https://instagram.com/ztoredigital',
-          'https://youtube.com/@ztoredigital',
+          'https://instagram.com/creatormint',
+          'https://youtube.com/@creatormint',
         ],
         contactPoint: {
           '@type': 'ContactPoint',
-          email: 'ztoredigital@gmail.com',
-          telephone: '+91-88072-81600',
+          email: 'smoothsalesin@gmail.com',
+          telephone: '+91-8129797720',
           contactType: 'customer support',
           areaServed: 'IN',
           availableLanguage: ['English', 'Hindi'],
@@ -143,9 +157,13 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en-IN">
+    <html lang="en-IN" className={`${fontSans.variable} ${fontDisplay.variable}`}>
       <head>
         <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/creatormint-mark.png?v=7" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/creatormint-mark.png?v=7" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/creatormint-mark.png?v=7" />
+        <link rel="shortcut icon" href="/favicon.ico?v=7" />
         {GSC_VERIFICATION && (
           <meta name="google-site-verification" content={GSC_VERIFICATION} />
         )}
@@ -167,7 +185,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen flex flex-col antialiased selection:bg-rb-purple selection:text-white">
+      <body className="min-h-screen flex flex-col antialiased selection:bg-volt selection:text-ink">
         {/* Google Tag Manager (noscript) */}
         {GTM_ID && (
           <noscript>

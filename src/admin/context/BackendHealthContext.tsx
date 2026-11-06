@@ -53,11 +53,13 @@ export function BackendHealthProvider({ children }: { children: React.ReactNode 
   const rawKey = firebaseConfig.apiKey || '';
   const apiKeyMasked = rawKey.length > 8 ? `${rawKey.slice(0, 6)}...${rawKey.slice(-4)}` : 'NOT SET';
   const hasCustomConfig =
-    typeof window !== 'undefined' && !!localStorage.getItem('vaultzet_firebase_config');
+    typeof window !== 'undefined' &&
+    !!(localStorage.getItem('creatormint_firebase_config') || localStorage.getItem('vaultzet_firebase_config'));
   const isPlaceholderKey =
     !hasCustomConfig &&
-    (!(typeof process !== 'undefined' && (process.env.NEXT_PUBLIC_FIREBASE_API_KEY || (process.env as any).VITE_FIREBASE_API_KEY)) ||
+    (!rawKey ||
       rawKey.includes('Demo') ||
+      rawKey.length < 15 ||
       firebaseConfig.projectId === 'demo-project');
 
   const runHealthCheck = useCallback(async () => {
@@ -167,12 +169,12 @@ function BackendHealthModal() {
   const [showDirectConfig, setShowDirectConfig] = useState(false);
 
   // Direct configuration form fields
-  const [cfgApiKey, setCfgApiKey] = useState(firebaseConfig.apiKey || '');
-  const [cfgProjectId, setCfgProjectId] = useState(firebaseConfig.projectId || 'vaultzet-5873e');
-  const [cfgAuthDomain, setCfgAuthDomain] = useState(firebaseConfig.authDomain || 'vaultzet-5873e.firebaseapp.com');
-  const [cfgStorageBucket, setCfgStorageBucket] = useState(firebaseConfig.storageBucket || 'vaultzet-5873e.firebasestorage.app');
-  const [cfgAppId, setCfgAppId] = useState(firebaseConfig.appId || '');
-  const [cfgMessagingSenderId, setCfgMessagingSenderId] = useState(firebaseConfig.messagingSenderId || '');
+  const [cfgApiKey, setCfgApiKey] = useState(firebaseConfig.apiKey || 'AIzaSyD8rz1-VaHEaS-ZpEMeShK-v1CG66BFz9s');
+  const [cfgProjectId, setCfgProjectId] = useState(firebaseConfig.projectId || 'creator-mint-bf2b1');
+  const [cfgAuthDomain, setCfgAuthDomain] = useState(firebaseConfig.authDomain || 'creator-mint-bf2b1.firebaseapp.com');
+  const [cfgStorageBucket, setCfgStorageBucket] = useState(firebaseConfig.storageBucket || 'creator-mint-bf2b1.firebasestorage.app');
+  const [cfgAppId, setCfgAppId] = useState(firebaseConfig.appId || '1:720751971659:web:2b924dce33742132796cce');
+  const [cfgMessagingSenderId, setCfgMessagingSenderId] = useState(firebaseConfig.messagingSenderId || '720751971659');
   const [pasteSnippet, setPasteSnippet] = useState('');
   const [pasteStatus, setPasteStatus] = useState<string | null>(null);
 

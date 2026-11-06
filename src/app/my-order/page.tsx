@@ -82,23 +82,23 @@ export default function MyOrdersPage() {
   };
 
   return (
-    <div className="py-12 sm:py-20 bg-slate-50/50">
+    <div className="py-12 sm:py-20 bg-canvas-50/50">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 border border-red-200/60 text-red-900 text-xs font-black uppercase tracking-wider">
-            <KeyRound className="w-3.5 h-3.5 text-red-600" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-leaf-50 border border-leaf-200/60 text-leaf-900 text-xs font-black uppercase tracking-wider">
+            <KeyRound className="w-3.5 h-3.5 text-leaf-600" />
             Customer Download Portal
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-black text-ink tracking-tight">
             My Orders &amp; Downloads
           </h1>
-          <p className="text-sm text-slate-600 font-medium max-w-md mx-auto">
+          <p className="text-sm text-ink-500 font-medium max-w-md mx-auto">
             Access your purchased reels bundles anytime without creating or remembering passwords.
           </p>
 
-          <div className="flex items-center justify-center gap-4 text-xs font-bold text-slate-500 pt-1">
+          <div className="flex items-center justify-center gap-4 text-xs font-bold text-ink-400 pt-1">
             <span>✓ Instant Local Access</span>
             <span>•</span>
             <span>✓ No Password Needed</span>
@@ -109,21 +109,21 @@ export default function MyOrdersPage() {
 
         {/* Step 1: Input Email */}
         {step === 'email' && (
-          <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/90 shadow-xl max-w-md mx-auto space-y-5">
-            <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-700 border border-red-200/60 flex items-center justify-center">
+          <div className="bg-white rounded-3xl p-8 sm:p-10 border border-canvas-200/90 shadow-xl max-w-md mx-auto space-y-5">
+            <div className="w-12 h-12 rounded-2xl bg-leaf-50 text-leaf-700 border border-leaf-200/60 flex items-center justify-center">
               <Mail className="w-6 h-6" />
             </div>
 
             <div className="space-y-1">
-              <h2 className="text-xl font-black text-slate-950">Enter Purchase Email</h2>
-              <p className="text-xs text-slate-500">
+              <h2 className="text-xl font-black text-ink">Enter Purchase Email</h2>
+              <p className="text-xs text-ink-400">
                 Enter the email address you entered during checkout to view your past purchases.
               </p>
             </div>
 
             <form onSubmit={handleSendOtp} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-ink-600 mb-1">
                   Email Address
                 </label>
                 <input
@@ -133,13 +133,13 @@ export default function MyOrdersPage() {
                   placeholder="e.g. you@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="w-full px-4 py-3 rounded-xl border border-canvas-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-mint-500"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm flex items-center justify-center gap-2 shadow-md shadow-red-500/25 cursor-pointer"
+                className="w-full py-3.5 px-4 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-sm flex items-center justify-center gap-2 shadow-md shadow-ink/10 cursor-pointer"
               >
                 <span>Send One-Time OTP Code</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
@@ -150,26 +150,26 @@ export default function MyOrdersPage() {
 
         {/* Step 2: Verify OTP */}
         {step === 'otp' && (
-          <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/90 shadow-xl max-w-md mx-auto space-y-5 animate-in fade-in">
-            <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-700 border border-red-200/60 flex items-center justify-center">
+          <div className="bg-white rounded-3xl p-8 sm:p-10 border border-canvas-200/90 shadow-xl max-w-md mx-auto space-y-5 animate-in fade-in">
+            <div className="w-12 h-12 rounded-2xl bg-leaf-50 text-leaf-700 border border-leaf-200/60 flex items-center justify-center">
               <KeyRound className="w-6 h-6" />
             </div>
 
             <div className="space-y-1">
-              <h2 className="text-xl font-black text-slate-950">Enter Verification Code</h2>
-              <p className="text-xs text-slate-500">
-                We sent a 6-digit verification code to <strong className="text-slate-800">{email}</strong>.
+              <h2 className="text-xl font-black text-ink">Enter Verification Code</h2>
+              <p className="text-xs text-ink-400">
+                We sent a 6-digit verification code to <strong className="text-ink">{email}</strong>.
               </p>
             </div>
 
             {/* Instant Demo Helper Banner */}
-            <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-xs font-bold text-red-900">
-              Demo OTP code: <span className="text-base font-black text-red-700 tracking-widest">{mockGeneratedOtp}</span> (or 123456)
+            <div className="p-3.5 rounded-xl bg-leaf-50 border border-leaf-200 text-xs font-bold text-leaf-900">
+              Demo OTP code: <span className="text-base font-black text-leaf-700 tracking-widest">{mockGeneratedOtp}</span> (or 123456)
             </div>
 
             <form onSubmit={handleVerifyOtp} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-ink-600 mb-1">
                   6-Digit OTP Code
                 </label>
                 <input
@@ -179,13 +179,13 @@ export default function MyOrdersPage() {
                   placeholder="123456"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
-                  className="w-full text-center tracking-widest text-xl font-black px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="w-full text-center tracking-widest text-xl font-black px-4 py-3 rounded-xl border border-canvas-200 focus:outline-none focus:ring-2 focus:ring-mint-500"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-sm shadow-md shadow-red-500/25 cursor-pointer"
+                className="w-full py-3.5 px-4 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink font-black text-sm shadow-md shadow-ink/10 cursor-pointer"
               >
                 Verify &amp; Access Downloads →
               </button>
@@ -193,7 +193,7 @@ export default function MyOrdersPage() {
               <button
                 type="button"
                 onClick={() => setStep('email')}
-                className="w-full text-center text-xs font-bold text-slate-400 hover:text-slate-600"
+                className="w-full text-center text-xs font-bold text-ink-300 hover:text-ink-500"
               >
                 Change Email Address
               </button>
@@ -203,17 +203,17 @@ export default function MyOrdersPage() {
 
         {/* Step 3: Orders List */}
         {step === 'orders' && (
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-xl space-y-6 animate-in fade-in">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 flex-wrap gap-2">
+          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-canvas-200/90 shadow-xl space-y-6 animate-in fade-in">
+            <div className="flex items-center justify-between pb-4 border-b border-canvas-200 flex-wrap gap-2">
               <div>
-                <h2 className="text-xl font-black text-slate-950">Your Purchased Bundles</h2>
-                <p className="text-xs text-slate-500">
+                <h2 className="text-xl font-black text-ink">Your Purchased Bundles</h2>
+                <p className="text-xs text-ink-400">
                   {email ? `Orders for ${email}` : 'Instant download access granted for your purchased bundles.'}
                 </p>
               </div>
               <button
                 onClick={() => setStep('email')}
-                className="text-xs font-bold text-red-600 hover:underline"
+                className="text-xs font-bold text-leaf-600 hover:underline"
               >
                 {email ? 'Search Other Email' : 'Enter Email to Restore'}
               </button>
@@ -221,14 +221,14 @@ export default function MyOrdersPage() {
 
             {orders.length === 0 ? (
               <div className="text-center py-12 space-y-3">
-                <FolderOpen className="w-12 h-12 text-slate-300 mx-auto" />
-                <h3 className="text-base font-bold text-slate-800">No Past Orders Found</h3>
-                <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                <FolderOpen className="w-12 h-12 text-ink-300 mx-auto" />
+                <h3 className="text-base font-bold text-ink">No Past Orders Found</h3>
+                <p className="text-xs text-ink-400 max-w-sm mx-auto">
                   We could not locate past purchases on this device. Click above to look up orders via your checkout email.
                 </p>
                 <Link
                   href="/shop"
-                  className="inline-block px-5 py-2.5 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white text-xs font-black shadow-md shadow-red-500/25"
+                  className="inline-block px-5 py-2.5 rounded-full bg-mint-500 hover:bg-mint-300 text-ink text-xs font-black shadow-md shadow-ink/10"
                 >
                   Browse Bundles
                 </Link>
@@ -243,13 +243,13 @@ export default function MyOrdersPage() {
                   return (
                     <div
                       key={idx}
-                      className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4"
+                      className="p-5 rounded-2xl bg-canvas-50 border border-canvas-200 space-y-4"
                     >
-                      <div className="flex items-center justify-between text-xs font-bold pb-3 border-b border-slate-200">
+                      <div className="flex items-center justify-between text-xs font-bold pb-3 border-b border-canvas-200">
                         <div>
-                          Order: <span className="text-red-700 font-black">{orderId}</span>
+                          Order: <span className="text-leaf-700 font-black">{orderId}</span>
                         </div>
-                        <div className="text-slate-400 font-medium">
+                        <div className="text-ink-300 font-medium">
                           {formattedDate}
                         </div>
                       </div>
@@ -264,19 +264,19 @@ export default function MyOrdersPage() {
                           return (
                             <div
                               key={i}
-                              className="bg-white p-3.5 rounded-xl border border-slate-200/80 space-y-2.5"
+                              className="bg-white p-3.5 rounded-xl border border-canvas-200/80 space-y-2.5"
                             >
-                              <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-2">
+                              <div className="flex items-center justify-between gap-3 border-b border-canvas-200 pb-2">
                                 <div>
-                                  <h4 className="font-bold text-xs sm:text-sm text-slate-950">
+                                  <h4 className="font-bold text-xs sm:text-sm text-ink">
                                     {item.title || item.name}
                                   </h4>
-                                  <span className="text-[11px] text-slate-500 font-semibold">
+                                  <span className="text-[11px] text-ink-400 font-semibold">
                                     License: {item.license === 'reseller' ? 'Reseller Rights Included' : 'Personal Use'}
                                   </span>
                                 </div>
                                 {itemFiles.length > 1 && (
-                                  <span className="text-[10px] font-bold text-red-900 bg-red-50 px-2 py-0.5 rounded-full border border-red-200 shrink-0">
+                                  <span className="text-[10px] font-bold text-leaf-900 bg-leaf-50 px-2 py-0.5 rounded-full border border-leaf-200 shrink-0">
                                     {itemFiles.length} Drive Files
                                   </span>
                                 )}
@@ -286,11 +286,11 @@ export default function MyOrdersPage() {
                                 {itemFiles.map((f, fIdx) => (
                                   <div
                                     key={f.id || fIdx}
-                                    className="flex items-center justify-between p-2 rounded-lg bg-slate-50/70 border border-slate-200/60 gap-3"
+                                    className="flex items-center justify-between p-2 rounded-lg bg-canvas-50/70 border border-canvas-200/60 gap-3"
                                   >
                                     <div className="flex items-center gap-2 min-w-0">
-                                      <FolderOpen className="w-3.5 h-3.5 text-red-600 shrink-0" />
-                                      <span className="text-xs font-semibold text-slate-900 truncate">
+                                      <FolderOpen className="w-3.5 h-3.5 text-leaf-600 shrink-0" />
+                                      <span className="text-xs font-semibold text-ink truncate">
                                         {f.name || `Drive Part #${fIdx + 1}`}
                                       </span>
                                     </div>
@@ -298,7 +298,7 @@ export default function MyOrdersPage() {
                                       href={f.file_url || f.url || item.googleDriveLink || item.driveLink || 'https://drive.google.com'}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white text-[11px] font-black flex items-center gap-1.5 shadow-sm shadow-red-500/20 shrink-0"
+                                      className="px-3.5 py-1.5 rounded-lg bg-mint-500 hover:bg-mint-300 text-ink text-[11px] font-black flex items-center gap-1.5 shadow-sm shadow-ink/10 shrink-0"
                                     >
                                       <Download className="w-3 h-3" />
                                       <span>Download</span>
@@ -311,12 +311,12 @@ export default function MyOrdersPage() {
                         })}
 
                         {ord.hasBump && (
-                          <div className="flex items-center justify-between bg-red-50/80 p-3.5 rounded-xl border border-red-200 gap-3">
+                          <div className="flex items-center justify-between bg-leaf-50/80 p-3.5 rounded-xl border border-leaf-200 gap-3">
                             <div>
-                              <h4 className="font-bold text-xs sm:text-sm text-red-950">
+                              <h4 className="font-bold text-xs sm:text-sm text-leaf-950">
                                 ★ Bonus Pack: {ord.orderBump?.title || '1500+ Ultimate Twisted World & Viral AI Reels'}
                               </h4>
-                              <span className="text-[11px] text-red-700 font-semibold">
+                              <span className="text-[11px] text-leaf-700 font-semibold">
                                 Order Bump Special Offer
                               </span>
                             </div>
@@ -325,7 +325,7 @@ export default function MyOrdersPage() {
                               href={ord.orderBump?.googleDriveLink || 'https://drive.google.com/drive/folders/bonus-pack-twisted-world'}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm shadow-red-500/20 shrink-0"
+                              className="px-4 py-2 rounded-xl bg-mint-500 hover:bg-mint-300 text-ink text-xs font-bold flex items-center gap-1.5 shadow-sm shadow-ink/10 shrink-0"
                             >
                               <Download className="w-3.5 h-3.5" />
                               <span>Download</span>

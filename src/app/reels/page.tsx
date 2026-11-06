@@ -251,11 +251,11 @@ export default function ReelsFeedPage() {
     buyNow(bundle, 'personal');
   };
 
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ztoredigital.com').replace(/\/+$/, '');
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
   const itemListJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Ztore Digital Viral Reels Video Previews',
+    name: 'CreatorMint Viral Reels Video Previews',
     numberOfItems: baseReels.length,
     itemListElement: baseReels.slice(0, 20).map((r, idx) => ({
       '@type': 'ListItem',
@@ -443,7 +443,7 @@ export default function ReelsFeedPage() {
                     className={`w-[42px] h-[42px] rounded-full flex items-center justify-center backdrop-blur-md shadow-[0_8px_22px_rgba(0,0,0,0.2)] transition-all ${
                       likedReels[reel.originalId]
                         ? 'bg-gradient-to-br from-[#ff315f] to-[#ff4e91] text-white border-0 scale-105'
-                        : 'bg-[#0c0a12]/45 border border-white/20 text-white'
+                        : 'bg-[#0B1019]/45 border border-white/20 text-white'
                     }`}
                   >
                     <svg
@@ -465,7 +465,7 @@ export default function ReelsFeedPage() {
 
                 {/* 2. Eye (Views) counter */}
                 <div className="flex flex-col items-center gap-1 cursor-default" title="Views">
-                  <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center bg-[#0c0a12]/45 border border-white/20 text-white backdrop-blur-md shadow-[0_8px_22px_rgba(0,0,0,0.2)]">
+                  <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center bg-[#0B1019]/45 border border-white/20 text-white backdrop-blur-md shadow-[0_8px_22px_rgba(0,0,0,0.2)]">
                     <svg
                       className="w-[21px] h-[21px]"
                       viewBox="0 0 24 24"
@@ -498,8 +498,8 @@ export default function ReelsFeedPage() {
                   <div
                     className={`w-[42px] h-[42px] rounded-full flex items-center justify-center backdrop-blur-md shadow-[0_8px_22px_rgba(0,0,0,0.2)] transition-all ${
                       !isMuted
-                        ? 'bg-gradient-to-br from-[#6d42ed] to-[#a348e9] text-white border-0'
-                        : 'bg-[#0c0a12]/45 border border-white/20 text-white'
+                        ? 'bg-mint-500 text-ink border-0 shadow-md shadow-ink/20'
+                        : 'bg-[#0B1019]/45 border border-white/20 text-white'
                     }`}
                   >
                     {isMuted ? (
@@ -548,7 +548,7 @@ export default function ReelsFeedPage() {
                 <h2 className="max-w-[84%] text-[15px] sm:text-[17px] font-extrabold leading-snug tracking-tight text-white drop-shadow-md">
                   <Link
                     href={getProductUrlForReel(reel)}
-                    className="hover:text-red-300 transition-colors inline"
+                    className="hover:text-leaf-300 transition-colors inline"
                   >
                     <span>{reel.bundleTitle || reel.title}</span>
                     <span className="inline-block ml-1 text-white/90 text-sm">↗</span>
@@ -571,14 +571,14 @@ export default function ReelsFeedPage() {
                   </span>
 
                   {/* Price Pill matching Screenshot */}
-                  <span className="inline-flex items-center gap-1.5 min-h-[23px] px-2.5 py-0.5 rounded-full bg-white text-slate-900 shadow-md">
-                    <small className="text-[7px] font-black text-slate-400 uppercase tracking-wider">
+                  <span className="inline-flex items-center gap-1.5 min-h-[23px] px-2.5 py-0.5 rounded-full bg-white text-ink shadow-md">
+                    <small className="text-[7px] font-black text-ink-300 uppercase tracking-wider">
                       PRICE
                     </small>
-                    <del className="text-[9px] font-bold text-slate-400">
+                    <del className="text-[9px] font-bold text-ink-300">
                       ₹{regularPrice}.00
                     </del>
-                    <strong className="text-[11px] font-black text-red-600">
+                    <strong className="text-[11px] font-black text-leaf-600">
                       ₹{salePrice}.00
                     </strong>
                     <em className="not-italic text-[7.5px] font-black px-1.5 py-0.5 rounded-full bg-[#e9faef] text-[#138a4c]">
@@ -598,8 +598,8 @@ export default function ReelsFeedPage() {
                   onClick={() => handleAddToCart(reel)}
                   className={`relative flex items-center justify-center gap-2 min-h-[46px] px-2.5 rounded-[14px] text-white font-extrabold text-[11px] backdrop-blur-md shadow-[0_10px_26px_rgba(0,0,0,0.2)] active:scale-95 transition-all ${
                     addedAnimation[reel.feedKey]
-                      ? 'bg-emerald-600/85 border border-emerald-400/60'
-                      : 'bg-[#14101c]/55 hover:bg-[#14101c]/75 border border-white/25'
+                      ? 'bg-mint-500/85 border border-mint-500/60'
+                      : 'bg-[#0B1019]/55 hover:bg-[#0B1019]/75 border border-white/25'
                   }`}
                 >
                   <span className="flex items-center justify-center w-[20px] h-[20px]">
@@ -628,7 +628,7 @@ export default function ReelsFeedPage() {
                 <button
                   type="button"
                   onClick={() => handleBuyNow(reel)}
-                  className="relative flex items-center justify-center gap-2 min-h-[46px] px-3 rounded-[14px] bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-[12px] tracking-wide shadow-[0_10px_24px_rgba(239,68,68,0.35)] active:scale-95 transition-all overflow-hidden group cursor-pointer"
+                  className="relative flex items-center justify-center gap-2 min-h-[46px] px-3 rounded-[14px] bg-mint-500 hover:bg-mint-300 text-ink font-black text-[12px] tracking-wide shadow-[0_10px_24px_rgba(11,16,25,0.21)] active:scale-95 transition-all overflow-hidden group cursor-pointer"
                 >
                   {/* Subtle shine sweep */}
                   <span

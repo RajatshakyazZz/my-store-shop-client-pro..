@@ -184,7 +184,7 @@ export async function createRazorpayOrder(params: CreateRazorpayOrderParams): Pr
       customer_name: params.customer.fullName,
       customer_email: params.customer.email,
       customer_phone: params.customer.phone,
-      product_info: (params.productInfo || 'Ztore Digital Reels Bundle').slice(0, 100),
+      product_info: (params.productInfo || 'CreatorMint Reels Bundle').slice(0, 100),
       ...(params.notes || {}),
     },
   };
@@ -249,7 +249,7 @@ export async function createRazorpayPaymentLink(params: {
     amount: amountInPaise,
     currency: 'INR',
     accept_partial: false,
-    description: (params.productInfo || 'Ztore Digital Reels Bundle').slice(0, 100),
+    description: (params.productInfo || 'CreatorMint Reels Bundle').slice(0, 100),
     customer: {
       name: params.customer.fullName || 'Customer',
       email: params.customer.email,
