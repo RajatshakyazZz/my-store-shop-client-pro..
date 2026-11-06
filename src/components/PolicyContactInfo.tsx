@@ -70,8 +70,10 @@ export default function PolicyContactInfo() {
             <MapPin className="w-3.5 h-3.5" />
           </div>
           <div>
-            <span className="font-bold text-ink block">Country of Operation</span>
-            <span className="text-ink-500">India (Digital Goods &amp; Services)</span>
+            <span className="font-bold text-ink block">Operational / Grievance Address</span>
+            <span className="text-ink-500">
+              {(settings as any)?.operatingAddress || (settings as any)?.registeredAddress || 'CreatorMint Support Desk, India'}
+            </span>
           </div>
         </div>
 

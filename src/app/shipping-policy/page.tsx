@@ -7,8 +7,8 @@ import PolicyContactInfo from '@/components/PolicyContactInfo';
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
-  title: 'Shipping & Delivery Policy | CreatorMint',
-  description: 'Instant Digital Delivery and Shipping Policy for CreatorMint. Explains our 60-second cloud delivery via Google Drive with zero shipping charges.',
+  title: 'Shipping Policy & Digital Delivery | CreatorMint',
+  description: 'Instant Digital Delivery and Shipping Policy for CreatorMint. Explains our 60-second cloud delivery via Google Drive with zero shipping charges (Free Delivery).',
   alternates: {
     canonical: `${siteUrl}/shipping-policy`,
   },
@@ -26,10 +26,10 @@ export default function ShippingPolicyPage() {
             <span>INSTANT ELECTRONIC DELIVERY POLICY</span>
           </span>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1019] tracking-tight">
-            Shipping &amp; Digital Delivery Policy
+            Shipping Policy &amp; Digital Delivery
           </h1>
           <p className="text-xs sm:text-sm text-ink-400 font-medium">
-            Effective Date: October 2026 • Last Revised: October 30, 2026 • Applicable to all purchases on our store
+            Effective Date: October 2026 • Last Revised: November 2026 • Applicable to all purchases on CreatorMint (creatormint.shop / creatormint-store.vercel.app)
           </p>
         </div>
 

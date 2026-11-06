@@ -45,6 +45,98 @@ const nextConfig = {
     );
     return config;
   },
+  async rewrites() {
+    return [
+      {
+        source: '/shipping',
+        destination: '/shipping-policy',
+      },
+      {
+        source: '/delivery',
+        destination: '/shipping-policy',
+      },
+      {
+        source: '/delivery-policy',
+        destination: '/shipping-policy',
+      },
+      {
+        source: '/shipping-and-delivery',
+        destination: '/shipping-policy',
+      },
+      {
+        source: '/shipping-and-delivery-policy',
+        destination: '/shipping-policy',
+      },
+      {
+        source: '/cancellations-and-refunds',
+        destination: '/refund-policy',
+      },
+      {
+        source: '/cancellation-and-refund',
+        destination: '/refund-policy',
+      },
+      {
+        source: '/cancellation-and-refund-policy',
+        destination: '/refund-policy',
+      },
+      {
+        source: '/cancellation-policy',
+        destination: '/refund-policy',
+      },
+      {
+        source: '/refund',
+        destination: '/refund-policy',
+      },
+      {
+        source: '/refunds',
+        destination: '/refund-policy',
+      },
+      {
+        source: '/cancellation',
+        destination: '/refund-policy',
+      },
+      {
+        source: '/cancellations',
+        destination: '/refund-policy',
+      },
+      {
+        source: '/returns-and-refunds',
+        destination: '/refund-policy',
+      },
+      {
+        source: '/return-policy',
+        destination: '/refund-policy',
+      },
+      {
+        source: '/terms',
+        destination: '/terms-and-conditions',
+      },
+      {
+        source: '/terms-of-service',
+        destination: '/terms-and-conditions',
+      },
+      {
+        source: '/tos',
+        destination: '/terms-and-conditions',
+      },
+      {
+        source: '/privacy',
+        destination: '/privacy-policy',
+      },
+      {
+        source: '/contact',
+        destination: '/contact-us',
+      },
+      {
+        source: '/help',
+        destination: '/contact-us',
+      },
+      {
+        source: '/support',
+        destination: '/contact-us',
+      },
+    ];
+  },
   async headers() {
     return [
       {

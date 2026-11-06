@@ -7,8 +7,8 @@ import PolicyContactInfo from '@/components/PolicyContactInfo';
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
-  title: 'Refund & Cancellation Policy | CreatorMint',
-  description: 'Official Refund & Cancellation Policy of CreatorMint. Details our transparent refund guidelines and 5-7 day payment gateway reversal timelines.',
+  title: 'Cancellations and Refunds Policy | CreatorMint',
+  description: 'Official Cancellations and Refunds Policy of CreatorMint. Details our transparent refund guidelines, cancellation terms, and 5-7 day payment gateway reversal timelines.',
   alternates: {
     canonical: `${siteUrl}/refund-policy`,
   },
@@ -26,10 +26,10 @@ export default function RefundPolicyPage() {
             <span>TRANSPARENT CONSUMER PROTECTION</span>
           </span>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1019] tracking-tight">
-            Refund &amp; Cancellation Policy
+            Cancellations and Refunds Policy
           </h1>
           <p className="text-xs sm:text-sm text-ink-400 font-medium">
-            Effective Date: October 2026 • Last Revised: November 2026 • Applicable to all purchases on creatormint-store.vercel.app
+            Effective Date: October 2026 • Last Revised: November 2026 • Applicable to all purchases on CreatorMint (creatormint.shop / creatormint-store.vercel.app)
           </p>
         </div>
 
@@ -187,7 +187,7 @@ export default function RefundPolicyPage() {
             <div className="p-4 rounded-2xl bg-canvas-50 border border-canvas-200 space-y-2 text-xs text-ink-600 font-medium">
               <p><strong>Please provide:</strong></p>
               <ul className="list-disc pl-5 space-y-1">
-                <li>Your Order ID (e.g., <code>VZ-123456</code>).</li>
+                <li>Your Order ID (e.g., <code>CM-123456</code>).</li>
                 <li>The email address entered at checkout.</li>
                 <li>Proof of transaction / bank deduction statement (for duplicate charges).</li>
                 <li>A brief description of the technical issue encountered.</li>

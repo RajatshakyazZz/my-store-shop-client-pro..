@@ -269,12 +269,12 @@ export default function Footer() {
               Terms &amp; Conditions
             </Link>
             <span className="text-ink-300">•</span>
-            <Link href="/refund-policy" prefetch={false} className="hover:text-mint-300 transition-colors">
-              Refund &amp; Cancellation Policy
+            <Link href="/cancellations-and-refunds" prefetch={false} className="hover:text-mint-300 transition-colors">
+              Cancellations and Refunds
             </Link>
             <span className="text-ink-300">•</span>
             <Link href="/shipping-policy" prefetch={false} className="hover:text-mint-300 transition-colors">
-              Shipping &amp; Delivery Policy
+              Shipping Policy
             </Link>
             <span className="text-ink-300">•</span>
             <Link href="/contact-us" prefetch={false} className="hover:text-mint-300 transition-colors">

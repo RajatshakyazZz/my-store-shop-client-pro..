@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Mail, Clock, FolderOpen, ArrowRight, ShieldCheck, MessageCircle } from 'lucide-react';
 import { useStoreSettings } from '@/context/StoreSettingsContext';
+import PolicyContactInfo from '@/components/PolicyContactInfo';
 
 export default function ContactUsPage() {
   const { settings } = useStoreSettings();
@@ -113,6 +114,17 @@ export default function ContactUsPage() {
             <span>My Orders</span>
             <ArrowRight className="w-4 h-4 text-ink stroke-[2.5]" />
           </Link>
+        </div>
+
+        {/* Official Grievance Redressal & Merchant Details for Gateway & Consumer Compliance */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-canvas-200/90 shadow-sm space-y-4">
+          <h2 className="text-base sm:text-lg font-black text-ink">
+            Official Grievance Redressal &amp; Operating Desk
+          </h2>
+          <p className="text-xs text-ink-500 font-medium">
+            In compliance with the Consumer Protection (E-Commerce) Rules, 2020 and Indian Payment Aggregator Guidelines:
+          </p>
+          <PolicyContactInfo />
         </div>
 
       </div>
