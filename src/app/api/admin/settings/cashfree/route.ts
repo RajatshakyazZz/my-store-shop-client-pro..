@@ -68,37 +68,49 @@ export async function POST(request: Request) {
     let environment: 'PRODUCTION' | 'SANDBOX' = 'PRODUCTION';
     if (body.environment === 'TEST' || body.environment === 'SANDBOX' || app_id.startsWith('TEST') || secret_key.startsWith('cfsk_ma_test_')) {
       environment = 'SANDBOX';
+    } else if (app_id.startsWith('PROD') || secret_key.startsWith('cfsk_ma_prod_')) {
+      environment = 'PRODUCTION';
     }
 
     const enabled = typeof body.enabled === 'boolean' ? body.enabled : true;
     const api_version = body.api_version || '2023-08-01';
+    const siteBase = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.creatormint.shop').replace(/\/+$/, '');
+    const return_url = String(body.return_url || `${siteBase}/api/payment/cashfree/return`).trim();
 
     const payload = {
       app_id,
       secret_key,
       cashfree_app_id: app_id,
       cashfree_secret_key: secret_key,
+      merchant_key: app_id,
+      merchant_salt: secret_key,
       environment,
       enabled,
       api_version,
+      return_url,
       updated_at: new Date().toISOString(),
     };
 
     if (db) {
+      // 1. Primary write to store_settings/general (universally allowed by live Firestore rules)
       try {
-        // 1. Write to store_settings/cashfree
-        await setDoc(doc(db, 'store_settings', 'cashfree'), payload, { merge: true });
-        // 2. Also sync to store_settings/general
         await setDoc(doc(db, 'store_settings', 'general'), payload, { merge: true });
-      } catch (firestoreErr: any) {
-        console.error('Firestore error saving Cashfree config:', firestoreErr);
+      } catch (genErr: any) {
+        console.error('Firestore write error on store_settings/general:', genErr);
         return NextResponse.json(
           {
             success: false,
-            error: `Firestore write error: ${firestoreErr.message || 'Permission denied'}`,
+            error: `Database persistence error: ${genErr.message || 'Permission denied'}`,
           },
           { status: 500, headers: CORS_HEADERS }
         );
+      }
+
+      // 2. Secondary write to store_settings/cashfree (isolated, non-fatal if document rules restrict)
+      try {
+        await setDoc(doc(db, 'store_settings', 'cashfree'), payload, { merge: true });
+      } catch (cfErr: any) {
+        console.warn('Non-fatal store_settings/cashfree secondary sync skipped:', cfErr.message);
       }
     }
 
@@ -107,13 +119,14 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: true,
-        message: 'Cashfree credentials saved and synchronized successfully',
+        message: 'Cashfree credentials saved and synchronized to Cloud Database successfully.',
         config: {
           app_id,
           secret_key,
           environment,
           enabled,
           api_version,
+          return_url,
           configured: Boolean(app_id && secret_key),
         },
       },

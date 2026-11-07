@@ -109,7 +109,7 @@ export default function SettingsIntegrations() {
         merchant_key: pgConfig.merchant_key || pgConfig.app_id || '',
         merchant_salt: pgConfig.merchant_salt || pgConfig.secret_key || '',
         environment: pgConfig.environment === 'TEST' || pgConfig.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
-        return_url: (pgConfig.return_url || '/api/payment/razorpay/verify-order'),
+        return_url: (pgConfig.return_url || '/api/payment/cashfree/return'),
       });
     }
   }, [pgConfig]);

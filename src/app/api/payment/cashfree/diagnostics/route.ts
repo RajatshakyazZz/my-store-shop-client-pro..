@@ -30,8 +30,8 @@ export async function GET() {
       returnUrl: creds.returnUrl,
       source,
       instructions: !hasAppId || !hasSecretKey
-        ? 'To fix: In Vercel > Storefront Project (vaultzet.shop) > Settings > Environment Variables, add CASHFREE_APP_ID and CASHFREE_SECRET_KEY, then click Deployments > Redeploy.'
-        : 'Cashfree credentials detected successfully on Storefront.',
+        ? 'To fix: Go to Admin Portal (/asdf/settings) > Cashfree Gateway tab, enter your Cashfree App ID and Secret Key and click Save, OR add CASHFREE_APP_ID and CASHFREE_SECRET_KEY in Vercel Environment Variables.'
+        : 'Cashfree credentials detected successfully on CreatorMint Store.',
     });
   } catch (err: any) {
     return NextResponse.json(

@@ -696,16 +696,21 @@ function CheckoutContent() {
 
       // 3. Launch Cashfree v3 Checkout Seamlessly
       if (typeof window !== 'undefined' && typeof window.Cashfree === 'function') {
-        const cashfree = window.Cashfree({ mode });
-        const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+        try {
+          const cashfree = window.Cashfree({ mode });
+          const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 
-        await cashfree.checkout({
-          paymentSessionId: data.payment_session_id,
-          redirectTarget: isMobile ? '_self' : '_modal',
-        });
-        setIsProcessing(false);
+          await cashfree.checkout({
+            paymentSessionId: data.payment_session_id,
+            redirectTarget: isMobile ? '_self' : '_modal',
+          });
+          setIsProcessing(false);
+        } catch (sdkLaunchErr) {
+          console.warn('Cashfree JS SDK launch issue, falling back to hosted page:', sdkLaunchErr);
+          window.location.href = `https://payments.cashfree.com/order/#${encodeURIComponent(data.payment_session_id)}`;
+        }
       } else {
-        // Direct fallback to Cashfree hosted checkout page
+        // Direct fallback to Cashfree official hosted checkout page
         window.location.href = `https://payments.cashfree.com/order/#${encodeURIComponent(data.payment_session_id)}`;
       }
     } catch (err: any) {

@@ -2582,7 +2582,7 @@ class PortalApiClient {
         });
         if (res.ok) {
           const data = await res.json();
-          if (data.success && data.config) {
+          if (data.success && data.config && (data.config.app_id || data.config.secret_key)) {
             const mapped: PgBridgeConfig = {
               enabled: typeof data.config.enabled === 'boolean' ? data.config.enabled : true,
               key_id: data.config.app_id || data.config.key_id || data.config.merchant_key || '',
@@ -2605,59 +2605,73 @@ class PortalApiClient {
       }
     }
 
-    // 2. Direct client Firestore query (store_settings/cashfree, store_settings/general, store_settings/razorpay)
+    // 2. Direct client Firestore query (store_settings/general is primary and always accessible)
     if (db) {
       try {
-        const [cfSnap, genSnap, rzpSnap, payuSnap] = await Promise.all([
-          getDoc(doc(db, 'store_settings', 'cashfree')).catch(() => null),
-          getDoc(doc(db, 'store_settings', 'general')).catch(() => null),
-          getDoc(doc(db, 'store_settings', 'razorpay')).catch(() => null),
-          getDoc(doc(db, 'store_settings', 'payu')).catch(() => null),
-        ]);
-
-        let data: any = null;
-        if (cfSnap && cfSnap.exists()) {
-          data = cfSnap.data();
-        } else if (genSnap && genSnap.exists() && (genSnap.data()?.cashfree_app_id || genSnap.data()?.app_id)) {
-          data = genSnap.data();
-        } else if (rzpSnap && rzpSnap.exists()) {
-          data = rzpSnap.data();
-        } else if (payuSnap && payuSnap.exists()) {
-          data = payuSnap.data();
-        } else if (genSnap && genSnap.exists()) {
-          data = genSnap.data();
+        const genSnap = await getDoc(doc(db, 'store_settings', 'general')).catch(() => null);
+        if (genSnap && genSnap.exists()) {
+          const data = genSnap.data();
+          const candAppId = String(data.cashfree_app_id || data.app_id || data.merchant_key || data.client_id || data.key_id || '').trim();
+          const candSecret = String(data.cashfree_secret_key || data.secret_key || data.merchant_salt || data.client_secret || data.key_secret || '').trim();
+          if (candAppId || candSecret) {
+            const mapped: PgBridgeConfig = {
+              enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
+              key_id: candAppId,
+              key_secret: candSecret,
+              merchant_key: candAppId,
+              merchant_salt: candSecret,
+              app_id: candAppId,
+              secret_key: candSecret,
+              environment: data.environment === 'TEST' || data.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
+              return_url: data.return_url || '',
+            };
+            this.saveSettingLocally('cashfree', mapped);
+            this.saveSettingLocally('razorpay', mapped);
+            this.saveSettingLocally('payu', mapped);
+            return mapped;
+          }
         }
 
-        if (data) {
-          const key_id = data.cashfree_app_id || data.app_id || data.client_id || data.key_id || data.merchant_key || '';
-          const key_secret = data.cashfree_secret_key || data.secret_key || data.client_secret || data.key_secret || data.merchant_salt || '';
-          const mapped: PgBridgeConfig = {
-            enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
-            key_id,
-            key_secret,
-            merchant_key: key_id,
-            merchant_salt: key_secret,
-            app_id: key_id,
-            secret_key: key_secret,
-            environment: data.environment === 'TEST' || data.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
-            return_url: data.return_url || '',
-          };
-          this.saveSettingLocally('cashfree', mapped);
-          this.saveSettingLocally('razorpay', mapped);
-          this.saveSettingLocally('payu', mapped);
-          return mapped;
+        const cfSnap = await getDoc(doc(db, 'store_settings', 'cashfree')).catch(() => null);
+        if (cfSnap && cfSnap.exists()) {
+          const data = cfSnap.data();
+          const candAppId = String(data.app_id || data.cashfree_app_id || data.merchant_key || data.client_id || data.key_id || '').trim();
+          const candSecret = String(data.secret_key || data.cashfree_secret_key || data.merchant_salt || data.client_secret || data.key_secret || '').trim();
+          if (candAppId || candSecret) {
+            const mapped: PgBridgeConfig = {
+              enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
+              key_id: candAppId,
+              key_secret: candSecret,
+              merchant_key: candAppId,
+              merchant_salt: candSecret,
+              app_id: candAppId,
+              secret_key: candSecret,
+              environment: data.environment === 'TEST' || data.environment === 'SANDBOX' ? 'TEST' : 'PRODUCTION',
+              return_url: data.return_url || '',
+            };
+            this.saveSettingLocally('cashfree', mapped);
+            this.saveSettingLocally('razorpay', mapped);
+            this.saveSettingLocally('payu', mapped);
+            return mapped;
+          }
         }
       } catch (e) {
         console.warn('Firestore direct cashfree fetch error, using local cache:', e);
       }
     }
 
-    return this.getSavedSetting('cashfree', this.getSavedSetting('razorpay', this.getSavedSetting('payu', initialPgBridge)));
+    // 3. Fallback to persisted local storage (prevents clearing inputs on refresh if offline)
+    const local = this.getSavedSetting('cashfree', this.getSavedSetting('razorpay', this.getSavedSetting('payu', null)));
+    if (local && (local.app_id || local.key_id || local.merchant_key)) {
+      return local;
+    }
+
+    return initialPgBridge;
   }
 
   async updateRazorpayConfig(config: PgBridgeConfig): Promise<PgBridgeConfig> {
-    const key_id = config.key_id || config.merchant_key || config.app_id || '';
-    const key_secret = config.key_secret || config.merchant_salt || config.secret_key || '';
+    const key_id = String(config.key_id || config.merchant_key || config.app_id || '').trim();
+    const key_secret = String(config.key_secret || config.merchant_salt || config.secret_key || '').trim();
     const clean: PgBridgeConfig = {
       ...sanitizePayload(config),
       key_id,
@@ -2677,23 +2691,33 @@ class PortalApiClient {
     // 1. Post to server-side admin settings API
     if (typeof window !== 'undefined') {
       try {
-        await fetch('/api/admin/settings/cashfree', {
+        const res = await fetch('/api/admin/settings/cashfree', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(clean),
         });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          console.warn('API /api/admin/settings/cashfree responded with status:', res.status, errData);
+        }
       } catch (apiErr) {
         console.warn('Network error saving Cashfree config to API route:', apiErr);
       }
     }
 
-    // 2. Direct client Firestore persistence to store_settings/cashfree & store_settings/general
+    // 2. Direct client Firestore persistence: store_settings/general FIRST
     if (db) {
       try {
-        await setDoc(doc(db, 'store_settings', 'cashfree'), clean, { merge: true });
         await setDoc(doc(db, 'store_settings', 'general'), clean, { merge: true });
       } catch (e) {
-        console.warn('Firestore direct write to store_settings/cashfree warning:', e);
+        console.warn('Firestore direct write to store_settings/general warning:', e);
+      }
+
+      // Secondary write: store_settings/cashfree (isolated, non-blocking)
+      try {
+        await setDoc(doc(db, 'store_settings', 'cashfree'), clean, { merge: true });
+      } catch (e) {
+        console.warn('Firestore direct write to store_settings/cashfree skipped (rules):', e);
       }
     }
 

@@ -84,7 +84,7 @@ export async function getCashfreeCredentials(forceRefresh = false): Promise<Cash
   }
 
   let apiVersion = process.env.CASHFREE_API_VERSION || '2023-08-01';
-  const siteBase = (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
+  const siteBase = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.creatormint.shop').replace(/\/+$/, '');
   let returnUrl = (
     process.env.CASHFREE_RETURN_URL ||
     process.env.NEXT_PUBLIC_CASHFREE_RETURN_URL ||
@@ -92,45 +92,81 @@ export async function getCashfreeCredentials(forceRefresh = false): Promise<Cash
   ).trim();
   let enabled = true;
 
-  // If not configured in environment variables, read from Firestore store_settings/cashfree or store_settings/general
+  // 1. Primary Source: Cloud Firestore Database (store_settings/general)
+  if ((!appId || !secretKey) && db) {
+    try {
+      const genSnap = await getDoc(doc(db, 'store_settings', 'general'));
+      if (genSnap.exists()) {
+        const genData = genSnap.data();
+        const candAppId = String(
+          genData.cashfree_app_id ||
+          genData.app_id ||
+          genData.merchant_key ||
+          genData.client_id ||
+          genData.key_id ||
+          ''
+        ).trim();
+
+        const candSecretKey = String(
+          genData.cashfree_secret_key ||
+          genData.secret_key ||
+          genData.merchant_salt ||
+          genData.client_secret ||
+          genData.key_secret ||
+          ''
+        ).trim();
+
+        if (candAppId) appId = candAppId;
+        if (candSecretKey) secretKey = candSecretKey;
+        if (genData.environment) {
+          environment = genData.environment === 'SANDBOX' || genData.environment === 'TEST' ? 'SANDBOX' : 'PRODUCTION';
+        }
+        if (genData.api_version) apiVersion = genData.api_version;
+        if (genData.return_url) returnUrl = genData.return_url.trim();
+        if (typeof genData.enabled === 'boolean') enabled = genData.enabled;
+      }
+    } catch (genErr) {
+      console.warn('Non-fatal: could not read store_settings/general for Cashfree:', genErr);
+    }
+  }
+
+  // 2. Secondary Source: Cloud Firestore Database (store_settings/cashfree)
   if ((!appId || !secretKey) && db) {
     try {
       const snap = await getDoc(doc(db, 'store_settings', 'cashfree'));
       if (snap.exists()) {
         const data = snap.data();
-        if (data.app_id || data.appId || data.client_id || data.key_id) {
-          appId = (data.app_id || data.appId || data.client_id || data.key_id).trim();
-        }
-        if (data.secret_key || data.secretKey || data.client_secret || data.key_secret) {
-          secretKey = (data.secret_key || data.secretKey || data.client_secret || data.key_secret).trim();
-        }
+        const candAppId = String(
+          data.app_id ||
+          data.cashfree_app_id ||
+          data.appId ||
+          data.client_id ||
+          data.key_id ||
+          data.merchant_key ||
+          ''
+        ).trim();
+
+        const candSecretKey = String(
+          data.secret_key ||
+          data.cashfree_secret_key ||
+          data.secretKey ||
+          data.client_secret ||
+          data.key_secret ||
+          data.merchant_salt ||
+          ''
+        ).trim();
+
+        if (candAppId) appId = candAppId;
+        if (candSecretKey) secretKey = candSecretKey;
         if (data.environment) {
           environment = data.environment === 'SANDBOX' || data.environment === 'TEST' ? 'SANDBOX' : 'PRODUCTION';
         }
         if (data.api_version) apiVersion = data.api_version;
-        if (data.return_url) {
-          returnUrl = data.return_url.trim();
-        }
+        if (data.return_url) returnUrl = data.return_url.trim();
         if (typeof data.enabled === 'boolean') enabled = data.enabled;
       }
-
-      if (!appId || !secretKey) {
-        const genSnap = await getDoc(doc(db, 'store_settings', 'general'));
-        if (genSnap.exists()) {
-          const genData = genSnap.data();
-          if (genData.cashfree_app_id || genData.app_id || genData.client_id) {
-            appId = (genData.cashfree_app_id || genData.app_id || genData.client_id).trim();
-          }
-          if (genData.cashfree_secret_key || genData.secret_key || genData.client_secret) {
-            secretKey = (genData.cashfree_secret_key || genData.secret_key || genData.client_secret).trim();
-          }
-          if (genData.environment) {
-            environment = genData.environment === 'SANDBOX' || genData.environment === 'TEST' ? 'SANDBOX' : 'PRODUCTION';
-          }
-        }
-      }
-    } catch (err) {
-      console.warn('Failed to load Cashfree credentials from Firestore:', err);
+    } catch (cfErr) {
+      console.warn('Non-fatal: could not read store_settings/cashfree:', cfErr);
     }
   }
 
