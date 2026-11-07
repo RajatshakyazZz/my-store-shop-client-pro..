@@ -243,7 +243,7 @@ export async function POST(request: Request) {
     const isLocalhost = hostHeader.includes('localhost');
     const returnBaseUrl = isLocalhost
       ? `http://${hostHeader}`
-      : (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app');
+      : (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.creatormint.shop');
 
     const orderToken = generateOrderToken(orderNumber);
 

@@ -60,7 +60,7 @@ export async function POST(request: Request) {
   const isLocalhost = hostHeader.includes('localhost');
   const baseUrl = isLocalhost
     ? `http://${hostHeader}`
-    : (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
+    : (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.creatormint.shop').replace(/\/+$/, '');
 
   try {
     const data = await parsePayURequestBody(request);

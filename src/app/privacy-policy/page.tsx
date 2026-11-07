@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ShieldCheck, Lock, Eye, Database, Server, UserCheck, AlertTriangle } from 'lucide-react';
 import PolicyContactInfo from '@/components/PolicyContactInfo';
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.creatormint.shop').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | CreatorMint',
@@ -29,7 +29,7 @@ export default function PrivacyPolicyPage() {
             Privacy Policy &amp; Data Protection
           </h1>
           <p className="text-xs sm:text-sm text-ink-400 font-medium">
-            Effective Date: October 2026 • Last Revised: November 2026 • Platform: creatormint-store.vercel.app
+            Effective Date: October 2026 • Last Revised: November 2026 • Platform: www.creatormint.shop
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export default function PrivacyPolicyPage() {
               <span>Introduction &amp; Regulatory Framework</span>
             </h2>
             <p>
-              At <strong>CreatorMint</strong> (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;), protecting the personal privacy and data of our customers and visitors (&quot;you&quot;, &quot;user&quot;, &quot;buyer&quot;) is a paramount priority. This Privacy Policy sets forth our practices regarding the collection, storage, use, and disclosure of information when you interact with our website (<strong>creatormint-store.vercel.app</strong>).
+              At <strong>CreatorMint</strong> (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;), protecting the personal privacy and data of our customers and visitors (&quot;you&quot;, &quot;user&quot;, &quot;buyer&quot;) is a paramount priority. This Privacy Policy sets forth our practices regarding the collection, storage, use, and disclosure of information when you interact with our website (<strong>www.creatormint.shop</strong>).
             </p>
             <p>
               This document is prepared in strict accordance with:

@@ -224,7 +224,7 @@ export async function createCashfreePgOrder(
   // Clean customer ID
   const cleanCustomerId = `cust_${params.customer.email.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 30)}`;
 
-  const defaultReturnUrl = `${(process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '')}/api/payment/cashfree/return`;
+  const defaultReturnUrl = `${(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.creatormint.shop').replace(/\/+$/, '')}/api/payment/cashfree/return`;
   const rawReturnUrl = (params.returnUrl || creds.returnUrl || defaultReturnUrl).trim();
   const finalReturnUrl = rawReturnUrl.includes('{order_id}')
     ? rawReturnUrl

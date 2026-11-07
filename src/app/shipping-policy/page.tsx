@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Zap, ShieldCheck, FolderOpen, Mail, Clock, HelpCircle, CheckCircle2 } from 'lucide-react';
 import PolicyContactInfo from '@/components/PolicyContactInfo';
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.creatormint.shop').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
   title: 'Shipping Policy & Digital Delivery | CreatorMint',
@@ -29,7 +29,7 @@ export default function ShippingPolicyPage() {
             Shipping Policy &amp; Digital Delivery
           </h1>
           <p className="text-xs sm:text-sm text-ink-400 font-medium">
-            Effective Date: October 2026 • Last Revised: November 2026 • Applicable to all purchases on CreatorMint (creatormint.shop / creatormint-store.vercel.app)
+            Effective Date: October 2026 • Last Revised: November 2026 • Applicable to all purchases on CreatorMint (creatormint.shop / www.creatormint.shop)
           </p>
         </div>
 

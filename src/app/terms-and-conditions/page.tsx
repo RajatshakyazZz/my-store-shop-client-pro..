@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ShieldCheck, FileText, CheckCircle2, AlertCircle, Scale, CreditCard, Lock, Sparkles } from 'lucide-react';
 import PolicyContactInfo from '@/components/PolicyContactInfo';
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.creatormint.shop').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions | CreatorMint',
@@ -65,7 +65,7 @@ export default function TermsPage() {
               <span>Agreement to Terms &amp; Scope of Contract</span>
             </h2>
             <p>
-              These Terms and Conditions (&quot;Terms&quot;, &quot;Terms of Service&quot;, &quot;Agreement&quot;) constitute a legally binding electronic agreement between you (&quot;User&quot;, &quot;Customer&quot;, &quot;Buyer&quot;, or &quot;You&quot;) and <strong>CreatorMint</strong> (&quot;Store&quot;, &quot;We&quot;, &quot;Us&quot;, or &quot;Our&quot;), operating via the website located at <strong>creatormint-store.vercel.app</strong> (and its official subdomains and mirror endpoints).
+              These Terms and Conditions (&quot;Terms&quot;, &quot;Terms of Service&quot;, &quot;Agreement&quot;) constitute a legally binding electronic agreement between you (&quot;User&quot;, &quot;Customer&quot;, &quot;Buyer&quot;, or &quot;You&quot;) and <strong>CreatorMint</strong> (&quot;Store&quot;, &quot;We&quot;, &quot;Us&quot;, or &quot;Our&quot;), operating via the website located at <strong>www.creatormint.shop</strong> (and its official subdomains and mirror endpoints).
             </p>
             <p>
               By visiting our website, browsing our digital bundle catalog, placing an order, or initiating checkout, you acknowledge that you have read, understood, and agreed to be bound by these Terms, as well as our{' '}
@@ -179,7 +179,7 @@ export default function TermsPage() {
             <ul className="list-disc pl-5 space-y-1.5 text-ink-500 font-medium">
               <li><strong>On-Screen Access:</strong> You are immediately redirected to our secure Order Confirmation Page where your direct Google Drive access buttons and folder links are made available.</li>
               <li><strong>Email Delivery:</strong> An automated digital delivery receipt containing your permanent access link is dispatched to your provided Gmail address within 60 seconds of transaction completion.</li>
-              <li><strong>Self-Service Access:</strong> Customers may re-access their Google Drive links at any time by entering their checkout email on our self-service portal at <Link href="/my-order" className="text-leaf-700 underline font-semibold">creatormint-store.vercel.app/my-order</Link>.</li>
+              <li><strong>Self-Service Access:</strong> Customers may re-access their Google Drive links at any time by entering their checkout email on our self-service portal at <Link href="/my-order" className="text-leaf-700 underline font-semibold">www.creatormint.shop/my-order</Link>.</li>
               <li><strong>Shipping Charges:</strong> There are zero shipping, courier, or delivery fees (₹0.00).</li>
             </ul>
           </section>

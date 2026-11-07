@@ -2,7 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import RefundPolicyPage from '@/app/refund-policy/page';
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.creatormint.shop').replace(/\/+$/, '');
 
 export const metadata: Metadata = {
   title: 'Cancellations and Refunds Policy | CreatorMint',

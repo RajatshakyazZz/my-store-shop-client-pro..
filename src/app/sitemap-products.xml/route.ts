@@ -3,7 +3,7 @@ import { BUNDLE_PRODUCTS } from '@/data/bundles';
 export const revalidate = 3600;
 
 export async function GET() {
-  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
+  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.creatormint.shop').replace(/\/+$/, '');
   const now = new Date().toISOString();
 
   // Deduplicate products by slug

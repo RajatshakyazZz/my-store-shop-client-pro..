@@ -57,7 +57,7 @@ export async function POST(request: Request) {
       event_time: Math.floor(Date.now() / 1000),
       event_id: `test_admin_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
       action_source: 'website',
-      event_source_url: 'https://creatormint-store.vercel.app',
+      event_source_url: 'https://www.creatormint.shop',
       user_data: {
         client_ip_address: clientIp,
         client_user_agent: clientUserAgent,

@@ -194,7 +194,7 @@ export async function GET(request: Request) {
     if (!token) {
       return NextResponse.json({ success: false, error: 'Missing Telegram Bot Token' }, { status: 400 });
     }
-    const host = request.headers.get('host') || (process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL).host : 'creatormint-store.vercel.app');
+    const host = request.headers.get('host') || (process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL).host : 'www.creatormint.shop');
     const protocol = host.includes('localhost') ? 'http' : 'https';
     const webhookUrl = `${protocol}://${host}/api/telegram/webhook`;
 

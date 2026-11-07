@@ -20,7 +20,7 @@ const fontDisplay = Bricolage_Grotesque({
   variable: '--font-display',
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.creatormint.shop';
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || '';
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || 'G-7RMXL2RZ4J';
 const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION || 'googlef90de30240e3b03b';

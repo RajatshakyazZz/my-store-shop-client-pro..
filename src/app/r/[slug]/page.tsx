@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: ResellerPageProps): Promise<M
     };
   }
 
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://creatormint-store.vercel.app').replace(/\/+$/, '');
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.creatormint.shop').replace(/\/+$/, '');
   const canonicalUrl = `${siteUrl}/r/${listing.slug}`;
   const title = `${listing.customHeadline || listing.customTitle} — Instant Download`;
   const description =
